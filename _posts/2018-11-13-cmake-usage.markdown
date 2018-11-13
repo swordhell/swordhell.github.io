@@ -5,7 +5,9 @@ subtitle: 'cmake一些常用的实例'
 author: "Abel"
 header-style: text
 tags:
-  - cmake c++ build
+  - cmake
+  - c++ 
+  - builder
 ---
 
 
@@ -13,9 +15,9 @@ tags:
 
 
 # 文件名称
-
+```
 CMakeLists.txt
-
+```
 # enable debug
 ```
 cmake 
@@ -54,14 +56,17 @@ configure_file(${PROJECT_SOURCE_DIR}/CenterServer/srcs/csstring.xml ${BUILD_TARG
 execute_process(COMMAND  bash release.sh WORKING_DIRECTORY  ${PROJECT_SOURCE_DIR}/config_new/design/ )
 ```
 # cxx flag
+```
 -Wall 开启全部warning
 -Wextra  among other stuff
 -fdiagnostics-color=auto 
 -std=c++14 
 -fsanitize=address 启用clang里面的内存检查
-
+```
 # 设置依赖关系
+```
 add_dependencies(server luabind)
+```
 
 # 搜索文件列表
 ```
