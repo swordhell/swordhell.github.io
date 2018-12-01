@@ -17,15 +17,15 @@ protobuf是比较好的一种序列化的工具，这里使用golang来试用一
 
 # 准备工具
 安装命令
-![](img/pic/20181201080640-install-go-protocol1.png "")
+![](img/pic/20181201080640-install-go-protocol1.png)
 
 安装效果
 
-![](https://swordhell.github.io/img/pic/20181201080640-install-go-protocol2.png "")
+![](https://swordhell.github.io/img/pic/20181201080640-install-go-protocol2.png)
 
 环境变量配置
 
-![](https://swordhell.github.io/img/pic/20181201080640-install-go-protocol3.png "")
+![](https://swordhell.github.io/img/pic/20181201080640-install-go-protocol3.png)
 
 
 # 定义protobuf
