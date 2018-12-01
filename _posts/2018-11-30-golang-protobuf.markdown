@@ -16,9 +16,9 @@ protobuf是比较好的一种序列化的工具，这里使用golang来试用一
 
 
 # 准备工具
-![图例]( "/img/pic/20181201080640-install-go-protocol1.png")
-![图例]( "/img/pic/20181201080640-install-go-protocol2.png")
-![图例]( "/img/pic/20181201080640-install-go-protocol3.png")
+![图例]( "https://swordhell.github.io/img/pic/20181201080640-install-go-protocol1.png")
+![图例]( "https://swordhell.github.io/img/pic/20181201080640-install-go-protocol2.png")
+![图例]( "https://swordhell.github.io/img/pic/20181201080640-install-go-protocol3.png")
 
 # 定义protobuf
 
