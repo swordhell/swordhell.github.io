@@ -1,0 +1,11 @@
+---
+layout: post
+title: "learn_getstart"
+subtitle: '程序结构'
+author: "Abel"
+header-style: text
+tags:
+  - golang
+---
+学习golang的入门的信息；本章只记录一下golang语言的历史。大量资料都来自于网上收集。
+---

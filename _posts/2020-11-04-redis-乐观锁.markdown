@@ -1,0 +1,84 @@
+---
+layout: post
+title: "redis-乐观锁"
+subtitle: '事务操作'
+author: "Abel"
+header-style: text
+tags:
+  - redis
+  - golang
+---
+在使用多服务器操作redis的时候，需要考虑到数据同步的问题；本文来记录一下redis里面事务的用法。
+---
+
+# 思路
+
+乐观锁每次操作的时候，都认为自己能拿到锁资源。所以吞吐量比较好。
+
+策略：提交版本必须大于记录当前版本才能执行更新。
+
+悲观锁是认为每次都需要拿数据时候，都会发生争抢。
+
+策略为每次都会阻塞方式拿到资源才开始做自己操作。
+
+乐观锁不会有阻塞，吞吐量比较大，编写难度也会简单。
+
+# Redis指令和实验
+
+|命令|意义|
+|:-----|:----|
+|WATCH key [key ...]|监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。|
+|MULTI|标记一个事务块的开始。事务块内的多条命令会按照先后顺序被放进一个队列当中，最后由 EXEC 命令原子性(atomic)地执行。|
+|EXEC|执行所有事务块内的命令。|
+
+通过指令来描述一次事务的操作：
+
+```bash
+# 监视 key ，且事务成功执行
+
+redis> WATCH lock lock_times
+OK
+
+redis> MULTI
+OK
+
+redis> SET lock "huangz"
+QUEUED
+
+redis> INCR lock_times
+QUEUED
+
+redis> EXEC
+1) OK
+2) (integer) 1
+
+
+# 监视 key ，且事务被打断
+
+redis> WATCH lock lock_times
+OK
+
+redis> MULTI
+OK
+
+redis> SET lock "joe"        # 就在这时，另一个客户端修改了 lock_times 的值
+QUEUED
+
+redis> INCR lock_times
+QUEUED
+
+redis> EXEC                  # 因为 lock_times 被修改， joe 的事务执行失败
+(nil)
+```
+
+上述例子是实现了，lock_times和操作lock中的内容时候，事务冲突之后，被打断的情况。
+
+# go语言测试
+
+
+
+
+# 参考
+- [1] [Redis 命令参考](http://doc.redisfans.com/)
+- [2] [Golang Redis库](https://github.com/gomodule/redigo)
+- [3] [Go语言如何使用redis](https://www.jianshu.com/p/62f0b9ce7584)

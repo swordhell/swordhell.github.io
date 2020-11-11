@@ -1,0 +1,152 @@
+参考golang手册，记录数据类型相关资料；方便日后来回顾基础知识。
+
+# Boolean
+
+布尔类型，表示真与假。true|false
+
+# Numeric
+
+数值类型，分为整形和浮点类型，下面列举的是类型，以及读数的区间。
+
+```go
+uint8       the set of all unsigned  8-bit integers (0 to 255)
+uint16      the set of all unsigned 16-bit integers (0 to 65535)
+uint32      the set of all unsigned 32-bit integers (0 to 4294967295)
+uint64      the set of all unsigned 64-bit integers (0 to 18446744073709551615)
+
+int8        the set of all signed  8-bit integers (-128 to 127)
+int16       the set of all signed 16-bit integers (-32768 to 32767)
+int32       the set of all signed 32-bit integers (-2147483648 to 2147483647)
+int64       the set of all signed 64-bit integers (-9223372036854775808 to 9223372036854775807)
+
+float32     the set of all IEEE-754 32-bit floating-point numbers
+float64     the set of all IEEE-754 64-bit floating-point numbers
+
+complex64   the set of all complex numbers with float32 real and imaginary parts
+complex128  the set of all complex numbers with float64 real and imaginary parts
+
+byte        alias for uint8
+rune        alias for int32 
+```
+
+整数类型按照字节数来分类，有8位、16位、32位、64位。每个数字的区间范围、内存空间都不一样。
+
+int，uint会按照cpu字节大小最终是32位或者64位。Unicode.rune和int32等价，byte和uint8等价。
+
+unsafe包里面提供的uintptr，不会规定内存的size，但是能容纳从c语言传递过来的内存指针。
+
+## 整数类型存在有符号和无符号。
+### 有符号
+最高位使用了反码方式来表示。拿8位来举例子。他的取值范围是(-128 to 127)
+
+-128= 二进制 1111 1111
+
+127= 二进制 0111 1111
+
+对有符号数字做位操作时，向右移将会自动补上符号位，向左移符号位不会受到影响。
+
+```go
+    var a int8
+    a = -1
+    fmt.Printf("%08b\n", a)
+    a = a >> 2
+    fmt.Printf("%08b\n", a)
+    a = a << 3
+    fmt.Printf("%08b\n", a)
+```
+
+```
+-0000001
+-0000001
+-0001000
+``
+
+这个特性需要注意，一般在操作位的时候，我们都偏向使用无符号的数字来处理。
+
+在处理循环的时候，最好推荐使用有符号的变量来处理。防止程序出现问题。
+
+### 无符号
+
+将会把全部的bit位当成数值来计算。在做位操作时，可以当成数组来理解。
+
+整数类型的运算优先级（行里面是级别相等，从上往下的列，级别是依次降低）：
+
+```go
+* / % << >> & &^
++ - | ^
+== != < <= > >=
+&&
+||
+```
+
+### 浮点类型
+
+提供了float32,float64两种。IEEE 754标准。
+
+所有极限值被定义在math包中。
+```go
+math.MaxFloat32
+math.MinInt8
+```
+
+float32 大约能理解成6个十进制的精度；float64能到15个十进制精度。
+
+### String
+string存储了一系列的bytes，string的字节数是就是字符串的长度，而且不可能为负数。当创建了字符串之后，将不会发生改变。可以使用内建函数len取得字符串的长度。可以通过下标方式取得字符串的数值。
+
+可以通过操作，可以直接分离出内容
+
+```golang
+str := "0123456"
+fmt.Println(str[0:3]) // 012
+fmt.Println(str[3:])  // 3456
+fmt.Println(str[:3])  // 012
+```
+
+不允许对字符串中间的内容做任何修改。
+```go
+.\main.go:24:9: cannot assign to str[2]
+```
+
+转移方式：
+
+\x11ff 十六进制
+\o1188 八进制
+
+原生字符串，一般用于制作正则表达式。使用反引号。
+```go
+const GoUsage=`Go is a tool for managing xxx
+xxx... `
+```
+
+unicode字符集，参考主页：http://unicode.org
+golang使用的是utf32或者UCS-4，每个码点占用32bit。
+utf-8
+ascii部分是使用1个byte，常用字使用2或3个字符来表示。
+解析的时候，读取高位来判断是采取几个字节（二进制）来加载。
+高位为0，就是ascii，使用1个byte
+0xxxxxxx
+高位为110，需要使用2个byte
+110xxxxx 10xxxxxx
+高位为1110，需要使用3个byte
+1110xxxx 10xxxxxx 10xxxxxx
+高位为11110，需要使用4个byte
+11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+这样能完全兼容ascii码，而且能支持字符的压缩。
+unicode/utf8包中，RuneCountInString能量出来utf8字符长度。
+
+string相关的包 bytes,strings,strconv,unicode
+
+strings包，主要提供查找、替换、比较、阶段、拆分和合并功能；
+bytes包，用于处理[]byte的库，类似于strings。由于string是不能修改的，所以一般加工字符串的时候，都通过转换成[]byte来做处理。
+
+string和[]byte的转换。
+
+```go
+bytes := []byte("I am byte array !")
+str := string(bytes)
+```
+strconv包，用于将布尔，整型，浮点与string之间做转换；
+unicode包，用于处理utf8相关操作。
+
+const
