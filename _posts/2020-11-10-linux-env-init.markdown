@@ -8,7 +8,7 @@ tags:
   - Linux
   - operate
 ---
-新安装一台Linux机器的时候，需要做到一些事情；
+记录一下Linux运维相关的学习资料；
 ---
 
 # Centos
@@ -46,6 +46,164 @@ source /opt/rh/llvm-toolset-7/enable
 source /opt/rh/devtoolset-7/enable
 ```
 
+## centos 7防火墙
+
+### 检查防火墙状态
+
+```bash
+firewall-cmd --list-all
+firewall-cmd --state
+```
+
+禁用随系统启动防火墙
+
+```
+systemctl disable firewalld
+```
+
+启用随系统启动防火墙
+
+```
+systemctl enable firewalld
+```
+
+关闭防火墙
+
+```
+systemctl stop firewalld
+```
+
+当前防火墙服务状态
+
+```
+systemctl status firewalld
+```
+
+永久开放防火墙端口
+
+```bash
+firewall-cmd --permanent --zone=public --add-port=52310-52320/tcp 
+sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent
+```
+
+重新加载防火墙规则
+
+```
+sudo firewall-cmd --reload
+```
+
+netcat 尝试端口连接
+
+使用tcp4方式连接一个ip地址的端口
+
+```
+nc -4 ip_address port
+nc --help
+See the ncat(1) manpage for full options, descriptions and usage examples
+man ncat
+Ncat 7.50 ( https://nmap.org/ncat )
+```
+
+在帮助文件里面可以获取更多的信息。
+
+```
+       Connect to example.org on TCP port 8080.
+           ncat example.org 8080
+
+       Listen for connections on TCP port 8080.
+           ncat -l 8080
+```
+
+检查端口情况
+
+```
+netstat -tnlp
+``
+
+检查当前
+
+# Linux系统设置
+
+locale设置
+
+```
+[root@vm10-0-2-2 raw_database]# locale
+LANG=en_US.UTF-8
+LC_CTYPE="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_PAPER="en_US.UTF-8"
+LC_NAME="en_US.UTF-8"
+LC_ADDRESS="en_US.UTF-8"
+LC_TELEPHONE="en_US.UTF-8"
+LC_MEASUREMENT="en_US.UTF-8"
+LC_IDENTIFICATION="en_US.UTF-8"
+LC_ALL=
+```
+
+如果发现有问题，可以通过在/etc/profile文件中添加
+
+```
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+```
+
+## 检查coredump的配置
+
+```
+cat /proc/sys/kernel/core_pattern
+```
+
+一般我们将coredump文件生成目录重定向到一个固定的地方：
+
+```
+mkdir -p /data/cores/
+chmod a+w /data/cores/ -R
+echo "/home/cores/core-%e-%p-%t" > /proc/sys/kernel/core_pattern
+```
+
+设置ulimit
+
+```
+ulimit -n 65535  
+ulimit -c unlimited
+```
+
+centos yum proxy
+
+```
+/etc/yum.conf
+proxy=http://代理服务器IP地址:端口号
+proxy=http://代理服务器IP地址:端口号
+proxy_username=代理服务器用户名
+proxy_password=代理服务器密码
+```
+
+centos安装python3.6
+
+softwarecollections.org
+
+```bash
+# 1. Install a package with repository for your system:
+# On CentOS, install package centos-release-scl available in CentOS repository
+# and enable the testing repository:
+$ sudo yum install centos-release-scl
+$ sudo yum-config-manager --enable centos-sclo-rh-testing
+
+# On RHEL, enable RHSCL and RHSCL-beta repositories for you system:
+$ sudo yum-config-manager --enable rhel-server-rhscl-7-rpms
+$ sudo yum-config-manager --enable rhel-server-rhscl-beta-7-rpms
+
+# 2. Install the collection:
+$ sudo yum install rh-python36
+
+# 3. Start using software collections:
+$ scl enable rh-python36 bash
+```
+
 # ubuntu
 
 ```bash
@@ -74,4 +232,43 @@ apt install libmysqlclient-dev
 apt install libcurl-dev
 apt install autoconf -y
 apt-get install manpages-dev glibc-doc
+```
+
+# mysql
+
+## 权限相关
+
+安装完成之后，需要做一些简单的处理，防止安全问题。mysql最后限制访问的ip地址，给指定的ip地址开放访问的独立的密码。
+
+```sql
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'ip_address' IDENTIFIED BY 'yourpassword' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+```
+
+使用这个命令将处理掉mysql的一些安全问题。
+
+```bash
+$ mysql_secure_installation
+```
+
+## 备份数据库
+
+将某个数据库导出，不需要导出数据
+
+```bash
+$ mysqldump --no-create-db=TRUE --no-data=TRUE -h"ip_address" -uroot -pyourpassword gamedb_10001 > gamedb_10001.sql
+```
+
+具体参数可以通过mysqldump --help中看到。
+
+直接创建数据库
+
+```bash
+mysql -h"ip_address" -uroot -pyourpassword -e "create database gamedb_30001"
+```
+
+将数据表创建到新库中
+
+```bash
+mysql -h"ip_address" -uroot -pyourpassword gamedb_30001 < gamedb_10001.sql
 ```
