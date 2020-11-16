@@ -1,0 +1,97 @@
+---
+layout: post
+title: "learn_git"
+subtitle: '学习git'
+author: "Abel"
+header-style: text
+tags:
+  - git
+---
+学习git的笔记，将记录一下git如何使用。之前常用svn，现在转过来的时候，有些东西需要熟悉。将会持续更新此文档。
+---
+
+## 安装
+
+### Linux 
+
+Ubuntu
+
+```
+$ apt-get install libcurl4-gnutls-dev libexpat1-dev gettext \
+  libz-dev libssl-dev
+
+$ apt-get install git
+
+$ git --version
+git version 1.8.1.2
+```
+
+Centos/RedHat
+
+```
+$ yum install curl-devel expat-devel gettext-devel \
+  openssl-devel zlib-devel
+
+$ yum -y install git-core
+
+$ git --version
+git version 1.7.1
+```
+
+## 工作流程
+
+### 概念：
+
+|名称               |说明                          |
+|:-----------------|:-----------------------------|
+|远程 Git 资源      |共享git版本的一个库              |
+|工作区             |本地编辑                        |
+|暂存区             |本地修改了之后，可以将修改提交到本地|
+|推送               |将本地的内容推送到远程Git资源服   |
+
+### 工作区操作
+
+> 查询状态
+
+```
+git status
+```
+
+### 远程操作
+
+#### 分支管理
+
+> 列出分支
+```bash
+abel@xiaozanbiao:~/new_project_server$ git branch -a
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/abel_learn
+  remotes/origin/develop_xcs
+  remotes/origin/master
+```
+> 切换分支
+```
+git checkout [branchname]
+```
+
+使用指令能查询逻辑
+
+git help checkout
+能
+
+
+> 删除分支
+```
+git branch -d [branchname]
+```
+
+> 合并分支
+```
+git merge [otherbranch]
+```
+
+## 参考
+- [1] [Git菜鸟教程](https://www.runoob.com/git/git-tutorial.html)
+- [2] [廖雪峰-Git教程](https://www.liaoxuefeng.com/wiki/896043488029600)
+
