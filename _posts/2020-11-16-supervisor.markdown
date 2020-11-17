@@ -7,6 +7,7 @@ header-style: text
 tags:
   - Linux
   - Python
+  - operate
 ---
 记录Supervisor的使用，可以让程序在Linux中跑在后台，并且能支持守护进程。
 ---
