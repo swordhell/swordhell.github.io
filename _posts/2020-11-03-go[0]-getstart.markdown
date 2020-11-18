@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "learn_getstart"
+title: "go[0]-入门"
 subtitle: '入门'
 author: "Abel"
 header-style: text

@@ -1,3 +1,13 @@
+---
+layout: post
+title: "go[4]-测试"
+subtitle: 'goroutine-channel'
+author: "Abel"
+header-style: text
+tags:
+  - Golang
+  - test
+---
 提高代码的质量，有两个路数：1.多测试；2.做代码review；如果能在代码放到外部去之前，做好单元测试，将会节省很多的时间（如果能把事情做好，减少很多处理bug的时间）。
 ### 单元测试（unit test）
 单元测试能自动化，只是手段，而非目的。避免形式主义。需要持之以恒。想要习惯去做测试还是需要将测试的手段非常熟练，而且易用才能解开。

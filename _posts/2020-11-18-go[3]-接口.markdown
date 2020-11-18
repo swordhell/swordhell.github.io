@@ -1,3 +1,14 @@
+---
+layout: post
+title: "go[3]-接口"
+subtitle: '熟悉golang的接口逻辑'
+author: "Abel"
+header-style: text
+tags:
+  - Golang
+  - interface
+---
+
 
 ### 概述
 接口是对类型行为的抽象和概括。接口抽象的方法可以让我们函数更加灵活和适应性。中间只定义了函数类型。接口就是约定。
