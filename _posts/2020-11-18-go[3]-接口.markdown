@@ -1,0 +1,55 @@
+
+### 概述
+接口是对类型行为的抽象和概括。接口抽象的方法可以让我们函数更加灵活和适应性。中间只定义了函数类型。接口就是约定。
+接口本事存储数据内容为：
+> type: xxx
+value: xxx
+
+定义实例
+```go
+type interfaceName interface {
+     Write([]byte)
+     Read([]byte)
+}
+```
+### 包含nil指针的接口不是nil接口
+```go
+func main() {
+ var buf *bytes.Buffer
+ f(buf)
+}
+func f(out io.Writer) {
+  if out != nil {
+     out.Write([]byte("done!\n"))
+ }
+}
+```
+虽然已经对out做了空的判断，但是依然会崩溃。原因是这个调用f函数的时候，给了一个空的*bytes.Buffer指针。所以接口本身不是空。
+### 类型断言
+x为一个interface，T为一个定义的类型。
+```go
+var w io.Writer
+w = os.Stdout
+f := w.(*os.File) // success
+e := w.(*bytes.Buffer) // panic
+```
+如果转换失败了，将会直接造成panic。如果断言操作的对象是一个nil接口，无论被断言成什么类型都会失败。
+使用两个返回值方式的，第二个参数将会返回是否转换成功。
+```go
+b,ok :=w.(*bytes.Buffer)
+```
+我们可以拿着ok变量来做逻辑。
+对于类型的switch case语句可以这样来编写
+```go
+func sqlQuote(x interface{}) string {
+    switch x:=x.(type) {
+    case nil:
+         return "NULL"
+    case int,uint:
+         return fmt.Sprintf("%d",x)
+   default:
+        panic(fmt.Sprintf("unexpected type: %T: %v",x,x))
+```
+### 一些建议
+设计一个新的包时，先创建一个接口的集合开始，后面定义满足它们具体的类型。每个接口都实现一个。请不要这么做，这种接口是不必要去抽象。只有两个或者以上的具体类型必须以相同的方法进行处理时候才需要。ask only for what you need.（奥卡姆剃刀）
+

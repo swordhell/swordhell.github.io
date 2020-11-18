@@ -9,3 +9,173 @@ tags:
 ---
 记录golang的程序结构相关知识。
 
+函数是对一系列语句打包的单元。
+### 函数定义
+func name(parameter-list)(result-list) {
+    body
+}
+能支持多返回值，或者无返回值。匿名函数是指的没有名字的函数。函数可以成为一个结构体字段，也能成为通道来传递。
+匿名函数是一种常见的重构手段。可以将大函数分解成多个相对独立的匿名函数块，这样主干部分的调用函数将会更加简洁，做到框架和细节分离。
+### 匿名函数
+```go
+func test(x int)func() {
+    return func() {
+        fmt.Println(x)
+    }
+}
+
+func main() {
+    f := test(123)
+    f()
+}
+```
+通过匿名函数将变量123缓存再函数中。最后调用的时候，可以很方便的将123输出。
+>警告：捕获迭代变量Go词法作用于陷阱。即使经验丰富程序员也会在这个问题上犯错误。
+
+```go
+var rmdirs []func()
+for _,d := range tempDirs() {
+    dir := d
+    os.MkdirAll(dir,0755)
+    rmdirs = append(rmdirs,func(){
+        os.RemoveAll(dir)
+    })
+}
+for _,rmdir := range(rmdirs{
+     rmdir()
+}
+```
+为啥要将d重新赋值成dir？原因就在循环变量中的作用域。如果直接使用d将会删除的相同的目录。这样的问题在使用defer语句也有相同问题。
+### 延迟调用
+defer语句是指注册一个函数，再稍后调用。一般用于资源释放，解锁，错误处理等操作。
+
+```go
+func main () {
+f,err :=os.Open("./main.go")
+if err !=nil {
+    fmt.Println("err)
+    return
+}
+defer f.close() // 提前注册释放
+// 文件读写
+}
+}
+```
+延时调用遵循FILO，堆栈式的调用。简单理解就是先进后出。
+错误的用法
+func main() {
+   for I := 0; I<1000000; I++ {
+        path := fmt.Sprintf("./log/%d.txt",i)
+        f, err := os.Open(path)
+        if err != nil {
+            fmt.Println(err)
+            continue
+        }
+        defer f.close() // 其实要等到这个循环全部做完，才会调用的
+        // 操作文件
+   }
+}
+这种情况，应该将操作文件的部分封装成小函数，避免再循环过程中，直接使用defer。
+性能方面，defer方式需要花掉比较大的代价。
+### 错误处理
+调侃go的人，说错误处理有些返祖。"stuck in 70's"。
+提供了error的接口。
+err := errors.New("division by zero")
+这样就能构造一个出来。有经验的程序员一般都会对错误做一些预计的处理。函数如果返回类型为error时候，都需要判断一下错误信息是否为空。
+### panic recover
+类似于exception/try/catch结构化异常。函数原型如下。
+```go
+func panic(v interface{})
+func recover() interface{}
+```
+他们是内置函数，不是语句。panic将会终端当前流程（如：数组访问越界、空指针引用），并且触发defer的调用。在延时调用中可以通过recover捕获其中的报错。
+```go
+func main() {
+    defer func() {
+       if err := recover(); err!=nil {
+          fmt.Println(err)
+      }
+    }
+}
+```
+recover必须在panic触发之后才能捕获到错误，而且只能在延时调用函数中才能工作。不能在函数内部直接使用。
+```go
+func catch() {
+      log.Println("catch:",recover())
+}
+func main() {
+      defer catch() // 捕获
+      defer log.Println(recover())// 失败
+      defer recover() // 失败
+      panic("i am dead")
+}
+```
+调试期间可以使用 runtime/debug.PrintStack。获取完整的堆栈信息。将会输出到标准错误日志中。
+```
+// PrintStack prints to standard error the stack trace returned by runtime.Stack.
+func PrintStack() {
+	os.Stderr.Write(Stack())
+}
+```
+使用panic的时候，建议是遇到了不可恢复、导致系统无法运行的错误，否则不要使用。服务器端口占用、文件无法打开、数据库未启动。这种错误超出了程序员的控制的。程序必须停止的情况。
+### 错误处理策略
+1.将错误信息上报给调用者，并且添加额外的上下文信息；错误信息最好能描述出问题的需要的参数；
+2.如果错误是偶发的，或者是不可预计问题导致。我们需要构造有限次数的重试机制，避免无限制的重试；
+3.出现错误之后，程序其实已经无法执行，那就需要将错误信息输出出来，并且将程序终止；避免出现更多的问题。比如数据库已经无法写入了，机器的硬盘已经无法写入文件内容了；
+4.错误不致命，只需要在错误级别日志中输出，然后继续执行程序；
+5.可以忽略掉一些无关紧要的错误。
+在Go中，函数被当作第一类型（first-class values），函数像其他值一样，拥有类型，可以传送，赋值给其他变量。函数值不能做比较，所以不能当成map的key。
+
+### 流程控制
+
+#### for statements
+查看文档：
+```golang
+// file:c:/go/doc/go_spec.html#For_statements
+
+// 根据条件循环
+for a < b {
+	a *= 2
+}
+// 用于做列表循环
+RangeClause = [ ExpressionList "=" | IdentifierList ":=" ] "range" Expression .
+
+```
+标准目录为src、bin、pkg三个目录。
+GOPATH可以指定几个目录，排在列表最前面的比当前工作空间优先级更高。go get默认会下载到第一个工作空间里面。备注：unix-like使用冒号分隔，windows使用;分割。
+GOROOT指定工具链和标准库的存放位置。
+
+### 导入包
+如果是系统级的包的导入
+```
+import "net/http"
+import osx "github.com/apple/osx/lib"
+import _ "github.com/qyuhen/test"
+import "../lib" // 相对路径引入
+```
+### 组织结构
+包由一个或多个保存在同一目录下的源文件组成。
+包名和目录名称并无关系，不要求保持一致，举个例子，leaf里面的go的库。目录名为go，但是里面的包使用的名称为g。不影响使用，在import的时候是写go,语句里面写g。
+```
+"github.com/name5566/leaf/go"
+d := g.New(10)
+```
+同一目录下的包名需要完全一致。下列有几个特殊的包名：
+> main ：可执行入口
+all: 标准库以及 GOPATH中能找到的所有包。
+std,cmd：标准库工具链
+documentations：存储文档信息、无法导入。
+
+#### 权限
+包内成员可以互相访问。只有大写字母的能被包外访问。当然也能通过unsafe.Pointer方式来反出数据并且调用。
+#### 初始化
+```
+func init() {
+} 
+```
+### 内部包
+将内部模块分离出来，单独包的形式维护。只能被父目录下的包访问，命名为internal目录下的包。
+
+#### 依赖管理
+ 主要是解决三方依赖库文件冲突问题。这个概念是和内部包刚好相反，vendor目录是提供给当前工作目录，通用的目录。
+注意：vendor比标准库有嫌隙更高。

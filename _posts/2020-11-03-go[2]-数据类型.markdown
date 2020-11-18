@@ -94,7 +94,7 @@ unsafe包里面提供的uintptr，不会规定内存的size，但是能容纳从
 
 ### 浮点类型
 
-提供了float32,float64两种。IEEE 754标准。
+提供了 float32 float64 两种。IEEE 754标准。
 
 所有极限值被定义在math包中。
 ```go
@@ -163,3 +163,115 @@ strconv包，用于将布尔，整型，浮点与string之间做转换；
 unicode包，用于处理utf8相关操作。
 
 const
+
+### 数组
+数组一般都是指定长度的某种类型 。由于长度无法变化，其实很少使用到。
+```go
+var a[3] int
+var b [3]int = [3]int{1, 2, 3} // 初始化
+c := [...]int{1, 2, 3}//简略方式
+r := [...]int {99:-1} // 初始化了100个元素，100号位置写-1，其他全部都写0
+```
+数组能直接做==的检测判断。
+在调用函数的时候，将会赋值给函数的内部变量，如果参数使用了数组，将会存在内存拷贝。如果传递大的数组，将会有性能消耗。而且在修改数组内容时，也是在复制的数组中修改。如果想减少消耗，并且支持同步修改，还是需要使用数组指针方式来传递。
+### slice
+切片是可变长的数组。每个元素都是相同类型。它包含了指针、长度和容量。指针是指向自己持有的slice的第一个元素，不一定是真实的数组中的第一个。长度，就是当前slice的长度。容积是全部长度。slice可以通过切片方法，分离出子串。其实本质上，他们还是指向同一个数组的。只是由于他们的指针位置不同，而体现出来不一样。
+切片的方法 a[n:m]将会取出[n,m)之间的元素出来，产生新的slice。如果n没有填写，默认意思是0，m没有填写，默认就是切片的长度。所以a[:]获取全部内容。
+使用make来创建一个slice:
+make([]T,len,[cap])
+append函数为slice追加内容。如果cap足够，那就直接添加到尾部，否则将重新创数组，将老数组copy进去，将新的内容添加到数组尾部。append都是返回一个新的数组出来，而不会去直接修改老数组。
+slice类似这样的数据结构：
+```go
+type IntSlice struct {
+    ptr *int
+    len,cap int 
+}
+```
+在使用slice的时候，需要注意底层存在一个数组。如果能复用，将会大大的提高运行效率。
+删除最后一元素
+stack = stack[:len(stack)-1]
+获取栈顶元素
+top := stack[len(stack)-1]
+删除其中一个元素
+```go
+func remove(slice []int, i int) []int {
+    copy(slice[i:],slice[i+1:])
+    return slice[:len(slice)-1]
+}
+```
+需要做一次内存拷贝。如果不在乎顺序，可以直接将最后位置的元素，直接赋值掉指定位置的元素，删除slice最后的元素。
+在stackoverflow里面的建议是直接使用连接两个拆分的slice，这样反而会比较高效。
+[原文地址](https://stackoverflow.com/questions/37334119/how-to-delete-an-element-from-a-slice-in-golang)
+```go
+func remove(slice []int, s int) []int {
+    return append(slice[:s], slice[s+1:]...)
+}
+```
+### map
+key/value方式无序的集合。golang中的map其实就是哈希表。其中key的类型需要支持==比较运算符。浮点型最好不好当成key。
+创建map的方法
+ages :=make(map[string]int)
+ages := map[string]int {
+    "alice" : 31,
+    "Charlie" : 34,
+}
+map的元素可以通过key下标来访问
+ages["alice"]=32
+fmt.Println(ages["alice"])
+通过delete对map中的元素删除
+delete(ages,"alice")
+也能直接对不存在的元素直接做操作
+ages["bob"] = ages["bob"]+1
+系统会自动初始化key为bob的元素并且返回0
+map中的元素不是变量，所以无法取得地址。原因也是由于随着元素的删减，可能内存空间有放大，或者缩小。所以取得的内存地址可能失效。
+循环方式是
+for name,age := range ages {
+    fmt.Printf("%s\t%d\n",name,age)
+}
+由于是hash所以遍历的顺序是不固定的。map变量定义出来之后都是nil值。可以通过make语句来创建初始化。
+如需要检查一个元素是否有初始化，可以通过
+age, ok := ages["bob"]
+if !ok {
+  // 不存在元素。
+}
+map容器不能直接做比较操作。
+go语言没有提供set类型，可以使用map来代替。
+
+### 结构体
+结构体里面可以定义0-n个成员。
+type T struct {
+    a,b int
+}
+val := &T{a:1,b:2}
+如果函数需要修改结构体内容，出于对效率的考虑，一般都是使用结构体的引用作为参数来传递。
+结构体的嵌套
+type Point struct {
+    X,Y int
+}
+type Circle struct {
+    Center Point
+    Radius int
+}
+type Wheel struct {
+    Circle Circle
+    Spokes int    // 辐条
+}
+var w Wheel
+w.Circle.Center.X = 8
+...
+go语言中能再struct中定义匿名的成员，这样就直接将其他的struct直接嵌入到了自己的结构体
+type Circle struct {
+    Point
+    Radius int
+}
+type Wheel struct {
+    Circle
+    Spokes int
+}
+var w Wheel
+w.X = 9
+...
+struct可以通过
+fmt.Printf("%#v\n",w)
+输出信息。
+
