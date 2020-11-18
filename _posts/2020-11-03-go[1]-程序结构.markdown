@@ -8,4 +8,4 @@ tags:
   - golang
 ---
 记录golang的程序结构相关知识。
----
+

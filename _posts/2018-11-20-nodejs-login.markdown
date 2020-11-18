@@ -10,9 +10,8 @@ tags:
   - express
   - mysql operate
 ---
-收集一些node.js常用的一些技术。
 
----
+收集一些node.js常用的一些技术。
 
 - [1. 初始化express做http服务器](#1-%E5%88%9D%E5%A7%8B%E5%8C%96express%E5%81%9Ahttp%E6%9C%8D%E5%8A%A1%E5%99%A8)
 - [2. 提供一个post处理函数](#2-%E6%8F%90%E4%BE%9B%E4%B8%80%E4%B8%AApost%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0)

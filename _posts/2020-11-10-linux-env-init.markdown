@@ -9,7 +9,6 @@ tags:
   - operate
 ---
 记录一下Linux运维相关的学习资料；
----
 
 # Centos
 

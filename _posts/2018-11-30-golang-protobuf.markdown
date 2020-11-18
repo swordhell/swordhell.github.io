@@ -8,12 +8,10 @@ tags:
   - protobuf
   - golang
 ---
-protobuf是比较好的一种序列化的工具，这里使用golang来试用一下protobuf
----
 
+protobuf是比较好的一种序列化的工具，这里使用golang来试用一下protobuf
 
  [protobuf模块](https://github.com/golang/protobuf)  [参考文档](https://developers.google.com/protocol-buffers/docs/gotutorial) 
-
 
 # 准备工具
 安装命令

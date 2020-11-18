@@ -9,7 +9,6 @@ tags:
   - nginx
 ---
 学习docker
----
 
 ##### 简介
 docker是为了简化外网服务器软件环境部署的工作。现在初浅的理解是，可以在linux机器上通过docker单独安装mysql,nginx,应用程序的也可以跑在一个docker之上。
