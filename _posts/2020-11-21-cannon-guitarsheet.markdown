@@ -5,7 +5,7 @@ subtitle: '卡农吉他谱'
 author: "Abel"
 header-style: text
 tags:
-  - guiter
+  - guitar
 ---
 
 卡农吉他谱：
