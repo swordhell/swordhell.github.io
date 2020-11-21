@@ -5,7 +5,7 @@ subtitle: '熟悉golang的接口逻辑'
 author: "Abel"
 header-style: text
 tags:
-  - Golang
+  - golang
   - interface
 ---
 

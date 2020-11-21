@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "FSM-Golang"
+title: "FSM-golang"
 subtitle: '使用golang实现一个简单的状态机'
 author: "Abel"
 header-style: text
 tags:
-  - Golang
+  - golang
   - Game
 ---
 

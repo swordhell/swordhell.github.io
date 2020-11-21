@@ -5,7 +5,7 @@ subtitle: 'goroutine-channel'
 author: "Abel"
 header-style: text
 tags:
-  - Golang
+  - golang
   - goroutine
 ---
 ### 概念

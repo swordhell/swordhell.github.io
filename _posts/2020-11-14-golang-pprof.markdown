@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Golang-pprof性能分析工具"
+title: "golang-pprof性能分析工具"
 subtitle: 'pprof'
 author: "Abel"
 header-style: text
