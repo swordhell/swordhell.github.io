@@ -124,15 +124,10 @@ func main() {
 
 状态机本身只关心状态切换，他自己不关心这个事件生成；
 
-```mermaid
-graph LR
-    fa:fa-check-->fa:fa-coffee
-```
-
-
 # 参考
 - [1] [状态机概念](http://wiki.cnki.com.cn/HotWord/88305.htm)
 - [2] [状态机思路在单片机程序设计中的应用](http://www.elecfans.com/emb/danpianji/2009020923861.html)
 - [3] [looplab/fsm有限状态机实现](https://github.com/looplab/fsm)
 - [4] [smallnest/gofsm有限状态机实现](https://github.com/smallnest/gofsm)
 - [4] [人工智能开发-决策方法](https://www.cnblogs.com/sevenyuan/p/5276320.html)
+- [5] [erlang版本状态机](https://www.cnblogs.com/puputu/articles/1701012.html)

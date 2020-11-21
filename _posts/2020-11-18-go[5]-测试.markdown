@@ -8,15 +8,24 @@ tags:
   - Golang
   - test
 ---
+
 提高代码的质量，有两个路数：1.多测试；2.做代码review；如果能在代码放到外部去之前，做好单元测试，将会节省很多的时间（如果能把事情做好，减少很多处理bug的时间）。
+
 ### 单元测试（unit test）
 单元测试能自动化，只是手段，而非目的。避免形式主义。需要持之以恒。想要习惯去做测试还是需要将测试的手段非常熟练，而且易用才能解开。
+
 编写单元测试是对即将实现的算法做复核预演。
+
 测试代码需要在当前包以_test.go结束的文件。
+
 测试函数以Test为名字前缀。
+
 测试命令go test忽略_,.开头的测试文件。
+
 正常编译的时候，会忽略掉测试文件。
+
 main_test.go
+
 ```go
 package main
 import(
@@ -31,7 +40,9 @@ func TestAdd(t *testing.T){
     }
 }
 ```
+
 $go test -v
+
 ```
 [cq@localhost test_case]$ go test -v
 === RUN   TestAdd
@@ -39,30 +50,31 @@ $go test -v
 PASS
 ok  	test_case	0.002s
 ```
+
 遍历子包测试用例。
+
 testing.T提供的函数
 
----
-|  方法   | 说明  | 相关|
-|  ----  | ----| ----  |
-| Fail  | 失败：继续执行当前测试用例| |
-| FailNow  | 失败：终止当前测试| Failed|
-| SkipNow  | 跳过：停止执行当前测试函数| Skip,Skipf,Skipped|
-|Log  | 输出日志，仅在失败或者-v时候输出| Logf|
-|Parallel  | 与有相同设置的测试函数并行执行（一般会设置两个以上测试用例，否则就无用了） | |
-| Error | Fail+Log | Errorf |
-| Fatal | FailNow+Log | Fatalf |
+| 方法     | 说明                                                                       | 相关               |
+| -------- | -------------------------------------------------------------------------- | ------------------ |
+| Fail     | 失败：继续执行当前测试用例                                                 |                    |
+| FailNow  | 失败：终止当前测试                                                         | Failed             |
+| SkipNow  | 跳过：停止执行当前测试函数                                                 | Skip,Skipf,Skipped |
+| Log      | 输出日志，仅在失败或者-v时候输出                                           | Logf               |
+| Parallel | 与有相同设置的测试函数并行执行（一般会设置两个以上测试用例，否则就无用了） |                    |
+| Error    | Fail+Log                                                                   | Errorf             |
+| Fatal    | FailNow+Log                                                                | Fatalf             |
 测试命令常用的参数列表
 
 ---
-|  参数 | 说明  | 实例 |
-|  ----  | ----| ----  |
-|-args |命令行参数 | |
-|-v|输出详细信息verbose | |
-|-parallel | 并行执行多个测试用例 ||
-|-run | 运行指定测试用例，能支持正则表达式 ||
-|-timeout|全部测试超时将会调用panic默认10ms | -timeout 1m30s |
-| -count | 重复测试次数 | |
+| 参数      | 说明                               | 实例           |
+| --------- | ---------------------------------- | -------------- |
+| -args     | 命令行参数                         |                |
+| -v        | 输出详细信息verbose                |                |
+| -parallel | 并行执行多个测试用例               |                |
+| -run      | 运行指定测试用例，能支持正则表达式 |                |
+| -timeout  | 全部测试超时将会调用panic默认10ms  | -timeout 1m30s |
+| -count    | 重复测试次数                       |                |
 
 #### table driven
 使用table将测试参数都准备好，然后推进测试。测试数据和测试逻辑分离，有利于维护。
@@ -99,4 +111,5 @@ func BenchmarkAdd(b *testing.B) {
 }
 go test -bench
 ```
+
 希望忽略掉全部的单元测试，可以使用run=NONE。默认就是并发测试，可以通过-cpu参数设定多个并发限制。
