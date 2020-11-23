@@ -41,9 +41,9 @@ func TestAdd(t *testing.T){
 }
 ```
 
-$go test -v
 
-```
+```bash
+$go test -v
 [cq@localhost test_case]$ go test -v
 === RUN   TestAdd
 --- PASS: TestAdd (0.00s)
@@ -64,9 +64,9 @@ testing.T提供的函数
 | Parallel | 与有相同设置的测试函数并行执行（一般会设置两个以上测试用例，否则就无用了） |                    |
 | Error    | Fail+Log                                                                   | Errorf             |
 | Fatal    | FailNow+Log                                                                | Fatalf             |
+
 测试命令常用的参数列表
 
----
 | 参数      | 说明                               | 实例           |
 | --------- | ---------------------------------- | -------------- |
 | -args     | 命令行参数                         |                |
@@ -77,10 +77,13 @@ testing.T提供的函数
 | -count    | 重复测试次数                       |                |
 
 #### table driven
+
 使用table将测试参数都准备好，然后推进测试。测试数据和测试逻辑分离，有利于维护。
 
 #### test main
+
 如果定义了TestMain函数，go test将会执行这个函数，而不是每个具体的测试用例，这样就能把测试的setup/teardown机制用起来。比如测试一些db操作，需要先构造一个db的链接之类的，就可以使用这种模式。
+
 ```go
 func TestMain(m *testing.M) {
     code :=m.Run()
@@ -99,7 +102,9 @@ func ExampleAdd() {
 }
 ```
 ### 性能测试
+
 文件名也是使用的 _test.go结束的。函数名称需要使用Benchmark为前缀 
+
 ```go
 func add(x,y int) int {
     return x+y
