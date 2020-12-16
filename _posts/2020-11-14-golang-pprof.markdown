@@ -91,6 +91,11 @@ go tool pprof YZSvr.exe YZSvr.prof
 可以通过修改环境变量直接修改程序里面的线程数目；
 export GOMAXPROCS=30
 
+
+```
+pprof.WriteHeapProfile
+```
+
 ##### 引用
 - [火焰图工具网站](https://github.com/uber-archive/go-torch)
 - [Golang性能测试工具PProf应用详解](https://zhuanlan.zhihu.com/p/51559344)

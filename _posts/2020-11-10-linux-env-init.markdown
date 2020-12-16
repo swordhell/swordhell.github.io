@@ -215,7 +215,7 @@ sudo apt install p7zip-full -y
 sudo apt install -y "screen"
 sudo apt install clang-format -y
 sudo apt-get install gcc-7 g++-7 -y
-sudo apt-get install clang cmake unzip screen clang-format mariadb-server unzip golang python3-pip -y
+sudo apt-get install clang cmake unzip screen clang-format mariadb-server unzip golang python3-pip automake -y
 sudo apt-get install git libmariadbclient-dev p7zip-full openssl -y
 sudo apt-get install nodejs -y
 sudo apt-get install gdb -y
@@ -226,11 +226,19 @@ sudo apt upgrade
 sudo apt install build-essential -y
 sudo apt install ccache
 sudo apt install dos2unix
-apt -y install mariadb-server mariadb-client
+apt -y install mariadb-server mariadb-client libmysqlclient-dev
 apt install libmysqlclient-dev
 apt install libcurl-dev
 apt install autoconf -y
 apt-get install manpages-dev glibc-doc
+
+# screen 无法使用的问题，其实就是重定向一下 screen 的工作目录就好了
+Cannot make directory '/run/screen': Permission denied
+export SCREENDIR=$HOME/.screen
+abel@xiaozanbiao:~/learn/c++/octopus_svr/octopus_svr/build$ screen -S abel
+Directory /home/abel/.screen must have mode 700.
+abel@xiaozanbiao:~/learn/c++/octopus_svr/octopus_svr/build$ chmod 700 ~/.screen/
+abel@xiaozanbiao:~/learn/c++/octopus_svr/octopus_svr/build$ screen -S abel
 ```
 
 # mysql
