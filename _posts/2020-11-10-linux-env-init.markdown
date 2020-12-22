@@ -230,7 +230,9 @@ apt -y install mariadb-server mariadb-client libmysqlclient-dev
 apt install libmysqlclient-dev
 apt install libcurl-dev
 apt install autoconf -y
-apt-get install manpages-dev glibc-doc
+apt-get install manpages-dev glibc-doc libstdc++-10-doc
+
+# libstdc++-10-doc This package contains documentation files for the GNU stdc++ library.
 
 # screen 无法使用的问题，其实就是重定向一下 screen 的工作目录就好了
 Cannot make directory '/run/screen': Permission denied
@@ -239,6 +241,18 @@ abel@xiaozanbiao:~/learn/c++/octopus_svr/octopus_svr/build$ screen -S abel
 Directory /home/abel/.screen must have mode 700.
 abel@xiaozanbiao:~/learn/c++/octopus_svr/octopus_svr/build$ chmod 700 ~/.screen/
 abel@xiaozanbiao:~/learn/c++/octopus_svr/octopus_svr/build$ screen -S abel
+
+# 2020/12/18 添加一个命令，记录当前某个进程的cpu，内存情况；
+sudo apt install sysstat
+
+#!/bin/bash
+prog_name="your_programe_name"
+prog_mem=$(pidstat  -r -u -h -C $prog_name |awk 'NR==4{print $12}')
+time=$(date "+%Y-%m-%d %H:%M:%S")
+echo $time"\tmemory(Byte)\t"$prog_mem >>~/record/prog_mem.log
+
+抓取某个进程的内存使用情况；
+
 ```
 
 # mysql
