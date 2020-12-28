@@ -188,6 +188,119 @@ RecastDemo的效果图：
 
 [![rrHcQ0.png](https://s3.ax1x.com/2020/12/22/rrHcQ0.png)](https://imgchr.com/i/rrHcQ0)
 
+# 3.Recast 导航网格类型
+
+recastnavigation中提供了3种模式的导航网格：
+
+## 3.1.SoloMesh
+
+其中SoloMesh模式是静态的导航网格，即对场景build一次之后，将导航网格缓存起来供寻路使用，后续不再允许场景的地形发生变化
+
+文件头：
+
+```cpp
+static const int NAVMESHSET_MAGIC = 'M'<<24 | 'S'<<16 | 'E'<<8 | 'T'; //'MSET';
+struct NavMeshSetHeader
+{
+	uint32_t magic;
+	uint32_t version;
+	uint32_t numTiles;
+	dtNavMeshParams params;
+};
+	// Store header.
+	NavMeshSetHeader header;
+	header.magic = NAVMESHSET_MAGIC;
+	header.version = NAVMESHSET_VERSION;
+	header.numTiles = 0;
+
+```
+
+## 3.2.TileMesh
+
+TileMesh也是静态的导航网格，只是与SoloMesh相比它按tile来处理地图，算是介于SoloMesh和TempObstacles之间的一种模式
+
+```cpp
+// 文件名：all_tiles_navmesh.bin
+// 文件头： TESM
+static const int NAVMESHSET_MAGIC = 'M'<<24 | 'S'<<16 | 'E'<<8 | 'T'; //'MSET';
+
+// 加载文件失败：
+dtStatus addTileStatus = m_tileCache->addTile(data, tileHeader.dataSize, DT_COMPRESSEDTILE_FREE_DATA, &tile);
+inline bool dtStatusFailed(dtStatus status)
+static const unsigned int DT_FAILURE = 1u << 31;			// Operation failed.
+static const unsigned int DT_WRONG_MAGIC = 1 << 0;		// Input data is not recognized.
+	if (header->magic != DT_TILECACHE_MAGIC)
+		return DT_FAILURE | DT_WRONG_MAGIC;
+
+static const int DT_TILECACHE_MAGIC = 'D'<<24 | 'T'<<16 | 'L'<<8 | 'R'; ///< 'DTLR';
+
+
+Sample::saveAll("all_tiles_navmesh.bin", m_navMesh);
+
+
+```
+
+## 3.3.TempObstacles
+
+TempObstacles模式可以支持向场景中动态添加或移除预设形状的阻挡物，导航网格也会随之更新（不过只支持添加阻挡物，而不支持添加新的可行走区域）在处理动态阻挡时，由于单个阻挡对地图的影响区域是有限的，所以会采用将地图切割成多个固定大小的tile，以tile为单位进行网格的生成。这样在添加或移除阻挡时，只需要处理与阻挡相交的tile，而不需要处理整个地图
+
+```cpp
+static const int TILECACHESET_MAGIC = 'T' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'TSET';
+```
+
+[参考NavMeshDemo源码](https://github.com/ZLSYMDJ/NavMeshDemo)
+
+## 3.4.导出Mesh的源码分析
+
+参考官方的代码-RecastDemo部分，在右边的上部，"Sample"中下拉菜单中选择的三类(Solo Mesh、Tile Mesh、Temp Obstacles)导出方式都看明白。
+
+3种导出方式：
+
+```cpp
+Sample* createSolo() { return new Sample_SoloMesh(); }
+Sample* createTile() { return new Sample_TileMesh(); }
+Sample* createTempObstacle() { return new Sample_TempObstacles(); }
+```
+
+"Build"按钮将会调用
+
+
+```cpp
+				if (imguiButton("Build"))
+				{
+					ctx.resetLog();
+					if (!sample->handleBuild())
+					{
+						showLog = true;
+						logScroll = 0;
+					}
+					ctx.dumpLog("Build log %s:", meshName.c_str());
+					
+					// Clear test.
+					delete test;
+					test = 0;
+				}
+```
+
+"Save"按钮将会把生成的网格存储到
+
+|类型|文件|大小|
+|:---|:---|:---|
+|Solo|solo_navmesh.bin||240kb|
+|Tile| all_tiles_navmesh.bin|479kb|
+|TempObstacle|all_tiles_tilecache.bin|479kb|
+
+
+# 4.包围盒分类
+
+## 4.1.AABB
+
+AABB算法的全称是 - axis aligned bounding box (轴对齐-边界盒)AABB 包围盒是与坐标轴对齐的包围盒, 简单性好, 紧密性较差。
+
+## 4.2.OBB
+
+OBB 包围盒: OBB 碰撞检測方法紧密性是较好的, 可以大大降低參与相交測试的包围盒的数目, 因此整体性能要优于AABB 和包围球, 而且实时性程度较高。
+
 # 参考
 - [1] [recastnavigation](https://github.com/recastnavigation/recastnavigation)
 - [2] [premake](https://premake.github.io/download.html#v5)
@@ -197,3 +310,5 @@ RecastDemo的效果图：
 - [6] [recastNavigation读书笔记1](https://blog.csdn.net/weixin_34132768/article/details/93762363)
 - [7] [CritterAI](http://critterai.org/projects/nmgen_study/overview.html)
 - [8] [B站讲解RecastDemo如何使用](https://www.bilibili.com/video/BV1uK4y1E7CV?from=search&seid=8637375892047322871)
+- [9] [从零开始学习导航网格](https://www.jianshu.com/p/64469a410b5d)
+- [10] [AABB&OBB包围盒](https://www.cnblogs.com/mfrbuaa/p/4073880.html)

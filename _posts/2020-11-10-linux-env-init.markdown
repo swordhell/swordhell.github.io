@@ -253,6 +253,29 @@ echo $time"\tmemory(Byte)\t"$prog_mem >>~/record/prog_mem.log
 
 抓取某个进程的内存使用情况；
 
+pidstat -r -u -h -C Level 2 5
+
+每2秒钟检测一次，持续5秒
+
+CentOS7 如何升级Git
+
+启用Wandisco GIT存储库，在此之前我们先写入新yum存储库配置文件，在终端输入：
+vim /etc/yum.repos.d/wandisco-git.repo
+
+[wandisco-git]
+name=Wandisco GIT Repository
+baseurl=http://opensource.wandisco.com/centos/7/git/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
+
+导入存储库GPG密钥
+rpm --import http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
+
+安装：
+yum install git
+
+
 ```
 
 # mysql
@@ -293,3 +316,7 @@ mysql -h"ip_address" -uroot -pyourpassword -e "create database gamedb_30001"
 ```bash
 mysql -h"ip_address" -uroot -pyourpassword gamedb_30001 < gamedb_10001.sql
 ```
+
+# 引用
+
+- [1] [CentOS7 如何升级Git](https://www.cnblogs.com/mrbug/p/12030777.html)
