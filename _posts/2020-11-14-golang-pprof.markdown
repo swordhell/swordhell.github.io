@@ -11,6 +11,11 @@ tags:
 
 编写好了golang服务之后，接着要开始关注服务的CPU，内存使用情况。golang提供了性能剖析工具，记录一些自己搜集到的信息，写下一些实践的情况。在golang中内置了pprof工具，专门来做golang语言的优化。
 
+- [1.安装环境](#1安装环境)
+- [2.性能监控代码](#2性能监控代码)
+- [3.CPU性能查看](#3cpu性能查看)
+- [3.引用](#3引用)
+
 # 1.安装环境
 
 ```bash
@@ -102,9 +107,9 @@ Serving web UI on http://localhost:8989
 
 # 3.引用
 
-- 1. [火焰图工具网站](https://github.com/uber-archive/go-torch)
-- 2. [Golang性能测试工具PProf应用详解](https://zhuanlan.zhihu.com/p/51559344)
-- 3. [深度解密go语言之pprof](https://zhuanlan.zhihu.com/p/91241270)
-- 4. [graphviz官网](http://graphviz.org/)
-- 5. [Go 大杀器之性能剖析 PProf](https://www.bookstack.cn/read/eddycjy-go/tools-go-tool-pprof.md)
-- 6. [qcachegrindwin下载地址](https://sourceforge.net/projects/qcachegrindwin/)
+- [1] [火焰图工具网站](https://github.com/uber-archive/go-torch)
+- [2] [Golang性能测试工具PProf应用详解](https://zhuanlan.zhihu.com/p/51559344)
+- [3] [深度解密go语言之pprof](https://zhuanlan.zhihu.com/p/91241270)
+- [4] [graphviz官网](http://graphviz.org/)
+- [5] [Go 大杀器之性能剖析 PProf](https://www.bookstack.cn/read/eddycjy-go/tools-go-tool-pprof.md)
+- [6] [qcachegrindwin下载地址](https://sourceforge.net/projects/qcachegrindwin/)
