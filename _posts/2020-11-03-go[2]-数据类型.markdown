@@ -8,18 +8,29 @@ tags:
   - golang
   - type
 ---
-@[TOC](数据结构)
 
 参考golang手册，记录数据类型相关资料；方便日后来回顾基础知识。
 
+- [1. 基本数据](#1-基本数据)
+  - [1. 布尔](#1-布尔)
+  - [2. 整型/浮点数](#2-整型浮点数)
+    - [1 整数](#1-整数)
+    - [2 浮点类型](#2-浮点类型)
+  - [3. String](#3-string)
+  - [4. const](#4-const)
+- [2. 复合数据类型](#2-复合数据类型)
+  - [1. 数组](#1-数组)
+  - [2. slice](#2-slice)
+  - [3. map](#3-map)
+  - [4. 结构体](#4-结构体)
+
 # 1. 基本数据
-## 1.1. 布尔
+
+## 1. 布尔
 
 布尔类型，表示真与假。true|false
 
-
-
-## 1.2. 整型/浮点数
+## 2. 整型/浮点数
 
 数值类型，分为整形和浮点类型，下面列举的是类型，以及读数的区间。
 
@@ -50,7 +61,8 @@ int，uint会按照cpu字节大小最终是32位或者64位。Unicode.rune和int
 
 unsafe包里面提供的uintptr，不会规定内存的size，但是能容纳从c语言传递过来的内存指针。
 
-### 1.2.1 整数
+### 1 整数
+
 最高位使用了反码方式来表示。拿8位来举例子。他的取值范围是(-128 to 127)
 
 -128= 二进制 1111 1111
@@ -69,7 +81,7 @@ unsafe包里面提供的uintptr，不会规定内存的size，但是能容纳从
     fmt.Printf("%08b\n", a)
 ```
 
-```
+```bash
 -0000001
 -0000001
 -0001000
@@ -93,11 +105,12 @@ unsafe包里面提供的uintptr，不会规定内存的size，但是能容纳从
 ||
 ```
 
-### 1.2.2 浮点类型
+### 2 浮点类型
 
 提供了 float32 float64 两种。IEEE 754标准。
 
 所有极限值被定义在math包中。
+
 ```go
 math.MaxFloat32
 math.MinInt8
@@ -105,7 +118,8 @@ math.MinInt8
 
 float32 大约能理解成6个十进制的精度；float64能到15个十进制精度。
 
-## 1.3. String
+## 3. String
+
 string存储了一系列的bytes，string的字节数是就是字符串的长度，而且不可能为负数。当创建了字符串之后，将不会发生改变。可以使用内建函数len取得字符串的长度。可以通过下标方式取得字符串的数值。
 
 可以通过操作，可以直接分离出内容
@@ -118,6 +132,7 @@ fmt.Println(str[:3])  // 012
 ```
 
 不允许对字符串中间的内容做任何修改。
+
 ```go
 .\main.go:24:9: cannot assign to str[2]
 ```
@@ -128,30 +143,46 @@ fmt.Println(str[:3])  // 012
 \o1188 八进制
 
 原生字符串，一般用于制作正则表达式。使用反引号。
+
 ```go
 const GoUsage=`Go is a tool for managing xxx
 xxx... `
 ```
 
 unicode字符集，参考主页：http://unicode.org
+
 golang使用的是utf32或者UCS-4，每个码点占用32bit。
+
 utf-8
+
 ascii部分是使用1个byte，常用字使用2或3个字符来表示。
+
 解析的时候，读取高位来判断是采取几个字节（二进制）来加载。
+
 高位为0，就是ascii，使用1个byte
+
 0xxxxxxx
+
 高位为110，需要使用2个byte
+
 110xxxxx 10xxxxxx
+
 高位为1110，需要使用3个byte
+
 1110xxxx 10xxxxxx 10xxxxxx
+
 高位为11110，需要使用4个byte
+
 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+
 这样能完全兼容ascii码，而且能支持字符的压缩。
+
 unicode/utf8包中，RuneCountInString能量出来utf8字符长度。
 
 string相关的包 bytes,strings,strconv,unicode
 
 strings包，主要提供查找、替换、比较、阶段、拆分和合并功能；
+
 bytes包，用于处理[]byte的库，类似于strings。由于string是不能修改的，所以一般加工字符串的时候，都通过转换成[]byte来做处理。
 
 string和[]byte的转换。
@@ -160,10 +191,11 @@ string和[]byte的转换。
 bytes := []byte("I am byte array !")
 str := string(bytes)
 ```
+
 strconv包，用于将布尔，整型，浮点与string之间做转换；
 unicode包，用于处理utf8相关操作。
 
-## 1.4. const
+## 4. const
 
 测试实例
 
@@ -219,52 +251,86 @@ func TestBitiota(t *testing.T) {
 ```
 
 # 2. 复合数据类型
-### 2.1. 数组
+
+## 1. 数组
+
 数组一般都是指定长度的某种类型 。由于长度无法变化，其实很少使用到。
+
 ```go
 var a[3] int
 var b [3]int = [3]int{1, 2, 3} // 初始化
 c := [...]int{1, 2, 3}//简略方式
 r := [...]int {99:-1} // 初始化了100个元素，100号位置写-1，其他全部都写0
 ```
+
 数组能直接做==的检测判断。
+
 在调用函数的时候，将会赋值给函数的内部变量，如果参数使用了数组，将会存在内存拷贝。如果传递大的数组，将会有性能消耗。而且在修改数组内容时，也是在复制的数组中修改。如果想减少消耗，并且支持同步修改，还是需要使用数组指针方式来传递。
-### 2.2. slice
+
+## 2. slice
+
 切片是可变长的数组。每个元素都是相同类型。它包含了指针、长度和容量。指针是指向自己持有的slice的第一个元素，不一定是真实的数组中的第一个。长度，就是当前slice的长度。容积是全部长度。slice可以通过切片方法，分离出子串。其实本质上，他们还是指向同一个数组的。只是由于他们的指针位置不同，而体现出来不一样。
+
 切片的方法 a[n:m]将会取出[n,m)之间的元素出来，产生新的slice。如果n没有填写，默认意思是0，m没有填写，默认就是切片的长度。所以a[:]获取全部内容。
+
 使用make来创建一个slice:
+
+```go
 make([]T,len,[cap])
+```
+
 append函数为slice追加内容。如果cap足够，那就直接添加到尾部，否则将重新创数组，将老数组copy进去，将新的内容添加到数组尾部。append都是返回一个新的数组出来，而不会去直接修改老数组。
+
 slice类似这样的数据结构：
+
 ```go
 type IntSlice struct {
     ptr *int
     len,cap int 
 }
 ```
+
 在使用slice的时候，需要注意底层存在一个数组。如果能复用，将会大大的提高运行效率。
+
 删除最后一元素
+
+```go
 stack = stack[:len(stack)-1]
+```
+
 获取栈顶元素
+
+```go
 top := stack[len(stack)-1]
+```
+
 删除其中一个元素
+
 ```go
 func remove(slice []int, i int) []int {
     copy(slice[i:],slice[i+1:])
     return slice[:len(slice)-1]
 }
 ```
+
 需要做一次内存拷贝。如果不在乎顺序，可以直接将最后位置的元素，直接赋值掉指定位置的元素，删除slice最后的元素。
+
 在stackoverflow里面的建议是直接使用连接两个拆分的slice，这样反而会比较高效。
+
 [原文地址](https://stackoverflow.com/questions/37334119/how-to-delete-an-element-from-a-slice-in-golang)
+
 ```go
 func remove(slice []int, s int) []int {
     return append(slice[:s], slice[s+1:]...)
 }
 ```
-### 2.3. map
+
+## 3. map
+
 key/value方式无序的集合。golang中的map其实就是哈希表。其中key的类型需要支持==比较运算符。浮点型最好不好当成key。
+
 创建map的方法
+
 ```go
 ages :=make(map[string]int)
 ages := map[string]int {
@@ -272,41 +338,66 @@ ages := map[string]int {
     "Charlie" : 34,
 }
 ```
+
 map的元素可以通过key下标来访问
+
+```go
 ages["alice"]=32
 fmt.Println(ages["alice"])
+```
+
 通过delete对map中的元素删除
+
+```go
 delete(ages,"alice")
+```
+
 也能直接对不存在的元素直接做操作
+
+```go
 ages["bob"] = ages["bob"]+1
+```
+
 系统会自动初始化key为bob的元素并且返回0
+
 map中的元素不是变量，所以无法取得地址。原因也是由于随着元素的删减，可能内存空间有放大，或者缩小。所以取得的内存地址可能失效。
+
 循环方式是
+
 ```go
 for name,age := range ages {
     fmt.Printf("%s\t%d\n",name,age)
 }
 ```
+
 由于是hash所以遍历的顺序是不固定的。map变量定义出来之后都是nil值。可以通过make语句来创建初始化。
+
 如需要检查一个元素是否有初始化，可以通过
+
 ```go
 age, ok := ages["bob"]
 if !ok {
   // 不存在元素。
 }
 ```
+
 map容器不能直接做比较操作。
+
 go语言没有提供set类型，可以使用map来代替。
 
-### 2.4. 结构体
+## 4. 结构体
+
 结构体里面可以定义0-n个成员。
+
 ```go
 type T struct {
     a,b int
 }
 val := &T{a:1,b:2}
 ```
+
 如果函数需要修改结构体内容，出于对效率的考虑，一般都是使用结构体的引用作为参数来传递。
+
 结构体的嵌套
 
 ```go
@@ -341,7 +432,9 @@ w.X = 9
 ```
 
 struct可以通过
+
 ```go
 fmt.Printf("%#v\n",w)
 ```
+
 输出信息。

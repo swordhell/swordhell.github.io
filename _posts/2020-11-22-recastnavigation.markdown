@@ -105,18 +105,18 @@ Build Times
 
 ## 2.1.编译recastnavigation
 
-|工具名称|版本信息|
-|:--|:---|
-|visualstudio2019|16.8.3|
-|CMake|3.19.0-rc1|
-|premake|5.0|
+| 工具名称         | 版本信息   |
+| :--------------- | :--------- |
+| visualstudio2019 | 16.8.3     |
+| CMake            | 3.19.0-rc1 |
+| premake          | 5.0        |
 
 ### 2.1.1.下载地址
 
-|名称|下载地址|
-|:--|:--|
-|SDL|[https://www.libsdl.org/release/SDL2-devel-2.0.14-VC.zip](https://www.libsdl.org/release/SDL2-devel-2.0.14-VC.zip)|
-|premake|[https://premake.github.io/](https://premake.github.io/)|
+| 名称    | 下载地址                                                                                                           |
+| :------ | :----------------------------------------------------------------------------------------------------------------- |
+| SDL     | [https://www.libsdl.org/release/SDL2-devel-2.0.14-VC.zip](https://www.libsdl.org/release/SDL2-devel-2.0.14-VC.zip) |
+| premake | [https://premake.github.io/](https://premake.github.io/)                                                           |
 
 ### 2.1.2.准备好SDL2的dll
 
@@ -284,11 +284,11 @@ Sample* createTempObstacle() { return new Sample_TempObstacles(); }
 
 "Save"按钮将会把生成的网格存储到
 
-|类型|文件|大小|
-|:---|:---|:---|
-|Solo|solo_navmesh.bin||240kb|
-|Tile| all_tiles_navmesh.bin|479kb|
-|TempObstacle|all_tiles_tilecache.bin|479kb|
+| 类型         | 文件                    | 大小  |
+| :----------- | :---------------------- | :---- |
+| Solo         | solo_navmesh.bin        | 240kb |
+| Tile         | all_tiles_navmesh.bin   | 479kb |
+| TempObstacle | all_tiles_tilecache.bin | 479kb |
 
 
 # 4.包围盒分类
