@@ -297,9 +297,11 @@ Sample* createTempObstacle() { return new Sample_TempObstacles(); }
 
 AABB算法的全称是 - axis aligned bounding box (轴对齐-边界盒)AABB 包围盒是与坐标轴对齐的包围盒, 简单性好, 紧密性较差。
 
+
+
 ## 4.2.OBB
 
-OBB 包围盒: OBB 碰撞检測方法紧密性是较好的, 可以大大降低參与相交測试的包围盒的数目, 因此整体性能要优于AABB 和包围球, 而且实时性程度较高。
+OBB 包围盒: OBB（oriented bounding box 方向矩形边界框） 碰撞检測方法紧密性是较好的, 可以大大降低參与相交測试的包围盒的数目, 因此整体性能要优于AABB 和包围球, 而且实时性程度较高。
 
 # 参考
 - [1] [recastnavigation](https://github.com/recastnavigation/recastnavigation)

@@ -65,6 +65,6 @@ RepeatUntilSuccess 节点，重复执行子节点直到子节点返回Success
 
 # 参考
 
-- 1. [Wiki行为树](https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control))
-- 2. [百度百科行为树](https://baike.baidu.com/item/%E8%A1%8C%E4%B8%BA%E6%A0%91/22735785?fr=aladdin)
-- 3. [behavior3editor_github](https://github.com/behavior3/behavior3editor)
+- [1] [Wiki行为树](https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control))
+- [2] [百度百科行为树](https://baike.baidu.com/item/%E8%A1%8C%E4%B8%BA%E6%A0%91/22735785?fr=aladdin)
+- [3] [behavior3editor_github](https://github.com/behavior3/behavior3editor)
