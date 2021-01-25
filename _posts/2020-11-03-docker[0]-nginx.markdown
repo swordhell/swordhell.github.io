@@ -10,18 +10,23 @@ tags:
 ---
 学习docker
 
-##### 简介
+# 简介
+
 docker是为了简化外网服务器软件环境部署的工作。现在初浅的理解是，可以在linux机器上通过docker单独安装mysql,nginx,应用程序的也可以跑在一个docker之上。
-> Docker 包括三个基本概念:
+
+* Docker 包括三个基本概念:
+
 - 镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:16.04 就包含了完整的一套 Ubuntu16.04 最小系统的 root 文件系统。
 - 容器（Container）：镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。
 - 仓库（Repository）：仓库可看着一个代码控制中心，用来保存镜像。
 
-##### 安装
+# 安装
+
 参考了[腾讯在线实验](https://cloud.tencent.com/developer/labs/lab/10054) [菜鸟入门](https://www.runoob.com/docker/centos-docker-install.html) 可以很快速的将docker部署到你的服务器上。
 
 - 可能需要卸载掉老的docker
-```
+
+```bash
 $ sudo yum remove docker \
                   docker-client \
                   docker-client-latest \
@@ -31,8 +36,10 @@ $ sudo yum remove docker \
                   docker-logrotate \
                   docker-engine
 ```
+
 - 设置仓库
-```
+  
+```bash
 $ sudo yum install -y yum-utils \
   device-mapper-persistent-data \
   lvm2
@@ -41,30 +48,53 @@ $ sudo yum-config-manager \
     https://download.docker.com/linux/centos/docker-ce.repo
 $ sudo yum install docker-ce docker-ce-cli containerd.io
 ```
+
 - 安装
-```
+  
+```bash
 $ sudo yum install docker-ce docker-ce-cli containerd.io
 ```
 
 安装完成之后，可以通过docker -v来查看当前docker的版本信息。
-##### 基本操作
+
+- 使用国内加速
+
+创建或修改 /etc/docker/daemon.json 文件
+
+```json
+{
+  "registry-mirrors": [
+    "https://registry.docker-cn.com",
+    "http://hub-mirror.c.163.com",
+    "https://docker.mirrors.ustc.edu.cn"
+  ]
+}
+```
+
+# 基本操作
+
 - 运行一个容器
 ```
 docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
 ```
+
 - 查询容器
 ```
 docker ps -a
 ```
+
 - 使用 docker start 启动一个已停止的容器：
 ```
 docker start b750bbbcfd88
 ```
+
 - 后台运行 （增加-d的指令）
 ```
 docker run -itd --name ubuntu-test ubuntu /bin/bash
 ```
+
 - 停止一个容器
+
 ```
 docker stop <容器 ID>
 ```
@@ -96,7 +126,7 @@ docker container prune
 ```
 更多指令可以后续补充
 
-##### 安装mysql
+# 安装mysql
 > [参考菜鸟入门mysql安装](https://www.runoob.com/docker/docker-install-mysql.html) 
 
 > [使用Docker搭建MySQL服务](https://www.cnblogs.com/sablier/p/11605606.html)
@@ -115,7 +145,7 @@ docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
 - -p：端口映射，此处映射 主机3306端口 到 容器的3306端口
 - -d：源镜像名，此处为 mysql:5.7
 
-##### 安装nginx
+# 安装nginx
 ```
 # 拉取版本
 docker pull nginx:latest
@@ -145,10 +175,10 @@ docker run --name yzgmweb -d -p 35981:8088 \
 - -p 8080:80： 端口进行映射，将本地 8080 端口映射到容器内部的 80 端口。
 - -v ~/nginx/conf/nginx.conf:/etc/nginx/nginx.conf 将本地文件映射到容器内部。
 
-##### 扩展
+# 扩展
 后续如果有时间，可以再去研究一下 docker compose & swarm；dockerfile之类的东西。再做记录。
 
-##### 引用
+# 引用
 - [官方网站](https://www.docker.com/)
 - [菜鸟入门](https://www.runoob.com/docker/docker-tutorial.html)
 - [腾讯在线实验](https://cloud.tencent.com/developer/labs/lab/10054)

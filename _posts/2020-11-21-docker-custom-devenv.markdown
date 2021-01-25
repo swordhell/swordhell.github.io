@@ -11,9 +11,18 @@ tags:
 
 学习docker，自定义运行环境；收集一些信息来做参考；慢慢收集信息。
 
-Dockerfile其实就是构建image的text文本。
+- [头部](#头部)
+- [运行程序](#运行程序)
+- [EXPOSE](#expose)
+- [ENV](#env)
+- [USER](#user)
+- [ARG](#arg)
+- [参考](#参考)
+
+Dockerfile 其实就是构建image的text文本。
 
 # 头部
+
 ```dockerfile
 # 定制的镜像都是基于 FROM 的镜像
 FROM centos:7.7.1908
@@ -23,6 +32,7 @@ WORKDIR /root
 ```
 
 # 运行程序
+
 ```dockerfile
 # 依赖包和sshd配置
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
@@ -91,7 +101,7 @@ USER <用户名>[:<用户组>]
 ARG <参数名>[=<默认值>]
 ```
 
-
+# 参考
 - [1] [菜鸟Dockerfile说明](https://www.runoob.com/docker/docker-dockerfile.html)
 - [2] [官网参考](https://docs.docker.com/engine/reference/builder/)
 - [3] [Dockerfile命令详解（超全版本）](https://www.cnblogs.com/dazhoushuoceshi/p/7066041.html)
