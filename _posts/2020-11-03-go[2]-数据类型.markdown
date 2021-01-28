@@ -45,12 +45,6 @@ int16       the set of all signed 16-bit integers (-32768 to 32767)
 int32       the set of all signed 32-bit integers (-2147483648 to 2147483647)
 int64       the set of all signed 64-bit integers (-9223372036854775808 to 9223372036854775807)
 
-float32     the set of all IEEE-754 32-bit floating-point numbers
-float64     the set of all IEEE-754 64-bit floating-point numbers
-
-complex64   the set of all complex numbers with float32 real and imaginary parts
-complex128  the set of all complex numbers with float64 real and imaginary parts
-
 byte        alias for uint8
 rune        alias for int32 
 ```
@@ -79,6 +73,8 @@ unsafe包里面提供的uintptr，不会规定内存的size，但是能容纳从
     fmt.Printf("%08b\n", a)
     a = a << 3
     fmt.Printf("%08b\n", a)
+    
+math.MinInt8
 ```
 
 ```bash
@@ -107,13 +103,22 @@ unsafe包里面提供的uintptr，不会规定内存的size，但是能容纳从
 
 ### 2 浮点类型
 
+```golang
+
+float32     the set of all IEEE-754 32-bit floating-point numbers
+float64     the set of all IEEE-754 64-bit floating-point numbers
+
+// 复数
+complex64   the set of all complex numbers with float32 real and imaginary parts
+complex128  the set of all complex numbers with float64 real and imaginary parts
+
+```
 提供了 float32 float64 两种。IEEE 754标准。
 
 所有极限值被定义在math包中。
 
 ```go
 math.MaxFloat32
-math.MinInt8
 ```
 
 float32 大约能理解成6个十进制的精度；float64能到15个十进制精度。
