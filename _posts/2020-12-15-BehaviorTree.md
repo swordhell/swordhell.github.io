@@ -63,8 +63,31 @@ RepeatUntilSuccess 节点，重复执行子节点直到子节点返回Success
 
 行为节点， 可以执行行为。
 
+# 行为树应用
+
+通过一段时间的实践，行为树只负责一些行为模式的切换做支持。
+
+行为模式的切换，只通过一些阈值，事件来驱动做一些策略的修改。
+
+行为树的tick时间限制在1sec一次。
+
+行为模式是直接通过程序来实现，可以制作出来的效果可以让怪物灵巧很多。
+
+在制作的时候，通过4个方面去分析问题：
+
+1. 分析怪物一共有多少个**行为模式**
+
+2. 需要抽象多少种怪物属性提供给行为树；
+
+3. 需要抽象多少种事件提供给行为树；
+
+4. 设计每个行为模式的工作细节，方便今后boss重复使用；
+
+怪物在走的时候，需要增加一些细节表现，防止太生硬。比如，待机的时候，会看一看玩家。而不是那种只会走路的那种。
+
 # 参考
 
 - [1] [Wiki行为树](https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control))
 - [2] [百度百科行为树](https://baike.baidu.com/item/%E8%A1%8C%E4%B8%BA%E6%A0%91/22735785?fr=aladdin)
 - [3] [behavior3editor_github](https://github.com/behavior3/behavior3editor)
+

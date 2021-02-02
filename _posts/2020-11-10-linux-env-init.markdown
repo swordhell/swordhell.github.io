@@ -295,6 +295,24 @@ FLUSH PRIVILEGES;
 $ mysql_secure_installation
 ```
 
+mysql 8.0 版本 root 密码修改
+
+需要执行
+
+```bash
+flush privileges;
+```
+
+然后再执行
+
+```bash
+ALTER user 'root'@'localhost' IDENTIFIED BY 'root';--修改密码为root
+create user if not exists 'root'@'%' identified by '123456';
+GRANT ALL ON gamedata005.* TO 'root'@'%';
+```
+
+[MySQL8.0手册](https://dev.mysql.com/doc/refman/8.0/en/)
+
 ## 备份数据库
 
 将某个数据库导出，不需要导出数据

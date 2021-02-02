@@ -264,7 +264,6 @@ Sample* createTempObstacle() { return new Sample_TempObstacles(); }
 
 "Build"按钮将会调用
 
-
 ```cpp
 				if (imguiButton("Build"))
 				{
@@ -290,6 +289,117 @@ Sample* createTempObstacle() { return new Sample_TempObstacles(); }
 | Tile         | all_tiles_navmesh.bin   | 479kb |
 | TempObstacle | all_tiles_tilecache.bin | 479kb |
 
+导出时候需要设置的参数：
+
+| 变量                 | 基本信息                                                                            | 备注 |
+| :------------------- | :---------------------------------------------------------------------------------- | :--- |
+| cellsize             | 方块尺寸                                                                            | 0.3  |
+| cellheight           | 方块高度                                                                            | 0.2  |
+| agentheight          | walkableHeight = agentheight/ cellheight                                            | 2    |
+| agentradius          | walkableClimb = agentradius/ cellheight                                             | 0.6  |
+| agentmaxclimb        | walkableRadius = agentmaxclimb/ cellheight                                          | 0.9  |
+| agentmaxslope        | walkableSlopeAngle = agentmaxslope                                                  | 45   |
+| regionminsize        | minRegionArea = regionminsize*regionminsize                                         | 8    |
+| regionmergesize      | mergeRegionArea = regionmergesize*regionmergesize                                   | 20   |
+| edgemaxlen           | maxEdgeLen = edgemaxlen/cellheight                                                  | 12   |
+| edgemaxerror         | maxSimplificationError = edgemaxerror                                               | 1.3  |
+| vertsperpoly         | maxVertsPerPoly                                                                     | 6    |
+| detailsampledist     | detailSampleDist = detailsampledist < 0.9f ? 0 : cellsize * detailsampledist; | 6    |
+| detailsamplemaxerror | detailSampleMaxError = cellheight * detailsamplemaxerror                        | 1    |
+| partitiontype        |                                                                                     | 1    |
+| tilesize             |                                                                                     | 48   |
+
+[RecastNavigation-rcConfig文档](http://www.stevefsp.org/projects/rcndoc/prod/structrcConfig.html)
+
+cellsize
+
+方块尺寸（x,z平面上），和平面有关系。较低的值将产生较高质量的导航，但是图形扫描较慢。在文档里面记作 [vx]
+
+[![ymUU0I.gif](https://s3.ax1x.com/2021/02/02/ymUU0I.gif)](https://imgchr.com/i/ymUU0I)
+
+cellheight
+
+方块高度（y高程），和爬坡有关系。记录计算攀爬仰角，攀爬的高度，计算边缘都需要这个。官方文档里面记作 [vy]
+
+agentheight
+
+---
+
+minRegionArea
+
+最小孤岛所容纳的cell数目；
+
+任意区域小于指定的数目，将会标记成无法行走。这个东西通常用于去删除无用几何体，比如桌子的顶部，盒子的顶部等等。
+
+值域：[Limit: >=0] 作用域：[Units: vx]，vx代表平面；
+
+[![ymUNnA.gif](https://s3.ax1x.com/2021/02/02/ymUNnA.gif)](https://imgchr.com/i/ymUNnA)
+
+mergeRegionArea
+
+如果有可能性的话，任意区域如果cell的数目小于它，将会被融合到比它大的区域里面。
+
+值域：[Limit: >=0] 作用域：[Units: vx]
+
+edgemaxlen
+
+沿网格边界的轮廓边缘的最大允许长度。 [Limit: >=0] [Units: vx].
+
+这个将会让边缘更加趋于直线。如果想关闭这个功能将值设置成0。
+
+[![ymUz9O.gif](https://s3.ax1x.com/2021/02/02/ymUz9O.gif)](https://imgchr.com/i/ymUz9O)
+
+partitiontype
+
+分区方式
+
+Watershed 分水岭方式
+
+enum SamplePartitionType SAMPLE_PARTITION_WATERSHED = 0
+
+Monotone 单调方式
+
+enum SamplePartitionType SAMPLE_PARTITION_MONOTONE = 1
+
+Layers 分层方式
+
+enum SamplePartitionType SAMPLE_PARTITION_LAYERS = 2
+
+原文释义：
+
+```doc
+ Partition the heightfield so that we can use simple algorithm later to triangulate the walkable areas.
+ There are 3 martitioning methods, each with some pros and cons:
+ 1) Watershed partitioning
+   - the classic Recast partitioning
+   - creates the nicest tessellation
+   - usually slowest
+   - partitions the heightfield into nice regions without holes or overlaps
+   - the are some corner cases where this method creates produces holes and overlaps
+      - holes may appear when a small obstacles is close to large open area (triangulation can handle this)
+      - overlaps may occur if you have narrow spiral corridors (i.e stairs), this make triangulation to fail
+   * generally the best choice if you precompute the nacmesh, use this if you have large open areas
+ 2) Monotone partioning
+   - fastest
+   - partitions the heightfield into regions without holes and overlaps (guaranteed)
+   - creates long thin polygons, which sometimes causes paths with detours
+   * use this if you want fast navmesh generation
+ 3) Layer partitoining
+   - quite fast
+   - partitions the heighfield into non-overlapping regions
+   - relies on the triangulation code to cope with holes (thus slower than monotone partitioning)
+   - produces better triangles than monotone partitioning
+   - does not have the corner cases of watershed partitioning
+   - can be slow and create a bit ugly tessellation (still better than monotone)
+     if you have large open areas with small obstacles (not a problem if you use tiles)
+   * good choice to use for tiled navmesh with medium and small sized tiles
+```
+
+tilesize
+
+每块tile再xz平面上的size。[Limit: >= 0] [Units: vx].
+
+这个值旨在编译出多tile mesh的时候生效（temp obstacles/tiles）。
 
 # 4.包围盒分类
 
@@ -314,3 +424,6 @@ OBB 包围盒: OBB（oriented bounding box 方向矩形边界框） 碰撞检測
 - [8] [B站讲解RecastDemo如何使用](https://www.bilibili.com/video/BV1uK4y1E7CV?from=search&seid=8637375892047322871)
 - [9] [从零开始学习导航网格](https://www.jianshu.com/p/64469a410b5d)
 - [10] [AABB&OBB包围盒](https://www.cnblogs.com/mfrbuaa/p/4073880.html)
+- [11] [生成寻路网格的配置](https://blog.csdn.net/Kathy_unity/article/details/81583968)
+- [12] [手动创建navmesh](https://arongranberg.com/astar/docs/createnavmesh.html)
+- [13] [navmesh参数](https://arongranberg.com/astar/docs/recastgraph.html)
