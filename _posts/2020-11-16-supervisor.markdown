@@ -91,6 +91,24 @@ unlink: cannot unlink ‘/var/lib/docker/overlay2/d6de9ac36e7b3c66fed11ddb3cf384
 
 [![DAtsTe.png](https://s3.ax1x.com/2020/11/16/DAtsTe.png)](https://imgchr.com/i/DAtsTe)
 
+# XML-RPC API
+
+可以通过编写python脚本来对web做操作。
+
+```python
+from xmlrpc.client import ServerProxy
+
+# 'http://username:password@localhost:9001/RPC2'
+server = ServerProxy('http://user:123@172.16.11.92:10080/RPC2',verbose=True)
+# 输出全部的API函数，以xml文件方式输出，可以直接查阅函数，调用就好了。
+#print(server.system.listMethods())
+# 查看服务器状态
+print(server.supervisor.getState())
+# 关闭全部的服务器
+#print(server.supervisor.stopAllProcesses())
+# 打开全部的服务器
+print(server.supervisor.startAllProcesses())
+```
 
 # 参考
 - [1] [Supervisor 使用详解](https://www.jianshu.com/p/0b9054b33db3)
