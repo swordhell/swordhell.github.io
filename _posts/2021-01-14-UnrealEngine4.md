@@ -1,12 +1,13 @@
 ---
 layout: post
-title: "UnrealEngine4笔记"
-subtitle: 'UnrealEngine4笔记'
+title: "虚幻引擎程序设计浅析"
+subtitle: '虚幻引擎程序设计浅析'
 author: "Abel"
 header-style: text
 tags:
   - Unreal Engine4
   - C++
+  - Game
 ---
 
 开一篇文章记录学习Unreal Engine相关知识。参考《虚幻引擎程序设计浅析》ISBN 978-7-121-31349-3，电子工业出版社。带着问题来学习，才能学的快速。看书先需要阅读的就是作者划分的章节目录，反复多看几遍，能从总体上看出知识的结构。
@@ -63,31 +64,102 @@ Controller
 
 ## 第2章 需求到实现
 
-# 构建虚拟世界
+1. 分析需求
 
-# 图形和渲染
+使用UML工程建模工具绘制需求分析图。
 
-# 创建交互体验
+或者通过沟通分析出来简短的短语。
 
-# 为角色和对象田间动画
+2. 转化需求为设计
 
-# 建立你的开发流程
+首先从短语中抽象出里面重要的名词，这样就是我们的类。
 
-# 测试并优化你的内容
+然后分析出类之间的持有、通信关系。
 
-# 平台开发
+## 第3章 创建自己的C++类
 
-# 示例与教学
+1. 使用Unreal Editor创建c++类
 
-# UE C++ API手册
+"内容浏览器" -> "右键" -> "新建C++类"
 
-# UE 蓝图手册
+有一个创建的流程，可以在过程中选择基类。输入名称选择路径。
 
-# UE Python API手册
+2. 手动创建C++类
 
-# 杂项
+文件目录结构为
 
-## 注册虚幻引擎阅读权限
+```doc
+--public/
+--private/
+--.build.cs
+```
+
+头文件放到public文件夹，cpp放入private文件夹。
+
+如果继承了UE的类，需要增加一些宏，否则编译不过。
+
+cpp文件中包含pch文件。
+
+3. 虚幻引擎类命名规则
+
+> F 纯C++类
+> U 继承自UObject，但不继承Actor
+> A 继承自Actor
+> S Slate控件相关类
+> H HitResult相关类
+
+Unreal Header Tool 会在编译之前检查这些类名的约束。
+
+## 第4章 对象
+
+1. 类对象的产生
+
+如果是纯C++类型，可以通过new产生。
+
+如果你的类继承自UObject，需要通过NewObject函数来产生。
+
+```cpp
+NewObject<T>();
+```
+
+如果继承自AActor，需要通过SpawnActor函数产生对象。
+
+```cpp
+GetWorld()->SpawnActor<AYourActorClass>();
+```
+
+2. 类对象的获取
+
+通过对象的引用或者指针来获取。GetWorld能使用IActorIterator<AACtor>迭代World里面全部的Actor。
+
+3. 类对象的销毁
+
+纯C++类型，就是自己delete就可以了。
+
+UObject的对象，本身有一套内存管理机制，当没有对象引用了，就会触发GC。
+
+Actor的对象，通过Destory函数请求销毁，这个只是说从World里面摘除掉，内存回收还需要靠引擎来决定。
+
+## 第5章 从C++到蓝图
+
+让蓝图调用我的C++类。
+
+1. UPROPERTY宏
+
+将成员变量注册到蓝图中。
+
+2. UFUNCTION宏
+
+注册函数到蓝图中。
+
+## 第6章 游戏性框架概述
+
+### 1. 行为树：
+### 2. 虚幻引擎网络框架构
+
+# 注册虚幻引擎阅读权限
+
+可以登录到UE官网，开通github中，开源的UE源码阅读权限。
 
 # 参考
 - [1] [UnrealEngine4官方文档](https://docs.unrealengine.com/zh-CN/index.html)
