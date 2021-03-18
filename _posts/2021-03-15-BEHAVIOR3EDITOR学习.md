@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Behavior3Editor学习"
-subtitle: 'Behavior3Editor学习'
+title: "Behavior3Editor批量导出改造"
+subtitle: 'Behavior3Editor批量导出改造'
 author: "Abel"
 header-style: text
 tags:
@@ -10,8 +10,24 @@ tags:
   - BehaviorTree
 ---
 
+项目里面需要将行为树project批量的导出子树。
 
-# 设置梯子
+# 开始部署环境
+
+## 安装环境
+
+将node.js 设置成 10.x win32版本，再去匹配 gulp 的版本。
+
+通过命令行安装gulp工具。
+
+```bat
+npm install gulp-cli -g
+npm install gulp -D
+npx -p touch nodetouch gulpfile.js
+gulp --help
+```
+
+## 设置梯子
 
 ```bat
 npm config set registry http://registry.npm.taobao.org
@@ -31,18 +47,7 @@ Add the below entry to your .bowerrc:
 }
 ```
 
-# 安装环境
-
-通过命令行安装gulp工具。
-
-```bat
-npm install gulp-cli -g
-npm install gulp -D
-npx -p touch nodetouch gulpfile.js
-gulp --help
-```
-
-# 遇到的问题
+## 遇到的问题
 
 ```bat
 bower sweetalert#~1.0.0-beta              cached https://github.com/t4t5/sweetalert.git#1.0.1
@@ -62,7 +67,7 @@ Add the below entry to your .bowerrc:
 }
 ```
 
-## node，gulp版本不合
+### node，gulp版本不合
 
 ```powershell
 PS D:\work\trunk\behavior3editor_bf> gulp serve
@@ -88,19 +93,19 @@ Local version: 3.9.1
 解决方案：
 
 ```bat
-#安装npm版本控制器
+##安装npm版本控制器
 npm install -g n
 
-#切换npm版本到 V10 (v10 版本的npm会安装 node 10)
+##切换npm版本到 V10 (v10 版本的npm会安装 node 10)
 sudo n v10.19.0
 
-#安装node
+##安装node
 npm i -g node
 
-#查看node版本
+##查看node版本
 node --version
 
-#现在node版本切换到了v10了，可以重新安装依赖的
+##现在node版本切换到了v10了，可以重新安装依赖的
     #重新安装gulp（版本很重要，应该是代码发布时的版本，而不是本地的版本）
     npm i -g gulp@3.9.1 --force
     #重新安装依赖
@@ -108,7 +113,7 @@ node --version
 
 npm install -g nvm
 
-#运行
+##运行
 gulp watch
 ————————————————
 版权声明：本文为CSDN博主「内心毫无波动甚至还想笑」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
@@ -119,7 +124,7 @@ gulp watch
 
 [node.js_10.x版本下载](https://nodejs.org/dist/latest-v10.x/)
 
-## 在做dist的时候，还是会下载electronc
+### 在做dist的时候，还是会下载electronc
 
 ```powershell
 Downloading electron-v0.34.2-linux-ia32.zip
@@ -134,8 +139,83 @@ Downloading electron-v0.34.2-linux-ia32.zip
 
 [国内源](https://npm.taobao.org/mirrors/electron/0.34.2/)
 
+### 文件占用
+
+打开资源管理器。
+
+```bat
+resmon.exe
+```
+
+其实就是vscode的powershell占用了文件。重启一次vscode就好了。
+
+### 修改gulpfile.js
+
+在这个文件里面，定义输出的版本是 windows arch类型： i32 就好了。
+
+```json
+gulp.task('_electron', ['build'], function(cb) {
+  packager({
+    dir       : 'build',
+    out       : '.temp-dist',
+    name      : project.name,
+    platform  : 'win32',
+    arch      : 'ia32',
+    version   : '0.34.2',
+    overwrite : true,
+    asar      : true
+  }
+```
+
+由于网络情况，如果想把全部平台的库都下载全了，也是比较困难的。
+
+# 批量导出子树源码
+
+改造的位置：
+
+export.controller.js: 75 lines
+
+```js
+function save()
+      }else if (vm.type === 'trees') {
+        dialogService
+          .openDirectory()
+          .then(function(path){
+            tree = project.trees.each(function(tree) {
+              var root = tree.blocks.getRoot();
+              defaultName = root.title;
+              var fs = require('fs');
+              var e = $window.editor.export;
+              _createJson(e.treeToData(tree))
+              console.log(vm.pretty)
+              fs.writeFileSync(path +'/'+defaultName +'.json', vm.pretty)
+              notificationService.success(
+                'File path',
+                defaultName +'.json'
+              );
+            });
+            
+          });
+        
+      }
+```
+
+其实就是将project.trees遍历；
+
+将tree内容萃取出json；
+
+直接使用fs模块，同步写入文件；
+
+dialogService.openDirectory()能让用户自己指定输出目录；
+
+notificationService.success()将日志输出到屏幕上；
+
+我现在还不会如何调试，阅读了一点eletronc的文档，东西不少，今后有时间再来学习。
+
 # 参考
 - [1] [Behavior3editor源码](https://github.com/magicsea/behavior3editor)
 - [2] [bowerrc配置项目](https://stackoverflow.com/questions/18359887/bower-proxy-configuration)
 - [3] [git地址从https转成git](https://stackoverflow.com/questions/15669091/bower-install-using-only-https)
 - [4] [解决 ReferenceError: primordials is not defined](https://blog.csdn.net/sunny_desmond/article/details/107506626)
+- [5] [ebusy-resouce-busy](https://stackoverflow.com/questions/55212864/error-ebusy-resource-busy-or-locked-rmdir)
+- [6] [electronjs官网](https://www.electronjs.org/)
