@@ -10,7 +10,21 @@ tags:
   - BehaviorTree
 ---
 
+- [开始部署环境](#开始部署环境)
+  - [安装环境](#安装环境)
+  - [设置梯子](#设置梯子)
+  - [遇到的问题](#遇到的问题)
+    - [node，gulp版本不合](#nodegulp版本不合)
+    - [在做dist的时候，还是会下载electronc](#在做dist的时候还是会下载electronc)
+    - [文件占用](#文件占用)
+    - [修改gulpfile.js](#修改gulpfilejs)
+- [批量导出子树源码](#批量导出子树源码)
+- [增加目录的支持](#增加目录的支持)
+- [参考](#参考)
+
 项目里面需要将行为树project批量的导出子树。
+
+[源代码](https://github.com/swordhell/behavior3editor)
 
 # 开始部署环境
 
@@ -65,6 +79,25 @@ Add the below entry to your .bowerrc:
   "proxy":"http://<user>:<password>@<host>:<port>",
   "https-proxy":"http://<user>:<password>@<host>:<port>"
 }
+```
+
+当下载实在不行的时候，可以直接通过github里面下载源码，然后直接放到目录中。
+
+目录说明
+
+```bat
+bower_components   // bower 支持库目录
+  |
+  ----angular-tree-control
+  |
+  ----...
+.temp-dist         // 打包输出exe的目录
+  |
+  |
+  ----behavior3editor-win32-ia32      // win32版本的exe
+  |
+  ----...
+node_modules      // node.js 支持库目录
 ```
 
 ### node，gulp版本不合
@@ -211,6 +244,136 @@ dialogService.openDirectory()能让用户自己指定输出目录；
 notificationService.success()将日志输出到屏幕上；
 
 我现在还不会如何调试，阅读了一点eletronc的文档，东西不少，今后有时间再来学习。
+
+调试功能还是支持的
+
+gulp serve
+
+[![6HhDc6.png](https://z3.ax1x.com/2021/03/24/6HhDc6.png)](https://imgtu.com/i/6HhDc6)
+
+在node.js中又很多丰富的库，所以使用这个来编写程序时候，多想想有没有三方库。这点类似python。
+
+# 增加目录的支持
+
+在半年前，behavior3editor 作者在对这个编辑器做了一些提升，添加了path的概念。
+
+src\app\pages\editor\components\menubar.html
+
+文件里面可以修改界面。
+
+```html
+<li><a ng-click="menubar.onExportTreesJson()">Batch export trees as JSON</a></li>
+```
+
+用了调试器，将会加快编写工作。
+
+```bash
+Cannot read property 'length' of undefined
+```
+
+在这套代码里面的目录规划
+
+处在根目录的文件：
+
+```json
+{
+  "version": "0.3.0",
+  "scope": "tree",
+  "id": "62d315fa-c8bf-4fa2-9205-89cd6a1c5062",
+  "title": "BasicMonster",
+  "description": "",
+  "root": "6bb72df3-2b86-4cf4-8d43-d0c2c52e49c4",
+  "properties": {},
+  "parent": null,
+
+  "custom_folders": [
+    {
+      "version": "0.3.0",
+      "scope": "folder",
+      "name": "f8f5b0bd-285e-400b-85f4-8ab673ea4fe8",
+      "category": "tree",
+      "title": "ai",
+      "description": "ai子目录；",
+      "parent": null
+    }
+```
+
+tree 能被 folders 包含，folders也能设置parent。
+
+当导出的时候，我们就能使用这个custom_folders来创建本地目录。
+
+通过fs来迭代创建目录。
+
+```js
+fs.mkdir(subPath, { recursive: true }, function(err) {});
+```
+
+读取tree的folders信息：
+
+```js
+    // 迭代方式读取目录结构
+    function _fetchSubPath(parent,custom_folders) {
+      var retStr = "";
+      var node;
+      for (var i = 0; i < custom_folders.length; i++) {
+        if (custom_folders[i].name == parent) {
+          node = custom_folders[i];
+          break;
+        }
+      }
+      if (node.parent == undefined) {
+        retStr = "/" + node.title;
+      } else {
+        retStr = _fetchSubPath(node.parent,custom_folders) + "/" + node.title;
+      }
+      return retStr;
+    }
+
+    function _createJson(data) {
+      vm.data = data;
+      vm.compact = JSON3.stringify(data);
+      vm.pretty = JSON3.stringify(data, null, 2);
+      vm.result = vm.pretty;
+      vm.subPath = "/";
+      if (data.parent == undefined) {
+        return;
+      }
+      if (data.custom_folders == undefined) {
+        return;
+      }
+      // 从custom_folders读取目录信息。
+      vm.subPath = _fetchSubPath(data.parent,data.custom_folders) + "/";
+     }
+
+```
+
+导出部分代码：
+
+```js
+if (vm.type === 'trees') {
+        dialogService
+          .openDirectory()
+          .then(function(path){
+            tree = project.trees.each(function(tree) {
+              var root = tree.blocks.getRoot();
+              defaultName = root.title;
+              var fs = require('fs');
+              var e = $window.editor.export;
+              _createJson(e.treeToData(tree));
+              var subPath = path +vm.subPath;
+              // 防止子目录没有。
+              fs.mkdir(subPath, { recursive: true }, function(err) {});
+              // 再次导出，忽略掉custom_folders，减少json文件大小。
+              _createJson(e.treeToData(tree,true));
+              fs.writeFileSync(subPath+defaultName +'.json', vm.pretty);
+              notificationService.success(
+                'File saved',
+                defaultName +'.json'
+              );
+            });
+          });
+      }
+```
 
 # 参考
 - [1] [Behavior3editor源码](https://github.com/magicsea/behavior3editor)

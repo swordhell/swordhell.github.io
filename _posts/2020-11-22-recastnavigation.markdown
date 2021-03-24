@@ -426,3 +426,4 @@ OBB 包围盒: OBB（oriented bounding box 方向矩形边界框） 碰撞检測
 - [11] [生成寻路网格的配置](https://blog.csdn.net/Kathy_unity/article/details/81583968)
 - [12] [手动创建navmesh](https://arongranberg.com/astar/docs/createnavmesh.html)
 - [13] [navmesh参数](https://arongranberg.com/astar/docs/recastgraph.html)
+- [14] [ue-navmesh](https://imzlp.com/posts/20203/)
