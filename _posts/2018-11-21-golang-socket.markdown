@@ -6,7 +6,6 @@ author: "Abel"
 header-style: text
 tags:
   - golang
-  - socket
 ---
 
 收集一些golang常用的一些技术。

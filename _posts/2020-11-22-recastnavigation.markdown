@@ -5,8 +5,8 @@ subtitle: 'recastnavigation熟悉'
 author: "Abel"
 header-style: text
 tags:
-  - recastnavigation
-  - game
+  - recast
+  - Game
 ---
 
 recastnavigation 在做3d游戏的时候，用于做导航的。当前使用 unreal 4.25

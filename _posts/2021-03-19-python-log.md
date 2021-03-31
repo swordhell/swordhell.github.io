@@ -5,9 +5,7 @@ subtitle: 'python日志加工'
 author: "Abel"
 header-style: text
 tags:
-  - game
   - python
-  - log
 ---
 
 分析日志相关的脚本用的比较多。

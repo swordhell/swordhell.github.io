@@ -7,7 +7,6 @@ header-style: text
 tags:
   - golang
   - Game
-  - AI
 ---
 
 使用FSM（Finite State Machine）来制作怪物的AI，比较轻量级；

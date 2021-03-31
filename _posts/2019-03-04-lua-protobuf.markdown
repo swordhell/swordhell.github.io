@@ -6,7 +6,6 @@ author: "Abel"
 header-style: text
 tags:
   - protobuf
-  - lua
 ---
 protobuf是比较好的一种序列化的工具，这里使用lua来试用一下protobuf。文章内容是通过网络收集的知识
 

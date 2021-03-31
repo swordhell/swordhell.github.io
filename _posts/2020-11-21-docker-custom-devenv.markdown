@@ -5,8 +5,7 @@ subtitle: 'docker自定义环境'
 author: "Abel"
 header-style: text
 tags:
-  - docker
-  - Linux
+  - 运维
 ---
 
 学习docker，自定义运行环境；收集一些信息来做参考；慢慢收集信息。

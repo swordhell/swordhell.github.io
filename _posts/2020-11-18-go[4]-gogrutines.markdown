@@ -6,7 +6,6 @@ author: "Abel"
 header-style: text
 tags:
   - golang
-  - goroutine
 ---
 ### 概念
 go语言中的并发程序通过两种手段来实现。goroutine和channel。顺序通讯进程（communicating sequential processes）简称CSP.

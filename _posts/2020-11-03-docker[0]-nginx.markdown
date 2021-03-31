@@ -5,8 +5,7 @@ subtitle: 'docker'
 author: "Abel"
 header-style: text
 tags:
-  - docker
-  - nginx
+  - 运维
 ---
 学习docker
 

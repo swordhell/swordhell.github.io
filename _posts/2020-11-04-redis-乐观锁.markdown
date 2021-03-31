@@ -6,7 +6,6 @@ author: "Abel"
 header-style: text
 tags:
   - redis
-  - golang
 ---
 在使用多服务器操作redis的时候，需要考虑到数据同步的问题；本文来记录一下redis里面事务的用法。
 

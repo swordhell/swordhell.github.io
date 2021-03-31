@@ -5,9 +5,8 @@ subtitle: 'Behavior3Editor批量导出改造'
 author: "Abel"
 header-style: text
 tags:
-  - game
+  - Game
   - AI
-  - BehaviorTree
 ---
 
 - [开始部署环境](#开始部署环境)

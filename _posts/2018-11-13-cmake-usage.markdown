@@ -5,9 +5,7 @@ subtitle: 'cmake一些常用的实例'
 author: "Abel"
 header-style: text
 tags:
-  - cmake
-  - c++ 
-  - builder
+  - C++ 
 ---
 
 记录cmake常用方法

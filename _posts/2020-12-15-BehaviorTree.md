@@ -5,8 +5,8 @@ subtitle: 'BehaviorTree'
 author: "Abel"
 header-style: text
 tags:
-  - AI
   - Game
+  - AI
 ---
 
 在制作游戏里面，除了使用FSM，还有一种实现模式：行为树。编写本文用于梳理行为树中的概念，知识点。里面使用到了三方库来编辑行为树(behavior3.com)。行为树主要用于做系统控制的，能通过简单的节点组合，编辑出复杂的逻辑。

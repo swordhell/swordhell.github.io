@@ -6,7 +6,7 @@ author: "Abel"
 header-style: text
 tags:
   - Linux
-  - Python
+  - 运维
 ---
 
 # 简介

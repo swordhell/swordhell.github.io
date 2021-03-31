@@ -6,7 +6,6 @@ author: "Abel"
 header-style: text
 tags:
   - Unreal Engine4
-  - C++
   - Game
 ---
 

@@ -6,7 +6,7 @@ author: "Abel"
 header-style: text
 tags:
   - Linux
-  - operate
+  - 运维
 ---
 记录一下Linux运维相关的学习资料；
 

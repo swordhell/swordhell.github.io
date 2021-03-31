@@ -5,8 +5,7 @@ subtitle: 'pprof'
 author: "Abel"
 header-style: text
 tags:
-  - Linux
-  - bash
+  - golang
 ---
 
 编写好了golang服务之后，接着要开始关注服务的CPU，内存使用情况。golang提供了性能剖析工具，记录一些自己搜集到的信息，写下一些实践的情况。在golang中内置了pprof工具，专门来做golang语言的优化。

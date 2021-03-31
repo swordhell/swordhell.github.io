@@ -7,6 +7,7 @@ header-style: text
 tags:
   - golang
 ---
+
 记录golang的程序结构相关知识。
 
 - [1.函数定义](#1函数定义)

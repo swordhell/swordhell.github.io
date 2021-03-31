@@ -6,7 +6,6 @@ author: "Abel"
 header-style: text
 tags:
   - Linux
-  - bash
 ---
 记录一下Linux运维的时候常用的bash的知识
 

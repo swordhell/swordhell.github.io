@@ -6,7 +6,6 @@ author: "Abel"
 header-style: text
 tags:
   - golang
-  - interface
 ---
 
 - [概述](#概述)
