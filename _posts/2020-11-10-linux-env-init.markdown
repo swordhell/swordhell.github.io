@@ -13,6 +13,7 @@ tags:
   - [centos 7防火墙](#centos-7防火墙)
     - [检查防火墙状态](#检查防火墙状态)
 - [ubuntu](#ubuntu)
+  - [apt 相关知识](#apt-相关知识)
 - [mysql](#mysql)
   - [权限相关](#权限相关)
   - [备份数据库](#备份数据库)
@@ -280,13 +281,49 @@ enabled=1
 gpgcheck=1
 gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
 
-导入存储库GPG密钥
+# 导入存储库GPG密钥
 rpm --import http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
 
-安装：
+# 安装：
 yum install git
 
+# 安装文档输出；
+sudo apt install graphviz
 
+```
+
+## apt 相关知识
+
+[使用apt-get查询安装指定版本的软件](https://blog.csdn.net/yjk13703623757/article/details/78945576)
+
+```bash
+apt-cache show libjemalloc-dev
+Package: libjemalloc-dev
+Architecture: amd64
+Version: 5.2.1-1ubuntu1
+Priority: extra
+Section: universe/libdevel
+Source: jemalloc
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Faidon Liambotis <paravoid@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 2748
+Depends: libjemalloc2 (= 5.2.1-1ubuntu1)
+Suggests: binutils
+Filename: pool/universe/j/jemalloc/libjemalloc-dev_5.2.1-1ubuntu1_amd64.deb
+Size: 424588
+MD5sum: f519936da1e4557812ebad9cbf9e1029
+SHA1: 2e5e464c4c2f051b7f32ed44a805bd7f08ec3738
+SHA256: c5d64ba693ad45dd7c41f1d103a74816482601f7d0272ed49fc5441e9e1deb91
+Homepage: http://jemalloc.net/
+Description-en: development files and documentation for jemalloc
+ Files used for development with jemalloc. This package contains
+ headers and documentation.
+ .
+ jemalloc is a library providing a malloc(3) implementation for
+ multi-threaded processes on multi-processor systems.
+Description-md5: f91b42ea17991369b6b9cd46f2828e3f
 ```
 
 # mysql
