@@ -8,6 +8,17 @@ tags:
   - Linux
   - 运维
 ---
+
+- [Centos](#centos)
+  - [centos 7防火墙](#centos-7防火墙)
+    - [检查防火墙状态](#检查防火墙状态)
+- [ubuntu](#ubuntu)
+- [mysql](#mysql)
+  - [权限相关](#权限相关)
+  - [备份数据库](#备份数据库)
+- [cygwin多次grep没有输出](#cygwin多次grep没有输出)
+- [引用](#引用)
+
 记录一下Linux运维相关的学习资料；
 
 # Centos
