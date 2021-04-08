@@ -11,7 +11,7 @@ tags:
 
 开一篇文章记录学习Unreal Engine相关知识。参考《虚幻引擎程序设计浅析》ISBN 978-7-121-31349-3，电子工业出版社。带着问题来学习，才能学的快速。看书先需要阅读的就是作者划分的章节目录，反复多看几遍，能从总体上看出知识的结构。
 
-# 第一部分虚幻引擎C++编程
+# 第一部分 虚幻引擎C++编程
 
 ## 第1章 五个类的熟悉
 
@@ -185,12 +185,142 @@ ue3框架是状态机制作的，还引入了Unreal Script脚本来扩展。在u
 2. 广义的客户端-服务器模型
 
 > 客户端是对服务器的拙劣模仿 --- 虚幻官方文档UDN中描述
-
-“拙劣”二字，表示是服务器的世界是正确的，而客户端则是不断试图猜测服务器当前的状态，并且模仿。
+> “拙劣”二字，表示是服务器的世界是正确的，而客户端则是不断试图猜测服务器当前的状态，并且模仿。
 
 ## 第7章 引擎系统相关类
 
+本章主要介绍一些虚幻引擎4提供的一些类，防止程序重复造轮子。
 
+### 7.1 正则表达式
+
+```cpp
+#include "Regex.h"
+FString TextStr("AAAABBBBB");
+FRegexPattern TestPattern(TEXT("C.+H"));
+FRegexMatcher xxx;
+```
+
+[FRegexPattern手册](https://docs.unrealengine.com/en-US/API/Runtime/Core/Internationalization/FRegexPattern/index.html)
+
+基本上能满足匹配，抓取之类的操作。
+
+### 7.2 FPaths
+
+获取游戏的根目录；判断文件是否存在；路径转换成绝对路径类似的功能。
+
+[FPaths官方文档](https://docs.unrealengine.com/en-US/API/Runtime/Core/Misc/FPaths/index.html)
+
+### 7.3 XML/JSON
+
+FXmlFile/FastXML访问XML数据；
+
+TJsonReaderFactory<TCHAR>/TJsonReader<TCHAR>
+
+FJsonSerializer::Deserialize 来加载json字符串。
+
+### 7.4 文件读写与访问
+
+PlatformFileManager.h
+
+里面提供了很多的操作文件的接口。
+
+### 7.5 GConfig
+
+是简单的将ini文件做了封装。可以指定ini文件，Section名称，Key，值。
+
+### 7.6 UE_LOG
+
+能支持Category方式的日志输出，日志级别也能支持。
+
+### 7.7 字符串处理
+
+FName 无法修改的字符串，大小写不敏感。无论出现多少次，都是在字符串表里面只有一次出现。访问速度将会很快速。
+
+FText 用于做显示的字符串，内置了本地化。
+
+FString 能支持修改，消耗比上述的两种都要大。
+
+### 7.8 编译器相关技巧
+
+#### 7.8.1 废弃函数标记
+
+编译器会检测出一些警告。
+
+function Please update youre code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+
+#### 7.8.2 编译器指令实现跨平台
+
+虚幻提供了FPlatformMisc，包含了大量平台相关的工具函数。
+
+通过 typedef 切换编译期的平台切换。
+
+在Linux里面有 FLinuxPlatformMisc 。切换的时候，将写这样的一句话。
+
+typedef FLinuxPlatformMisc FPlatformMisc。
+
+### 7.9 Images
+
+ImagerWrapper 图片类型的抽象。
+
+包含完整RGBA(red green blue alpha)数据的图片，是没有压缩过的，和格式没有关系，称为RawData原生的数据。
+
+CompressedData会随着图片格式不同而不同。
+
+ImagerWrapper是对这两个的封装。
+
+
+# 第二部分 虚幻引擎浅析
+
+## 第8章 模块机制
+
+### 8.1 模块简介
+
+C++项目对外提供库的时候，需要管理include,lib目录。Debug/Release模式下的lib文件的管理。而且还需要编译不同平台下的库文件。
+
+在UE3的时候，使用MakeFile来模拟模块，UE4为了彻底解决这些问题，使用了Unreal Build Tool。
+
+### 8.2 创建自己的模块
+
+```bash
+模块名.Build.cs
+模块名.h
+模块名.cpp
+```
+
+引入模块
+
+工程名.Target.cs
+
+SetupBinaries 方法里面调用 AddRange 函数将模块引入。
+
+```cpp
+OutExtraModuleNames.AddRange( new string[]{
+  "pluginDev"
+});
+```
+
+插件名.uplugin
+
+文件里面写了关于插件相关的信息。文件格式是json。
+
+### 8.3 虚幻引擎初始化模块加载顺序
+
+本章就是列举了加载各种模块的顺序。
+
+
+### 8.4 UBT/UHT
+
+UBT=Unreal Build Tool
+
+UBT工作分为三个阶段：
+
+1. 收集阶段，将环境变量、UE源码目录，工程目录信息收集起来；
+2. 参数解析阶段，将传入的命令行参数，确定自己生成的目标类型；
+3. 实际生成阶段，根据环境、参数，开始生成makefile，确定C++的各种目录位置。开始构建项目。
+
+UHT=Unreal Header Tool
+
+UHT 配合实现了反射机制。
 
 # 注册虚幻引擎阅读权限
 
@@ -201,3 +331,4 @@ ue3框架是状态机制作的，还引入了Unreal Script脚本来扩展。在u
 - [2] [虚幻引擎官方-B站](https://space.bilibili.com/138827797?spm_id_from=333.788.b_765f7570696e666f.2)
 - [3] [虚幻引擎-知乎](https://www.zhihu.com/org/xu-huan-yin-qing-24)
 - [4] [虚幻引擎github](https://github.com/EpicGames/UnrealEngine)
+- [5] [图片格式列举](https://blog.csdn.net/m0_38106923/article/details/101937827)
