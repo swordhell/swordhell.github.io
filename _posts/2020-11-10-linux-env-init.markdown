@@ -18,6 +18,7 @@ tags:
   - [权限相关](#权限相关)
   - [备份数据库](#备份数据库)
 - [cygwin多次grep没有输出](#cygwin多次grep没有输出)
+- [WSL](#wsl)
 - [引用](#引用)
 
 记录一下Linux运维相关的学习资料；
@@ -404,6 +405,31 @@ tail -f log | grep --line-buffer xxx | grep --line-buffer yyy
 grep当带上了 --line-buffer 的时候，每输出一行，就刷新一次。
 
 在unix里，块设备和普通文件，以及管道都是全缓冲的。
+
+# WSL
+
+```powershell
+# WSL-Ubuntu18.04 LTS 重启方法
+# 以管理员权限运行cmd
+>net stop LxssManager	//停止
+>net start LxssManager	//启动
+
+# 将WSL搬家
+# 首先查看所有分发版本
+> wsl -l --all  -v
+# 导出分发版为tar文件到d盘
+> wsl --export Ubuntu-20.04 d:\ubuntu20.04.tar
+# 注销当前分发版
+> wsl --unregister Ubuntu-20.04
+# 重新导入并安装分发版在d:\ubuntu
+wsl --import Ubuntu-20.04 d:\ubuntu d:\ubuntu20.04.tar --version 2
+# 设置默认登陆用户为安装时用户名
+ubuntu2004 config --default-user Username
+# 删除tar文件(可选)
+del d:\ubuntu20.04.tar
+# 这个操作，完成之后我的WSL也从1升级到2了。
+# 升级了之后，WSL完全拥有独立的ip地址；
+```
 
 # 引用
 

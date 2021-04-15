@@ -13,6 +13,7 @@ tags:
 - [1.安装环境](#1安装环境)
 - [2.性能监控代码](#2性能监控代码)
 - [3.CPU性能查看](#3cpu性能查看)
+- [内存泄漏](#内存泄漏)
 - [3.引用](#3引用)
 
 # 1.安装环境
@@ -20,6 +21,16 @@ tags:
 ```bash
 go get -u github.com/google/pprof
 ```
+
+需要去下载一个绘图的库。
+
+[Grahpviz](http://www.graphviz.org/)
+
+.gv文件就是dot工具能读取，并且画图的文件格式。
+
+也推荐使用[Graphviz Interactive-VSCode插件](https://marketplace.visualstudio.com/items?itemName=tintinweb.graphviz-interactive-preview)
+
+[vscode-graphviz语法](https://marketplace.visualstudio.com/items?itemName=joaompinto.vscode-graphviz)
 
 # 2.性能监控代码
 
@@ -104,6 +115,17 @@ Serving web UI on http://localhost:8989
 
 [![rL0OV1.png](https://s3.ax1x.com/2020/12/30/rL0OV1.png)](https://imgchr.com/i/rL0OV1)
 
+# 内存泄漏
+
+```bash
+curl localhost:8000/debug/pprof/heap > heap.base
+curl localhost:8000/debug/pprof/heap > heap.current
+go tool pprof -http=:8080 -base heap.base heap.current
+
+    -diff_base source     Source of base profile for comparison
+    -base source          Source of base profile for profile subtraction
+```
+
 # 3.引用
 
 - [1] [火焰图工具网站](https://github.com/uber-archive/go-torch)
@@ -112,3 +134,4 @@ Serving web UI on http://localhost:8989
 - [4] [graphviz官网](http://graphviz.org/)
 - [5] [Go 大杀器之性能剖析 PProf](https://www.bookstack.cn/read/eddycjy-go/tools-go-tool-pprof.md)
 - [6] [qcachegrindwin下载地址](https://sourceforge.net/projects/qcachegrindwin/)
+- [7] [golang内存泄漏的排查记录](https://studygolang.com/articles/29812?fr=sidebar)

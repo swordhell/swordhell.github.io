@@ -322,6 +322,119 @@ UHT=Unreal Header Tool
 
 UHT 配合实现了反射机制。
 
+## 第9章 重要合行系统简介
+
+### 9.1 内存分配
+
+#### 9.1.1 Windows操作系统下的内存分配方案
+
+主要通过
+
+```cpp
+FMalloc* FWindowsPlatformMemory::BaseAllocator()
+
+#if ENABLE_WIN_ALLOC_TRACKING
+#if FORCE_ANSI_ALLOCATOR
+#elif WITH_EDITORONLY_DATA 
+```
+
+一共提供了Mallo（ANSI）、Intel TBB，以及Binned内存分配器。
+
+### 9.2 引擎初始化过程
+
+初始化过程一共两个
+
+PreInit/Init
+
+PreInit支持输出参数，CmdLine。
+
+设置好工作目录，游戏目录。
+
+初始化随机种子。
+
+设置输出标准设备。
+
+初始游戏主线程。
+
+会调用LoadCoreModules。CoreModules。
+
+之后会将PreInitModules会被加载起来，启动之后调用AppInit函数。
+
+Init
+
+所有模块都加载到内存中，如果有PostEngineInit函数，就会调用。过程由IProjectManager完成。
+
+主循环
+
+虚幻引擎，有一个EngineTick()。在主循环中最好不要调用繁重的任务，否则将会把游戏卡住。
+
+### 9.3 并行与并发
+
+测试代码一般文件名称为`模块名Test.cpp`。
+
+```cpp
+DEFINE_LOG_CATEGORY_STATIC(TestLog,Log,All);
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMultiThreadTest,"MyTest.PublicTest
+  .MultiThreadIest", EAutomationTestFlags::EditorContext |
+  EAutomationTestFlags::EngineFilter)
+bool FMultiThreadTest::RunTest(const FString& Parameters)
+```
+
+通过UE4菜单栏。
+
+Windows -> General -> Developer Tools -> Session Frontend
+
+打开“会话窗口”。
+
+点击"Start Tests"按钮，就可以在Message Output里面输出的日志。
+
+可以通过`FRunnableThread::Create(new FRunnableTestThread(0)`创建线程。就能开启多个线程。
+
+Task Graph系统
+
+将“指令”和“数据”封成一个包，然后交给Task Graph，Task Graph找到空闲的线程，去处理Task。
+
+虚幻引擎Rama，写过对于Task Graph的描述。
+
+Task Graph采用模板匹配，无需每个Task继承于指定的类，只要类将一些函数实现，就能让模板编译通过。`TGraphTask::CreateTask`。
+
+std::thread
+
+可以直接使用c++11的多线程。
+
+线程同步
+
+灵界区`FCriticalSection`。
+
+也提供了`std::future`，`std::promise`,`TFuture`, `TPromise`。
+
+多进程
+
+`Core.GenericPlatformProcess`可以看到`FGenericPlatformProcess`类的定义。可以通过管道进行数据交换。也将会返回`FProcHandle`子进程的句柄。
+
+## 第10章 对象模型
+
+本章主要讨论 UObject对象、组件对象和Actor对象。
+
+### 10.1 UObject
+
+创建：通过`NewObject<T>`产生。
+销毁：通过引擎的垃圾回收来销毁。
+
+创建过程分为两个步骤：
+
+1. 通过分配器将内存分配出来；
+
+使用`UObjectGlobals.GetPropertiesSize()`获取目标类的内存大小；
+
+使用`FUObjectAllocator.AllocateUObject()`分配内存；
+
+2. 使用这块内存调用new方法，构建对象出来；
+
+使用`PlacemenetNew`将分配好的内存区域调用UObjectBase构造函数
+
+对`UObject`提供UPackage存储读取逻辑。成员变量没有使用`UPROPERTY`宏标记，将不会序列化。
+
 # 注册虚幻引擎阅读权限
 
 可以登录到UE官网，开通github中，开源的UE源码阅读权限。
