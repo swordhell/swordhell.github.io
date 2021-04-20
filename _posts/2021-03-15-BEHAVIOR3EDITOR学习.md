@@ -374,6 +374,14 @@ if (vm.type === 'trees') {
       }
 ```
 
+https://blog.csdn.net/aerchi/article/details/106348750
+
+```txt
+A JavaScript error occured in the main process
+```
+
+无法启动electron的desktop版本。
+
 # 参考
 - [1] [Behavior3editor源码](https://github.com/magicsea/behavior3editor)
 - [2] [bowerrc配置项目](https://stackoverflow.com/questions/18359887/bower-proxy-configuration)
