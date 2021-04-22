@@ -166,10 +166,31 @@ Downloading electron-v0.34.2-linux-ia32.zip
 还需要安装：
 
 [electron_v0.30.4下载地址](https://github.com/electron/electron/releases/tag/v0.30.4)
+electron v0.34.2
 
 国内下载地址：
 
 [国内源](https://npm.taobao.org/mirrors/electron/0.34.2/)
+
+使用`electron v0.34.2`的时候，需要使用`Node 8.x`版本的node.js。最后发布时间：17-Dec-2019 07:08
+
+[下载页面](https://nodejs.org/dist/latest-v8.x/node-v8.17.0-x64.msi)
+
+```bat
+The Node version in "E:/electron-v0.34.2-win32-ia32/electron.exe" is outdated (version ), we require at least Node 8.x. Would you like to try debugging anyway?
+```
+
+electron里面调整界面都是通过html来制作的。
+
+`variables.less`文件里面`@size-sidebar: 500px;`修改了之后，可以让弹出框更加大。
+
+```json
+var stat = fs.statSync(subPath);
+if (!stat.isDirectory())
+{
+  fs.mkdirSync(subPath, { recursive: true });
+}
+```
 
 ### 文件占用
 

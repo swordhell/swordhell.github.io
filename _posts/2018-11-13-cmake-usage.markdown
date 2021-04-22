@@ -412,6 +412,14 @@ use clang compiler
 add_subdirectory(GameServer)
 ```
 
+命令行在windows里面生成工程。
+
+```bat
+mkdir build
+cd build
+cmake -G "Visual Studio 14 2015" ..
+```
+
 # 设置编译环境
 
 include *h path
