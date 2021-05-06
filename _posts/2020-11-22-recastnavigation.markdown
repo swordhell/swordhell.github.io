@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "recastnavigation"
-subtitle: 'recastnavigation熟悉'
+title: "Recast-入门"
+subtitle: 'Recast-入门'
 author: "Abel"
 header-style: text
 tags:
@@ -9,9 +9,9 @@ tags:
   - Game
 ---
 
-recastnavigation 在做3d游戏的时候，用于做导航的。当前使用 unreal 4.25
+Recast-Navigation 在做3d游戏的时候，用于做导航的在Unity3D、Unreal Engine都可以使用。当前使用 unreal 4.25
 
-# 1.recastnavigation工程
+# 1. Recast工程介绍
 
 RecastNavigation 是一个的导航寻路工具集，它包括了几个子集：
 
@@ -115,14 +115,14 @@ Build Times
 
 | 名称    | 下载地址                                                                                                           |
 | :------ | :----------------------------------------------------------------------------------------------------------------- |
-| SDL     | [https://www.libsdl.org/release/SDL2-devel-2.0.14-VC.zip](https://www.libsdl.org/release/SDL2-devel-2.0.14-VC.zip) |
-| premake | [https://premake.github.io/](https://premake.github.io/)                                                           |
+| SDL     | [SDL2-devel-2.0.14-VC.zip](https://www.libsdl.org/release/SDL2-devel-2.0.14-VC.zip) |
+| premake | [premake.github](https://premake.github.io/)                                                           |
 
 ### 2.1.2.准备好SDL2的dll
 
 将下载的SDL2.dll文件放入到子目录中：
 
-```
+```bat
 recastnavigation\RecastDemo\Contrib\SDL\lib\x84\SDL2.dll
 ```
 
@@ -156,8 +156,9 @@ Generated Build/vs2019/Tests.vcxproj.filters...
 Done (225ms).
 ```
 
-工程属性->生成事件->命令行；将这个去掉吧
-```
+工程属性->生成事件->命令行；将下面部分去掉
+
+```bat
 1>找不到文件 - SDL2.dll
 1>C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(153,5): error MSB3073: 命令“IF EXIST "..\..\Contrib\SDL\lib\x86\SDL2.dll"\ (xcopy /Q /E /Y /I "..\..\Contrib\SDL\lib\x86\SDL2.dll" "..\..\Bin" > nul) ELSE (xcopy /Q /Y /I "..\..\Contrib\SDL\lib\x86\SDL2.dll" "..\..\Bin" > nul)
 1>C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(153,5): error MSB3073: :VCEnd”已退出，代码为 4。
@@ -194,7 +195,7 @@ recastnavigation中提供了3种模式的导航网格：
 
 ## 3.1.SoloMesh
 
-其中SoloMesh模式是静态的导航网格，即对场景build一次之后，将导航网格缓存起来供寻路使用，后续不再允许场景的地形发生变化
+其中SoloMesh模式是静态的导航网格，即对场景build一次之后，将导航网格缓存起来供寻路使用，后续不再允许场景的导航信息发生变化。
 
 文件头：
 
@@ -242,7 +243,7 @@ Sample::saveAll("all_tiles_navmesh.bin", m_navMesh);
 
 ## 3.3.TempObstacles
 
-TempObstacles模式可以支持向场景中动态添加或移除预设形状的阻挡物，导航网格也会随之更新（不过只支持添加阻挡物，而不支持添加新的可行走区域）在处理动态阻挡时，由于单个阻挡对地图的影响区域是有限的，所以会采用将地图切割成多个固定大小的tile，以tile为单位进行网格的生成。这样在添加或移除阻挡时，只需要处理与阻挡相交的tile，而不需要处理整个地图
+TempObstacles模式可以支持向场景中动态添加或移除预设形状的阻挡物，导航网格也会随之更新（不过只支持添加阻挡物，而不支持添加新的可行走区域）在处理动态阻挡时，由于单个阻挡对地图的影响区域是有限的，所以会采用将地图切割成多个固定大小的tile，以tile为单位进行网格的生成。这样在添加或移除阻挡时，只需要处理与阻挡相交的tile，而不需要处理整个地图。
 
 ```cpp
 static const int TILECACHESET_MAGIC = 'T' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'TSET';

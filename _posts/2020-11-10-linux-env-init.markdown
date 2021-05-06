@@ -18,6 +18,7 @@ tags:
   - [权限相关](#权限相关)
   - [备份数据库](#备份数据库)
 - [cygwin多次grep没有输出](#cygwin多次grep没有输出)
+- [ubuntu无法更新](#ubuntu无法更新)
 - [WSL](#wsl)
 - [引用](#引用)
 
@@ -179,14 +180,14 @@ echo "/home/cores/core-%e-%p-%t" > /proc/sys/kernel/core_pattern
 
 设置ulimit
 
-```
+```bash
 ulimit -n 65535  
 ulimit -c unlimited
 ```
 
 centos yum proxy
 
-```
+```bash
 /etc/yum.conf
 proxy=http://代理服务器IP地址:端口号
 proxy=http://代理服务器IP地址:端口号
@@ -264,15 +265,16 @@ prog_mem=$(pidstat  -r -u -h -C $prog_name |awk 'NR==4{print $12}')
 time=$(date "+%Y-%m-%d %H:%M:%S")
 echo $time"\tmemory(Byte)\t"$prog_mem >>~/record/prog_mem.log
 
-抓取某个进程的内存使用情况；
+# 抓取某个进程的内存使用情况；
+# 每2秒钟检测一次，持续5秒
+$ pidstat -r -u -h -C Level 2 5
 
-pidstat -r -u -h -C Level 2 5
 
-每2秒钟检测一次，持续5秒
 
-CentOS7 如何升级Git
 
-启用Wandisco GIT存储库，在此之前我们先写入新yum存储库配置文件，在终端输入：
+# CentOS7 如何升级Git
+
+# 启用Wandisco GIT存储库，在此之前我们先写入新yum存储库配置文件，在终端输入：
 vim /etc/yum.repos.d/wandisco-git.repo
 
 [wandisco-git]
@@ -285,10 +287,14 @@ gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
 # 导入存储库GPG密钥
 rpm --import http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
 
+
 # 安装：
+
 yum install git
 
+
 # 安装文档输出；
+
 sudo apt install graphviz
 
 ```
@@ -405,6 +411,14 @@ tail -f log | grep --line-buffer xxx | grep --line-buffer yyy
 grep当带上了 --line-buffer 的时候，每输出一行，就刷新一次。
 
 在unix里，块设备和普通文件，以及管道都是全缓冲的。
+
+# ubuntu无法更新
+
+```bash
+The following packages have unmet dependencies
+```
+
+后来我把阿里源换回Ubuntu原生的源就可以安装了，因为阿里源的包太新。[转载原文](https://www.cnblogs.com/willaty/p/9522591.html)
 
 # WSL
 
