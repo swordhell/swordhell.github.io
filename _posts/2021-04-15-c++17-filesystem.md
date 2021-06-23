@@ -45,5 +45,12 @@ output:
 "sandbox/file2.txt"
 ```
 
+## 获取文件名
+
+```cpp
+		auto log_path = fs::absolute(log_path_).string();
+		auto logger_name = fs::path(log_path).stem().string();
+```
+
 # 引用
 - [1][Filesystem library](https://en.cppreference.com/w/cpp/filesystem)

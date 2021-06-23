@@ -110,6 +110,10 @@ print(server.supervisor.getState())
 print(server.supervisor.startAllProcesses())
 ```
 
+# supervisord-monitor
+
+[参考文档-monitor](https://github.com/mlazarov/supervisord-monitor)
+
 # 参考
 - [1] [Supervisor 使用详解](https://www.jianshu.com/p/0b9054b33db3)
 - [2] [Supervisor官网](http://supervisord.org/)

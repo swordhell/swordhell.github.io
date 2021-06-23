@@ -420,6 +420,19 @@ cd build
 cmake -G "Visual Studio 14 2015" ..
 ```
 
+设定windows下的输出目录
+
+[设置变量](https://www.cnblogs.com/pandamohist/p/14502789.html)
+
+```bat
+		# 指定可执行程序输出目录
+		set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG 	${publish_bin_debug})
+		set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE 	${publish_bin_release})
+    		# 指定 库文件输出目录
+		set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG 	${publish_lib_debug})
+		set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RLEASE 	${publish_lib_release})
+```
+
 # 设置编译环境
 
 include *h path
@@ -517,3 +530,4 @@ windows常用的编译选项
 
   target_link_libraries(client ws2_32.lib)
 ```
+

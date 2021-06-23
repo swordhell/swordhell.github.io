@@ -26,7 +26,26 @@ tags:
 
 # Centos
 
+安装完，可以直接将`/etc/sysconfig/network-scripts/ifcfg-xxx`此选项打开`ONBOOT=yes`。这样一般都能上网了。
+
+EPEL (Extra Packages for Enterprise Linux)是基于Fedora的一个项目，为“红帽系”的操作系统提供额外的软件包，适用于RHEL、CentOS和Scientific Linux.如果不安装这个库，将会少了很多的软件包。`yum -y install epel-release`
+
+可以安装一下`zsh`，`autojump`，`autojump-zsh`，`oh-my-zsh`。自从2019年之后，`mac`就默认使用`zsh`代替了`bash`。
+
+`git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh`
+
+安装了`zsh`之后，可以通过执行`chsh`来设置成默认的shell。安装完成之后xshell工具的home键无法使用。可以通过在zshrc文件里面添加这些内容
+
 ```bash
+bindkey '\e[1~' beginning-of-line
+bindkey '\e[4~' end-of-line
+```
+
+参考文档[home-end-keys-in-zsh-dont-work-with-putty](https://stackoverflow.com/questions/161676/home-end-keys-in-zsh-dont-work-with-putty)
+
+常用的软件：
+
+```sh
 yum install -y wget git screen libtool automake
 yum install zlib-devel -y
 yum install centos-release-scl
@@ -35,6 +54,9 @@ yum install devtoolset-7-gcc-c++ -y
 yum install llvm-toolset-7 -y
 yum install cmake -y
 yum install python3-devel
+
+# 网路分析工具
+yum install tcpdump
 
 # 安装gcc调试信息
 debuginfo-install gcc
@@ -137,6 +159,10 @@ netstat -tnlp
 
 # Linux系统设置
 
+# 修改时区
+
+cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
 locale设置
 
 ```
@@ -183,6 +209,14 @@ echo "/home/cores/core-%e-%p-%t" > /proc/sys/kernel/core_pattern
 ```bash
 ulimit -n 65535  
 ulimit -c unlimited
+
+# 直接修改这个文件，在这个文件尾部放入3行
+vi /etc/security/limits.conf
+
+* soft nofile 65535
+* hard nofile 65535
+* soft core unlimited
+
 ```
 
 centos yum proxy
@@ -444,6 +478,22 @@ del d:\ubuntu20.04.tar
 # 这个操作，完成之后我的WSL也从1升级到2了。
 # 升级了之后，WSL完全拥有独立的ip地址；
 ```
+
+```bash
+Linux找出全部可执行文件，并且删除掉。
+ls -F|grep '*' | sed 's#*##g' | xargs rm
+参考网站： https://www.cnblogs.com/binyue/p/4707948.html
+
+```
+
+[GPG生成](https://www.freesion.com/article/6352795169/)
+
+```bash
+We need to generate a lot of random bytes
+# 通过 yum install rng-tools完成安装。
+# 之后再执行命令：rngd -r /dev/urandom，生成**就能瞬间完成了。
+```
+
 
 # 引用
 

@@ -367,7 +367,7 @@ fs.mkdir(subPath, { recursive: true }, function(err) {});
 
 ```
 
-导出部分代码：
+导出部分代码， export.controller.js function save()
 
 ```js
 if (vm.type === 'trees') {
@@ -402,6 +402,65 @@ A JavaScript error occured in the main process
 ```
 
 无法启动electron的desktop版本。
+
+在代码里面有一份尝试创建目录的代码：
+
+```js
+  function _createIfNonExist(path) {
+    try {
+      var s = nodejsService.fs.statSync(path);
+    } catch (e) {
+      nodejsService.fs.mkdirSync(path);
+    }
+  }
+```
+
+弹出框是通过 notification.service.js function _note(config)
+
+里面的html可以定义这套显示的东西。
+
+```js
+    var DEFAULT = {
+      type    : 'default',
+      title   : '',
+      message : '',
+      icon    : false,
+      delay   : 10000, // 将显示的时间延长
+    };
+```
+
+```html
+  <div class="notification-message" style=" width:590px;
+  // 调整显示区域；
+```
+
+界面还是通过 class 来做渲染，使用了 less 决定了界面样式。
+
+最后使用的文件为 c_notification.less 文件。
+
+```less
+  // 决定了宽度
+  width: @size-sidebar+@icon-size;
+  // 将这个数据从 200px -> 1000px
+  @add-ntf-size : 1000px;
+
+  // 对这些地方增加宽度
+  width: @size-sidebar+@icon-size+-@add-ntf-size;
+  right: -@size-sidebar+-@icon-size+-@add-ntf-size;
+```
+
+最近将node.js版本降级到  v8.17.0 结果不能支持迭代创建目录了。尝试将版本升级到 v10.x 再来尝试，果然好了。
+
+```js
+var fs = require('fs');
+var subPath='E:/work_client/server/res/ai/base/SubTree/';
+
+// subPath
+fs.mkdir(subPath, { recursive: true }, function(err) {
+    console.log(err)
+});
+
+```
 
 # 参考
 - [1] [Behavior3editor源码](https://github.com/magicsea/behavior3editor)

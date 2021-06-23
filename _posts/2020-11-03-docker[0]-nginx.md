@@ -177,6 +177,12 @@ docker run --name yzgmweb -d -p 35981:8088 \
 # 扩展
 后续如果有时间，可以再去研究一下 docker compose & swarm；dockerfile之类的东西。再做记录。
 
+# 修改docker ulimit
+
+[How to increase number of open files limit]](https://mtyurt.net/post/docker-how-to-increase-number-of-open-files-limit.html)
+
+docker run --ulimit nofile=90000:90000 <image-tag>
+
 # 引用
 - [官方网站](https://www.docker.com/)
 - [菜鸟入门](https://www.runoob.com/docker/docker-tutorial.html)
