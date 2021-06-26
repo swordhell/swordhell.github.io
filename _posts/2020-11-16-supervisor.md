@@ -69,6 +69,8 @@ user=teamcityagent
 
 ```
 
+这里可以指定是否出现问题之后直接重启。
+
 # 问题
 
 ```bash

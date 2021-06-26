@@ -174,6 +174,16 @@ docker run --name yzgmweb -d -p 35981:8088 \
 - -p 8080:80： 端口进行映射，将本地 8080 端口映射到容器内部的 80 端口。
 - -v ~/nginx/conf/nginx.conf:/etc/nginx/nginx.conf 将本地文件映射到容器内部。
 
+
+```bash
+➜  ~ docker run -d -p 6381:6379 --name redis-9 -d redis
+16c1db84bc5156c099bf476e83d1951398615e2819c94cfdf041ec8fd5c37284
+➜  ~ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+16c1db84bc51   redis     "docker-entrypoint.s…"   5 seconds ago   Up 3 seconds   0.0.0.0:6381->6379/tcp, :::6381->6379/tcp   redis-9
+6af8e5268b90   redis     "docker-entrypoint.s…"   6 days ago      Up 6 days      0.0.0.0:6380->6379/tcp, :::6380->6379/tcp   redis-10
+```
+
 # 扩展
 后续如果有时间，可以再去研究一下 docker compose & swarm；dockerfile之类的东西。再做记录。
 
