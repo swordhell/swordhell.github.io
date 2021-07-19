@@ -43,6 +43,10 @@ bindkey '\e[4~' end-of-line
 
 参考文档[home-end-keys-in-zsh-dont-work-with-putty](https://stackoverflow.com/questions/161676/home-end-keys-in-zsh-dont-work-with-putty)
 
+有时候会升级失败，这个还是由于git访问不流畅造成。
+1. 先将本地的oh my zsh目录找到，通过git pull直接拉取最新的版本；
+2. 执行这个指令 upgrade_oh_my_zsh 就能将版本升级好了。
+
 常用的软件：
 
 ```sh

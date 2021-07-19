@@ -7,7 +7,18 @@ header-style: text
 tags:
   - 运维
 ---
+
 学习docker
+
+- [简介](#简介)
+- [安装](#安装)
+- [基本操作](#基本操作)
+- [安装mysql](#安装mysql)
+- [安装nginx](#安装nginx)
+- [扩展](#扩展)
+- [修改docker ulimit](#修改docker-ulimit)
+- [安装mysql](#安装mysql-1)
+- [引用](#引用)
 
 # 简介
 
@@ -73,28 +84,32 @@ $ sudo yum install docker-ce docker-ce-cli containerd.io
 # 基本操作
 
 - 运行一个容器
-```
+
+```bash
 docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
 ```
 
 - 查询容器
-```
+
+```bash
 docker ps -a
 ```
 
 - 使用 docker start 启动一个已停止的容器：
-```
+
+```bash
 docker start b750bbbcfd88
 ```
 
 - 后台运行 （增加-d的指令）
-```
+
+```bash
 docker run -itd --name ubuntu-test ubuntu /bin/bash
 ```
 
 - 停止一个容器
 
-```
+```bash
 docker stop <容器 ID>
 ```
 - 进入容器
@@ -103,35 +118,38 @@ docker attach 如果从这个容器退出，会导致容器的停止。
 
 docker exec：推荐大家使用 docker exec 命令，因为此退出容器终端，不会导致容器的停止。
 
-```
+```bash
 docker attach 1e560fca3906 
 docker exec -it 243c32535da7 /bin/bash
 ```
 
 - 导出和导入容器
 
-```
+```bash
 docker export 1e560fca3906 > ubuntu.tar
 ```
 
 - 导入容器快照
+
 ```
 cat docker/ubuntu.tar | docker import - test/ubuntu:v1
 ```
 
 - 下面的命令可以清理掉所有处于终止状态的容器。
+
 ```
 docker container prune
 ```
+
 更多指令可以后续补充
 
 # 安装mysql
-> [参考菜鸟入门mysql安装](https://www.runoob.com/docker/docker-install-mysql.html) 
 
+> [参考菜鸟入门mysql安装](https://www.runoob.com/docker/docker-install-mysql.html) 
 > [使用Docker搭建MySQL服务](https://www.cnblogs.com/sablier/p/11605606.html)
 
 
-```
+```bash
 # 拉取mysql5.7版本
 docker pull mysql:5.7   # 拉取 mysql 5.7
 # 检查版本
@@ -139,6 +157,7 @@ docker images
 # 启动mysql
 docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
 ```
+
 - -–name：容器名，此处命名为mysql
 - -e：配置信息，此处配置mysql的root用户的登陆密码
 - -p：端口映射，此处映射 主机3306端口 到 容器的3306端口
@@ -146,6 +165,7 @@ docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
 
 # 安装nginx
 ```
+
 # 拉取版本
 docker pull nginx:latest
 # 检查版本
@@ -153,6 +173,7 @@ docker images
 # 启动docker中的nginx
 docker run --name nginx-test -p 8080:80 -d nginx
 ```
+
 - --name nginx-test：容器名称。
 - -p 8080:80： 端口进行映射，将本地 8080 端口映射到容器内部的 80 端口。
 - -d nginx： 设置容器在在后台一直运行。
@@ -160,6 +181,7 @@ docker run --name nginx-test -p 8080:80 -d nginx
 可能需要去修改nginx里面的配置项目，我需要将这个服务器端口映射出来。
 [docker 安装nginx 并部署](https://blog.csdn.net/ddhsea/article/details/92203713。
 里面有3个步骤
+
 ```
 # 在自己目录下创建这些文件夹
 mkdir -p ~/nginx/www ~/nginx/logs ~/nginx/conf
@@ -171,6 +193,7 @@ docker run --name yzgmweb -d -p 35981:8088 \
     -v /root/nginx/www:/usr/share/nginx/html\
     -v /root/nginx/logs:/var/log/nginx -d docker.io/nginx
 ```
+
 - -p 8080:80： 端口进行映射，将本地 8080 端口映射到容器内部的 80 端口。
 - -v ~/nginx/conf/nginx.conf:/etc/nginx/nginx.conf 将本地文件映射到容器内部。
 
@@ -192,6 +215,16 @@ CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS        
 [How to increase number of open files limit]](https://mtyurt.net/post/docker-how-to-increase-number-of-open-files-limit.html)
 
 docker run --ulimit nofile=90000:90000 <image-tag>
+
+# 安装mysql
+
+设置docker的子目录
+
+```bash
+docker run -d -p 3307:3306 --name my_mariadb -v /data/mariadb/data/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root mariadb:lastest
+```
+
+将本地端口 3307 映射到 docker 端口 3306
 
 # 引用
 - [官方网站](https://www.docker.com/)

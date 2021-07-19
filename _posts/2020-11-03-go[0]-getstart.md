@@ -36,6 +36,12 @@ export PATH=$PATH:/usr/local/go/bin
 ```
 GOPATH=D:\work\gopath
 export GOPROXY=https://goproxy.io,https://goproxy.cn,direct
+# 配置 GOPROXY 环境变量
+export GOPROXY=https://goproxy.io,direct
+# 还可以设置不走 proxy 的私有仓库或组，多个用逗号相隔（可选）
+export GOPRIVATE=git.mycompany.com,github.com/my/private
+$ export GO111MODULE=on
+$ export GOPROXY=https://goproxy.cn
 ```
 
 ## 参考
@@ -51,36 +57,37 @@ tar -xf ./go.1.xxx.tar.gz -C /usr/local
 
 ###### go build
 
-参数 | 说明 | 示例 |
----|---|---
--o | 可执行文件名| |
--a | 强制重编译所有包()包含标准库| |
--p|并行编译使用CPU核心数||
--v|显示等待编译包名||
--n|显示编译命令，但不执行||
--x|显示正在执行的编译命令||
--work|显示临时工作目录，完成后不删除|
--race|启动数据竞争检查（旨在amd64||
--gcflags |编译器参数||
--ldflags |链接器参数||
+| 参数     | 说明                           | 示例 |
+| -------- | ------------------------------ | ---- |
+| -o       | 可执行文件名                   |      |
+| -a       | 强制重编译所有包()包含标准库   |      |
+| -p       | 并行编译使用CPU核心数          |      |
+| -v       | 显示等待编译包名               |      |
+| -n       | 显示编译命令，但不执行         |      |
+| -x       | 显示正在执行的编译命令         |      |
+| -work    | 显示临时工作目录，完成后不删除 |
+| -race    | 启动数据竞争检查（旨在amd64    |      |
+| -gcflags | 编译器参数                     |      |
+| -ldflags | 链接器参数                     |      |
+| -race    | 开启DATA RACE检测              |      |
 
 编译器选项
-参数|说明
----|---
--B | 禁用越界检查
--N| 禁用优化
--l | 禁用内联
--u | 禁用unsafe
--S | 输出汇编代码
--m | 输出优化信息
+| 参数 | 说明         |
+| ---- | ------------ |
+| -B   | 禁用越界检查 |
+| -N   | 禁用优化     |
+| -l   | 禁用内联     |
+| -u   | 禁用unsafe   |
+| -S   | 输出汇编代码 |
+| -m   | 输出优化信息 |
 
 ldflags:
-参数|说明
----|---
--s | 禁用符号表
--w | 禁用DRAWF调试信息
--X | 设置字符串全局变量值   -X ver="0.99"
--H | 设置可执行文件格式 -H windowsgui
+| 参数 | 说明                                 |
+| ---- | ------------------------------------ |
+| -s   | 禁用符号表                           |
+| -w   | 禁用DRAWF调试信息                    |
+| -X   | 设置字符串全局变量值   -X ver="0.99" |
+| -H   | 设置可执行文件格式 -H windowsgui     |
 
 详细参数可以通过
 go tool compile -h
@@ -96,15 +103,15 @@ src/cmd/go/pkg.go
 
 ###### go get
 下载第三方包到GOPATH列表中第一个工作目录。
-参数|说明
----|---
--d | 仅下载，不安装
--u | 更新包，包括其依赖项
--f | 和-u配合，强制更新，不检测过期与否
--t | 下载测试代码所需的依赖包
--insecure | 使用HTTP非安全协议
--v | 输出详细信息verbose
--x | 显示正在执行的命令
+| 参数      | 说明                               |
+| --------- | ---------------------------------- |
+| -d        | 仅下载，不安装                     |
+| -u        | 更新包，包括其依赖项               |
+| -f        | 和-u配合，强制更新，不检测过期与否 |
+| -t        | 下载测试代码所需的依赖包           |
+| -insecure | 使用HTTP非安全协议                 |
+| -v        | 输出详细信息verbose                |
+| -x        | 显示正在执行的命令                 |
 
 ###### go env
 显示全部环境变量
@@ -145,15 +152,16 @@ set GOGCCFLAGS=-m64 -mthreads -fno-caret-diagnostics -Qunused-arguments -fmessag
 
 ###### go clean
 清理工作目录，伤处编译和安装遗留的目标文件
-参数|说明
----|---
--i | 清理go install 安装的文件
--r | 递归清理所有依赖包
--x | 显示在执行的清理操作
--n | 仅显示清理命令，不执行
+| 参数 | 说明                      |
+| ---- | ------------------------- |
+| -i   | 清理go install 安装的文件 |
+| -r   | 递归清理所有依赖包        |
+| -x   | 显示在执行的清理操作      |
+| -n   | 仅显示清理命令，不执行    |
 
 ###### 编译
-如果喜欢使用gdb调试，一般需要使用 -gcflags "-N-l"阻止优化和内联，否则调试的时候会找不到调试信息。
+
+如果喜欢使用gdb调试，一般需要使用 -gcflags "-N -l"阻止优化和内联，否则调试的时候会找不到调试信息。
 当发布是，参数-ldflags "-w-s"会让连机器剔除掉符号表和调试信息，除了可以减少可执行文件的大小外，还能稍微增加反编译的难度。可以借助工具来对可执行文件进行减肥upx 
 
 ###### 交叉编译
@@ -170,13 +178,16 @@ go build
 ```
 
 跨平台编译需要下载一些库。
-```
+
+```bash
 https://github.com/golang/crypto.git
 https://github.com/golang/net.git
 https://github.com/golang/sys.git
 https://github.com/golang/tools.git
 ```
+
 解压缩之后放到这个目录下：
+
 ```
 $GOPATH/src/golang.org/x
 ```
