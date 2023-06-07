@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介记录golang的程序结构相关知识。包括函数、包管理、基本的流程控制（for,defer,panic recover等等）。go语言中也存在函数参数的值传递，引用传递。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go[1]-程序结构">
+<meta property="og:url" content="https://swordhell.github.io/2020/11/03/go[1]-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="简介记录golang的程序结构相关知识。包括函数、包管理、基本的流程控制（for,defer,panic recover等等）。go语言中也存在函数参数的值传递，引用传递。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s3.ax1x.com/2020/11/20/DM5bm4.png">
+<meta property="article:published_time" content="2020-11-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.075Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s3.ax1x.com/2020/11/20/DM5bm4.png">
+
+<link rel="canonical" href="https://swordhell.github.io/2020/11/03/go[1]-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>go[1]-程序结构 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/03/go[1]-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          go[1]-程序结构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-03T00:00:00+08:00">2020-11-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>记录golang的程序结构相关知识。包括函数、包管理、基本的流程控制（for,defer,panic recover等等）。go语言中也存在函数参数的值传递，引用传递。</p>
+<span id="more"></span>
+<p>函数是对一系列语句打包的单元。</p>
+<h3 id="1-函数定义"><a href="#1-函数定义" class="headerlink" title="1.函数定义"></a>1.函数定义</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">name</span><span class="params">(parameter-list)</span></span>(result-list) &#123;</span><br><span class="line">    body</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>能支持多返回值，或者无返回值。匿名函数是指的没有名字的函数。函数可以成为一个结构体字段，也能成为通道来传递。<br>匿名函数是一种常见的重构手段。可以将大函数分解成多个相对独立的匿名函数块，这样主干部分的调用函数将会更加简洁，做到框架和细节分离。</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/go/go-functions.html">函数参数传递</a></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">传递类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">值传递</td>
+<td style="text-align:left">值传递是指在调用函数时将实际参数复制一份传递到函数中，这样在函数中如果对参数进行修改，将不会影响到实际参数。</td>
+</tr>
+<tr>
+<td style="text-align:left">引用传递</td>
+<td style="text-align:left">引用传递是指在调用函数时将实际参数的地址传递到函数中，那么在函数中对参数所进行的修改，将影响到实际参数。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>默认情况下，Go 语言使用的是值传递，即在调用过程中不会影响到实际参数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 定义相互交换值的函数 */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">swap</span><span class="params">(x, y <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">   <span class="keyword">var</span> temp <span class="type">int</span></span><br><span class="line"></span><br><span class="line">   temp = x <span class="comment">/* 保存 x 的值 */</span></span><br><span class="line">   x = y    <span class="comment">/* 将 y 值赋给 x */</span></span><br><span class="line">   y = temp <span class="comment">/* 将 temp 值赋给 y*/</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 定义交换值函数*/</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">swap</span><span class="params">(x *<span class="type">int</span>, y *<span class="type">int</span>)</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> temp <span class="type">int</span></span><br><span class="line">   temp = *x    <span class="comment">/* 保持 x 地址上的值 */</span></span><br><span class="line">   *x = *y      <span class="comment">/* 将 y 值赋给 x */</span></span><br><span class="line">   *y = temp    <span class="comment">/* 将 temp 值赋给 y */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="comment">/* 定义局部变量 */</span></span><br><span class="line">   <span class="keyword">var</span> a <span class="type">int</span> = <span class="number">100</span></span><br><span class="line">   <span class="keyword">var</span> b <span class="type">int</span>= <span class="number">200</span></span><br><span class="line"></span><br><span class="line">   fmt.Printf(<span class="string">&quot;交换前，a 的值 : %d\n&quot;</span>, a )</span><br><span class="line">   fmt.Printf(<span class="string">&quot;交换前，b 的值 : %d\n&quot;</span>, b )</span><br><span class="line"></span><br><span class="line">   <span class="comment">/* 调用 swap() 函数</span></span><br><span class="line"><span class="comment">   * &amp;a 指向 a 指针，a 变量的地址</span></span><br><span class="line"><span class="comment">   * &amp;b 指向 b 指针，b 变量的地址</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">   swap(&amp;a, &amp;b)</span><br><span class="line"></span><br><span class="line">   fmt.Printf(<span class="string">&quot;交换后，a 的值 : %d\n&quot;</span>, a )</span><br><span class="line">   fmt.Printf(<span class="string">&quot;交换后，b 的值 : %d\n&quot;</span>, b )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">swap</span><span class="params">(x *<span class="type">int</span>, y *<span class="type">int</span>)</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> temp <span class="type">int</span></span><br><span class="line">   temp = *x    <span class="comment">/* 保存 x 地址上的值 */</span></span><br><span class="line">   *x = *y      <span class="comment">/* 将 y 值赋给 x */</span></span><br><span class="line">   *y = temp    <span class="comment">/* 将 temp 值赋给 y */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-匿名函数"><a href="#2-匿名函数" class="headerlink" title="2.匿名函数"></a>2.匿名函数</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">(x <span class="type">int</span>)</span></span><span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        fmt.Println(x)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    f := test(<span class="number">123</span>)</span><br><span class="line">    f()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过匿名函数将变量123缓存再函数中。最后调用的时候，可以很方便的将123输出。</p>
+<blockquote>
+<p>警告：捕获迭代变量Go词法作用于陷阱。即使经验丰富程序员也会在这个问题上犯错误。</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> rmdirs []<span class="function"><span class="keyword">func</span><span class="params">()</span></span></span><br><span class="line"><span class="keyword">for</span> _,d := <span class="keyword">range</span> tempDirs() &#123;</span><br><span class="line">    dir := d</span><br><span class="line">    os.MkdirAll(dir,<span class="number">0755</span>)</span><br><span class="line">    rmdirs = <span class="built_in">append</span>(rmdirs,<span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">        os.RemoveAll(dir)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> _,rmdir := <span class="keyword">range</span>(rmdirs&#123;</span><br><span class="line">     rmdir()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为啥要将d重新赋值成dir？原因就在循环变量中的作用域。如果直接使用d将会删除的相同的目录。这样的问题在使用defer语句也有相同问题。</p>
+<h3 id="3-延迟调用"><a href="#3-延迟调用" class="headerlink" title="3.延迟调用"></a>3.延迟调用</h3><p>defer语句是指注册一个函数，再稍后调用。一般用于资源释放，解锁，错误处理等操作。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span> <span class="params">()</span></span> &#123;</span><br><span class="line">f,err :=os.Open(<span class="string">&quot;./main.go&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> err !=<span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;err&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">defer</span> f.<span class="built_in">close</span>() <span class="comment">// 提前注册释放</span></span><br><span class="line"><span class="comment">// 文件读写</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>延时调用遵循FILO，堆栈式的调用。简单理解就是先进后出。<br>错误的用法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">for</span> I := <span class="number">0</span>; I&lt;<span class="number">1000000</span>; I++ &#123;</span><br><span class="line">        path := fmt.Sprintf(<span class="string">&quot;./log/%d.txt&quot;</span>,i)</span><br><span class="line">        f, err := os.Open(path)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            fmt.Println(err)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">defer</span> f.<span class="built_in">close</span>() <span class="comment">// 其实要等到这个循环全部做完，才会调用的</span></span><br><span class="line">        <span class="comment">// 操作文件</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种情况，应该将操作文件的部分封装成小函数，避免再循环过程中，直接使用defer。<br>性能方面，defer方式需要花掉比较大的代价。</p>
+<h3 id="4-错误处理"><a href="#4-错误处理" class="headerlink" title="4.错误处理"></a>4.错误处理</h3><p>调侃go的人，说错误处理有些返祖。”stuck in 70’s”。<br>提供了error的接口。<br><code>err := errors.New(&quot;division by zero&quot;)</code><br>这样就能构造一个出来。有经验的程序员一般都会对错误做一些预计的处理。函数如果返回类型为error时候，都需要判断一下错误信息是否为空。</p>
+<h3 id="5-panic-recover"><a href="#5-panic-recover" class="headerlink" title="5.panic recover"></a>5.panic recover</h3><p>类似于exception/try/catch结构化异常。函数原型如下。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">panic</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">recover</span><span class="params">()</span></span> <span class="keyword">interface</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>他们是内置函数，不是语句。panic将会终端当前流程（如：数组访问越界、空指针引用），并且触发defer的调用。在延时调用中可以通过recover捕获其中的报错。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">       <span class="keyword">if</span> err := <span class="built_in">recover</span>(); err!=<span class="literal">nil</span> &#123;</span><br><span class="line">          fmt.Println(err)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>recover必须在panic触发之后才能捕获到错误，而且只能在延时调用函数中才能工作。不能在函数内部直接使用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">catch</span><span class="params">()</span></span> &#123;</span><br><span class="line">      log.Println(<span class="string">&quot;catch:&quot;</span>,<span class="built_in">recover</span>())</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">      <span class="keyword">defer</span> catch() <span class="comment">// 捕获</span></span><br><span class="line">      <span class="keyword">defer</span> log.Println(<span class="built_in">recover</span>())<span class="comment">// 失败</span></span><br><span class="line">      <span class="keyword">defer</span> <span class="built_in">recover</span>() <span class="comment">// 失败</span></span><br><span class="line">      <span class="built_in">panic</span>(<span class="string">&quot;i am dead&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调试期间可以使用 runtime/debug.PrintStack。获取完整的堆栈信息。将会输出到标准错误日志中。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PrintStack prints to standard error the stack trace returned by runtime.Stack.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">PrintStack</span><span class="params">()</span></span> &#123;</span><br><span class="line">    os.Stderr.Write(Stack())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用panic的时候，建议是遇到了不可恢复、导致系统无法运行的错误，否则不要使用。服务器端口占用、文件无法打开、数据库未启动。这种错误超出了程序员的控制的。程序必须停止的情况。</p>
+<h3 id="6-错误处理策略"><a href="#6-错误处理策略" class="headerlink" title="6.错误处理策略"></a>6.错误处理策略</h3><p>1.将错误信息上报给调用者，并且添加额外的上下文信息；错误信息最好能描述出问题的需要的参数；<br>2.如果错误是偶发的，或者是不可预计问题导致。我们需要构造有限次数的重试机制，避免无限制的重试；<br>3.出现错误之后，程序其实已经无法执行，那就需要将错误信息输出出来，并且将程序终止；避免出现更多的问题。比如数据库已经无法写入了，机器的硬盘已经无法写入文件内容了；<br>4.错误不致命，只需要在错误级别日志中输出，然后继续执行程序；<br>5.可以忽略掉一些无关紧要的错误。<br>在Go中，函数被当作第一类型（first-class values），函数像其他值一样，拥有类型，可以传送，赋值给其他变量。函数值不能做比较，所以不能当成map的key。</p>
+<h3 id="7-流程控制"><a href="#7-流程控制" class="headerlink" title="7.流程控制"></a>7.流程控制</h3><h4 id="1-for-statements"><a href="#1-for-statements" class="headerlink" title="1.for statements"></a>1.for statements</h4><p>查看文档：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file:c:/go/doc/go_spec.html#For_statements</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据条件循环</span></span><br><span class="line"><span class="keyword">for</span> a &lt; b &#123;</span><br><span class="line">    a *= <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 用于做列表循环</span></span><br><span class="line">RangeClause = [ ExpressionList <span class="string">&quot;=&quot;</span> | IdentifierList <span class="string">&quot;:=&quot;</span> ] <span class="string">&quot;range&quot;</span> Expression .</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>标准目录为src、bin、pkg三个目录。</p>
+<p>GOPATH可以指定几个目录，排在列表最前面的比当前工作空间优先级更高。go get默认会下载到第一个工作空间里面。备注：unix-like使用冒号分隔，windows使用;分割。</p>
+<p>GOROOT指定工具链和标准库的存放位置。</p>
+<h4 id="2-switch-statements"><a href="#2-switch-statements" class="headerlink" title="2. switch statements"></a>2. switch statements</h4><p><a target="_blank" rel="noopener" href="https://studygolang.com/articles/31379?fr=sidebar">fallthrough</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    a := <span class="number">2</span></span><br><span class="line">    <span class="keyword">switch</span> a &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        fmt.Println(<span class="string">&quot;a=1&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">        fmt.Println(<span class="string">&quot;a=2&quot;</span>)</span><br><span class="line">        <span class="keyword">fallthrough</span></span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">        fmt.Println(<span class="string">&quot;a=3&quot;</span>)</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">        fmt.Println(<span class="string">&quot;a=4&quot;</span>)</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        fmt.Println(<span class="string">&quot;default&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="fallthrough-break-continue-label"><a href="#fallthrough-break-continue-label" class="headerlink" title="fallthrough/[break|continue] label"></a>fallthrough/[break|continue] label</h4><p>这个语法可能容易被忽略，fallthrough就是让switch语句漏下去。</p>
+<p>[break|continue] label在多重循环嵌套的时候将会使用。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;1&quot;</span>)</span><br><span class="line"></span><br><span class="line">Exit:</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">9</span>; i++ &#123;</span><br><span class="line">        <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="number">9</span>; j++ &#123;</span><br><span class="line">            <span class="keyword">if</span> i+j &gt; <span class="number">15</span> &#123;</span><br><span class="line">                fmt.Print(<span class="string">&quot;exit&quot;</span>)</span><br><span class="line">                <span class="keyword">break</span> Exit</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fmt.Println(<span class="string">&quot;3&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="8-导入包"><a href="#8-导入包" class="headerlink" title="8.导入包"></a>8.导入包</h3><p>如果是系统级的包的导入</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;net/http&quot;</span></span><br><span class="line"><span class="keyword">import</span> osx <span class="string">&quot;github.com/apple/osx/lib&quot;</span></span><br><span class="line"><span class="keyword">import</span> _ <span class="string">&quot;github.com/qyuhen/test&quot;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;../lib&quot;</span> <span class="comment">// 相对路径引入</span></span><br></pre></td></tr></table></figure>
+<h3 id="9-组织结构"><a href="#9-组织结构" class="headerlink" title="9.组织结构"></a>9.组织结构</h3><p>包由一个或多个保存在同一目录下的源文件组成。<br>包名和目录名称并无关系，不要求保持一致，举个例子，leaf里面的go的库。目录名为go，但是里面的包使用的名称为g。不影响使用，在import的时候是写go,语句里面写g。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;github.com/name5566/leaf/go&quot;</span></span><br><span class="line">d := g.New(<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<p>同一目录下的包名需要完全一致。下列有几个特殊的包名：</p>
+<blockquote>
+<p>main ：可执行入口<br>all: 标准库以及 GOPATH中能找到的所有包。<br>std,cmd：标准库工具链<br>documentations：存储文档信息、无法导入。</p>
+</blockquote>
+<h3 id="10-权限"><a href="#10-权限" class="headerlink" title="10.权限"></a>10.权限</h3><p>包内成员可以互相访问。只有大写字母的能被包外访问。当然也能通过unsafe.Pointer方式来反出数据并且调用。</p>
+<h3 id="11-初始化"><a href="#11-初始化" class="headerlink" title="11.初始化"></a>11.初始化</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<h3 id="12-内部包"><a href="#12-内部包" class="headerlink" title="12.内部包"></a>12.内部包</h3><p>将内部模块分离出来，单独包的形式维护。只能被父目录下的包访问，命名为internal目录下的包。</p>
+<h3 id="13-依赖管理"><a href="#13-依赖管理" class="headerlink" title="13.依赖管理"></a>13.依赖管理</h3><p> 主要是解决三方依赖库文件冲突问题。这个概念是和内部包刚好相反，vendor目录是提供给当前工作目录，通用的目录。<br>注意：vendor比标准库有嫌隙更高。</p>
+<h3 id="14-程序的目录建议"><a href="#14-程序的目录建议" class="headerlink" title="14.程序的目录建议"></a>14.程序的目录建议</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">  |</span><br><span class="line">  | mgr.<span class="keyword">go</span></span><br><span class="line">  |</span><br><span class="line">  -----ixxx</span><br><span class="line">       |</span><br><span class="line">       |</span><br><span class="line">       -----imgr.<span class="keyword">go</span></span><br><span class="line">  |</span><br><span class="line">  |</span><br><span class="line">  -----models</span><br><span class="line">       |</span><br><span class="line">       |</span><br><span class="line">       ------mgr_impl.<span class="keyword">go</span></span><br></pre></td></tr></table></figure>
+<p>mgr.go 用于放置提供给外部调用函数；外部需要使用的类；</p>
+<p>ixxx 目录放置模块的接口定义；</p>
+<p>models 目录放置实现函数；</p>
+<p>图中说明了绘制了依赖关系。这样能防止再外面循环引用的问题：</p>
+<h3 id="defer详解"><a href="#defer详解" class="headerlink" title="defer详解"></a>defer详解</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/DM5bm4"><img src="https://s3.ax1x.com/2020/11/20/DM5bm4.png" alt="DM5bm4.png"></a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/03/go%5B2%5D-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" rel="prev" title="go[2]-数据结构">
+      <i class="fa fa-chevron-left"></i> go[2]-数据结构
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/03/go%5B0%5D-getstart/" rel="next" title="go[0]-入门">
+      go[0]-入门 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.函数定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">2.匿名函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%BB%B6%E8%BF%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">3.延迟调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-number">1.4.</span> <span class="nav-text">4.错误处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-panic-recover"><span class="nav-number">1.5.</span> <span class="nav-text">5.panic recover</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E7%AD%96%E7%95%A5"><span class="nav-number">1.6.</span> <span class="nav-text">6.错误处理策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="nav-number">1.7.</span> <span class="nav-text">7.流程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-for-statements"><span class="nav-number">1.7.1.</span> <span class="nav-text">1.for statements</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-switch-statements"><span class="nav-number">1.7.2.</span> <span class="nav-text">2. switch statements</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fallthrough-break-continue-label"><span class="nav-number">1.7.3.</span> <span class="nav-text">fallthrough&#x2F;[break|continue] label</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E5%AF%BC%E5%85%A5%E5%8C%85"><span class="nav-number">1.8.</span> <span class="nav-text">8.导入包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="nav-number">1.9.</span> <span class="nav-text">9.组织结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E6%9D%83%E9%99%90"><span class="nav-number">1.10.</span> <span class="nav-text">10.权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.11.</span> <span class="nav-text">11.初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-%E5%86%85%E9%83%A8%E5%8C%85"><span class="nav-number">1.12.</span> <span class="nav-text">12.内部包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">1.13.</span> <span class="nav-text">13.依赖管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%9B%AE%E5%BD%95%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.14.</span> <span class="nav-text">14.程序的目录建议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#defer%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.15.</span> <span class="nav-text">defer详解</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'ad1d08e8155cb586347963e6ec4ca848',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

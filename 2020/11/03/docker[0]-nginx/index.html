@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="学习docker 简介docker是为了简化外网服务器软件环境部署的工作。现在初浅的理解是，可以在linux机器上通过docker单独安装mysql,nginx,应用程序的也可以跑在一个docker之上。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker运行nginx">
+<meta property="og:url" content="https://swordhell.github.io/2020/11/03/docker[0]-nginx/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="学习docker 简介docker是为了简化外网服务器软件环境部署的工作。现在初浅的理解是，可以在linux机器上通过docker单独安装mysql,nginx,应用程序的也可以跑在一个docker之上。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.073Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2020/11/03/docker[0]-nginx/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>docker运行nginx | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/03/docker[0]-nginx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          docker运行nginx
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-03T00:00:00+08:00">2020-11-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">3-其他</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-%E5%85%B6%E4%BB%96/%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>学习docker</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>docker是为了简化外网服务器软件环境部署的工作。现在初浅的理解是，可以在linux机器上通过docker单独安装mysql,nginx,应用程序的也可以跑在一个docker之上。</p>
+<span id="more"></span>
+<ul>
+<li><p>Docker 包括三个基本概念:</p>
+</li>
+<li><p>镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:16.04 就包含了完整的一套 Ubuntu16.04 最小系统的 root 文件系统。</p>
+</li>
+<li>容器（Container）：镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。</li>
+<li>仓库（Repository）：仓库可看着一个代码控制中心，用来保存镜像。</li>
+</ul>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>参考了<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/labs/lab/10054">腾讯在线实验</a> <a target="_blank" rel="noopener" href="https://www.runoob.com/docker/centos-docker-install.html">菜鸟入门</a> 可以很快速的将docker部署到你的服务器上。</p>
+<ul>
+<li>可能需要卸载掉老的docker</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置仓库</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">$ sudo yum install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
+<p>安装完成之后，可以通过docker -v来查看当前docker的版本信息。</p>
+<ul>
+<li>使用国内加速</li>
+</ul>
+<p>创建或修改 /etc/docker/daemon.json 文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://registry.docker-cn.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;http://hub-mirror.c.163.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><ul>
+<li>运行一个容器</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br><span class="line">docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7</span><br><span class="line"></span><br><span class="line">- 查询容器</span><br><span class="line"></span><br><span class="line">docker ps -a</span><br><span class="line"></span><br><span class="line">- 使用 docker start 启动一个已停止的容器：</span><br><span class="line"></span><br><span class="line">docker start b750bbbcfd88</span><br><span class="line"></span><br><span class="line">- 后台运行 （增加-d的指令）</span><br><span class="line"></span><br><span class="line">docker run -itd --name ubuntu-test ubuntu /bin/bash</span><br><span class="line"></span><br><span class="line">- 停止一个容器</span><br><span class="line"></span><br><span class="line">docker stop &lt;容器 ID&gt;</span><br><span class="line"></span><br><span class="line">- 进入容器</span><br><span class="line"></span><br><span class="line">docker attach 如果从这个容器退出，会导致容器的停止。</span><br><span class="line"></span><br><span class="line">docker <span class="built_in">exec</span>：推荐大家使用 docker <span class="built_in">exec</span> 命令，因为此退出容器终端，不会导致容器的停止。</span><br><span class="line"></span><br><span class="line">docker attach 1e560fca3906 </span><br><span class="line">docker <span class="built_in">exec</span> -it 243c32535da7 /bin/bash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- 导出和导入容器</span><br><span class="line"></span><br><span class="line">docker <span class="built_in">export</span> 1e560fca3906 &gt; ubuntu.tar</span><br><span class="line"></span><br><span class="line">- 导入容器快照</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> docker/ubuntu.tar | docker import - <span class="built_in">test</span>/ubuntu:v1</span><br><span class="line"></span><br><span class="line">- 下面的命令可以清理掉所有处于终止状态的容器。</span><br><span class="line"></span><br><span class="line">docker container prune</span><br></pre></td></tr></table></figure>
+<p>更多指令可以后续补充</p>
+<h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-install-mysql.html">参考菜鸟入门mysql安装</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sablier/p/11605606.html">使用Docker搭建MySQL服务</a></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 拉取mysql5.7版本</span></span><br><span class="line">docker pull mysql:5.7   <span class="comment"># 拉取 mysql 5.7</span></span><br><span class="line"><span class="comment">## 检查版本</span></span><br><span class="line">docker images</span><br><span class="line"><span class="comment">## 启动mysql</span></span><br><span class="line">docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7</span><br><span class="line"></span><br><span class="line">- -–name：容器名，此处命名为mysql</span><br><span class="line">- -e：配置信息，此处配置mysql的root用户的登陆密码</span><br><span class="line">- -p：端口映射，此处映射 主机3306端口 到 容器的3306端口</span><br><span class="line">- -d：源镜像名，此处为 mysql:5.7</span><br></pre></td></tr></table></figure>
+<p>设置docker的子目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 3306:3306 --name my_mariadb -v /data/mariadb/data/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mariadb:lastest</span><br><span class="line"></span><br><span class="line">docker pull mysql:latest</span><br><span class="line">docker run -itd --name shuihuDB -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:latest</span><br><span class="line"></span><br><span class="line">在驱动属性中，将“allowPublicKeyRetrieval”设置为<span class="literal">true</span>即可</span><br></pre></td></tr></table></figure>
+<p>将本地端口 3306 映射到 docker 端口 3306</p>
+<h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 拉取版本</span></span><br><span class="line">docker pull nginx:latest</span><br><span class="line"><span class="comment">## 检查版本</span></span><br><span class="line">docker images</span><br><span class="line"><span class="comment">## 启动docker中的nginx</span></span><br><span class="line">docker run --name nginx-test -p 8080:80 -d nginx</span><br><span class="line"></span><br><span class="line">- --name nginx-test：容器名称。</span><br><span class="line">- -p 8080:80： 端口进行映射，将本地 8080 端口映射到容器内部的 80 端口。</span><br><span class="line">- -d nginx： 设置容器在在后台一直运行。</span><br><span class="line"></span><br><span class="line">可能需要去修改nginx里面的配置项目，我需要将这个服务器端口映射出来。</span><br><span class="line">[docker 安装nginx 并部署](https://blog.csdn.net/ddhsea/article/details/92203713。</span><br><span class="line">里面有3个步骤</span><br><span class="line"></span><br><span class="line"><span class="comment">## 在自己目录下创建这些文件夹</span></span><br><span class="line"><span class="built_in">mkdir</span> -p ~/nginx/www ~/nginx/logs ~/nginx/conf</span><br><span class="line"><span class="comment">## 将容器中的nginx文件拷贝出来，通过docker ps出来实例编号。</span></span><br><span class="line">sudo docker <span class="built_in">cp</span> 3bd71361a112:/etc/nginx/nginx.conf ~/nginx/conf</span><br><span class="line"><span class="comment">## 启动的时候，绑定映射关系</span></span><br><span class="line">docker run --name yzgmweb -d -p 35981:8088 \</span><br><span class="line">    -v /root/nginx/conf/nginx.conf:/etc/nginx/nginx.conf\</span><br><span class="line">    -v /root/nginx/www:/usr/share/nginx/html\</span><br><span class="line">    -v /root/nginx/logs:/var/log/nginx -d docker.io/nginx</span><br><span class="line"></span><br><span class="line">-p 8080:80： 端口进行映射，将本地 8080 端口映射到容器内部的 80 端口。</span><br><span class="line">-v ~/nginx/conf/nginx.conf:/etc/nginx/nginx.conf 将本地文件映射到容器内部。</span><br><span class="line"></span><br><span class="line">➜  ~ docker run -d -p 6379:6379 --name redis-9 -d redis</span><br><span class="line">16c1db84bc5156c099bf476e83d1951398615e2819c94cfdf041ec8fd5c37284</span><br><span class="line">➜  ~ docker ps</span><br><span class="line">CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                       NAMES</span><br><span class="line">16c1db84bc51   redis     <span class="string">&quot;docker-entrypoint.s…&quot;</span>   5 seconds ago   Up 3 seconds   0.0.0.0:6381-&gt;6379/tcp, :::6381-&gt;6379/tcp   redis-9</span><br><span class="line">6af8e5268b90   redis     <span class="string">&quot;docker-entrypoint.s…&quot;</span>   6 days ago      Up 6 days      0.0.0.0:6380-&gt;6379/tcp, :::6380-&gt;6379/tcp   redis-10</span><br></pre></td></tr></table></figure>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>后续如果有时间，可以再去研究一下 docker compose &amp; swarm；dockerfile之类的东西。再做记录。</p>
+<h3 id="修改docker-ulimit"><a href="#修改docker-ulimit" class="headerlink" title="修改docker ulimit"></a>修改docker ulimit</h3><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[How to increase number of open files limit]](&lt;https://mtyurt.net/post/docker-how-to-increase-number-of-open-files-limit.html&gt;)</span><br><span class="line"></span><br><span class="line">docker run --ulimit nofile=90000:90000 &lt;image-tag&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="服务器的网络ip地址修改了之后，需要重启docker"><a href="#服务器的网络ip地址修改了之后，需要重启docker" class="headerlink" title="服务器的网络ip地址修改了之后，需要重启docker"></a>服务器的网络ip地址修改了之后，需要重启docker</h3><h3 id="直接通过docker搭建centos7的环境，会安装一些必要的工具"><a href="#直接通过docker搭建centos7的环境，会安装一些必要的工具" class="headerlink" title="直接通过docker搭建centos7的环境，会安装一些必要的工具"></a>直接通过docker搭建centos7的环境，会安装一些必要的工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull centos:7</span><br><span class="line">docker run -it --name=<span class="string">&quot;abel_centos7&quot;</span> --user root -p 2200:22 --privileged=<span class="literal">true</span> --cap-add=SYS_PTRACE --cap-add=SYS_TIME --security-opt seccomp=unconfined centos:7 /bin/bash</span><br></pre></td></tr></table></figure>
+<h3 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h3><h3 id="安装时错误"><a href="#安装时错误" class="headerlink" title="安装时错误"></a>安装时错误</h3><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.InvalidOperationException:</span><br><span class="line">Failed to set version to docker-desktop: exit code: -1</span><br></pre></td></tr></table></figure>
+<p>使用管理员执行一次<code>netsh winsock reset</code>。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Windows\system32&gt; netsh winsock reset</span><br><span class="line"></span><br><span class="line">成功地重置 Winsock 目录。</span><br><span class="line">你必须重新启动计算机才能完成重置。</span><br></pre></td></tr></table></figure>
+<h3 id="启动报错"><a href="#启动报错" class="headerlink" title="启动报错"></a>启动报错</h3><p><code>Reached end of stream before finding a line seperator</code></p>
+<p>这个是由于现在没有足够的资源启动服务器。</p>
+<h3 id="利用nginx反向代理解决跨域的问题"><a href="#利用nginx反向代理解决跨域的问题" class="headerlink" title="利用nginx反向代理解决跨域的问题"></a>利用nginx反向代理解决跨域的问题</h3><p>先使用指令将一个docker Nginx部署出来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 创建存放位置</span></span><br><span class="line"><span class="built_in">mkdir</span> -p ~/nginx/www ~/nginx/logs ~/nginx/conf/conf.d</span><br><span class="line"><span class="comment">## 将目录映射给本地目录</span></span><br><span class="line">docker run \                              </span><br><span class="line">    --name nginx1.15 \</span><br><span class="line">    -p 3009:80 \-v  /opt/nginx/config/nginx.conf:/etc/nginx/nginx.conf \</span><br><span class="line">    -v ~/nginx/conf/conf.d:/etc/nginx/conf.d  \</span><br><span class="line">    -v ~/nginx/logs:/var/log/nginx \</span><br><span class="line">    -v ~/nginx/www:/usr/share/nginx \</span><br><span class="line">    -d nginx</span><br></pre></td></tr></table></figure>
+<p>意图就是如果访问根的时候，就去读取资源信息，如果访问了/api/的东西，将会去掉/api/前缀，保持参数不动专发给内部的服务器，这样就不会有跨域的问题。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">server&#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name 你的域名;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root /usr/share/nginx/html/静态页面位置;</span><br><span class="line">        index index.html index.htm;</span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~* /api/ &#123;</span><br><span class="line">        rewrite ^/api/(.*)$ /<span class="variable">$1</span> <span class="built_in">break</span>; <span class="comment"># 使用sed将api字样去掉，然后转发给本地服务器</span></span><br><span class="line">        proxy_pass http://宿主机器的地址:12013; <span class="comment"># 172.17.0.1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">nginx: [emerg] <span class="string">&quot;proxy_pass&quot;</span> cannot have URI part <span class="keyword">in</span> location given by regular expression, or inside named location, or inside <span class="string">&quot;if&quot;</span> statement, or inside <span class="string">&quot;limit_except&quot;</span> block <span class="keyword">in</span></span><br><span class="line">地址不能支持</span><br><span class="line">http://106.14.27.130:3009/api/ 结束的地方/符号。</span><br></pre></td></tr></table></figure>
+<p><a href="nginx.conf" title="nginx.conf">nginx.conf下载</a></p>
+<p><a href="default.conf" title="default.conf">default.conf下载</a></p>
+<h3 id="ubuntu安装"><a href="#ubuntu安装" class="headerlink" title="ubuntu安装"></a>ubuntu安装</h3><p><a target="_blank" rel="noopener" href="https://www.runoob.com/docker/ubuntu-docker-install.html">https://www.runoob.com/docker/ubuntu-docker-install.html</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 将当前用户加入docker组</span><br><span class="line"></span><br><span class="line">$ sudo usermod -a -G docker &lt;当前用户名&gt;</span><br><span class="line"></span><br><span class="line">2. 修改/var/run/docker.sock的权限</span><br><span class="line"></span><br><span class="line">$ sudo <span class="built_in">chmod</span> 666 /var/run/docker.sock</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="docker随系统启动"><a href="#docker随系统启动" class="headerlink" title="docker随系统启动"></a>docker随系统启动</h3><p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/run/">docker-run命令详解</a>这个页面下面搜索<code>Restart policies (--restart)</code>。</p>
+<p>实例：<code>docker run --restart=always redis</code>.</p>
+<p>The following example starts a Redis container and configures it to always restart unless it is explicitly stopped or Docker is restarted.</p>
+<blockquote>
+<p>docker run -d —restart unless-stopped redis</p>
+</blockquote>
+<p>This command changes the restart policy for an already running container named redis.</p>
+<blockquote>
+<p>docker update —restart unless-stopped redis</p>
+</blockquote>
+<h3 id="docker-需要创建用户组"><a href="#docker-需要创建用户组" class="headerlink" title="docker 需要创建用户组"></a>docker 需要创建用户组</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groupadd docker</span><br><span class="line">gpasswd -a franky docker</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/carefree2005/article/details/121427448">https://blog.csdn.net/carefree2005/article/details/121427448</a></p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://www.docker.com/">官方网站</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-tutorial.html">菜鸟入门</a></li>
+<li>[3] <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/labs/lab/10054">腾讯在线实验</a></li>
+<li>[4] <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/721d971c3cd7">Docker中安装nginx与自定义配置</a></li>
+<li>[5] <a target="_blank" rel="noopener" href="https://www.cnblogs.com/youclk/p/8453526.html">docker compose swarm</a></li>
+<li>[6] <a target="_blank" rel="noopener" href="https://docker.easydoc.net">1小时docker上手</a></li>
+<li>[7] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV11L411g7U1?from=search&amp;seid=8095726313936957589&amp;spm_id_from=333.337.0.0">Docker 1小时快速上手教程，无废话纯干货</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag"># 运维</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/03/go%5B0%5D-getstart/" rel="prev" title="go[0]-入门">
+      <i class="fa fa-chevron-left"></i> go[0]-入门
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/04/git/" rel="next" title="git">
+      git <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85mysql"><span class="nav-number">1.3.</span> <span class="nav-text">安装mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85nginx"><span class="nav-number">1.4.</span> <span class="nav-text">安装nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">1.5.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9docker-ulimit"><span class="nav-number">1.6.</span> <span class="nav-text">修改docker ulimit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%BD%91%E7%BB%9Cip%E5%9C%B0%E5%9D%80%E4%BF%AE%E6%94%B9%E4%BA%86%E4%B9%8B%E5%90%8E%EF%BC%8C%E9%9C%80%E8%A6%81%E9%87%8D%E5%90%AFdocker"><span class="nav-number">1.7.</span> <span class="nav-text">服务器的网络ip地址修改了之后，需要重启docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E9%80%9A%E8%BF%87docker%E6%90%AD%E5%BB%BAcentos7%E7%9A%84%E7%8E%AF%E5%A2%83%EF%BC%8C%E4%BC%9A%E5%AE%89%E8%A3%85%E4%B8%80%E4%BA%9B%E5%BF%85%E8%A6%81%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="nav-number">1.8.</span> <span class="nav-text">直接通过docker搭建centos7的环境，会安装一些必要的工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%A5%E9%94%99"><span class="nav-number">1.9.</span> <span class="nav-text">报错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%97%B6%E9%94%99%E8%AF%AF"><span class="nav-number">1.10.</span> <span class="nav-text">安装时错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99"><span class="nav-number">1.11.</span> <span class="nav-text">启动报错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.12.</span> <span class="nav-text">利用nginx反向代理解决跨域的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ubuntu%E5%AE%89%E8%A3%85"><span class="nav-number">1.13.</span> <span class="nav-text">ubuntu安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E9%9A%8F%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8"><span class="nav-number">1.14.</span> <span class="nav-text">docker随系统启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-%E9%9C%80%E8%A6%81%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7%E7%BB%84"><span class="nav-number">1.15.</span> <span class="nav-text">docker 需要创建用户组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">1.16.</span> <span class="nav-text">引用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : '45dd3f910cfeebab3eca793d76f00a17',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

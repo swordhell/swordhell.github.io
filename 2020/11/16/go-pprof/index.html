@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介编写好了golang服务之后，接着要开始关注服务的CPU，内存使用情况。golang提供了性能剖析工具，记录一些自己搜集到的信息，写下一些实践的情况。在golang中内置了pprof工具，专门来做golang语言的优化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go-pprof性能分析工具">
+<meta property="og:url" content="https://swordhell.github.io/2020/11/16/go-pprof/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="简介编写好了golang服务之后，接着要开始关注服务的CPU，内存使用情况。golang提供了性能剖析工具，记录一些自己搜集到的信息，写下一些实践的情况。在golang中内置了pprof工具，专门来做golang语言的优化。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/30/rL0XUx.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/30/rLfQUg.png">
+<meta property="og:image" content="https://s3.ax1x.com/2020/12/30/rL0OV1.png">
+<meta property="article:published_time" content="2020-11-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.074Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s3.ax1x.com/2020/12/30/rL0XUx.png">
+
+<link rel="canonical" href="https://swordhell.github.io/2020/11/16/go-pprof/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>go-pprof性能分析工具 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/16/go-pprof/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          go-pprof性能分析工具
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-16 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-16T00:00:00+08:00">2020-11-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>编写好了golang服务之后，接着要开始关注服务的CPU，内存使用情况。golang提供了性能剖析工具，记录一些自己搜集到的信息，写下一些实践的情况。在golang中内置了pprof工具，专门来做golang语言的优化。</p>
+<span id="more"></span>
+<h2 id="1-安装环境"><a href="#1-安装环境" class="headerlink" title="1.安装环境"></a>1.安装环境</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/google/pprof</span><br><span class="line"> <span class="comment"># centos里面需要安装这个库</span></span><br><span class="line">yum install graphviz -y</span><br></pre></td></tr></table></figure>
+<p>需要去下载一个绘图的库。</p>
+<p><a target="_blank" rel="noopener" href="http://www.graphviz.org/">Grahpviz</a></p>
+<p>.gv文件就是dot工具能读取，并且画图的文件格式。</p>
+<p>也推荐使用<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=tintinweb.graphviz-interactive-preview">Graphviz Interactive-VSCode插件</a></p>
+<p><a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=joaompinto.vscode-graphviz">vscode-graphviz语法</a></p>
+<h2 id="2-性能监控代码"><a href="#2-性能监控代码" class="headerlink" title="2.性能监控代码"></a>2.性能监控代码</h2><p>这段代码将会开启一个http的网站，对外提供监控访问的地址。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;net/http&quot;</span></span><br><span class="line">    _ <span class="string">&quot;net/http/pprof&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    http.ListenAndServe(<span class="string">&quot;:10003&quot;</span>, <span class="literal">nil</span>)</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/rL0XUx"><img src="https://s3.ax1x.com/2020/12/30/rL0XUx.png" alt="rL0XUx.png"></a></p>
+<p>能通过这个网址检查程序的内存分配，CPU占用，mutex，gorouine之类的信息。可以直接通过浏览器访问获取信息。</p>
+<ul>
+<li>CPU profile：报告程序的 CPU 使用情况，按照一定频率去采集应用程序在 CPU 和寄存器上面的数据</li>
+<li>Memory Profile（Heap Profile）：报告程序的内存使用情况</li>
+<li>Block Profiling：报告 goroutines 不在运行状态的情况，可以用来分析和查找死锁等性能瓶颈</li>
+<li>Goroutine Profiling：报告 goroutines 的使用情况，有哪些 goroutine，它们的调用关系是怎样的</li>
+</ul>
+<h2 id="3-CPU性能查看"><a href="#3-CPU性能查看" class="headerlink" title="3.CPU性能查看"></a>3.CPU性能查看</h2><p>打开一个命令行输入：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> D:\work\trunk\doc&gt; go tool pprof <span class="literal">-http</span>=<span class="string">&quot;192.168.125.224:8081&quot;</span> http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">10006</span>/debug/pprof/profile?seconds=<span class="number">200</span></span><br><span class="line">Fetching profile over HTTP from http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">10006</span>/debug/pprof/profile?seconds=<span class="number">200</span></span><br><span class="line">Saved profile <span class="keyword">in</span> C:\Users\xxxxxxxxx\pprof\pprof.samples.cpu.<span class="number">003</span>.pb.gz</span><br><span class="line">Serving web UI on http://localhost:<span class="number">8081</span></span><br></pre></td></tr></table></figure>
+<p>在本地将会开启 <strong>-http=”:8081”</strong> 表示在8081网站，将会呈现最后结果。这次监控将会抓取 <a target="_blank" rel="noopener" href="http://127.0.0.1:10006/debug/pprof/profile">http://127.0.0.1:10006/debug/pprof/profile</a> 提供的性能信息。<strong>?seconds=200</strong> 表示持续抓取200sec。到时间之后它们将会存储到本地的一个文件中： Saved profile in C:\Users\xxxxxxxxx\pprof\pprof.samples.cpu.003.pb.gz 。</p>
+<p>想知道这个处理的细节，可以直接阅读golang的源码：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// C:\Go\src\net\http\pprof\pprof.go</span></span><br><span class="line"><span class="comment">// Profile responds with the pprof-formatted cpu profile.</span></span><br><span class="line"><span class="comment">// Profiling lasts for duration specified in seconds GET parameter, or for 30 seconds if not specified.</span></span><br><span class="line"><span class="comment">// The package initialization registers it as /debug/pprof/profile.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Profile</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    w.Header().Set(<span class="string">&quot;X-Content-Type-Options&quot;</span>, <span class="string">&quot;nosniff&quot;</span>)</span><br><span class="line">    sec, err := strconv.ParseInt(r.FormValue(<span class="string">&quot;seconds&quot;</span>), <span class="number">10</span>, <span class="number">64</span>)</span><br><span class="line">    <span class="keyword">if</span> sec &lt;= <span class="number">0</span> || err != <span class="literal">nil</span> &#123;</span><br><span class="line">        sec = <span class="number">30</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它的接口有两个能支持输入seconds</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;trace&quot;:        &quot;A trace of execution of the current program. You can specify the duration in the seconds GET parameter. After you get the trace file, use the go tool trace command to investigate the trace.&quot;,</span><br><span class="line">&quot;profile&quot;:      &quot;CPU profile. You can specify the duration in the seconds GET parameter. After you get the profile file, use the go tool pprof command to investigate the profile.&quot;,</span><br></pre></td></tr></table></figure>
+<p>通过加载文件来调出分析网站：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> D:\work\trunk\doc&gt; go tool pprof <span class="literal">-http</span>=<span class="string">&quot;192.168.125.224:8989&quot;</span> C:\Users\xxxxxxxxx\pprof\pprof.samples.cpu.<span class="number">003</span>.pb.gz</span><br><span class="line">Serving web UI on http://localhost:<span class="number">8989</span></span><br></pre></td></tr></table></figure>
+<p>也能通过这个命令直接加载之前监控的剖析文件。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">列名</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">flat</td>
+<td style="text-align:left">函数时间（不包括子函数）。这里不包括函数等待子函数返回。</td>
+</tr>
+<tr>
+<td style="text-align:left">flat%</td>
+<td style="text-align:left">flat / 总采样时间值</td>
+</tr>
+<tr>
+<td style="text-align:left">sum%</td>
+<td style="text-align:left">前面每一行的flat占比总和</td>
+</tr>
+<tr>
+<td style="text-align:left">cum</td>
+<td style="text-align:left">函数总时间（包括子函数）。因此 flat &lt;= cum</td>
+</tr>
+<tr>
+<td style="text-align:left">cum%</td>
+<td style="text-align:left">cum占用总时间的比例</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>火焰图方式</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/rLfQUg"><img src="https://s3.ax1x.com/2020/12/30/rLfQUg.png" alt="rLfQUg.png"></a></p>
+<p>调用关系图</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/rL0OV1"><img src="https://s3.ax1x.com/2020/12/30/rL0OV1.png" alt="rL0OV1.png"></a></p>
+<p>图片说明：</p>
+<h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl localhost:8000/debug/pprof/heap &gt; heap.base</span><br><span class="line">curl localhost:8000/debug/pprof/heap &gt; heap.current</span><br><span class="line">go tool pprof -http=:8080 -base heap.base heap.current</span><br><span class="line"></span><br><span class="line">    -diff_base <span class="built_in">source</span>     Source of base profile <span class="keyword">for</span> comparison</span><br><span class="line">    -base <span class="built_in">source</span>          Source of base profile <span class="keyword">for</span> profile subtraction</span><br></pre></td></tr></table></figure>
+<p><code>2021-11-03</code>我们发现过一次内存泄露，是由于goroutine虽然被关闭了，但是没有将其及时释放掉（释放会每10分钟发起释放，每次释放100。修改之后的版本，将会10秒发起一次，每次将会释放5000个goroutine。），造成的内存激增。我们可以打开pprof/heap页面。观察网页最后结束的信息。</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># runtime.MemStats</span><br><span class="line"># Alloc = 3128168</span><br><span class="line"># TotalAlloc = 29726512</span><br><span class="line"># Sys = 20268040</span><br><span class="line"># Lookups = 0</span><br><span class="line"># Mallocs = 402533</span><br><span class="line"># Frees = 383462</span><br><span class="line"># HeapAlloc = 3128168</span><br><span class="line"># HeapSys = 11632640</span><br><span class="line"># HeapIdle = 6496256</span><br><span class="line"># HeapInuse = 5136384</span><br><span class="line"># HeapReleased = 5349376</span><br><span class="line"># HeapObjects = 19071</span><br><span class="line"># Stack = 950272 / 950272</span><br><span class="line"># MSpan = 97784 / 114688</span><br><span class="line"># MCache = 4800 / 16384</span><br><span class="line"># BuckHashSys = 1454564</span><br><span class="line"># GCSys = 5244320</span><br><span class="line"># OtherSys = 855172</span><br><span class="line"># NextGC = 5806464</span><br><span class="line"># LastGC = 1635992057313382826</span><br><span class="line"># PauseNs = [338399 xxx]</span><br><span class="line"># PauseEnd = [1635991943337910140 xxxx]</span><br><span class="line"># NumGC = 15</span><br><span class="line"># NumForcedGC = 0</span><br><span class="line"># GCCPUFraction = 4.214879737884772e-05</span><br><span class="line"># DebugGC = false</span><br><span class="line"># MaxRSS = 22323200</span><br></pre></td></tr></table></figure>
+<p>通过观察，可以发现<code>HeapAlloc</code>分配的内存，能从heap的剖析看的出来。但是<code>HeapSys</code>、<code>HeapIdle</code>内存过大的时候，无法从统计图里面看出来。内存申请的流程大概是这个过程：</p>
+<ol>
+<li><code>HeapAlloc</code>是当前在使用的内存，如果需要增加的时候，将会去<code>HeapIdle</code>中申请。如果<code>HeapIdle</code>里面内存都用光了，将会发起对系统的内存申请。</li>
+<li>虽然已经将goroutine停止了，但是goroutine相关的上下文内存将无法归还，可能挂在heap分析树上的goroutine的内存微乎其微，但是其关联的内存块将无法被系统回收掉。这一点，观察发现<code>HeapSys</code>、<code>HeapIdle</code>数值将会一直增长。</li>
+<li>所以如果出现这样的问题可以考虑将服务器中的协程分析一下，因为里面可能有闭包，环境资源被golang的虚拟机占用，无法回收。等下一轮的内存需要使用的时候，将会出现无法分配更多的内存。</li>
+</ol>
+<p>在看heap的图表的时候，主要通过2个维度来分析：</p>
+<ol>
+<li><code>alloc</code>分配的内存大小，<code>inuse</code>当前还在使用的内存。</li>
+<li><code>objects</code>统计个数，<code>space</code>统计占用的内存大小。</li>
+</ol>
+<p>golang语言的内存回收。</p>
+<h2 id="3-引用"><a href="#3-引用" class="headerlink" title="3.引用"></a>3.引用</h2><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://github.com/uber-archive/go-torch">火焰图工具网站</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/51559344">Golang性能测试工具PProf应用详解</a></li>
+<li>[3] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/91241270">深度解密go语言之pprof</a></li>
+<li>[4] <a target="_blank" rel="noopener" href="http://graphviz.org/">graphviz官网</a></li>
+<li>[5] <a target="_blank" rel="noopener" href="https://www.bookstack.cn/read/eddycjy-go/tools-go-tool-pprof.md">Go 大杀器之性能剖析 PProf</a></li>
+<li>[6] <a target="_blank" rel="noopener" href="https://sourceforge.net/projects/qcachegrindwin/">qcachegrindwin下载地址</a></li>
+<li>[7] <a target="_blank" rel="noopener" href="https://studygolang.com/articles/29812?fr=sidebar">golang内存泄漏的排查记录</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/16/supervisor/" rel="prev" title="Supervisor使用详解">
+      <i class="fa fa-chevron-left"></i> Supervisor使用详解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/18/go%5B5%5D-%E6%B5%8B%E8%AF%95/" rel="next" title="go[4]-测试">
+      go[4]-测试 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text">1.安装环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">2.性能监控代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-CPU%E6%80%A7%E8%83%BD%E6%9F%A5%E7%9C%8B"><span class="nav-number">1.3.</span> <span class="nav-text">3.CPU性能查看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">内存泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BC%95%E7%94%A8"><span class="nav-number">1.5.</span> <span class="nav-text">3.引用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : '1970fcf603fbde29ca21489da18f2aad',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

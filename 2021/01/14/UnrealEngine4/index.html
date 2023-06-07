@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="开一篇文章记录学习Unreal Engine相关知识。参考《虚幻引擎程序设计浅析》ISBN 978-7-121-31349-3，电子工业出版社。带着问题来学习，才能学的快速。看书先需要阅读的就是作者划分的章节目录，反复多看几遍，能从总体上看出知识的结构。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="虚幻引擎程序设计浅析">
+<meta property="og:url" content="https://swordhell.github.io/2021/01/14/UnrealEngine4/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="开一篇文章记录学习Unreal Engine相关知识。参考《虚幻引擎程序设计浅析》ISBN 978-7-121-31349-3，电子工业出版社。带着问题来学习，才能学的快速。看书先需要阅读的就是作者划分的章节目录，反复多看几遍，能从总体上看出知识的结构。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.069Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="Game">
+<meta property="article:tag" content="Unreal Engine4">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2021/01/14/UnrealEngine4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>虚幻引擎程序设计浅析 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2021/01/14/UnrealEngine4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          虚幻引擎程序设计浅析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-14 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-14T00:00:00+08:00">2021-01-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">2-应用</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-%E5%BA%94%E7%94%A8/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">游戏开发</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>开一篇文章记录学习Unreal Engine相关知识。参考《虚幻引擎程序设计浅析》ISBN 978-7-121-31349-3，电子工业出版社。带着问题来学习，才能学的快速。看书先需要阅读的就是作者划分的章节目录，反复多看几遍，能从总体上看出知识的结构。</p>
+<span id="more"></span>
+<h2 id="第一部分-虚幻引擎C-编程"><a href="#第一部分-虚幻引擎C-编程" class="headerlink" title="第一部分 虚幻引擎C++编程"></a>第一部分 虚幻引擎C++编程</h2><h3 id="第1章-五个类的熟悉"><a href="#第1章-五个类的熟悉" class="headerlink" title="第1章 五个类的熟悉"></a>第1章 五个类的熟悉</h3><p>最首先了解5个类，比较关键。</p>
+<p>UObject Actor Pawn Controller Character</p>
+<h4 id="UObject"><a href="#UObject" class="headerlink" title="UObject"></a>UObject</h4><p>提供垃圾回收</p>
+<p>这个功能和c++标准中的智能指针是冲突的。</p>
+<p>反射</p>
+<p>相当于实现了java、c#中的反射功能。在本书的第二部分解释了。</p>
+<p>序列化</p>
+<p>提供无损的加载，序列化方便保存到磁盘或者传递给远端服务器。</p>
+<p>与虚幻引擎编辑器的交互</p>
+<p>可以在Editor面板里面方便的使用。</p>
+<p>运行时类型识别</p>
+<p>这个功能也会和C++标准中的RTTI机制：dynamic_cast有冲突。一旦使用，要使用Cast&lt;&gt;函数做类型转换。虚幻号称会提供更加高效的类型识别。</p>
+<p>网络复制</p>
+<p>在c/s架构中，其被宏标记的变量能够自动完成网络复制。从服务器端复制对应值到客户端。</p>
+<h4 id="Actor"><a href="#Actor" class="headerlink" title="Actor"></a>Actor</h4><p>它能被挂载组件Component。</p>
+<p>UE中的Component和unity的是很大的不同。在虚幻里面，Component含义被极大削弱。</p>
+<h4 id="灵魂与肉体：Pawn、Character和Controller"><a href="#灵魂与肉体：Pawn、Character和Controller" class="headerlink" title="灵魂与肉体：Pawn、Character和Controller"></a>灵魂与肉体：Pawn、Character和Controller</h4><h4 id="Pawn"><a href="#Pawn" class="headerlink" title="Pawn"></a>Pawn</h4><p>类是提供被操控的特性。它能被Controller操控，Controller可以是用户输入或者AI。Pawn离开操控者无法自主行动的肉体。</p>
+<h4 id="Character"><a href="#Character" class="headerlink" title="Character"></a>Character</h4><p>继承于Pawn。提供了特殊组件，Character Movement组件。提供基础的、基于胶囊体的角色移动，跳跃之类的。</p>
+<h4 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h4><p>操控肉体的类，肉体拥有前行、转向、跳跃、开火等函数。类似MVC设计模式。Controller就是管理器，Pawn就是Model，而Pawn挂载的动态网格组件就是View。这个例子也不算太合适能初略建立概念。</p>
+<h3 id="第2章-需求到实现"><a href="#第2章-需求到实现" class="headerlink" title="第2章 需求到实现"></a>第2章 需求到实现</h3><h4 id="分析需求"><a href="#分析需求" class="headerlink" title="分析需求"></a>分析需求</h4><p>使用UML工程建模工具绘制需求分析图。</p>
+<p>或者通过沟通分析出来简短的短语。</p>
+<h4 id="转化需求为设计"><a href="#转化需求为设计" class="headerlink" title="转化需求为设计"></a>转化需求为设计</h4><p>首先从短语中抽象出里面重要的名词，这样就是我们的类。</p>
+<p>然后分析出类之间的持有、通信关系。</p>
+<h3 id="第3章-创建自己的C-类"><a href="#第3章-创建自己的C-类" class="headerlink" title="第3章 创建自己的C++类"></a>第3章 创建自己的C++类</h3><h4 id="使用Unreal-Editor创建c-类"><a href="#使用Unreal-Editor创建c-类" class="headerlink" title="使用Unreal Editor创建c++类"></a>使用Unreal Editor创建c++类</h4><p>“内容浏览器” -&gt; “右键” -&gt; “新建C++类”</p>
+<p>有一个创建的流程，可以在过程中选择基类。输入名称选择路径。</p>
+<h4 id="手动创建C-类"><a href="#手动创建C-类" class="headerlink" title="手动创建C++类"></a>手动创建C++类</h4><p>文件目录结构为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--public/</span><br><span class="line">--private/</span><br><span class="line">--.build.cs</span><br></pre></td></tr></table></figure>
+<p>头文件放到public文件夹，cpp放入private文件夹。</p>
+<p>如果继承了UE的类，需要增加一些宏，否则编译不过。</p>
+<p>cpp文件中包含pch文件。</p>
+<h4 id="虚幻引擎类命名规则"><a href="#虚幻引擎类命名规则" class="headerlink" title="虚幻引擎类命名规则"></a>虚幻引擎类命名规则</h4><blockquote>
+<p>F 纯C++类<br>U 继承自UObject，但不继承Actor<br>A 继承自Actor<br>S Slate控件相关类<br>H HitResult相关类</p>
+</blockquote>
+<p>Unreal Header Tool 会在编译之前检查这些类名的约束。</p>
+<h3 id="第4章-对象"><a href="#第4章-对象" class="headerlink" title="第4章 对象"></a>第4章 对象</h3><h4 id="类对象的产生"><a href="#类对象的产生" class="headerlink" title="类对象的产生"></a>类对象的产生</h4><p>如果是纯C++类型，可以通过new产生。</p>
+<p>如果你的类继承自UObject，需要通过NewObject函数来产生。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NewObject</span>&lt;T&gt;();</span><br></pre></td></tr></table></figure>
+<p>如果继承自AActor，需要通过SpawnActor函数产生对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">GetWorld</span>()-&gt;<span class="built_in">SpawnActor</span>&lt;AYourActorClass&gt;();</span><br></pre></td></tr></table></figure>
+<h4 id="类对象的获取"><a href="#类对象的获取" class="headerlink" title="类对象的获取"></a>类对象的获取</h4><p>通过对象的引用或者指针来获取。GetWorld能使用IActorIterator<code>&lt;AACtor&gt;</code>迭代World里面全部的Actor。</p>
+<h4 id="类对象的销毁"><a href="#类对象的销毁" class="headerlink" title="类对象的销毁"></a>类对象的销毁</h4><p>纯C++类型，就是自己delete就可以了。</p>
+<p>UObject的对象，本身有一套内存管理机制，当没有对象引用了，就会触发GC。</p>
+<p>Actor的对象，通过Destory函数请求销毁，这个只是说从World里面摘除掉，内存回收还需要靠引擎来决定。</p>
+<h3 id="第5章-从C-到蓝图"><a href="#第5章-从C-到蓝图" class="headerlink" title="第5章 从C++到蓝图"></a>第5章 从C++到蓝图</h3><p>让蓝图调用我的C++类。</p>
+<h4 id="UPROPERTY宏"><a href="#UPROPERTY宏" class="headerlink" title="UPROPERTY宏"></a>UPROPERTY宏</h4><p>将成员变量注册到蓝图中。</p>
+<h4 id="UFUNCTION宏"><a href="#UFUNCTION宏" class="headerlink" title="UFUNCTION宏"></a>UFUNCTION宏</h4><p>注册函数到蓝图中。</p>
+<h3 id="第6章-游戏性框架概述"><a href="#第6章-游戏性框架概述" class="headerlink" title="第6章 游戏性框架概述"></a>第6章 游戏性框架概述</h3><h4 id="1-行为树：概念与原理"><a href="#1-行为树：概念与原理" class="headerlink" title="1. 行为树：概念与原理"></a>1. 行为树：概念与原理</h4><h5 id="为什么选择行为树"><a href="#为什么选择行为树" class="headerlink" title="为什么选择行为树"></a>为什么选择行为树</h5><p>ue3框架是状态机制作的，还引入了Unreal Script脚本来扩展。在ue4直接被行为树系统替换。状态机只在动画蓝图中保留。</p>
+<p>粗俗来说，行为树特点：“逐个尝试，不行就换”的思路。更加符合人的思维方式。</p>
+<h5 id="行为树原理"><a href="#行为树原理" class="headerlink" title="行为树原理"></a>行为树原理</h5><p>三种节点：</p>
+<blockquote>
+<p>流程控制：包含Selector选择器和Sequence顺序执行器。<br>装饰器：对子树的返回值进行处理的节点。<br>执行节点：干活的节点，返回trun或者false，running。</p>
+</blockquote>
+<p>可以参考之前写过的行为树的文档，里面也有if语句，&amp;&amp;||的逻辑运算，挂起唤醒逻辑，循环逻辑等等。是一种使用可视化方式提供给别人来编写程序的一种方法。</p>
+<h4 id="2-虚幻引擎网络框架构"><a href="#2-虚幻引擎网络框架构" class="headerlink" title="2. 虚幻引擎网络框架构"></a>2. 虚幻引擎网络框架构</h4><h5 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h5><p>多人在线的同步问题，是通过一台<em>权威服务器</em>来负责将数据收集起来，并且分发给客户端。让作弊变得困难。</p>
+<blockquote>
+<p>指令：对于游戏世界造成影响的请求。egg：人物前移3米，人物挥刀碰到了怪物<br>状态：游戏世界的各种数值状态。egg：当前人物生命值，当前怪物生命值。</p>
+</blockquote>
+<p>客户端只能向服务器发送“指令”，服务器根据指令处理之后，改变游戏世界的状态，并且将状态<em>同步</em>给每个客户端。</p>
+<h5 id="广义的客户端-服务器模型"><a href="#广义的客户端-服务器模型" class="headerlink" title="广义的客户端-服务器模型"></a>广义的客户端-服务器模型</h5><blockquote>
+<p>客户端是对服务器的拙劣模仿 —- 虚幻官方文档UDN中描述<br>“拙劣”二字，表示是服务器的世界是正确的，而客户端则是不断试图猜测服务器当前的状态，并且模仿。</p>
+</blockquote>
+<h3 id="第7章-引擎系统相关类"><a href="#第7章-引擎系统相关类" class="headerlink" title="第7章 引擎系统相关类"></a>第7章 引擎系统相关类</h3><p>本章主要介绍一些虚幻引擎4提供的一些类，防止程序重复造轮子。</p>
+<h4 id="7-1-正则表达式"><a href="#7-1-正则表达式" class="headerlink" title="7.1 正则表达式"></a>7.1 正则表达式</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#<span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Regex.h&quot;</span></span></span><br><span class="line"><span class="function">FString <span class="title">TextStr</span><span class="params">(<span class="string">&quot;AAAABBBBB&quot;</span>)</span></span>;</span><br><span class="line"><span class="function">FRegexPattern <span class="title">TestPattern</span><span class="params">(TEXT(<span class="string">&quot;C.+H&quot;</span>))</span></span>;</span><br><span class="line">FRegexMatcher xxx;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/API/Runtime/Core/Internationalization/FRegexPattern/index.html">FRegexPattern手册</a></p>
+<p>基本上能满足匹配，抓取之类的操作。</p>
+<h4 id="7-2-FPaths"><a href="#7-2-FPaths" class="headerlink" title="7.2 FPaths"></a>7.2 FPaths</h4><p>获取游戏的根目录；判断文件是否存在；路径转换成绝对路径类似的功能。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/API/Runtime/Core/Misc/FPaths/index.html">FPaths官方文档</a></p>
+<h4 id="7-3-XML-JSON"><a href="#7-3-XML-JSON" class="headerlink" title="7.3 XML/JSON"></a>7.3 XML/JSON</h4><p>FXmlFile/FastXML访问XML数据；</p>
+<p><code>TJsonReaderFactory&lt;TCHAR&gt;/TJsonReader&lt;TCHAR&gt;</code></p>
+<p>FJsonSerializer::Deserialize 来加载json字符串。</p>
+<h4 id="7-4-文件读写与访问"><a href="#7-4-文件读写与访问" class="headerlink" title="7.4 文件读写与访问"></a>7.4 文件读写与访问</h4><p>PlatformFileManager.h</p>
+<p>里面提供了很多的操作文件的接口。</p>
+<h4 id="7-5-GConfig"><a href="#7-5-GConfig" class="headerlink" title="7.5 GConfig"></a>7.5 GConfig</h4><p>是简单的将ini文件做了封装。可以指定ini文件，Section名称，Key，值。</p>
+<h4 id="7-6-UE-LOG"><a href="#7-6-UE-LOG" class="headerlink" title="7.6 UE_LOG"></a>7.6 UE_LOG</h4><p>能支持Category方式的日志输出，日志级别也能支持。</p>
+<h4 id="7-7-字符串处理"><a href="#7-7-字符串处理" class="headerlink" title="7.7 字符串处理"></a>7.7 字符串处理</h4><p>FName 无法修改的字符串，大小写不敏感。无论出现多少次，都是在字符串表里面只有一次出现。访问速度将会很快速。</p>
+<p>FText 用于做显示的字符串，内置了本地化。</p>
+<p>FString 能支持修改，消耗比上述的两种都要大。</p>
+<h4 id="7-8-编译器相关技巧"><a href="#7-8-编译器相关技巧" class="headerlink" title="7.8 编译器相关技巧"></a>7.8 编译器相关技巧</h4><h5 id="7-8-1-废弃函数标记"><a href="#7-8-1-废弃函数标记" class="headerlink" title="7.8.1 废弃函数标记"></a>7.8.1 废弃函数标记</h5><p>编译器会检测出一些警告。</p>
+<p>function Please update youre code to the new API before upgrading to the next release, otherwise your project will no longer compile.</p>
+<h5 id="7-8-2-编译器指令实现跨平台"><a href="#7-8-2-编译器指令实现跨平台" class="headerlink" title="7.8.2 编译器指令实现跨平台"></a>7.8.2 编译器指令实现跨平台</h5><p>虚幻提供了FPlatformMisc，包含了大量平台相关的工具函数。</p>
+<p>通过 typedef 切换编译期的平台切换。</p>
+<p>在Linux里面有 FLinuxPlatformMisc 。切换的时候，将写这样的一句话。</p>
+<p>typedef FLinuxPlatformMisc FPlatformMisc。</p>
+<h4 id="7-9-Images"><a href="#7-9-Images" class="headerlink" title="7.9 Images"></a>7.9 Images</h4><p>ImagerWrapper 图片类型的抽象。</p>
+<p>包含完整RGBA(red green blue alpha)数据的图片，是没有压缩过的，和格式没有关系，称为RawData原生的数据。</p>
+<p>CompressedData会随着图片格式不同而不同。</p>
+<p>ImagerWrapper是对这两个的封装。</p>
+<h2 id="第二部分-虚幻引擎浅析"><a href="#第二部分-虚幻引擎浅析" class="headerlink" title="第二部分 虚幻引擎浅析"></a>第二部分 虚幻引擎浅析</h2><h3 id="第8章-模块机制"><a href="#第8章-模块机制" class="headerlink" title="第8章 模块机制"></a>第8章 模块机制</h3><h4 id="8-1-模块简介"><a href="#8-1-模块简介" class="headerlink" title="8.1 模块简介"></a>8.1 模块简介</h4><p>C++项目对外提供库的时候，需要管理include,lib目录。Debug/Release模式下的lib文件的管理。而且还需要编译不同平台下的库文件。</p>
+<p>在UE3的时候，使用MakeFile来模拟模块，UE4为了彻底解决这些问题，使用了Unreal Build Tool。</p>
+<h4 id="8-2-创建自己的模块"><a href="#8-2-创建自己的模块" class="headerlink" title="8.2 创建自己的模块"></a>8.2 创建自己的模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">模块名.Build.cs</span><br><span class="line">模块名.h</span><br><span class="line">模块名.cpp</span><br></pre></td></tr></table></figure>
+<p>引入模块</p>
+<p>工程名.Target.cs</p>
+<p>SetupBinaries 方法里面调用 AddRange 函数将模块引入。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">OutExtraModuleNames.<span class="built_in">AddRange</span>( <span class="keyword">new</span> string[]&#123;</span><br><span class="line">  <span class="string">&quot;pluginDev&quot;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>插件名.uplugin</p>
+<p>文件里面写了关于插件相关的信息。文件格式是json。</p>
+<h4 id="8-3-虚幻引擎初始化模块加载顺序"><a href="#8-3-虚幻引擎初始化模块加载顺序" class="headerlink" title="8.3 虚幻引擎初始化模块加载顺序"></a>8.3 虚幻引擎初始化模块加载顺序</h4><p>本章就是列举了加载各种模块的顺序。</p>
+<h4 id="8-4-UBT-UHT"><a href="#8-4-UBT-UHT" class="headerlink" title="8.4 UBT/UHT"></a>8.4 UBT/UHT</h4><p>UBT=Unreal Build Tool</p>
+<p>UBT工作分为三个阶段：</p>
+<ol>
+<li>收集阶段，将环境变量、UE源码目录，工程目录信息收集起来；</li>
+<li>参数解析阶段，将传入的命令行参数，确定自己生成的目标类型；</li>
+<li>实际生成阶段，根据环境、参数，开始生成makefile，确定C++的各种目录位置。开始构建项目。</li>
+</ol>
+<p>UHT=Unreal Header Tool</p>
+<p>UHT 配合实现了反射机制。</p>
+<h3 id="第9章-重要合行系统简介"><a href="#第9章-重要合行系统简介" class="headerlink" title="第9章 重要合行系统简介"></a>第9章 重要合行系统简介</h3><h4 id="9-1-内存分配"><a href="#9-1-内存分配" class="headerlink" title="9.1 内存分配"></a>9.1 内存分配</h4><h5 id="9-1-1-Windows操作系统下的内存分配方案"><a href="#9-1-1-Windows操作系统下的内存分配方案" class="headerlink" title="9.1.1 Windows操作系统下的内存分配方案"></a>9.1.1 Windows操作系统下的内存分配方案</h5><p>主要通过</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FMalloc* <span class="title">FWindowsPlatformMemory::BaseAllocator</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">#<span class="meta">#<span class="keyword">if</span> ENABLE_WIN_ALLOC_TRACKING</span></span></span><br><span class="line"><span class="function">#<span class="meta">#<span class="keyword">if</span> FORCE_ANSI_ALLOCATOR</span></span></span><br><span class="line"><span class="function">#<span class="meta">#<span class="keyword">elif</span> WITH_EDITORONLY_DATA </span></span></span><br></pre></td></tr></table></figure>
+<p>一共提供了Mallo（ANSI）、Intel TBB，以及Binned内存分配器。</p>
+<h4 id="9-2-引擎初始化过程"><a href="#9-2-引擎初始化过程" class="headerlink" title="9.2 引擎初始化过程"></a>9.2 引擎初始化过程</h4><p>初始化过程一共两个</p>
+<p>PreInit/Init</p>
+<p>PreInit支持输出参数，CmdLine。</p>
+<p>设置好工作目录，游戏目录。</p>
+<p>初始化随机种子。</p>
+<p>设置输出标准设备。</p>
+<p>初始游戏主线程。</p>
+<p>会调用LoadCoreModules。CoreModules。</p>
+<p>之后会将PreInitModules会被加载起来，启动之后调用AppInit函数。</p>
+<p>Init</p>
+<p>所有模块都加载到内存中，如果有PostEngineInit函数，就会调用。过程由IProjectManager完成。</p>
+<p>主循环</p>
+<p>虚幻引擎，有一个EngineTick()。在主循环中最好不要调用繁重的任务，否则将会把游戏卡住。</p>
+<h4 id="9-3-并行与并发"><a href="#9-3-并行与并发" class="headerlink" title="9.3 并行与并发"></a>9.3 并行与并发</h4><p>测试代码一般文件名称为<code>模块名Test.cpp</code>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">DEFINE_LOG_CATEGORY_STATIC</span>(TestLog,Log,All);</span><br><span class="line"><span class="built_in">IMPLEMENT_SIMPLE_AUTOMATION_TEST</span>(FMultiThreadTest,<span class="string">&quot;MyTest.PublicTest</span></span><br><span class="line"><span class="string">  .MultiThreadIest&quot;</span>, EAutomationTestFlags::EditorContext |</span><br><span class="line">  EAutomationTestFlags::EngineFilter)</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">FMultiThreadTest::RunTest</span><span class="params">(<span class="type">const</span> FString&amp; Parameters)</span></span></span><br></pre></td></tr></table></figure>
+<p>通过UE4菜单栏。</p>
+<p>Windows -&gt; General -&gt; Developer Tools -&gt; Session Frontend</p>
+<p>打开“会话窗口”。</p>
+<p>点击”Start Tests”按钮，就可以在Message Output里面输出的日志。</p>
+<p>可以通过<code>FRunnableThread::Create(new FRunnableTestThread(0)</code>创建线程。就能开启多个线程。</p>
+<p>Task Graph系统</p>
+<p>将“指令”和“数据”封成一个包，然后交给Task Graph，Task Graph找到空闲的线程，去处理Task。</p>
+<p>虚幻引擎Rama，写过对于Task Graph的描述。</p>
+<p>Task Graph采用模板匹配，无需每个Task继承于指定的类，只要类将一些函数实现，就能让模板编译通过。<code>TGraphTask::CreateTask</code>。</p>
+<p>std::thread</p>
+<p>可以直接使用c++11的多线程。</p>
+<p>线程同步</p>
+<p>灵界区<code>FCriticalSection</code>。</p>
+<p>也提供了<code>std::future</code>，<code>std::promise</code>,<code>TFuture</code>, <code>TPromise</code>。</p>
+<p>多进程</p>
+<p><code>Core.GenericPlatformProcess</code>可以看到<code>FGenericPlatformProcess</code>类的定义。可以通过管道进行数据交换。也将会返回<code>FProcHandle</code>子进程的句柄。</p>
+<h3 id="第10章-对象模型"><a href="#第10章-对象模型" class="headerlink" title="第10章 对象模型"></a>第10章 对象模型</h3><p>本章主要讨论 UObject对象、组件对象和Actor对象。</p>
+<h4 id="10-1-UObject"><a href="#10-1-UObject" class="headerlink" title="10.1 UObject"></a>10.1 UObject</h4><p>创建：通过<code>NewObject&lt;T&gt;</code>产生。<br>销毁：通过引擎的垃圾回收来销毁。</p>
+<p>创建过程分为两个步骤：</p>
+<h5 id="通过分配器将内存分配出来；"><a href="#通过分配器将内存分配出来；" class="headerlink" title="通过分配器将内存分配出来；"></a>通过分配器将内存分配出来；</h5><p>使用<code>UObjectGlobals.GetPropertiesSize()</code>获取目标类的内存大小；</p>
+<p>使用<code>FUObjectAllocator.AllocateUObject()</code>分配内存；</p>
+<h5 id="使用这块内存调用new方法，构建对象出来"><a href="#使用这块内存调用new方法，构建对象出来" class="headerlink" title="使用这块内存调用new方法，构建对象出来"></a>使用这块内存调用new方法，构建对象出来</h5><p>使用<code>PlacemenetNew</code>将分配好的内存区域调用UObjectBase构造函数</p>
+<p>对<code>UObject</code>提供UPackage存储读取逻辑。成员变量没有使用<code>UPROPERTY</code>宏标记，将不会序列化。</p>
+<h3 id="第13章-蓝图"><a href="#第13章-蓝图" class="headerlink" title="第13章 蓝图"></a>第13章 蓝图</h3><h4 id="13-1-蓝图架构简述"><a href="#13-1-蓝图架构简述" class="headerlink" title="13.1 蓝图架构简述"></a>13.1 蓝图架构简述</h4><p>可视化的变成系统，从 Kismet 系统发展而来。优势在于高速迭代，小型蓝图的编译速度快过C++。最新的版本能将蓝图编译成C++。选择C++来编写主要还是想更加广泛的使用API，大量使用蓝图的时候可能不直观。</p>
+<h4 id="13-2-前端：蓝图存储与编辑"><a href="#13-2-前端：蓝图存储与编辑" class="headerlink" title="13.2 前端：蓝图存储与编辑"></a>13.2 前端：蓝图存储与编辑</h4><p>蓝图包含三个部分：蓝图编辑系统、蓝图本身、蓝图编译后的字节码。字节码不包含节点信息。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/5.0/zh-CN/blueprints-visual-scripting-in-unreal-engine/">蓝图官方文档</a></p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UEdGraph</span><br><span class="line"> Schema</span><br><span class="line"> Nodes</span><br><span class="line"> SubGraphes</span><br></pre></td></tr></table></figure>
+<h5 id="13-2-1-Schema"><a href="#13-2-1-Schema" class="headerlink" title="13.2.1 Schema"></a>13.2.1 Schema</h5><h2 id="注册虚幻引擎阅读权限"><a href="#注册虚幻引擎阅读权限" class="headerlink" title="注册虚幻引擎阅读权限"></a>注册虚幻引擎阅读权限</h2><p>可以登录到UE官网，开通github中，开源的UE源码阅读权限。</p>
+<h2 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h2><h3 id="UnrealBuildTool-error-Unable-to-merge-actions-producing"><a href="#UnrealBuildTool-error-Unable-to-merge-actions-producing" class="headerlink" title="UnrealBuildTool : error : Unable to merge actions producing"></a>UnrealBuildTool : error : Unable to merge actions producing</h3><p>其实就是在工程目录下，存在一批相同的文件。编译的时候，UnrealBuildTool计算merge的时候发现了问题。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/zh-CN/index.html">UnrealEngine4官方文档</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://space.bilibili.com/138827797?spm_id_from=333.788.b_765f7570696e666f.2">虚幻引擎官方-B站</a></li>
+<li>[3] <a target="_blank" rel="noopener" href="https://www.zhihu.com/org/xu-huan-yin-qing-24">虚幻引擎-知乎</a></li>
+<li>[4] <a target="_blank" rel="noopener" href="https://github.com/EpicGames/UnrealEngine">虚幻引擎github</a></li>
+<li>[5] <a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_38106923/article/details/101937827">图片格式列举</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Game/" rel="tag"># Game</a>
+              <a href="/tags/Unreal-Engine4/" rel="tag"># Unreal Engine4</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/11/vscode/" rel="prev" title="vscode">
+      <i class="fa fa-chevron-left"></i> vscode
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/22/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="next" title="线性代数">
+      线性代数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8EC-%E7%BC%96%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">第一部分 虚幻引擎C++编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC1%E7%AB%A0-%E4%BA%94%E4%B8%AA%E7%B1%BB%E7%9A%84%E7%86%9F%E6%82%89"><span class="nav-number">1.1.</span> <span class="nav-text">第1章 五个类的熟悉</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UObject"><span class="nav-number">1.1.1.</span> <span class="nav-text">UObject</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Actor"><span class="nav-number">1.1.2.</span> <span class="nav-text">Actor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%81%B5%E9%AD%82%E4%B8%8E%E8%82%89%E4%BD%93%EF%BC%9APawn%E3%80%81Character%E5%92%8CController"><span class="nav-number">1.1.3.</span> <span class="nav-text">灵魂与肉体：Pawn、Character和Controller</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pawn"><span class="nav-number">1.1.4.</span> <span class="nav-text">Pawn</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Character"><span class="nav-number">1.1.5.</span> <span class="nav-text">Character</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Controller"><span class="nav-number">1.1.6.</span> <span class="nav-text">Controller</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC2%E7%AB%A0-%E9%9C%80%E6%B1%82%E5%88%B0%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">第2章 需求到实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E9%9C%80%E6%B1%82"><span class="nav-number">1.2.1.</span> <span class="nav-text">分析需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AC%E5%8C%96%E9%9C%80%E6%B1%82%E4%B8%BA%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.2.2.</span> <span class="nav-text">转化需求为设计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC3%E7%AB%A0-%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84C-%E7%B1%BB"><span class="nav-number">1.3.</span> <span class="nav-text">第3章 创建自己的C++类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Unreal-Editor%E5%88%9B%E5%BB%BAc-%E7%B1%BB"><span class="nav-number">1.3.1.</span> <span class="nav-text">使用Unreal Editor创建c++类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAC-%E7%B1%BB"><span class="nav-number">1.3.2.</span> <span class="nav-text">手动创建C++类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8E%E7%B1%BB%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99"><span class="nav-number">1.3.3.</span> <span class="nav-text">虚幻引擎类命名规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC4%E7%AB%A0-%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.4.</span> <span class="nav-text">第4章 对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BA%A7%E7%94%9F"><span class="nav-number">1.4.1.</span> <span class="nav-text">类对象的产生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-number">1.4.2.</span> <span class="nav-text">类对象的获取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%AF%B9%E8%B1%A1%E7%9A%84%E9%94%80%E6%AF%81"><span class="nav-number">1.4.3.</span> <span class="nav-text">类对象的销毁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC5%E7%AB%A0-%E4%BB%8EC-%E5%88%B0%E8%93%9D%E5%9B%BE"><span class="nav-number">1.5.</span> <span class="nav-text">第5章 从C++到蓝图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UPROPERTY%E5%AE%8F"><span class="nav-number">1.5.1.</span> <span class="nav-text">UPROPERTY宏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UFUNCTION%E5%AE%8F"><span class="nav-number">1.5.2.</span> <span class="nav-text">UFUNCTION宏</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC6%E7%AB%A0-%E6%B8%B8%E6%88%8F%E6%80%A7%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0"><span class="nav-number">1.6.</span> <span class="nav-text">第6章 游戏性框架概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%A1%8C%E4%B8%BA%E6%A0%91%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%8E%9F%E7%90%86"><span class="nav-number">1.6.1.</span> <span class="nav-text">1. 行为树：概念与原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9%E8%A1%8C%E4%B8%BA%E6%A0%91"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">为什么选择行为树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%8E%9F%E7%90%86"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">行为树原理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8E%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6%E6%9E%84"><span class="nav-number">1.6.2.</span> <span class="nav-text">2. 虚幻引擎网络框架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">同步</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AF-%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">广义的客户端-服务器模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC7%E7%AB%A0-%E5%BC%95%E6%93%8E%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3%E7%B1%BB"><span class="nav-number">1.7.</span> <span class="nav-text">第7章 引擎系统相关类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.7.1.</span> <span class="nav-text">7.1 正则表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-FPaths"><span class="nav-number">1.7.2.</span> <span class="nav-text">7.2 FPaths</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-XML-JSON"><span class="nav-number">1.7.3.</span> <span class="nav-text">7.3 XML&#x2F;JSON</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E4%B8%8E%E8%AE%BF%E9%97%AE"><span class="nav-number">1.7.4.</span> <span class="nav-text">7.4 文件读写与访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-5-GConfig"><span class="nav-number">1.7.5.</span> <span class="nav-text">7.5 GConfig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-6-UE-LOG"><span class="nav-number">1.7.6.</span> <span class="nav-text">7.6 UE_LOG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-7-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86"><span class="nav-number">1.7.7.</span> <span class="nav-text">7.7 字符串处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-8-%E7%BC%96%E8%AF%91%E5%99%A8%E7%9B%B8%E5%85%B3%E6%8A%80%E5%B7%A7"><span class="nav-number">1.7.8.</span> <span class="nav-text">7.8 编译器相关技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#7-8-1-%E5%BA%9F%E5%BC%83%E5%87%BD%E6%95%B0%E6%A0%87%E8%AE%B0"><span class="nav-number">1.7.8.1.</span> <span class="nav-text">7.8.1 废弃函数标记</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-8-2-%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4%E5%AE%9E%E7%8E%B0%E8%B7%A8%E5%B9%B3%E5%8F%B0"><span class="nav-number">1.7.8.2.</span> <span class="nav-text">7.8.2 编译器指令实现跨平台</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-9-Images"><span class="nav-number">1.7.9.</span> <span class="nav-text">7.9 Images</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86-%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8E%E6%B5%85%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">第二部分 虚幻引擎浅析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC8%E7%AB%A0-%E6%A8%A1%E5%9D%97%E6%9C%BA%E5%88%B6"><span class="nav-number">2.1.</span> <span class="nav-text">第8章 模块机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.1.</span> <span class="nav-text">8.1 模块简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="nav-number">2.1.2.</span> <span class="nav-text">8.2 创建自己的模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8E%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A8%A1%E5%9D%97%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.1.3.</span> <span class="nav-text">8.3 虚幻引擎初始化模块加载顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-4-UBT-UHT"><span class="nav-number">2.1.4.</span> <span class="nav-text">8.4 UBT&#x2F;UHT</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC9%E7%AB%A0-%E9%87%8D%E8%A6%81%E5%90%88%E8%A1%8C%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B"><span class="nav-number">2.2.</span> <span class="nav-text">第9章 重要合行系统简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">2.2.1.</span> <span class="nav-text">9.1 内存分配</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#9-1-1-Windows%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%8B%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E6%96%B9%E6%A1%88"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">9.1.1 Windows操作系统下的内存分配方案</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-%E5%BC%95%E6%93%8E%E5%88%9D%E5%A7%8B%E5%8C%96%E8%BF%87%E7%A8%8B"><span class="nav-number">2.2.2.</span> <span class="nav-text">9.2 引擎初始化过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-3-%E5%B9%B6%E8%A1%8C%E4%B8%8E%E5%B9%B6%E5%8F%91"><span class="nav-number">2.2.3.</span> <span class="nav-text">9.3 并行与并发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC10%E7%AB%A0-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">第10章 对象模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#10-1-UObject"><span class="nav-number">2.3.1.</span> <span class="nav-text">10.1 UObject</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%88%86%E9%85%8D%E5%99%A8%E5%B0%86%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E5%87%BA%E6%9D%A5%EF%BC%9B"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">通过分配器将内存分配出来；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%BF%99%E5%9D%97%E5%86%85%E5%AD%98%E8%B0%83%E7%94%A8new%E6%96%B9%E6%B3%95%EF%BC%8C%E6%9E%84%E5%BB%BA%E5%AF%B9%E8%B1%A1%E5%87%BA%E6%9D%A5"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">使用这块内存调用new方法，构建对象出来</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC13%E7%AB%A0-%E8%93%9D%E5%9B%BE"><span class="nav-number">2.4.</span> <span class="nav-text">第13章 蓝图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#13-1-%E8%93%9D%E5%9B%BE%E6%9E%B6%E6%9E%84%E7%AE%80%E8%BF%B0"><span class="nav-number">2.4.1.</span> <span class="nav-text">13.1 蓝图架构简述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-2-%E5%89%8D%E7%AB%AF%EF%BC%9A%E8%93%9D%E5%9B%BE%E5%AD%98%E5%82%A8%E4%B8%8E%E7%BC%96%E8%BE%91"><span class="nav-number">2.4.2.</span> <span class="nav-text">13.2 前端：蓝图存储与编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#13-2-1-Schema"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">13.2.1 Schema</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8E%E9%98%85%E8%AF%BB%E6%9D%83%E9%99%90"><span class="nav-number">3.</span> <span class="nav-text">注册虚幻引擎阅读权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="nav-number">4.</span> <span class="nav-text">常见错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UnrealBuildTool-error-Unable-to-merge-actions-producing"><span class="nav-number">4.1.</span> <span class="nav-text">UnrealBuildTool : error : Unable to merge actions producing</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'fe4dc085969838582537614f4f382112',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

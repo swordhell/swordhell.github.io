@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概述QT的全称就叫做QT。Qt 是一个1991年由Qt Company开发的跨平台C++图形用户界面应用程序开发框架。它既可以开发GUI程序，也可用于开发非GUI程序，比如控制台工具和服务器。 Qt是面向对象的框架，使用特殊的代码生成扩展以及一些宏，Qt很容易扩展，并且允许真正地组件编程。Qt支持下列操作系统: Microsoft Windows 95&#x2F;98， Microsoft Windows">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qt">
+<meta property="og:url" content="https://swordhell.github.io/2022/04/22/Qt/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="概述QT的全称就叫做QT。Qt 是一个1991年由Qt Company开发的跨平台C++图形用户界面应用程序开发框架。它既可以开发GUI程序，也可用于开发非GUI程序，比如控制台工具和服务器。 Qt是面向对象的框架，使用特殊的代码生成扩展以及一些宏，Qt很容易扩展，并且允许真正地组件编程。Qt支持下列操作系统: Microsoft Windows 95&#x2F;98， Microsoft Windows">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.064Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2022/04/22/Qt/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Qt | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2022/04/22/Qt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Qt
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-22 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-22T00:00:00+08:00">2022-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">2-应用</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-%E5%BA%94%E7%94%A8/qt/" itemprop="url" rel="index"><span itemprop="name">qt</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>QT的全称就叫做QT。Qt 是一个1991年由Qt Company开发的跨平台C++图形用户界面应用程序开发框架。它既可以开发GUI程序，也可用于开发非GUI程序，比如控制台工具和服务器。</p>
+<p>Qt是面向对象的框架，使用特殊的代码生成扩展以及一些宏，Qt很容易扩展，并且允许真正地组件编程。Qt支持下列操作系统: Microsoft Windows 95/98， Microsoft Windows NT， Linux， Solaris， SunOS， HP-UX， Digital UNIX Irix， FreeBSD， BSD/OS， SCO， AIX， OS390，QNX 等等。Qt 的良好封装机制使得 Qt 的模块化程度非常高，可重用性较好，对于用户开发来说是非常 方便的。并且Qt 提供了一种称为 signals/slots 的安全类型来替代 callback，这使得各个元件 之间的协同工作变得十分简单。</p>
+<span id="more"></span>
+<h2 id="工程文件介绍"><a href="#工程文件介绍" class="headerlink" title="工程文件介绍"></a>工程文件介绍</h2><p><code>.pro</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">QT       += core gui</span><br><span class="line"></span><br><span class="line">greaterThan(QT_MAJOR_VERSION, 4): QT += widgets</span><br><span class="line"></span><br><span class="line">CONFIG += c++11</span><br></pre></td></tr></table></figure>
+<p>重点是qt含有这些模块。</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Module</span><br><span class="line">Description</span><br><span class="line">Qt Core</span><br><span class="line">Core non-graphical classes used by other modules.</span><br><span class="line">Qt GUI</span><br><span class="line">Base classes for graphical user interface (GUI) components. Includes OpenGL.</span><br><span class="line">Qt Multimedia</span><br><span class="line">Classes for audio, video, radio and camera functionality.</span><br><span class="line">Qt Multimedia Widgets</span><br><span class="line">Widget-based classes for implementing multimedia functionality.</span><br><span class="line">Qt Network</span><br><span class="line">Classes to make network programming easier and more portable.</span><br><span class="line">Qt QML</span><br><span class="line">Classes for QML and JavaScript languages.</span><br><span class="line">Qt Quick</span><br><span class="line">A declarative framework for building highly dynamic applications with custom user interfaces.</span><br><span class="line">Qt Quick Controls</span><br><span class="line">Provides lightweight QML types for creating performant user interfaces for desktop, embedded, and mobile devices. These types employ a simple styling architecture and are very efficient.</span><br><span class="line">Qt Quick Dialogs</span><br><span class="line">Types for creating and interacting with system dialogs from a Qt Quick application.</span><br><span class="line">Qt Quick Layouts</span><br><span class="line">Layouts are items that are used to arrange Qt Quick 2 based items in the user interface.</span><br><span class="line">Qt Quick Test</span><br><span class="line">A unit test framework for QML applications, where the test cases are written as JavaScript functions.</span><br><span class="line">Note: The binary compatibility guarantee does not apply to Qt Quick Test. However, it will remain source compatible.</span><br><span class="line">Qt SQL</span><br><span class="line">Classes for database integration using SQL.</span><br><span class="line">Qt Test</span><br><span class="line">Classes for unit testing Qt applications and libraries.</span><br><span class="line">Note: The binary compatibility guarantee does not apply to Qt Test. However, it will remain source compatible.</span><br><span class="line">Qt Widgets</span><br><span class="line">Classes to extend Qt GUI with C++ widgets.</span><br></pre></td></tr></table></figure>
+<h2 id="对象树"><a href="#对象树" class="headerlink" title="对象树"></a>对象树</h2><p>在qt里面使用对象树来建立继承的层级关系，方便让其在释放的时候自动释放内存。</p>
+<h2 id="坐标系"><a href="#坐标系" class="headerlink" title="坐标系"></a>坐标系</h2><p>最坐上位置为0,0，x往右。y往下。</p>
+<h2 id="信号槽"><a href="#信号槽" class="headerlink" title="信号槽"></a>信号槽</h2><p>信号发送方，信号接收方是分离的，使用connect来将两个部分耦合。</p>
+<p>示例在一个<code>QWidget</code>里面创建一个<code>QPushButtom</code>，通过手册找到<code>QPushButtom</code>的基类<code>QAbstractButton</code>文档中，<code>Signals</code>章节能找到它能支持的4个信号。我们选择<code>clicked</code>。信号函数就是<code>&amp;QPushButton::click</code>。</p>
+<figure class="highlight h"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 函数原型：</span></span><br><span class="line">QMetaObject::Connection <span class="title function_">QObject::connect</span><span class="params">(<span class="type">const</span> QObject *sender, <span class="type">const</span> <span class="type">char</span> *signal, <span class="type">const</span> QObject *receiver, <span class="type">const</span> <span class="type">char</span> *method, Qt::ConnectionType type = Qt::AutoConnection)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用示例：</span></span><br><span class="line"><span class="title function_">connect</span><span class="params">(ui-&gt;btnOpenMinor,&amp;QPushButton::clicked,this, &amp;MainWindow::on_manual_bind_clicked,Qt::ConnectionType::AutoConnection)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 绑定的函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">MainWindow::on_manual_bind_clicked</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    qDebug(<span class="string">&quot;%s&quot;</span>,__FUNCTION__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="type">void</span> <span class="title function_">someFunction</span><span class="params">()</span>;</span><br><span class="line">  QPushButton *button = new QPushButton;</span><br><span class="line">  QObject::connect(button, &amp;QPushButton::clicked, someFunction);</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="comment">// 自定义一个信号。信号定义者</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Teacher</span> &#123;</span></span><br><span class="line">signals: </span><br><span class="line">  <span class="type">void</span> <span class="title function_">hungry</span><span class="params">()</span>;</span><br><span class="line">  <span class="type">void</span> <span class="title function_">hungry</span><span class="params">(QString food)</span>; <span class="comment">// 重载了之后需要在链接链接的时候使用函数指针翻出来</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 槽部分代码：</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> &#123;</span></span><br><span class="line">public slots:</span><br><span class="line">  <span class="type">void</span> <span class="title function_">treat</span><span class="params">()</span>; <span class="comment">// 定义，并且需要实现；</span></span><br><span class="line">  <span class="type">void</span> <span class="title function_">treat</span><span class="params">(QString)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用部分的代码：</span></span><br><span class="line">connect(teacher,&amp;Teacher::hungry,study,&amp;Student::treat);</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> (Teacher:: *teacherSignal)(QString) = &amp;Teacher::hungry; <span class="comment">// 这样就能消除了二义性；</span></span><br><span class="line"><span class="type">void</span> (Student:: *student)(QString) = &amp;Student::treat;</span><br><span class="line">connect(teach,teacherSignal,study,student);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 信号连接信号</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以考虑使用 connect 先连接到一个方法，然后调用 emit 函数将一个信号发出去。</span></span><br><span class="line">emit zt-&gt;hungry(<span class="string">&quot;狗不理包子&quot;</span>);</span><br><span class="line"><span class="comment">// 直接连接信号</span></span><br><span class="line"><span class="type">void</span> (Teacher:: *teacherSignal1)() = &amp;Teacher::hungry;</span><br><span class="line">connect(btnExit,QPushButton::clicked,teacher,&amp;Teacher::teacherSignal1);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 断开信号，参数和connect一致；</span></span><br><span class="line">disdconnect(btnExit,QPushButton::clicked,teacher,&amp;Teacher::teacherSignal1);</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<ul>
+<li>信号可以连接多个槽函数；</li>
+<li>信号可以连接信号；</li>
+<li>多个信号能连接同一个槽函数；</li>
+<li>信号和槽函数需要参数表要对应；</li>
+<li>信号参数可以多一些，槽函数可以少于它提供的函数；</li>
+<li>qt4的写法，可以直接使用宏来规定信号，槽函数 SIGNAL SLOT，可以直观的将函数列出来，但是无法检测到问题，出问题，也没有法子知道出问题了。如果槽函数参数和信号没有</li>
+</ul>
+<h2 id="资源文件加载"><a href="#资源文件加载" class="headerlink" title="资源文件加载"></a>资源文件加载</h2><p>先将资源文件拷贝到项目目录中。</p>
+<p>新建<code>Qt Resource File</code>创建一个qrc文件。然后就是添加前缀，将全部的图片资源导入。</p>
+<p>在代码中使用资源的时候是<code>:+前缀名+文件名</code>就能访问这个美术资源了。</p>
+<h2 id="模态和非模态对话框"><a href="#模态和非模态对话框" class="headerlink" title="模态和非模态对话框"></a>模态和非模态对话框</h2><p>模态能共存，使用<code>show()</code>函数。</p>
+<p>非模态只能有一个界面能用。</p>
+<h2 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h2><p>垂直布局、水平布局、网格布局。</p>
+<p>可以使用<code>QWidget</code>将一些空间打包成一个组，然后使用垂直布局、水平布局。</p>
+<h2 id="多屏幕支持"><a href="#多屏幕支持" class="headerlink" title="多屏幕支持"></a>多屏幕支持</h2><figure class="highlight hpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> screenIndex = m_desktop-&gt;<span class="built_in">primaryScreen</span>();</span><br><span class="line"><span class="built_in">qDebug</span>()&lt;&lt;<span class="string">&quot;屏幕的索引号&quot;</span>&lt;&lt;screenIndex;</span><br><span class="line"><span class="type">int</span> screenCount = m_desktop-&gt;<span class="built_in">screenCount</span>();</span><br><span class="line"><span class="built_in">qDebug</span>()&lt;&lt;<span class="string">&quot;屏幕的个数&quot;</span>&lt;&lt;screenCount;</span><br><span class="line">QRect screenSize = m_desktop-&gt;<span class="built_in">screenGeometry</span>();</span><br><span class="line"><span class="built_in">qDebug</span>()&lt;&lt;<span class="string">&quot;屏幕的分辨率&quot;</span>&lt;&lt;screenSize;</span><br><span class="line"><span class="type">int</span> screenWidth = m_desktop-&gt;<span class="built_in">width</span>();</span><br><span class="line"><span class="built_in">qDebug</span>()&lt;&lt;<span class="string">&quot;屏幕的总宽度&quot;</span>&lt;&lt;screenWidth;</span><br><span class="line"><span class="type">int</span> screenHeight = m_desktop-&gt;<span class="built_in">height</span>();</span><br><span class="line"><span class="built_in">qDebug</span>()&lt;&lt;<span class="string">&quot;屏幕的高度&quot;</span>&lt;&lt;screenHeight;</span><br><span class="line"></span><br><span class="line">m_desktop = QApplication::<span class="built_in">desktop</span>();</span><br><span class="line"><span class="comment">//获取屏幕的索引号  0 代表主屏幕  1代表扩展屏</span></span><br><span class="line"><span class="type">int</span> screenIndex = m_desktop-&gt;<span class="built_in">primaryScreen</span>();</span><br><span class="line"><span class="comment">//此时将这个软件作为主屏幕</span></span><br><span class="line">QRect rect = m_desktop-&gt;<span class="built_in">screenGeometry</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">this</span>-&gt;<span class="built_in">setGeometry</span>(rect);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="视频播放相关"><a href="#视频播放相关" class="headerlink" title="视频播放相关"></a>视频播放相关</h2><h2 id="使用qt中的socket"><a href="#使用qt中的socket" class="headerlink" title="使用qt中的socket"></a>使用qt中的socket</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://www.qt.io/">qt官网</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1g4411H78N?p=8">qt视频</a></li>
+<li>[3] <a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1680696226373565229&amp;wfr=spider&amp;for=pc">如何安装QT 5.14.1</a></li>
+<li>[4] <a target="_blank" rel="noopener" href="https://doc.qt.io/archives/qtextended4.4/tut-dualdisplay.html">双屏显示相关</a></li>
+<li>[5] <a target="_blank" rel="noopener" href="https://gitee.com/feiyangqingyun/QWidgetDemo">飞扬青云提供的qt控件</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/22/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" rel="prev" title="高等数学">
+      <i class="fa fa-chevron-left"></i> 高等数学
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/23/C++-Effective-C++/" rel="next" title="C++Effective-C++">
+      C++Effective-C++ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E6%96%87%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">工程文件介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E6%A0%91"><span class="nav-number">1.2.</span> <span class="nav-text">对象树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.3.</span> <span class="nav-text">坐标系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E6%A7%BD"><span class="nav-number">1.4.</span> <span class="nav-text">信号槽</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD"><span class="nav-number">1.5.</span> <span class="nav-text">资源文件加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%80%81%E5%92%8C%E9%9D%9E%E6%A8%A1%E6%80%81%E5%AF%B9%E8%AF%9D%E6%A1%86"><span class="nav-number">1.6.</span> <span class="nav-text">模态和非模态对话框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E5%B1%80"><span class="nav-number">1.7.</span> <span class="nav-text">布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%B1%8F%E5%B9%95%E6%94%AF%E6%8C%81"><span class="nav-number">1.8.</span> <span class="nav-text">多屏幕支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E7%9B%B8%E5%85%B3"><span class="nav-number">1.9.</span> <span class="nav-text">视频播放相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8qt%E4%B8%AD%E7%9A%84socket"><span class="nav-number">1.10.</span> <span class="nav-text">使用qt中的socket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.11.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : '0968a9f29261dc156a8018cf995474dd',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

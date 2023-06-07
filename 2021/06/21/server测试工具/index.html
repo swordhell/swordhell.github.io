@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="记录一下常用的服务器测试工具。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="server测试工具">
+<meta property="og:url" content="https://swordhell.github.io/2021/06/21/server%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="记录一下常用的服务器测试工具。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.078Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="Server">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2021/06/21/server%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>server测试工具 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2021/06/21/server%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          server测试工具
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-21 00:00:00" itemprop="dateCreated datePublished" datetime="2021-06-21T00:00:00+08:00">2021-06-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">2-应用</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-%E5%BA%94%E7%94%A8/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">游戏开发</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>记录一下常用的服务器测试工具。</p>
+<span id="more"></span>
+<h2 id="网络相关"><a href="#网络相关" class="headerlink" title="网络相关"></a>网络相关</h2><h3 id="抓包工具"><a href="#抓包工具" class="headerlink" title="抓包工具"></a>抓包工具</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/bandaoyu/article/details/107118729">网络分析</a></p>
+<h4 id="wireshark-v3-4-5"><a href="#wireshark-v3-4-5" class="headerlink" title="wireshark_v3.4.5"></a>wireshark_v3.4.5</h4><h4 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h4><p>通过指令安装<code>yum install tcpdump</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump  -XvvennSs 0 -i enp2s0 port 8080</span><br><span class="line"></span><br><span class="line">20:01:34.640787 94:c6:91:57:e4:1b &gt; d4:5d:64:f0:76:aa, ethertype IPv4 (0x0800), length 54: (tos 0x0, ttl 64, id 23026, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    192.168.125.213.8080 &gt; 192.168.125.196.11743: Flags [.], cksum 0x7f69 (correct), seq 2141321887, ack 3936026461, win 471, length 0</span><br><span class="line">	0x0000:  4500 0028 59f2 4000 4006 63f3 c0a8 7dd5  E..(Y.@.@.c...&#125;.</span><br><span class="line">	0x0010:  c0a8 7dc4 1f90 2ddf 7fa1 fa9f ea9a ff5d  ..&#125;...-........]</span><br><span class="line">	0x0020:  5010 01d7 7f69 0000                      P....i..</span><br><span class="line">20:01:34.648655 94:c6:91:57:e4:1b &gt; d4:5d:64:f0:76:aa, ethertype IPv4 (0x0800), length 415: (tos 0x0, ttl 64, id 23027, offset 0, flags [DF], proto TCP (6), length 401)</span><br><span class="line">    192.168.125.213.8080 &gt; 192.168.125.196.11743: Flags [P.], cksum 0xe9dc (correct), seq 2141321887:2141322248, ack 3936026461, win 471, length 361: HTTP, length: 361</span><br><span class="line">	HTTP/1.1 200 OK</span><br><span class="line">	Content-Type: application/json; charset=utf-8</span><br><span class="line">	Date: Mon, 21 Jun 2021 12:01:34 GMT</span><br><span class="line">	Content-Length: 237</span><br><span class="line">	</span><br><span class="line">	0x0000:  4500 0191 59f3 4000 4006 6289 c0a8 7dd5  E...Y.@.@.b...&#125;.</span><br><span class="line">	0x0010:  c0a8 7dc4 1f90 2ddf 7fa1 fa9f ea9a ff5d  ..&#125;...-........]</span><br><span class="line">	0x0020:  5018 01d7 e9dc 0000 4854 5450 2f31 2e31  P.......HTTP/1.1</span><br><span class="line">	0x0030:  2032 3030 204f 4b0d 0a43 6f6e 7465 6e74  .200.OK..Content</span><br><span class="line">	0x0090:  7465 6e74 2d4c 656e 6774 683a 2032 3337  tent-Length:.237</span><br><span class="line">	0x00a0:  0d0a 0d0a 7b22 5549 4422 3a34 372c 224c  ....&#123;&quot;UID&quot;:47,&quot;L</span><br><span class="line">	0x00b0:  6f62 6279 4164 6472 223a 2231 3932 2e31  obbyAddr&quot;:&quot;192.1</span><br><span class="line">	0x00c0:  3638 2e31 3235 2e31 3936 3a32 3636 3622  68.125.196:2666&quot;</span><br><span class="line">	0x0170:  3565 3436 3264 6331 3866 3963 3063 3661  5e462dc18f9c0c6a</span><br><span class="line">	0x0180:  3366 6439 6465 3261 3835 6538 6522 7d5d  3fd9de2a85e8e&quot;&#125;]</span><br><span class="line">	0x0190:  7d                                       </span><br></pre></td></tr></table></figure>
+<p>所以，在工作中 tcpdump 只是用来抓取数据包，不用来分析数据包，而是把 tcpdump 抓取的数据包保存成 pcap 后缀的文件，接着用 Wireshark 工具进行数据包分析。</p>
+<p>先使用指令将侦听到的数据写入文件，<code>tcpdump  -XvvennSs 0 -i enp2s0 port 8080 -w http_tcpdump.pcap</code>。然后使用wireshark来看。</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/82498482">wireshark说明文档</a></p>
+<h3 id="网络限制工具"><a href="#网络限制工具" class="headerlink" title="网络限制工具"></a>网络限制工具</h3><h4 id="TC"><a href="#TC" class="headerlink" title="TC"></a>TC</h4><p>TC是限速命令，<code>wondershaper</code>是国外人开发的一款在Linux内核下基于TC工具的对整块网卡的限度工具。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release -y</span><br><span class="line">yum install wondershaper -y</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cainiaoit/p/8582322.html">TC工具</a></p>
+<h3 id="监控网络使用率"><a href="#监控网络使用率" class="headerlink" title="监控网络使用率"></a>监控网络使用率</h3><p>使用iftop工具能监控服务器通讯情况<code>yum install iftop</code>。</p>
+<h3 id="网上找到的建议"><a href="#网上找到的建议" class="headerlink" title="网上找到的建议"></a>网上找到的建议</h3><p>ip：查看网卡上的总流量<br>来自 iproute2util 包，在大多数系统上都已经默认安装，也可通过 yum install -y iproute 安装<br>nload：查看各个网络设备的当前网络速率<br>来自EPEL软件库，安装：yum install -y epel-release &amp;&amp; yum install -y nload<br>iptraf-ng：可以输出网卡的tcp、udp等各种数据，和各个网卡的实时网速<br>默认未安装，可使用 yum install -y iptraf-ng 安装<br>stat：用来替换vmstat、iostat、netstat、nfsstat和ifstat的全能系统信息统计工具，支持数据实时刷新，输出直观易懂<br>默认没有安装，安装命令为：yum install -y dstat<br>sar：System Activity Report的缩写，是一款全面的Linux系统运行状态统计和性能分析工具，可从磁盘IO、CPU负载、内存使用等多个维度对系统活动进行报告<br>来自 sysstat 包，安装：yum install -y sysstat<br>ss 和 netstat：查看活动链接/监听端口的常用命令。ss 是 netstat 的替代，性能更好，建议使用<br>ss 是 iproute2util 包的一部分，netstat 来自 net-tools 包，新版系统上需要自行安装：yum install -y net-tools<br>nethogs：查看单个进程流量而设计的工具，按照进程进行带宽分组<br>来自EPEL软件库，安装命令是：yum install -y epel-release &amp;&amp; yum install -y nethogs<br>tcpdump：用来抓包，保存的数据可以用wireshark打开和查看</p>
+<p>版权声明：本文为CSDN博主「guotianqing」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/guotianqing/article/details/109822561">原文链接</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19862245">Linux网络工具</a></p>
+<p>nethogs: 按进程查看流量占用<br>iptraf: 按连接/端口查看流量<br>ifstat: 按设备查看流量<br>ethtool: 诊断工具<br>tcpdump: 抓包工具<br>ss: 连接查看工具<br>其他: dstat, slurm, nload, bmon</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Server/" rel="tag"># Server</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/09/go-pprof-manual/" rel="prev" title="go-pprof-manual">
+      <i class="fa fa-chevron-left"></i> go-pprof-manual
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/19/socketop-learn/" rel="next" title="socketopt-学习">
+      socketopt-学习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3"><span class="nav-number">1.</span> <span class="nav-text">网络相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.</span> <span class="nav-text">抓包工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#wireshark-v3-4-5"><span class="nav-number">1.1.1.</span> <span class="nav-text">wireshark_v3.4.5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tcpdump"><span class="nav-number">1.1.2.</span> <span class="nav-text">tcpdump</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E9%99%90%E5%88%B6%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.</span> <span class="nav-text">网络限制工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TC"><span class="nav-number">1.2.1.</span> <span class="nav-text">TC</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%91%E6%8E%A7%E7%BD%91%E7%BB%9C%E4%BD%BF%E7%94%A8%E7%8E%87"><span class="nav-number">1.3.</span> <span class="nav-text">监控网络使用率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E4%B8%8A%E6%89%BE%E5%88%B0%E7%9A%84%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.4.</span> <span class="nav-text">网上找到的建议</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'c6b7c89fb1a3efa25f624b6acf0fe33a',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

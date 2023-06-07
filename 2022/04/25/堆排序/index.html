@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介 阅读算法导论之后做的读书笔记。在第二部分，第6章。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="堆排序">
+<meta property="og:url" content="https://swordhell.github.io/2022/04/25/%E5%A0%86%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="简介 阅读算法导论之后做的读书笔记。在第二部分，第6章。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://swordhell.github.io/2022/04/25/%E5%A0%86%E6%8E%92%E5%BA%8F/heap-sort-tree.png">
+<meta property="og:image" content="https://swordhell.github.io/2022/04/25/%E5%A0%86%E6%8E%92%E5%BA%8F/heap-sort-prec.png">
+<meta property="article:published_time" content="2022-04-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.079Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swordhell.github.io/2022/04/25/%E5%A0%86%E6%8E%92%E5%BA%8F/heap-sort-tree.png">
+
+<link rel="canonical" href="https://swordhell.github.io/2022/04/25/%E5%A0%86%E6%8E%92%E5%BA%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>堆排序 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2022/04/25/%E5%A0%86%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          堆排序
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-25 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-25T00:00:00+08:00">2022-04-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><img src="/2022/04/25/%E5%A0%86%E6%8E%92%E5%BA%8F/heap-sort-tree.png" alt="heap-sort"></p>
+<p>阅读算法导论之后做的读书笔记。在第二部分，第6章。</p>
+<span id="more"></span>
+<p>堆其实是近似的完全二叉树。一般都是通过数组来存储。</p>
+<h3 id="排序过程"><a href="#排序过程" class="headerlink" title="排序过程"></a>排序过程</h3><ol>
+<li>建堆：目的就是将无须的堆，将最大的数字挑出来放到队列首部；<br><img src="/2022/04/25/%E5%A0%86%E6%8E%92%E5%BA%8F/heap-sort-prec.png" alt="heap-make"></li>
+<li>将堆顶元素取出放到数组尾部，将堆元素减少一个；</li>
+<li>重新对堆进行排序；</li>
+</ol>
+<p>如果是最大堆，那就意味着父节点需要比子节点大。如此循环计算，直到树上的节点都符合这个规则。</p>
+<h3 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h3><p><a target="_blank" rel="noopener" href="https://github.com/swordhell/c_datastructure/tree/master/test_heapsort">github</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">#<span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line">#<span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line">#<span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line">#<span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> MAX_ARRAY = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> NUMBER_RANGE = <span class="number">100</span>;</span><br><span class="line"><span class="type">int</span>* raw_array = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 种随机数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">init_rand_env</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	srand((<span class="type">unsigned</span>)time(<span class="number">0</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 产生一批数字</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">rand_array_number</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; MAX_ARRAY; i++)</span><br><span class="line">		raw_array[i] = rand() % NUMBER_RANGE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出数组</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">output_array</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; MAX_ARRAY; i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, raw_array[i]);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过下标计算左子树下标</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">left</span><span class="params">(<span class="type">int</span> i)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> (i + <span class="number">1</span>) * <span class="number">2</span> - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过下标计算右子树下标</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">right</span><span class="params">(<span class="type">int</span> i)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> (i + <span class="number">1</span>) * <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对堆中某个子树排序</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">max_heapify</span><span class="params">(<span class="type">int</span>* A, <span class="type">int</span> size, <span class="type">int</span> i)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> l, r, largest,tmp;</span><br><span class="line">	l = left(i);</span><br><span class="line">	r = right(i);</span><br><span class="line">	<span class="keyword">if</span> (l &lt; size &amp;&amp; A[l] &gt; A[i])</span><br><span class="line">		largest = l;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		largest = i;</span><br><span class="line">	<span class="keyword">if</span> (r &lt; size &amp;&amp; A[r] &gt; A[largest])</span><br><span class="line">		largest = r;</span><br><span class="line">	<span class="keyword">if</span> (largest != i) &#123;</span><br><span class="line">		tmp = A[i];</span><br><span class="line">		A[i] = A[largest];</span><br><span class="line">		A[largest] = tmp;</span><br><span class="line">		max_heapify(A, size, largest);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 构建最大堆</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">build_max_heap</span><span class="params">(<span class="type">int</span>* A, <span class="type">int</span> size)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span> (i = (size+<span class="number">1</span>)&gt;&gt;<span class="number">1</span>; i &gt; <span class="number">0</span>; ) &#123;</span><br><span class="line">		--i;</span><br><span class="line">		max_heapify(A, size, i);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 堆排序</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">heap_sort</span><span class="params">(<span class="type">int</span>* A, <span class="type">int</span> size)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i,tmp;</span><br><span class="line">	build_max_heap(A, size);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;C make heap finish\n&quot;</span>);</span><br><span class="line">	output_array();</span><br><span class="line">	<span class="keyword">for</span> (i = size<span class="number">-1</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">		tmp = A[<span class="number">0</span>];</span><br><span class="line">		A[<span class="number">0</span>] = A[i];</span><br><span class="line">		A[i] = tmp;</span><br><span class="line">		size--;</span><br><span class="line">		max_heapify(A, size, <span class="number">0</span>);</span><br><span class="line">		output_array(); </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argn, <span class="type">char</span>* argc[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (argn != <span class="number">3</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;usage: test_heapsort MAX_ARRAY NUMBER_RANGE\n&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	MAX_ARRAY = atoi(argc[<span class="number">1</span>]);</span><br><span class="line">	NUMBER_RANGE = atoi(argc[<span class="number">2</span>]);</span><br><span class="line">	init_rand_env();</span><br><span class="line"></span><br><span class="line">	raw_array = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>) * MAX_ARRAY);</span><br><span class="line">	rand_array_number();</span><br><span class="line">	output_array();</span><br><span class="line">	heap_sort(raw_array, MAX_ARRAY);</span><br><span class="line"></span><br><span class="line">	output_array();</span><br><span class="line">	<span class="built_in">free</span>(raw_array);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><h4 id="libevent最小堆"><a href="#libevent最小堆" class="headerlink" title="libevent最小堆"></a>libevent最小堆</h4><p>在libevent源码中能看到它们的定时器是使用的最小堆来实现的。<code>minheap-internal.h</code>代码一共193行。定时器逻辑，是按照时间来排序一堆节点，将到期的节点将会被pop出来，这个场景下，建堆过程就比较轻松。</p>
+<h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">min_heap</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">event</span>** p; <span class="comment">// 堆</span></span><br><span class="line">	<span class="type">unsigned</span> n, a; <span class="comment">// n 堆大小 a 分配的大小</span></span><br><span class="line">&#125; <span class="type">min_heap_t</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="工具函数"><a href="#工具函数" class="headerlink" title="工具函数"></a>工具函数</h5><p><code>min_heap_elem_greater(a, b)</code> 比较两个节点的大小。</p>
+<p><code>min_heap_ctor_</code> 清理堆的成员；</p>
+<p><code>min_heap_dtor_</code> 释放堆的内存块；</p>
+<p><code>min_heap_elem_init_</code> 堆元素的初始化；</p>
+<p><code>min_heap_empty_</code> 堆是否为空；</p>
+<p><code>min_heap_size_</code> 堆的大小；</p>
+<p><code>min_heap_top_</code> 获取堆顶元素；</p>
+<p><code>min_heap_elt_is_top_</code> 检查某个节点是否为堆顶；</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算父节点位置</span></span><br><span class="line"><span class="type">unsigned</span> parent = (e-&gt;ev_timeout_pos.min_heap_idx - <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line"><span class="comment">// 计算子节点位置</span></span><br><span class="line">min_child = <span class="number">2</span> * (hole_index + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<h5 id="操作函数"><a href="#操作函数" class="headerlink" title="操作函数"></a>操作函数</h5><p><code>min_heap_push_</code> 将元素入堆。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">总分配元素个数是否太多，否则不给分配。</span><br><span class="line"></span><br><span class="line">检查容积是否足够，否则用realloc将内存扩大分配。分配时，a如果为0就直接初始化成8，每次都是a*2来分配内存。[8,16,32,64,128,512,...]。`int min_heap_reserve_(min_heap_t* s, unsigned n)`</span><br><span class="line"></span><br><span class="line">调用函数，将堆开始排序`min_heap_shift_up_`。</span><br></pre></td></tr></table></figure>
+<p><code>min_heap_shift_up_</code> 插入堆。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">读取堆最末尾的一个节点的parent。</span><br><span class="line"></span><br><span class="line">如果当前位置不是根位置，而且父节点&gt;插入来的新节点；</span><br><span class="line">	将父节点的信息写入到子节点，修改父节点位置idx；</span><br><span class="line">	将当前位置赋值为父节点位置；</span><br><span class="line">退出循环之后将算出来的位置填充成输入的新节点；</span><br></pre></td></tr></table></figure>
+<p><code>min_heap_pop_</code> 弹出堆。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">检查对是否为空。</span><br><span class="line"></span><br><span class="line">读取顶部元素。</span><br><span class="line"></span><br><span class="line">将堆数量减少，调用`min_heap_shift_down_`函数将顶部元素清理掉。</span><br><span class="line"></span><br><span class="line">将顶部元素index设置成-1。</span><br><span class="line"></span><br><span class="line">`void min_heap_shift_down_(min_heap_t* s, unsigned hole_index, struct event* e)` 删除堆中指定位置的元素，将e元素插入到子树中，让子树保持堆规律。</span><br><span class="line"></span><br><span class="line">计算出此节点的右子节点位置。</span><br><span class="line"></span><br><span class="line">如果子节点位置还在树里面开启循环：</span><br><span class="line">	如果刚好子树时最后一个子树，直接拿左子树</span><br><span class="line">	或者右子树大于左子树时，拿左子树</span><br><span class="line">	否则拿右子树</span><br><span class="line">	（这三个步骤为了拿到最小的子树节点）</span><br><span class="line">	找出来的子树里面最小节点，和输入的e相比，e还小一些，将退出循环</span><br><span class="line">	否则，将检查点设置成拿到的最小子树节点，将子树节点设置上parent节点。</span><br><span class="line">	将hole_index设置成最小子树节点位置；</span><br><span class="line">	读取最小子树节点的子节点位置，开始下一轮检查；</span><br><span class="line">退出循环后，将找出来的hole_index填写上输入的位置。</span><br></pre></td></tr></table></figure>
+<p><code>int min_heap_erase_(min_heap_t* s, struct event* e)</code> 将堆中e元素删除掉</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">检查e是否为有效的元素，无效将会不处理；</span><br><span class="line">	读取最后一个节点，将堆的size减少1；</span><br><span class="line">	计算当前节点的父节点位置；</span><br><span class="line">	* 我们使用last元素替换掉e位置的元素。如果last小于e的父节点将使用往上找插入点，如果大于一个或两个子节点将往下找。当子节点都小于父节点，它将无需向上或者向下找。</span><br><span class="line">	如果节点位置不是根，而且这个节点的父节点比最后一个节点要大将进入`min_heap_shift_up_unconditional_`处理</span><br><span class="line">	否则就是开始向下找合适的位置替换`min_heap_shift_down_`，类似删除根节点的处理操作；</span><br><span class="line">	将摘除的节点设置成无效节点；</span><br></pre></td></tr></table></figure>
+<p><code>min_heap_shift_up_unconditional_</code>  插入的数据e要小于hole位置父节点，所以它需要往上找插入点。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">先计算父节点位置，开始循环</span><br><span class="line">	将hole父节点移植到hole位置。</span><br><span class="line">	将hole变量设置成parent位置。</span><br><span class="line">	开始计算hole的parent位置。</span><br><span class="line">	当hole不是根，而且parent位置是大于e会继续执行循环</span><br><span class="line">将找到的hole位置填充上e变量。</span><br></pre></td></tr></table></figure>
+<p><code>min_heap_adjust_</code> 将一个元素e适配到堆合适的位置，将变量数值调整了，让其能正确的放到一个位置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">如果是无效的位置，直接走`min_heap_push_`流程。</span><br><span class="line">如果是在堆里元素</span><br><span class="line">	获取父节点</span><br><span class="line">	计算此节点是否子节点，而且父节点大于自己，将调用`min_heap_shift_up_unconditional_`</span><br><span class="line">	否则调用`min_heap_shift_down_`往下找插入点</span><br></pre></td></tr></table></figure>
+<h4 id="STL中堆的实现（未完）"><a href="#STL中堆的实现（未完）" class="headerlink" title="STL中堆的实现（未完）"></a>STL中堆的实现（未完）</h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/24/kubernetes/" rel="prev" title="kubernetes">
+      <i class="fa fa-chevron-left"></i> kubernetes
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/26/TCP%E5%B8%B8%E7%94%A8socketopt/" rel="next" title="TCP常用socketopt">
+      TCP常用socketopt <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">排序过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.3.</span> <span class="nav-text">应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#libevent%E6%9C%80%E5%B0%8F%E5%A0%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">libevent最小堆</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">工具函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">操作函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#STL%E4%B8%AD%E5%A0%86%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%88%E6%9C%AA%E5%AE%8C%EF%BC%89"><span class="nav-number">1.3.2.</span> <span class="nav-text">STL中堆的实现（未完）</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : '4378023bedd4657267091b0d46a80d11',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

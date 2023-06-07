@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概述阅读一下高等数学书。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高等数学">
+<meta property="og:url" content="https://swordhell.github.io/2022/04/22/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="概述阅读一下高等数学书。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.081Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2022/04/22/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>高等数学 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2022/04/22/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          高等数学
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-22 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-22T00:00:00+08:00">2022-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">数学</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>阅读一下高等数学书。</p>
+<span id="more"></span>
+<h2 id="第一章-函数与极限"><a href="#第一章-函数与极限" class="headerlink" title="第一章 函数与极限"></a>第一章 函数与极限</h2><h3 id="第一节-映射与函数"><a href="#第一节-映射与函数" class="headerlink" title="第一节 映射与函数"></a>第一节 映射与函数</h3><h4 id="一-映射"><a href="#一-映射" class="headerlink" title="一 映射"></a>一 映射</h4><ul>
+<li>映射：每个x都有唯一确定的y对应</li>
+<li>满射：全部y都有x对应</li>
+<li>单射：任意不相等的x对应的y都不相等</li>
+<li>双射：满足单射、满射</li>
+</ul>
+<p>D(f)：定义域</p>
+<p>R(f)：值域</p>
+<p>f：法则</p>
+<p>映射就是算子。</p>
+<p>逆映射与复合映射</p>
+<p>只有x到y的映射是单射，才存在逆映射。</p>
+<p>有两个映射，g: x-&gt;y1, f: y2-&gt;z。如果y1⊂y2将会可以让g,f两个函数符合起来。</p>
+<h4 id="二-函数"><a href="#二-函数" class="headerlink" title="二 函数"></a>二 函数</h4><p>函数和映射类似，也是定义域，值域，法则。存在映射里面的满射、单射和双射的概念。</p>
+<p>函数的定义域分为两种：</p>
+<ol>
+<li>根据实际情况自己下定义；</li>
+<li>自然定义域，写出公式后，让函数不有意义的值域；</li>
+</ol>
+<p>函数表示法</p>
+<ol>
+<li>表格法；</li>
+<li>图形法；</li>
+<li>解析法（公式法）；</li>
+</ol>
+<p>函数性质</p>
+<ol>
+<li>有界性</li>
+</ol>
+<p>有无界限、上界、下界</p>
+<ol>
+<li>单调性</li>
+</ol>
+<p>x1&gt;x2 =&gt; f(x1)&gt;f(x2) 单调增加，反之递减。</p>
+<ol>
+<li>奇偶性</li>
+</ol>
+<p>奇函数：-f(x1)=f(-x1)符号影响最终的y值的符号</p>
+<p>偶函数：f(x1)=f(-x1)符号不影响最终的y值的符号</p>
+<ol>
+<li>周期性</li>
+</ol>
+<p>x+l之后值会相等。</p>
+<p>f(x+l)=f(x)</p>
+<p>反函数与复合函数</p>
+<p>这个概念和映射类似。</p>
+<p>函数的运算</p>
+<p>函数存在和差计算，积计算，商计算。</p>
+<p>初等函数</p>
+<p>幂、指数、对数、三角函数、反三角函数、四则运算。使用这些运算有限次数组合出来的函数符合式子为初等函数。</p>
+<p>双曲函数</p>
+<p>反双曲函数：</p>
+<h3 id="第二节-数列的极限"><a href="#第二节-数列的极限" class="headerlink" title="第二节 数列的极限"></a>第二节 数列的极限</h3><h4 id="一-数列极限的定义"><a href="#一-数列极限的定义" class="headerlink" title="一 数列极限的定义"></a>一 数列极限的定义</h4><p>三世纪刘徽用多边形推算圆面积—-割圆法。随着三角形越多，面积计算将会越精确。</p>
+<p>三角形的面积列成。</p>
+<p>数列：就是序列，n趋于无穷大；</p>
+<p>项：每个再数列里面的数字；</p>
+<p>An：一般项，通项；</p>
+<p>讨论一个问题：当n趋近无穷大时，An的值是否趋近一个固定值。</p>
+<p>收敛：给定正数ℇ（是个无限接近0的正数），设|An-a| &lt; ℇ，这就说明An数列将收敛于a。</p>
+<h4 id="二-收敛数列的性质"><a href="#二-收敛数列的性质" class="headerlink" title="二 收敛数列的性质"></a>二 收敛数列的性质</h4><p>极限的唯一性：如果数列{Xn}收敛，它的极限唯一。</p>
+<h3 id="第三节-函数的极限"><a href="#第三节-函数的极限" class="headerlink" title="第三节 函数的极限"></a>第三节 函数的极限</h3><h4 id="一-函数极限的定义"><a href="#一-函数极限的定义" class="headerlink" title="一 函数极限的定义"></a>一 函数极限的定义</h4><h4 id="二-函数极限的性质"><a href="#二-函数极限的性质" class="headerlink" title="二 函数极限的性质"></a>二 函数极限的性质</h4><h3 id="第四节-无穷小与无穷大"><a href="#第四节-无穷小与无穷大" class="headerlink" title="第四节 无穷小与无穷大"></a>第四节 无穷小与无穷大</h3><p>符号表示</p>
+<p>x-&gt;∞ x绝对值趋近无穷大，两方向都是无穷大。<br>X-&gt;-∞左极限<br>X-&gt;+∞右极限<br>X-&gt;x0<br>X-&gt;x0+<br>X-&gt;x0-<br>Lim<br>左极限右极限不相等的时候，此处极限不存在。<br>无穷小</p>
+<h4 id="一-无穷小"><a href="#一-无穷小" class="headerlink" title="一 无穷小"></a>一 无穷小</h4><p>定理1：在自变量的统一变化过程 x-&gt;x0（或者x-&gt;∞）中，函数f(x)具有极限A的充分条件是f(x)=A+α，其中α是无穷小。</p>
+<h4 id="二-无穷大"><a href="#二-无穷大" class="headerlink" title="二 无穷大"></a>二 无穷大</h4><p>X-&gt;x0的时候，f(x)趋近于无穷大。他们的结果没有收敛。<br>无穷大和无穷小的关系：f(x)无穷大1/f(x)将无穷小。<br> 两个趋近于无穷小的数列比大小，就出除法，只有三种情况，a比b高阶无穷小，a和b同阶无穷小，a比b低阶无穷小。</p>
+<h3 id="极限运算法则"><a href="#极限运算法则" class="headerlink" title="极限运算法则"></a>极限运算法则</h3><blockquote>
+<p>定理1：两个无穷小的和是无穷小\<br>定理2：有界函数与无穷小的乘积是无穷小\<br>推论1 常熟与无穷小的乘积是无穷小\<br>推论2 有限个无穷小的乘积是无穷小\<br>定理3 如果limf(x)=A,limg(x)=B，那么</p>
+</blockquote>
+<p>（1）<code>lim[f(x)±g(x)]=limf(x)±limg(x)=A±B</code></p>
+<p>（2）<code>lim[f(x)*g(x)]=limf(x)*limg(x)=A*B</code></p>
+<p>若又有B!=0，则</p>
+<script type="math/tex; mode=display">
+\lim \frac{f(x)}{g(x)} = \frac{\lim f(x)}{\lim g(x)} = \frac{A}{B}</script><blockquote>
+<p>推论1 如果limf(x)存在，而c为常数，那么</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\lim [cf(x)] = c\lim f(x)</script><blockquote>
+<p>推论2 如果limf(x)存在，而n是正整数，那么</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\lim [f(x)]^n = [\lim f(x)]^n</script><blockquote>
+<p>定理4 设有数列${x_n}$和${y_n}$，如果</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\lim\limits_{x \to \infty} (x_n\pm y_n) = A \pm B;\\
+\lim\limits_{x \to \infty} (x_n \cdot y_n) = A \cdot B;\\
+当 y_n \neq 0 (n=1,2,...)且B \neq 0时，\lim\limits_{x \to \infty} \frac{x_n}{y_n}=\frac{A}{B}.</script><blockquote>
+<p>定理5 如果$\varphi(x)\geq \psi(x)$，而$\lim \varphi(x)=A,\lim \psi(x)=B,那么A \geq B.$\<br>定理6（复合函数的极限运算法则） 设函数y=f[g(x)]是由函数u=g(x)与函数y=f(u)复合而成，f[g(x)]在点$x_0$的某去领域内有定义，若</p>
+<script type="math/tex; mode=display">
+\lim\limits_{x \to x_0}g(x)=u_0.\\
+\lim\limits_{x \to x_0}f(u)=A,</script><p>且存在$\delta_0 \gt 0$，当x$\in U(x_0,\delta_0)$时，有g(x)$\neq u_0$，则</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\lim\limits_{x \to x_0} f[g(x)] = \lim\limits_{x \to x_0} f(u) = A.</script><h3 id="第六节-极限存在准则-两个重要的极限"><a href="#第六节-极限存在准则-两个重要的极限" class="headerlink" title="第六节 极限存在准则 两个重要的极限"></a>第六节 极限存在准则 两个重要的极限</h3><blockquote>
+<p>准则I 如果数列${x<em>n},{y_n}及{z_n}$满足下列条件：\<br>（1）从某项起，即$\exist n_0 \in N</em>+，当n\gt n_0$时，有</p>
+<script type="math/tex; mode=display">y_n \leq x_n \leq z_n</script><p>(2)$\lim\limits<em>{n \to \infty} y_n = a, \lim\limits</em>{n \to \infty} z<em>n=a,$\<br>那么数列{$x_n$}的极限存在，且$\lim\limits</em>{n \to \infty}x_n=a$\<br>准则$I’$ 如果\<br>（1）当$x\in U(x_0,r)（或者|x|&gt;M）时$，</p>
+<script type="math/tex; mode=display">
+g(x) \leq f(x) \leq h(x);</script><p>（2）$\lim\limits<em>{x \to \infty}g(x)=A,\lim\limits</em>{x \to \infty}h(x)=A,$\<br>那么$\lim\limits_{x \to \infty}f(x)$存在，且等于A.</p>
+</blockquote>
+<p><em>夹逼准则。</em></p>
+<blockquote>
+<p>准则II 单调有界数列必有极限。\<br>准则II’ 设函数f(x)在点$x_0$的某个左领域内单调且有界，则f(x)在$x_0$的左极限$f(x_0^-$必定存在。\<br>柯西(Cauchy)极限存在准则。</p>
+</blockquote>
+<p>柯西审敛原理。</p>
+<h3 id="无穷小的比较"><a href="#无穷小的比较" class="headerlink" title="无穷小的比较"></a>无穷小的比较</h3><script type="math/tex; mode=display">
+如果 \lim \frac{\beta}{\alpha} = 0，\beta 是比\alpha 高阶的无穷小, \beta = o(\alpha)\\
+如果 \lim \frac{\beta}{\alpha} = \infty，\beta 是比\alpha 低阶的无穷小\\
+如果 \lim \frac{\beta}{\alpha} = c \neq 0，\beta 是比\alpha 同阶的无穷小\\
+如果 \lim \frac{\beta}{\alpha^k} = c \neq 0, k >0，\beta 是关于\alpha k阶的无穷小\\
+如果 \lim \frac{\beta}{\alpha} = 1, \beta 与\alpha 等阶的无穷小，记作 \alpha ~ \beta.</script><h2 id="函数的连续性与间断点"><a href="#函数的连续性与间断点" class="headerlink" title="函数的连续性与间断点"></a>函数的连续性与间断点</h2><h3 id="函数连续性"><a href="#函数连续性" class="headerlink" title="函数连续性"></a>函数连续性</h3><h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://latex.91maths.com/">在线LaTex工具</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://www.overleaf.com/learn/latex/List_of_Greek_letters_and_math_symbols">math_symbols</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Math/" rel="tag"># Math</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/21/nginx/" rel="prev" title="nginx学习">
+      <i class="fa fa-chevron-left"></i> nginx学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/22/Qt/" rel="next" title="Qt">
+      Qt <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%87%BD%E6%95%B0%E4%B8%8E%E6%9E%81%E9%99%90"><span class="nav-number">1.1.</span> <span class="nav-text">第一章 函数与极限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8A%82-%E6%98%A0%E5%B0%84%E4%B8%8E%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.1.</span> <span class="nav-text">第一节 映射与函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80-%E6%98%A0%E5%B0%84"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">一 映射</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C-%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">二 函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8A%82-%E6%95%B0%E5%88%97%E7%9A%84%E6%9E%81%E9%99%90"><span class="nav-number">1.1.2.</span> <span class="nav-text">第二节 数列的极限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80-%E6%95%B0%E5%88%97%E6%9E%81%E9%99%90%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">一 数列极限的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C-%E6%94%B6%E6%95%9B%E6%95%B0%E5%88%97%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">二 收敛数列的性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E8%8A%82-%E5%87%BD%E6%95%B0%E7%9A%84%E6%9E%81%E9%99%90"><span class="nav-number">1.1.3.</span> <span class="nav-text">第三节 函数的极限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80-%E5%87%BD%E6%95%B0%E6%9E%81%E9%99%90%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">一 函数极限的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C-%E5%87%BD%E6%95%B0%E6%9E%81%E9%99%90%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">二 函数极限的性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E8%8A%82-%E6%97%A0%E7%A9%B7%E5%B0%8F%E4%B8%8E%E6%97%A0%E7%A9%B7%E5%A4%A7"><span class="nav-number">1.1.4.</span> <span class="nav-text">第四节 无穷小与无穷大</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80-%E6%97%A0%E7%A9%B7%E5%B0%8F"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">一 无穷小</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C-%E6%97%A0%E7%A9%B7%E5%A4%A7"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">二 无穷大</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%81%E9%99%90%E8%BF%90%E7%AE%97%E6%B3%95%E5%88%99"><span class="nav-number">1.1.5.</span> <span class="nav-text">极限运算法则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E8%8A%82-%E6%9E%81%E9%99%90%E5%AD%98%E5%9C%A8%E5%87%86%E5%88%99-%E4%B8%A4%E4%B8%AA%E9%87%8D%E8%A6%81%E7%9A%84%E6%9E%81%E9%99%90"><span class="nav-number">1.1.6.</span> <span class="nav-text">第六节 极限存在准则 两个重要的极限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%A9%B7%E5%B0%8F%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.1.7.</span> <span class="nav-text">无穷小的比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%9E%E7%BB%AD%E6%80%A7%E4%B8%8E%E9%97%B4%E6%96%AD%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">函数的连续性与间断点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E8%BF%9E%E7%BB%AD%E6%80%A7"><span class="nav-number">1.2.1.</span> <span class="nav-text">函数连续性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">引用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : '398cb3fee03d1425e93dd505aad3cbc8',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

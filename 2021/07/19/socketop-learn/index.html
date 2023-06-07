@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介记录一下stackoverflow关于 SO_REUSEPORT SO_REUSEADDR 两个选项的解释。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="socketopt-学习">
+<meta property="og:url" content="https://swordhell.github.io/2021/07/19/socketop-learn/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="简介记录一下stackoverflow关于 SO_REUSEPORT SO_REUSEADDR 两个选项的解释。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.078Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="network">
+<meta property="article:tag" content="Server">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2021/07/19/socketop-learn/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>socketopt-学习 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2021/07/19/socketop-learn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          socketopt-学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-19 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-19T00:00:00+08:00">2021-07-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">网络编程</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>记录一下stackoverflow关于 <code>SO_REUSEPORT</code> <code>SO_REUSEADDR</code> 两个选项的解释。</p>
+<span id="more"></span>
+<h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><h3 id="SO-REUSEADDR"><a href="#SO-REUSEADDR" class="headerlink" title="SO_REUSEADDR"></a>SO_REUSEADDR</h3><p>如果在绑定套接字之前在套接字上启用了<code>SO_REUSEADDR</code>，则可以成功绑定该套接字，除非与绑定到完全相同的源地址和端口组合的另一个套接字发生冲突。现在你可能想知道这和以前有什么不同？关键词是“完全正确”。因此，REUSEADDR主要改变了在搜索冲突时处理通配符地址（“任何IP地址”）的方式。</p>
+<p>测试结果：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>SO_REUSEADDR</th>
+<th>socketA</th>
+<th>socketB</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ON/OFF</td>
+<td>192.168.0.1:21</td>
+<td>192.168.0.1:21</td>
+<td>Error (EADDRINUSE)</td>
+</tr>
+<tr>
+<td>ON/OFF</td>
+<td>192.168.0.1:21</td>
+<td>10.0.0.1:21</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>ON/OFF</td>
+<td>10.0.0.1:21</td>
+<td>192.168.0.1:21</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>ON/OFF</td>
+<td>0.0.0.0:21</td>
+<td>0.0.0.0:21</td>
+<td>Error (EADDRINUSE)</td>
+</tr>
+<tr>
+<td>OFF</td>
+<td>0.0.0.0:21</td>
+<td>192.168.1.0:21</td>
+<td>Error (EADDRINUSE)</td>
+</tr>
+<tr>
+<td>OFF</td>
+<td>192.168.1.0:21</td>
+<td>0.0.0.0:21</td>
+<td>Error (EADDRINUSE)</td>
+</tr>
+<tr>
+<td>ON</td>
+<td>0.0.0.0:21</td>
+<td>192.168.1.0:21</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>ON</td>
+<td>192.168.1.0:21</td>
+<td>0.0.0.0:21</td>
+<td>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>套接字有一个发送缓冲区，如果对<code>send()</code>函数的调用成功，并不意味着请求的数据实际上已经发送出去，它只意味着数据已经添加到发送缓冲区。对于UDP套接字，数据通常会很快发送，如果不是立即发送，但是对于TCP套接字，在向发送缓冲区添加数据和让TCP实现真正发送数据之间可能会有相对较长的延迟。因此，当您关闭TCP套接字时，发送缓冲区中可能仍有挂起的数据，该数据尚未发送，但您的代码认为它已发送，因为<code>send()</code>调用已成功。如果TCP实现在您请求时立即关闭套接字，那么所有这些数据都将丢失，您的代码甚至不知道这一点。TCP被认为是一种可靠的协议，像这样丢失数据不是很可靠。这就是为什么当你关闭一个仍然有数据要发送的套接字时，它会进入一种称为TIME_WAIT的状态。在该状态下，<em>它将等待所有挂起的数据成功发送，或者等待超时，在这种情况下，套接字将强制关闭。</em></p>
+<p>内核在关闭套接字之前等待的时间量，不管它是否仍有数据在传输中，都称为延迟时间。在大多数系统上，延迟时间是全局可配置的，默认情况下相当长（在许多系统上，两分钟是一个常见值）。它还可以使用socket选项为每个socket配置，因此可以使用socket选项使超时更短或更长，甚至完全禁用超时。但是，完全禁用它是一个非常糟糕的主意，因为优雅地关闭TCP套接字是一个稍微复杂的过程，需要来回发送两个数据包（以及在数据包丢失时重新发送这些数据包），而整个关闭过程也受到延迟时间的限制。如果禁用“延迟”，套接字可能不仅会在传输过程中丢失数据，而且总是强制关闭而不是优雅地关闭，这通常是不推荐的。有关如何优雅地关闭TCP连接的详细信息超出了本回答的范围，如果您想了解更多信息，建议您查看本页。即使您禁用了延迟<code>SO_LINGER</code>，如果您的进程在没有明确关闭套接字的情况下死亡，BSD（可能还有其他系统）<em>仍然会延迟，忽略您配置的内容</em>。例如，如果您的代码只调用exit()（对于小型、简单的服务器程序来说非常常见），或者进程被信号终止（这包括它可能只是因为非法内存访问而崩溃）。因此，您无法确保套接字在任何情况下都不会出现。</p>
+<p>问题是，系统如何处理状态为<code>TIME_WAIT</code>的套接字？如果未设置<code>SO_REUSEADDR</code>，则状态为<code>TIME_WAIT</code>的套接字仍被视为绑定到源地址和端口，任何将新套接字绑定到相同地址和端口的尝试都将失败，直到套接字真正关闭为止，这可能需要与配置的延迟时间一样长的时间。因此，不要期望在关闭套接字后可以立即重新绑定它的源地址。在大多数情况下，这将失败。但是，如果为您尝试绑定的套接字设置了SO_REUSEADDR，那么在TIME_WAIT状态下绑定到相同地址和端口的另一个套接字将被忽略，毕竟它已经“半死不活”，并且您的套接字可以绑定到完全相同的地址而不会出现任何问题。在这种情况下，另一个套接字可能具有完全相同的地址和端口并不起作用。请注意，如果另一个套接字仍在“工作”，则将套接字绑定到时间等待状态下与死亡套接字完全相同的地址和端口可能会产生意外的、通常是不希望的副作用，但这超出了本答案的范围，幸运的是，这些副作用在实践中相当罕见。</p>
+<p>还有最后一件事你应该知道。只要要绑定到的套接字启用了地址重用，上面写的所有内容都可以工作。另一个套接字（已绑定或处于TIME_WAIT状态的套接字）在绑定时也不必设置此标志。决定绑定是成功还是失败的代码只检查馈入<code>bind()</code>调用的套接字的SO_REUSEADDR标志，对于所有其他已检查的套接字，甚至不查看该标志。</p>
+<p>可以构造一个这样的测试，将<code>SO_LINGER</code>设置很长时间。开启<code>SO_REUSEADDR</code>，socketA发送数据并且关闭，socketB重新bind这个地址，应该是能成功的。</p>
+<h3 id="SO-REUSEPORT"><a href="#SO-REUSEPORT" class="headerlink" title="SO_REUSEPORT"></a>SO_REUSEPORT</h3><p>所以，大多数人都会期望它会是这样。基本上，<code>SO_REUSEPORT</code>允许您将任意数量的套接字绑定到完全相同的源地址和端口，只要之前绑定的所有套接字在绑定之前也设置了<code>SO_REUSEPORT</code>。如果绑定到地址和端口的第一个套接字未设置<code>SO_REUSEPORT</code>，则在第一个套接字再次释放其绑定之前，任何其他套接字都不能绑定到完全相同的地址和端口，无论该其他套接字是否设置了<code>SO_REUSEPORT</code>。与<code>SO_REUSEADDR</code>的情况不同，处理<code>SO_REUSEPORT</code>的代码不仅会验证当前绑定的套接字是否设置了<code>SO_REUSEPORT</code>，而且还会验证具有冲突地址和端口的套接字在绑定时是否设置了<code>SO_REUSEPORT</code>。</p>
+<p><code>SO_REUSEPORT</code>并不意味着<code>SO_REUSEADDR</code>。这意味着，如果一个套接字在绑定时没有设置<code>SO_REUSEPORT</code>，而另一个套接字在绑定到完全相同的地址和端口时设置了<code>SO_REUSEPORT</code>，则绑定会失败，这是预期的，但如果另一个套接字已经死亡并且处于TIME_WAIT状态，则绑定也会失败。为了能够在时间等待状态下将套接字绑定到与另一个套接字相同的地址和端口，需要在该套接字上设置<code>SO_REUSEADDR</code>，或者在绑定之前必须在两个套接字上都设置<code>SO_REUSEPORT</code>。当然，允许在套接字上同时设置<code>SO_REUSEPORT</code>和<code>SO_REUSEADDR</code>。</p>
+<p>关于SO_REUSEPORT，除了它是在<code>SO_REUSEADDR</code>之后添加的之外，没有更多的内容可以说，这就是为什么在其他系统的许多套接字实现中找不到它，在添加此选项之前，它“分叉”了BSD代码，在此选项之前，无法将两个套接字绑定到BSD中完全相同的套接字地址。</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="如何查看系统的版本"><a href="#如何查看系统的版本" class="headerlink" title="如何查看系统的版本"></a>如何查看系统的版本</h3><p>[root@test-qingzhou-01 ~]# hostnamectl<br>   Static hostname: test-qingzhou-01<br>         Icon name: computer-vm<br>           Chassis: vm<br>        Machine ID: 20190711105006363114529432776998<br>           Boot ID: 2abf6a175d9e4dc4a16c0b28d262818b<br>    Virtualization: kvm<br>  Operating System: CentOS Linux 7 (Core)<br>       CPE OS Name: cpe:/o:centos:centos:7<br>            Kernel: Linux 3.10.0-957.21.3.el7.x86_64<br>      Architecture: x86-64</p>
+<h3 id="相关代码"><a href="#相关代码" class="headerlink" title="相关代码"></a>相关代码</h3><p>golang的代码</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">syscall.SetsockoptInt(s, syscall.IPPROTO_IPV6, syscall.IPV6_V6ONLY, boolint(ipv6only))</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setsockopt</span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/14388706/how-do-so-reuseaddr-and-so-reuseport-differ">StackOverflow-SO_REUSEPORT-SO_REUSEADDR</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/141aa1c41f15">SO_REUSEADDR和SO_REUSEPORT作用</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/network/" rel="tag"># network</a>
+              <a href="/tags/Server/" rel="tag"># Server</a>
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/21/server%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="prev" title="server测试工具">
+      <i class="fa fa-chevron-left"></i> server测试工具
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/19/etcd-learn/" rel="next" title="go-etcd阅读笔记">
+      go-etcd阅读笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%AE%BA"><span class="nav-number">1.1.</span> <span class="nav-text">理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SO-REUSEADDR"><span class="nav-number">1.1.1.</span> <span class="nav-text">SO_REUSEADDR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SO-REUSEPORT"><span class="nav-number">1.1.2.</span> <span class="nav-text">SO_REUSEPORT</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5"><span class="nav-number">1.2.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%89%88%E6%9C%AC"><span class="nav-number">1.2.1.</span> <span class="nav-text">如何查看系统的版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.2.</span> <span class="nav-text">相关代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'a4c4df7e6317c8a78b843e39d85a59d1',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

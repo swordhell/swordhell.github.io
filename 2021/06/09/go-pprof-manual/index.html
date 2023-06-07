@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="pprofpprof is a tool for visualization and analysis of profiling data. pprof reads a collection of profiling samples in profile.proto format andgenerates reports to visualize and help analyze the data">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go-pprof-manual">
+<meta property="og:url" content="https://swordhell.github.io/2021/06/09/go-pprof-manual/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="pprofpprof is a tool for visualization and analysis of profiling data. pprof reads a collection of profiling samples in profile.proto format andgenerates reports to visualize and help analyze the data">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://swordhell.github.io/2021/06/09/go-pprof-manual/images/callgraph.png">
+<meta property="article:published_time" content="2021-06-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.074Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="Server">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swordhell.github.io/2021/06/09/go-pprof-manual/images/callgraph.png">
+
+<link rel="canonical" href="https://swordhell.github.io/2021/06/09/go-pprof-manual/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>go-pprof-manual | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2021/06/09/go-pprof-manual/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          go-pprof-manual
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-09 00:00:00" itemprop="dateCreated datePublished" datetime="2021-06-09T00:00:00+08:00">2021-06-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="pprof"><a href="#pprof" class="headerlink" title="pprof"></a>pprof</h1><p>pprof is a tool for visualization and analysis of profiling data.</p>
+<p>pprof reads a collection of profiling samples in profile.proto format and<br>generates reports to visualize and help analyze the data. It can generate both<br>text and graphical reports (through the use of the dot visualization package).</p>
+<p>profile.proto is a protocol buffer that describes a set of callstacks<br>and symbolization information. A common usage is to represent a set of<br>sampled callstacks from statistical profiling. The format is<br>described on the proto/profile.proto file. For details on protocol<br>buffers, see <a target="_blank" rel="noopener" href="https://developers.google.com/protocol-buffers">https://developers.google.com/protocol-buffers</a></p>
+<p>Profiles can be read from a local file, or over http. Multiple<br>profiles of the same type can be aggregated or compared.</p>
+<p>If the profile samples contain machine addresses, pprof can symbolize<br>them through the use of the native binutils tools (addr2line and nm).</p>
+<span id="more"></span>
+<h1 id="pprof-profiles"><a href="#pprof-profiles" class="headerlink" title="pprof profiles"></a>pprof profiles</h1><p>pprof operates on data in the profile.proto format. Each profile is a collection<br>of samples, where each sample is associated to a point in a location hierarchy,<br>one or more numeric values, and a set of labels. Often these profiles represents<br>data collected through statistical sampling of a program, so each sample<br>describes a program call stack and a number or value of samples collected at a<br>location. pprof is agnostic to the profile semantics, so other uses are<br>possible. The interpretation of the reports generated by pprof depends on the<br>semantics defined by the source of the profile.</p>
+<h1 id="Usage-Modes"><a href="#Usage-Modes" class="headerlink" title="Usage Modes"></a>Usage Modes</h1><p>There are few different ways of using <code>pprof</code>.</p>
+<h2 id="Report-generation"><a href="#Report-generation" class="headerlink" title="Report generation"></a>Report generation</h2><p>If a report format is requested on the command line:</p>
+<pre><code>pprof &lt;format&gt; [options] source
+</code></pre><p>pprof will generate a report in the specified format and exit.<br>Formats can be either text, or graphical. See below for details about<br>supported formats, options, and sources.</p>
+<h2 id="Interactive-terminal-use"><a href="#Interactive-terminal-use" class="headerlink" title="Interactive terminal use"></a>Interactive terminal use</h2><p>Without a format specifier:</p>
+<pre><code>pprof [options] source
+</code></pre><p>pprof will start an interactive shell in which the user can type<br>commands.  Type <code>help</code> to get online help.</p>
+<h2 id="Web-interface"><a href="#Web-interface" class="headerlink" title="Web interface"></a>Web interface</h2><p>If a host:port is specified on the command line:</p>
+<pre><code>pprof -http=[host]:[port] [options] source
+</code></pre><p>pprof will start serving HTTP requests on the specified port.  Visit<br>the HTTP url corresponding to the port (typically <code>http://&lt;host&gt;:&lt;port&gt;/</code>)<br>in a browser to see the interface.</p>
+<h1 id="Details"><a href="#Details" class="headerlink" title="Details"></a>Details</h1><p>The objective of pprof is to generate a report for a profile. The report is<br>generated from a location hierarchy, which is reconstructed from the profile<br>samples. Each location contains two values: </p>
+<ul>
+<li><em>flat</em>: the value of the location itself.</li>
+<li><em>cum</em>: the value of the location plus all its descendants. </li>
+</ul>
+<p>Samples that include a location multiple times (e.g. for recursive functions)<br>are counted only once per location.</p>
+<h2 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h2><p><em>options</em> configure the contents of a report. Each option has a value,<br>which can be boolean, numeric, or strings. While only one format can<br>be specified, most options can be selected independently of each<br>other.</p>
+<p>Some common pprof options are:</p>
+<ul>
+<li><strong>-flat</strong> [default], <strong>-cum</strong>: Sort entries based on their flat or cumulative<br>value respectively, on text reports.</li>
+<li><strong>-functions</strong> [default], <strong>-filefunctions</strong>, <strong>-files</strong>, <strong>-lines</strong>,<br><strong>-addresses</strong>: Generate the report using the specified granularity.</li>
+<li><strong>-noinlines</strong>: Attribute inlined functions to their first out-of-line caller.<br>For example, a command like <code>pprof -list foo -noinlines profile.pb.gz</code> can be<br>used to produce the annotated source listing attributing the metrics in the<br>inlined functions to the out-of-line calling line.</li>
+<li><strong>-nodecount= <em>int</em>:</strong> Maximum number of entries in the report. pprof will<br>only print this many entries and will use heuristics to select which entries<br>to trim.</li>
+<li><strong>-focus= <em>regex</em>:</strong> Only include samples that include a report entry matching<br><em>regex</em>.</li>
+<li><strong>-ignore= <em>regex</em>:</strong> Do not include samples that include a report entry<br>matching <em>regex</em>.</li>
+<li><strong>-show_from= <em>regex</em>:</strong> Do not show entries above the first one that<br>matches <em>regex</em>.</li>
+<li><strong>-show= <em>regex</em>:</strong> Only show entries that match <em>regex</em>.</li>
+<li><strong>-hide= <em>regex</em>:</strong> Do not show entries that match <em>regex</em>.</li>
+</ul>
+<p>Each sample in a profile may include multiple values, representing different<br>entities associated to the sample. pprof reports include a single sample value,<br>which by convention is the last one specified in the report. The <code>sample_index=</code><br>option selects which value to use, and can be set to a number (from 0 to the<br>number of values - 1) or the name of the sample value.</p>
+<p>Sample values are numeric values associated to a unit. If pprof can recognize<br>these units, it will attempt to scale the values to a suitable unit for<br>visualization. The <code>unit=</code> option will force the use of a specific unit. For<br>example, <code>unit=sec</code> will force any time values to be reported in<br>seconds. pprof recognizes most common time and memory size units.</p>
+<h2 id="Tag-filtering"><a href="#Tag-filtering" class="headerlink" title="Tag filtering"></a>Tag filtering</h2><p>Samples in a profile may have tags. These tags have a name and a value; this<br>value can be either numeric or a string. pprof can select samples from a<br>profile based on these tags using the <code>-tagfocus</code> and <code>-tagignore</code> options.</p>
+<p>Generally, these options work as follows:</p>
+<ul>
+<li><strong>-tagfocus=<em>regex</em></strong> or <strong>-tagfocus=<em>range</em>:</strong> Restrict to samples with tags<br>matched by regexp or in range.</li>
+<li><strong>-tagignore=<em>regex</em></strong> or <strong>-tagignore=<em>range</em>:</strong> Discard samples with tags<br>matched by regexp or in range.</li>
+</ul>
+<p>When using <code>-tagfocus=regex</code> and <code>-tagignore=regex</code>, the regex will be compared<br>to each value associated with each tag. If one specifies a value<br>like <code>regex1,regex2</code>, then only samples with a tag value matching <code>regex1</code><br>and a tag value matching <code>regex2</code> will be kept.</p>
+<p>In addition to being able to filter on tag values, one can specify the name of<br>the tag which a certain value must be associated with using the notation<br><code>-tagfocus=tagName=value</code>. Here, the <code>tagName</code> must match the tag’s name<br>exactly, and the value can be either a regex or a range. If one specifies<br>a value like <code>regex1,regex2</code>, then samples with a tag value (paired with the<br>specified tag name) matching either <code>regex1</code> or matching <code>regex2</code> will match.</p>
+<p>Here are examples explaining how <code>tagfocus</code> can be used:</p>
+<ul>
+<li><code>-tagfocus 128kb:512kb</code> accepts a sample iff it has any numeric tag with<br>memory value in the specified range.</li>
+<li><code>-tagfocus mytag=128kb:512kb</code> accepts a sample iff it has a numeric tag<br><code>mytag</code> with memory value in the specified range. There isn’t a way to say<br> <code>-tagfocus mytag=128kb:512kb,16kb:32kb</code><br> or <code>-tagfocus mytag=128kb:512kb,mytag2=128kb:512kb</code>. Just single value or<br> range for numeric tags.</li>
+<li><code>-tagfocus someregex</code> accepts a sample iff it has any string tag with<br><code>tagName:tagValue</code> string matching specified regexp. In the future, this<br>will change to accept sample iff it has any string tag with <code>tagValue</code> string<br>matching specified regexp.</li>
+<li><code>-tagfocus mytag=myvalue1,myvalue2</code> matches if either of the two tag values<br>are present.</li>
+</ul>
+<p><code>-tagignore</code> works similarly, except that it discards matching samples, instead<br>of keeping them.</p>
+<p>If both the <code>-tagignore</code> and <code>-tagfocus</code> expressions (either a regexp or a<br>range) match a given sample, then the sample will be discarded.</p>
+<h2 id="Text-reports"><a href="#Text-reports" class="headerlink" title="Text reports"></a>Text reports</h2><p>pprof text reports show the location hierarchy in text format.</p>
+<ul>
+<li><strong>-text:</strong> Prints the location entries, one per line, including the flat and<br>cum values.</li>
+<li><strong>-tree:</strong> Prints each location entry with its predecessors and successors.</li>
+<li><strong>-peek= <em>regex</em>:</strong> Print the location entry with all its predecessors and<br>successors, without trimming any entries.</li>
+<li><strong>-traces:</strong> Prints each sample with a location per line.</li>
+</ul>
+<h2 id="Graphical-reports"><a href="#Graphical-reports" class="headerlink" title="Graphical reports"></a>Graphical reports</h2><p>pprof can generate graphical reports on the DOT format, and convert them to<br>multiple formats using the graphviz package.</p>
+<p>These reports represent the location hierarchy as a graph, with a report entry<br>represented as a node. Nodes are removed using heuristics to limit the size of<br>the graph, controlled by the <em>nodecount</em> option.</p>
+<ul>
+<li><strong>-dot:</strong> Generates a report in .dot format. All other formats are generated<br>from this one.</li>
+<li><strong>-svg:</strong> Generates a report in SVG format.</li>
+<li><strong>-web:</strong> Generates a report in SVG format on a temp file, and starts a web<br>browser to view it.</li>
+<li><strong>-png, -jpg, -gif, -pdf:</strong> Generates a report in these formats.</li>
+</ul>
+<h3 id="Interpreting-the-Callgraph"><a href="#Interpreting-the-Callgraph" class="headerlink" title="Interpreting the Callgraph"></a>Interpreting the Callgraph</h3><ul>
+<li><p><strong>Node Color</strong>:</p>
+<ul>
+<li>large positive cum values are red.（较大的正值为红色。）</li>
+<li>large negative cum values are green.（较大的负值为绿色。）</li>
+<li>cum values close to zero are grey.（接近零的累积值为灰色。）</li>
+</ul>
+</li>
+<li><p><strong>Node Font Size</strong>:</p>
+<ul>
+<li>larger font size means larger absolute flat values.（较大的字体大小意味着较大的绝对单位值。）</li>
+<li>smaller font size means smaller absolute flat values. （较小的字体大小意味着较小的绝对单位值。）</li>
+</ul>
+</li>
+<li><p><strong>Edge Weight</strong>:</p>
+<ul>
+<li>thicker edges indicate more resources were used along that path.（较厚的边缘表明沿该路径使用了更多的资源。）</li>
+<li>thinner edges indicate fewer resources were used along that path.（较薄的边缘表明沿该路径使用的资源较少。）</li>
+</ul>
+</li>
+<li><p><strong>Edge Color</strong>:</p>
+<ul>
+<li>large positive values are red.</li>
+<li>large negative values are green.</li>
+<li>values close to zero are grey.</li>
+</ul>
+</li>
+<li><p><strong>Dashed Edges</strong>（虚线）: some locations between the two connected locations were<br>removed.（两个连接位置之间的某些位置已被删除。）</p>
+</li>
+<li><p><strong>Solid Edges</strong>（实线）: one location directly calls the other.（一个位置直接调用另一个位置。）</p>
+</li>
+<li><p><strong>“(inline)” Edge Marker</strong>（带横线标记的线）: the call has been inlined into the caller.（调用者已内联到被调用者）</p>
+</li>
+</ul>
+<p>Let’s consider the following example graph:</p>
+<p><img src="images/callgraph.png" alt="callgraph"></p>
+<ul>
+<li><p>For nodes:</p>
+<ul>
+<li><code>(*Rand).Read</code> has a small flat value and a small cum value because the<br>the font is small and the node is grey.</li>
+<li><code>(*compressor).deflate</code> has a large flat value and a large cum value because the font<br>is large and the node is red.</li>
+<li><code>(*Writer).Flush</code> has a small flat value and a large cum value because the font is<br>small and the node is red.</li>
+</ul>
+</li>
+<li><p>For edges:</p>
+<ul>
+<li>the edge between <code>(*Writer).Write</code> and <code>(*compressor).write</code>: <ul>
+<li>Since it is a dashed edge, some nodes were removed between those two.</li>
+<li>Since it is thick and red, more resources were used in call stacks between<br>those two nodes.</li>
+</ul>
+</li>
+<li>the edge between <code>(*Rand).Read</code> and <code>read</code>:<ul>
+<li>Since it is a dashed edge, some nodes were removed between those two.</li>
+<li>Since it is thin and grey, fewer resources were used in call stacks<br>between those two nodes.</li>
+</ul>
+</li>
+<li>the edge between <code>read</code> and <code>(*rngSource).Int63</code>:<ul>
+<li>Since it is a solid edge, there are no nodes between those two (i.e. it<br>was a direct call).</li>
+<li>Since it is thin and grey, fewer resources were used in call stacks<br>between those two nodes.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Annotated-code"><a href="#Annotated-code" class="headerlink" title="Annotated code"></a>Annotated code</h2><p>pprof can also generate reports of annotated source with samples associated to<br>them. For these, the source or binaries must be locally available, and the<br>profile must contain data with the appropriate level of detail.</p>
+<p>pprof will look for source files on its current working directory and all its<br>ancestors. pprof will look for binaries on the directories specified in the<br><code>$PPROF_BINARY_PATH</code> environment variable, by default <code>$HOME/pprof/binaries</code><br>(<code>%USERPROFILE%\pprof\binaries</code> on Windows). It will look binaries up by name,<br>and if the profile includes linker build ids, it will also search for them in<br>a directory named as the build id.</p>
+<p>pprof uses the binutils tools to examine and disassemble the binaries. By<br>default it will search for those tools in the current path, but it can also<br>search for them in a directory pointed to by the environment variable<br><code>$PPROF_TOOLS</code>.</p>
+<ul>
+<li><strong>-list= <em>regex</em>:</strong> Generates an annotated source listing for functions<br>matching <em>regex</em>, with flat/cum values for each source line.</li>
+<li><strong>-disasm= <em>regex</em>:</strong> Generates an annotated disassembly listing for<br>functions matching <em>regex</em>.</li>
+<li><strong>-weblist= <em>regex</em>:</strong> Generates a source/assembly combined annotated listing<br>for functions matching <em>regex</em>, and starts a web browser to display it.</li>
+</ul>
+<h2 id="Comparing-profiles"><a href="#Comparing-profiles" class="headerlink" title="Comparing profiles"></a>Comparing profiles</h2><p>pprof can subtract one profile from another, provided the profiles are of<br>compatible types (i.e. two heap profiles). pprof has two options which can be<br>used to specify the filename or URL for a profile to be subtracted from the<br>source profile:</p>
+<ul>
+<li><p><strong>-diff<em>base= _profile</em>:</strong> useful for comparing two profiles. Percentages in<br>the output are relative to the total of samples in the diff base profile.</p>
+</li>
+<li><p><strong>-base= <em>profile</em>:</strong> useful for subtracting a cumulative profile, like a<br><a target="_blank" rel="noopener" href="https://golang.org/doc/diagnostics.html#profiling">golang block profile</a>,<br>from another cumulative profile collected from the same program at a later time.<br>When comparing cumulative profiles collected on the same program, percentages in<br>the output are relative to the difference between the total for the source<br>profile and the total for the base profile.</p>
+</li>
+</ul>
+<p>The <strong>-normalize</strong> flag can be used when a base profile is specified with either<br>the <code>-diff_base</code> or the <code>-base</code> option. This flag scales the source profile so<br>that the total of samples in the source profile is equal to the total of samples<br>in the base profile prior to subtracting the base profile from the source<br>profile. Useful for determining the relative differences between profiles, for<br>example, which profile has a larger percentage of CPU time used in a particular<br>function.</p>
+<p>When using the <strong>-diff_base</strong> option, some report entries may have negative<br>values. If the merged profile is output as a protocol buffer, all samples in the<br>diff base profile will have a label with the key “pprof::base” and a value of<br>“true”. If pprof is then used to look at the merged profile, it will behave as<br>if separate source and base profiles were passed in.</p>
+<p>When using the <strong>-base</strong> option to subtract one cumulative profile from another<br>collected on the same program at a later time, percentages will be relative to<br>the difference between the total for the source profile and the total for<br>the base profile, and all values will be positive. In the general case, some<br>report entries may have negative values and percentages will be relative to the<br>total of the absolute value of all samples when aggregated at the address level.</p>
+<h1 id="Fetching-profiles"><a href="#Fetching-profiles" class="headerlink" title="Fetching profiles"></a>Fetching profiles</h1><p>pprof can read profiles from a file or directly from a URL over http or https.<br>Its native format is a gzipped profile.proto file, but it can<br>also accept some legacy formats generated by<br><a target="_blank" rel="noopener" href="https://github.com/gperftools/gperftools">gperftools</a>.</p>
+<p>When fetching from a URL handler, pprof accepts options to indicate how much to<br>wait for the profile.</p>
+<ul>
+<li><strong>-seconds= <em>int</em>:</strong> Makes pprof request for a profile with the specified<br>duration in seconds. Only makes sense for profiles based on elapsed time, such<br>as CPU profiles.</li>
+<li><strong>-timeout= <em>int</em>:</strong> Makes pprof wait for the specified timeout when<br>retrieving a profile over http. If not specified, pprof will use heuristics to<br>determine a reasonable timeout.</li>
+</ul>
+<p>pprof also accepts options which allow a user to specify TLS certificates to<br>use when fetching or symbolizing a profile from a protected endpoint. For more<br>information about generating these certificates, see<br><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/security/https/">https://docs.docker.com/engine/security/https/</a>.</p>
+<ul>
+<li><strong>-tls_cert= <em>/path/to/cert</em>:</strong> File containing the TLS client certificate<br>to be used when fetching and symbolizing profiles.</li>
+<li><strong>-tls_key= <em>/path/to/key</em>:</strong> File containing the TLS private key to be used<br>when fetching and symbolizing profiles.</li>
+<li><strong>-tls_ca= <em>/path/to/ca</em>:</strong> File containing the certificate authority to be<br>used when fetching and symbolizing profiles.</li>
+</ul>
+<p>pprof also supports skipping verification of the server’s certificate chain and<br>host name when collecting or symbolizing a profile. To skip this verification,<br>use “https+insecure” in place of “https” in the URL.</p>
+<p>If multiple profiles are specified, pprof will fetch them all and merge<br>them. This is useful to combine profiles from multiple processes of a<br>distributed job. The profiles may be from different programs but must be<br>compatible (for example, CPU profiles cannot be combined with heap profiles).</p>
+<h2 id="Symbolization"><a href="#Symbolization" class="headerlink" title="Symbolization"></a>Symbolization</h2><p>pprof can add symbol information to a profile that was collected only with<br>address information. This is useful for profiles for compiled languages, where<br>it may not be easy or even possible for the profile source to include function<br>names or source coordinates.</p>
+<p>pprof can extract the symbol information locally by examining the binaries using<br>the binutils tools, or it can ask running jobs that provide a symbolization<br>interface.</p>
+<p>pprof will attempt symbolizing profiles by default, and its <code>-symbolize</code> option<br>provides some control over symbolization:</p>
+<ul>
+<li><p><strong>-symbolize=none:</strong> Disables any symbolization from pprof.</p>
+</li>
+<li><p><strong>-symbolize=local:</strong> Only attempts symbolizing the profile from local<br>binaries using the binutils tools.</p>
+</li>
+<li><p><strong>-symbolize=remote:</strong> Only attempts to symbolize running jobs by contacting<br>their symbolization handler.</p>
+</li>
+</ul>
+<p>For local symbolization, pprof will look for the binaries on the paths specified<br>by the profile, and then it will search for them on the path specified by the<br>environment variable <code>$PPROF_BINARY_PATH</code>. Also, the name of the main binary can<br>be passed directly to pprof as its first parameter, to override the name or<br>location of the main binary of the profile, like this:</p>
+<pre><code>pprof /path/to/binary profile.pb.gz
+</code></pre><p>By default pprof will attempt to demangle and simplify C++ names, to provide<br>readable names for C++ symbols. It will aggressively discard template and<br>function parameters. This can be controlled with the <code>-symbolize=demangle</code><br>option. Note that for remote symbolization mangled names may not be provided by<br>the symbolization handler.</p>
+<ul>
+<li><p><strong>-symbolize=demangle=none:</strong> Do not perform any demangling. Show mangled<br>names if available.</p>
+</li>
+<li><p><strong>-symbolize=demangle=full:</strong> Demangle, but do not perform any<br>simplification. Show full demangled names if available.</p>
+</li>
+<li><p><strong>-symbolize=demangle=templates:</strong> Demangle, and trim function parameters, but<br>not template parameters.</p>
+</li>
+</ul>
+<h1 id="Web-Interface"><a href="#Web-Interface" class="headerlink" title="Web Interface"></a>Web Interface</h1><p>When the user requests a web interface (by supplying an <code>-http=[host]:[port]</code><br>argument on the command-line), pprof starts a web server and opens a browser<br>window pointing at that server. The web interface provided by the server allows<br>the user to interactively view profile data in multiple formats.</p>
+<p>The top of the display is a header that contains some buttons and menus.</p>
+<h2 id="Config"><a href="#Config" class="headerlink" title="Config"></a>Config</h2><p>The <code>Config</code> menu allows the user to save the current refinement<br>settings (e.g., the focus and hide list) as a named configuration. A<br>saved configuration can later be re-applied to reinstitue the saved<br>refinements. The <code>Config</code> menu contains:</p>
+<p><strong>Save as …</strong>: shows a dialog where the user can type in a<br>configuration name. The current refinement settings are saved under<br>the specified name.</p>
+<p><strong>Default</strong>: switches back to the default view by removing all refinements.</p>
+<p>The <code>Config</code> menu also contains an entry per named<br>configuration. Selecting such an entry applies that configuration. The<br>currently selected entry is marked with a ✓. Clicking on the 🗙 on the<br>right-hand side of such an entry deletes the configuration (after<br>prompting the user to confirm).</p>
+<h2 id="TODO-cover-the-following-issues"><a href="#TODO-cover-the-following-issues" class="headerlink" title="TODO: cover the following issues:"></a>TODO: cover the following issues:</h2><ul>
+<li>Overall layout</li>
+<li>Menu entries</li>
+<li>Explanation of all the views</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Server/" rel="tag"># Server</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/19/C++-metaprogramming/" rel="prev" title="c++metaprogramming">
+      <i class="fa fa-chevron-left"></i> c++metaprogramming
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/21/server%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="next" title="server测试工具">
+      server测试工具 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#pprof"><span class="nav-number">1.</span> <span class="nav-text">pprof</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pprof-profiles"><span class="nav-number">2.</span> <span class="nav-text">pprof profiles</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Usage-Modes"><span class="nav-number">3.</span> <span class="nav-text">Usage Modes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Report-generation"><span class="nav-number">3.1.</span> <span class="nav-text">Report generation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Interactive-terminal-use"><span class="nav-number">3.2.</span> <span class="nav-text">Interactive terminal use</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-interface"><span class="nav-number">3.3.</span> <span class="nav-text">Web interface</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Details"><span class="nav-number">4.</span> <span class="nav-text">Details</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Options"><span class="nav-number">4.1.</span> <span class="nav-text">Options</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tag-filtering"><span class="nav-number">4.2.</span> <span class="nav-text">Tag filtering</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Text-reports"><span class="nav-number">4.3.</span> <span class="nav-text">Text reports</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Graphical-reports"><span class="nav-number">4.4.</span> <span class="nav-text">Graphical reports</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Interpreting-the-Callgraph"><span class="nav-number">4.4.1.</span> <span class="nav-text">Interpreting the Callgraph</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Annotated-code"><span class="nav-number">4.5.</span> <span class="nav-text">Annotated code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparing-profiles"><span class="nav-number">4.6.</span> <span class="nav-text">Comparing profiles</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fetching-profiles"><span class="nav-number">5.</span> <span class="nav-text">Fetching profiles</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Symbolization"><span class="nav-number">5.1.</span> <span class="nav-text">Symbolization</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Web-Interface"><span class="nav-number">6.</span> <span class="nav-text">Web Interface</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Config"><span class="nav-number">6.1.</span> <span class="nav-text">Config</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TODO-cover-the-following-issues"><span class="nav-number">6.2.</span> <span class="nav-text">TODO: cover the following issues:</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : '71bdc9427b34f2b98ec6b5a76ca93782',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

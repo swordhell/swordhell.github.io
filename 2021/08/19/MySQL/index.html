@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介 分析Blob和varbinary；收集关于MySQL和MariaDB相关差异">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL">
+<meta property="og:url" content="https://swordhell.github.io/2021/08/19/MySQL/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="简介 分析Blob和varbinary；收集关于MySQL和MariaDB相关差异">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://swordhell.github.io/2021/08/19/MySQL/sql-join.png">
+<meta property="article:published_time" content="2021-08-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.061Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swordhell.github.io/2021/08/19/MySQL/sql-join.png">
+
+<link rel="canonical" href="https://swordhell.github.io/2021/08/19/MySQL/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MySQL | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2021/08/19/MySQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-19 00:00:00" itemprop="dateCreated datePublished" datetime="2021-08-19T00:00:00+08:00">2021-08-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/DB/" itemprop="url" rel="index"><span itemprop="name">DB</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+<p>分析Blob和varbinary；<br>收集关于MySQL和MariaDB相关差异</p>
+</blockquote>
+<span id="more"></span>
+<h3 id="Blob-varbinary差异"><a href="#Blob-varbinary差异" class="headerlink" title="Blob varbinary差异"></a>Blob varbinary差异</h3><p>引用自stackoverflow的简单说明，原文参考[1]：</p>
+<blockquote>
+<p>VARBINARY在MySQL 5.0.2及以下版本上被绑定为255字节，在5.0.3及以上版本上被绑定为65kB。BLOB绑定到65kB。最后，VARBINARY实际上与BLOB是一样的(从可以存储什么的角度来看)，除非您想保持与“旧”版本MySQL的兼容性。MySQL文档说:<br>在大多数情况下，您可以将BLOB列视为VARBINARY列，它可以任意大。</p>
+</blockquote>
+<p>golang中如果直接使用byte[]，将会生成longblob。Binary和VARCHAR的区别在于将不再需要指定字符集。varbinary类型最大数据存储是2^16-1，其实这个数字就是16位的最大数字—-65535。计算下来刚好是65K。其实blob和varbinary非常像。</p>
+<p><code>Row size too large. The maximum row size for the used table type, not counting BLOBs, is 65535. You have to change some columns to TEXT or BLOBs</code></p>
+<p>row size大概是半个pages的大小，当行里面的数据超出了这个数值，将会出现这样的报错。</p>
+<p>mysql官方对于row-size-limits<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/mysql-reslimits-excerpt/5.6/en/column-count-limit.html#row-size-limits">链接</a>，innodb-row-format<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.6/en/innodb-row-format.html">链接</a></p>
+<p>使用varbinary的时候，将会消耗表的行的空间，blob字段也会消耗一点，但是不大（ 9 to 12 bytes）。varbinary消耗了row-size，</p>
+<h3 id="不同版本的mysql"><a href="#不同版本的mysql" class="headerlink" title="不同版本的mysql"></a>不同版本的mysql</h3><p><code>mysql</code>已经给<code>orcale</code>收购了，可能又闭源的风险。<code>alisql</code>是阿里提供的一种数据库。<code>TiDB</code>是一种类似MySQL的数据库。<br>MariaDB与MySQL</p>
+<p>以下几点突出了MariaDB的优缺点。</p>
+<p>优点</p>
+<ul>
+<li>MariaDB针对性能进行了优化，对于大型数据集，它比MySQL强大得多。从其他数据库系统可以优雅的迁移到MariaDB是另一个好处。</li>
+<li>从MySQL切换到MariaDB相对容易，这对于系统管理员来说好像是一块蛋糕。</li>
+<li>MariaDB通过引入微秒级精度和扩展用户统计数据提供更好的监控。</li>
+<li>MariaDB增强了KILL命令，使您可以杀死用户的所有查询（KILL USER 用户名）或杀死查询ID（KILL QUERY ID query_id）。MariaDB也转而使用Perl兼容的正则表达 （PCRE），它提供比标准MySQL正则表达式支持更强大和更精确的查询。</li>
+<li>MariaDB为与磁盘访问，连接操作，子查询，派生表和视图，执行控制甚至解释语句相关的查询应用了许多查询优化。</li>
+<li>MariaDB纯粹是开源的，而不是MySQL使用的双重授权模式。一些仅适用于MySQL Enterprise客户的插件在MariaDB中具有等效的开源实现。</li>
+<li>与MySQL相比，MariaDB支持更多的引擎（SphinxSE，Aria，FederatedX，TokuDB，Spider，ScaleDB等）。</li>
+<li>MariaDB提供了一个用于商业用途的集群数据库，它也支持多主复制。任何人都可以自由使用它，并且不需要依赖MySQL Enterprise系统。</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>从版本5.5.36开始，MariaDB无法迁移回MySQL。</li>
+<li>对于MariaDB的新版本，相应的库（用于Debian）不会及时部署，由于依赖关系，这将导致必需升级到较新的版本。</li>
+<li>MariaDB的群集版本不是很稳定。</li>
+</ul>
+<p>迁移到MariaDB的主要原因</p>
+<ul>
+<li>首先，MariaDB提供了更多更好的存储引擎。NoSQL支持由Cassandra提供，允许您在单个数据库系统中运行SQL和NoSQL。MariaDB还支持TokuDB，它可以处理大型组织和企业用户的大数据。</li>
+<li>MySQL的平常（和缓慢的）数据库引擎MyISAM和InnoDB已分别在MariaDB中由Aria和XtraDB取代。Aria提供了更好的缓存，这对于磁盘密集型操作来说是有所不同的。</li>
+<li>MariaDB通过引入微秒级精度和扩展用户统计数据提供更好的监控。</li>
+<li>MariaDB的最新功能（如GIS，动态色谱柱支持等）使其成为更好的选择。</li>
+<li>MariaDB遵循良好的行业标准，同时发布安全公告和升级，并以正确的方式处理预发布的保密性和发布后的透明度。</li>
+</ul>
+<h3 id="join语法"><a href="#join语法" class="headerlink" title="join语法"></a>join语法</h3><p><img src="/2021/08/19/MySQL/sql-join.png" alt="sql-join"></p>
+<h3 id="按照时间分组"><a href="#按照时间分组" class="headerlink" title="按照时间分组"></a>按照时间分组</h3><p>主要是通过函数将时间戳转换成一个字符串，然后就能group by了。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span>  from_unixtime(at2.payTime, <span class="string">&#x27;%Y-%m-%d&#x27;</span>), <span class="built_in">sum</span>(at2.amount) <span class="keyword">from</span> alipay_trade at2 <span class="keyword">group</span> <span class="keyword">by</span> from_unixtime(at2.payTime, <span class="string">&#x27;%Y-%m-%d&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) </span><br><span class="line"><span class="keyword">from</span> `<span class="keyword">user</span>` u </span><br><span class="line"><span class="keyword">where</span> u.create_ts <span class="keyword">between</span> UNIX_TIMESTAMP(<span class="string">&#x27;2022-06-01&#x27;</span>) <span class="keyword">and</span>  UNIX_TIMESTAMP(<span class="string">&#x27;2022-06-30&#x27;</span>); </span><br><span class="line"></span><br><span class="line"><span class="comment">-- 按照</span></span><br><span class="line"><span class="keyword">select</span> </span><br><span class="line">from_unixtime(u.create_ts, <span class="string">&#x27;%Y-%m&#x27;</span>) <span class="keyword">as</span> ts,</span><br><span class="line"><span class="built_in">count</span>(<span class="number">1</span>) <span class="keyword">as</span> total</span><br><span class="line"><span class="keyword">from</span> `<span class="keyword">user</span>` u</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> from_unixtime(u.create_ts, <span class="string">&#x27;%Y-%m&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="三表联表查询"><a href="#三表联表查询" class="headerlink" title="三表联表查询"></a>三表联表查询</h3><p>这个实例里面有使用查询出来的子表，当成表去做LEFT JOIN。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  u.phoneNumber,</span><br><span class="line">  DATE_FORMAT(u.createdAt, <span class="string">&#x27;%Y-%m-%d %H:%i:%s&#x27;</span>) <span class="keyword">as</span> createdAt,</span><br><span class="line">  from_unixtime(u.lastLoginTime, <span class="string">&#x27;%Y-%m-%d %H:%i:%s&#x27;</span>) <span class="keyword">as</span> lastLoginTime,</span><br><span class="line">  CONCAT(<span class="string">&#x27;0x&#x27;</span>, chainAddress) <span class="keyword">as</span> walletAddress,</span><br><span class="line">  <span class="keyword">CASE</span> <span class="keyword">WHEN</span> lu.isLock <span class="operator">=</span> <span class="number">1</span> <span class="keyword">THEN</span> <span class="string">&#x27;封禁&#x27;</span> <span class="keyword">ELSE</span> <span class="string">&#x27;正常&#x27;</span> <span class="keyword">END</span> <span class="keyword">AS</span> isLock,</span><br><span class="line">  <span class="keyword">CASE</span> <span class="keyword">WHEN</span> u.isRealNameVerify <span class="operator">=</span> <span class="number">1</span> <span class="keyword">THEN</span> <span class="string">&#x27;已实名&#x27;</span> <span class="keyword">ELSE</span> <span class="string">&#x27;未实名&#x27;</span> <span class="keyword">END</span> <span class="keyword">AS</span> isRealNameVerify,</span><br><span class="line">  IFNULL(iu.inviteCount, <span class="number">0</span>) <span class="keyword">as</span> inviteCount</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">`<span class="keyword">user</span>` <span class="keyword">AS</span> u <span class="keyword">LEFT</span> <span class="keyword">join</span> lock_user lu <span class="keyword">ON</span> u.id <span class="operator">=</span> lu.id <span class="keyword">LEFT</span> <span class="keyword">JOIN</span>  (</span><br><span class="line">  <span class="keyword">SELECT</span> invitePhone, <span class="built_in">count</span>(invitePhone) <span class="keyword">AS</span> inviteCount</span><br><span class="line">  <span class="keyword">FROM</span> user_invite <span class="keyword">AS</span> UserInvite</span><br><span class="line">  <span class="keyword">WHERE</span> UserInvite.isInvitederRealNameVerify <span class="operator">=</span> <span class="literal">true</span> <span class="keyword">AND</span> UserInvite.invitePhone <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br><span class="line">  <span class="keyword">GROUP</span> <span class="keyword">BY</span> invitePhone </span><br><span class="line">  ) <span class="keyword">AS</span> iu <span class="keyword">on</span> iu.invitePhone <span class="operator">=</span> u.phoneNumber</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> iu.inviteCount <span class="keyword">ASC</span></span><br><span class="line">Limit <span class="number">0</span>, <span class="number">20</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="在update语句里面增加if语句"><a href="#在update语句里面增加if语句" class="headerlink" title="在update语句里面增加if语句"></a>在update语句里面增加if语句</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Update</span> ceremony_user </span><br><span class="line"><span class="keyword">Set</span> chip_count <span class="operator">=</span> chip_count <span class="operator">-</span> <span class="number">5</span>,</span><br><span class="line">Bind_chip_count <span class="operator">=</span> <span class="keyword">CASE</span> <span class="keyword">WHEN</span> bind_chip_count <span class="operator">&gt;=</span> <span class="number">5</span> <span class="keyword">THEN</span> bind_hip_count <span class="operator">-</span> <span class="number">5</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>,</span><br><span class="line"><span class="keyword">Where</span></span><br><span class="line">User_id <span class="operator">=</span> <span class="number">8</span> <span class="keyword">and</span> ceremony_id <span class="operator">=</span> <span class="number">2</span> <span class="keyword">and</span> chip_count <span class="operator">&gt;</span> <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> [updatedCount] = <span class="keyword">await</span> <span class="title class_">CeremonyUser</span>.<span class="title function_">update</span>(&#123;</span><br><span class="line">  <span class="attr">chipCount</span>: <span class="title function_">literal</span>(<span class="string">`chip_count - <span class="subst">$&#123;chip_count&#125;</span>`</span>),</span><br><span class="line">  <span class="attr">bindChipCount</span>: <span class="title function_">literal</span>(<span class="string">`CASE WHEN bin_chip_count &gt;= <span class="subst">$&#123;chip_count&#125;</span> THEN bin_chip_count - <span class="subst">$&#123;chip_count&#125;</span> ELSE 0 END`</span>),</span><br><span class="line">&#125;, &#123;</span><br><span class="line">  <span class="attr">where</span>: &#123;</span><br><span class="line">    userId, <span class="attr">ceremonyId</span>: ceremony.<span class="property">id</span>, <span class="attr">chipCount</span>: &#123;</span><br><span class="line">      [<span class="title class_">Op</span>.<span class="property">gte</span>]: chip_count,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, transaction</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="简单的字符串操作"><a href="#简单的字符串操作" class="headerlink" title="简单的字符串操作"></a>简单的字符串操作</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> SUBSTR(nh.receiveAddress,<span class="number">3</span>) <span class="keyword">as</span> addr, nh.receiveAddress  <span class="keyword">from</span> nft_history nh <span class="keyword">where</span> nh.receiveAddress <span class="keyword">like</span> <span class="string">&#x27;%0x0x%&#x27;</span>;</span><br><span class="line"><span class="keyword">update</span> nft_history nh  <span class="keyword">set</span> nh.receiveAddress <span class="operator">=</span> SUBSTR(nh.receiveAddress,<span class="number">3</span>) <span class="keyword">where</span> nh.receiveAddress <span class="keyword">like</span> <span class="string">&#x27;%0x0x%&#x27;</span>;</span><br><span class="line"><span class="keyword">select</span> CONCAT(<span class="string">&#x27;0x&#x27;</span>,nh.receiveAddress) <span class="keyword">as</span> addr, nh.receiveAddress  <span class="keyword">from</span> nft_history nh <span class="keyword">where</span> nh.receiveAddress <span class="keyword">not</span> <span class="keyword">like</span> <span class="string">&#x27;%0x%&#x27;</span>;</span><br><span class="line"><span class="keyword">update</span> nft_history nh  <span class="keyword">set</span> nh.receiveAddress <span class="operator">=</span> CONCAT(<span class="string">&#x27;0x&#x27;</span>,nh.receiveAddress) <span class="keyword">where</span> nh.receiveAddress <span class="keyword">not</span> <span class="keyword">like</span> <span class="string">&#x27;%0x%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="时间函数"><a href="#时间函数" class="headerlink" title="时间函数"></a>时间函数</h3><p><a target="_blank" rel="noopener" href="https://mariadb.com/kb/en/time-zones/">time-zones手册</a></p>
+<p><a target="_blank" rel="noopener" href="https://mariadb.com/kb/en/date-time-functions/">date&amp;time手册</a></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 全局设置 */</span></span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> time_zone <span class="operator">=</span> <span class="string">&#x27;America/New_York&#x27;</span>;</span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">GLOBAL</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;time_zone&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* session设置 */</span></span><br><span class="line"><span class="keyword">SET</span> time_zone <span class="operator">=</span> <span class="string">&#x27;Asia/Chongqing&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 查询全部的时区 */</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> mysql.time_zone_name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> mysql.time_zone_name <span class="keyword">where</span> Name <span class="keyword">LIKE</span>  <span class="string">&#x27;%Asia%&#x27;</span>;</span><br><span class="line"></span><br><span class="line">Asia<span class="operator">/</span>Chongqing</span><br><span class="line">Asia<span class="operator">/</span>Shanghai</span><br><span class="line"></span><br><span class="line">在连接之后可以设置一下连接的时区；</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@system_time_zone</span>;</span><br><span class="line"></span><br><span class="line">@<span class="variable">@system_time_zone</span><span class="operator">|</span></span><br><span class="line"><span class="comment">------------------+</span></span><br><span class="line">UTC               <span class="operator">|</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 设置中国标准时间 */</span></span><br><span class="line"><span class="keyword">SET</span> @<span class="variable">@time_zone</span> <span class="operator">=</span> <span class="string">&#x27;CST&#x27;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">NOW();</span><br><span class="line">SYSDATE();</span><br><span class="line">CURDATE();</span><br><span class="line">CURTIME();</span><br><span class="line">UNIX_TIMESTAMP(<span class="string">&#x27;2022-09-05 10:00:00&#x27;</span>);</span><br><span class="line">from_unixtime(ivl.create_timestamp);</span><br></pre></td></tr></table></figure>
+<h3 id="自增字段造成的bug"><a href="#自增字段造成的bug" class="headerlink" title="自增字段造成的bug"></a>自增字段造成的bug</h3><p>这次遇到一个问题，有张表定义为自增的表，需要将由程序从其他地方读取，并且同步到这个数据表中，结果这个表的自增字段的当前值已经很大了，造成了插入数据老是会丢失。</p>
+<h3 id="可以使用mysql的工具来评估语句"><a href="#可以使用mysql的工具来评估语句" class="headerlink" title="可以使用mysql的工具来评估语句"></a>可以使用mysql的工具来评估语句</h3><p><code>explain select * from activity_limit limit 1;</code></p>
+<h3 id="使用node-js里面的sql-orm来实现连表查询"><a href="#使用node-js里面的sql-orm来实现连表查询" class="headerlink" title="使用node.js里面的sql orm来实现连表查询"></a>使用node.js里面的sql orm来实现连表查询</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> count = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">app</span>.<span class="property">appModel</span>.<span class="property">LockUser</span>.<span class="title function_">count</span>(&#123; <span class="attr">where</span>: &#123; <span class="attr">isLock</span>: <span class="literal">true</span> &#125; &#125;);    </span><br><span class="line"><span class="keyword">const</span> results = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">app</span>.<span class="property">appModel</span>.<span class="property">UserInvite</span>.<span class="title function_">findAll</span>(&#123;</span><br><span class="line">  <span class="attr">raw</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">attributes</span>: [</span><br><span class="line">    [<span class="title class_">Op</span>.<span class="title function_">col</span>(<span class="string">&#x27;invitePhone&#x27;</span>), <span class="string">&#x27;invitePhone&#x27;</span>],</span><br><span class="line">    [<span class="title class_">Op</span>.<span class="title function_">fn</span>(<span class="string">&#x27;sum&#x27;</span>, <span class="variable constant_">SQL</span>.<span class="title function_">col</span>(<span class="string">&#x27;amount&#x27;</span>)), <span class="string">&#x27;inviteCount&#x27;</span>],</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">group</span>: [<span class="title class_">Op</span>.<span class="title function_">col</span>(<span class="string">&#x27;invitePhone&#x27;</span>)],</span><br><span class="line">  <span class="attr">include</span>: [&#123;</span><br><span class="line">    <span class="attr">model</span>: <span class="variable language_">this</span>.<span class="property">app</span>.<span class="property">appModel</span>.<span class="property">User</span>,</span><br><span class="line">    <span class="attr">as</span>: <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">    <span class="attr">attributes</span>: [<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;phoneNumber&#x27;</span>, <span class="string">&#x27;createdAt&#x27;</span>, <span class="string">&#x27;updatedAt&#x27;</span>, <span class="string">&#x27;lastLoginTime&#x27;</span>, <span class="string">&#x27;isRealNameVerify&#x27;</span>],</span><br><span class="line">    <span class="attr">association</span>: <span class="variable language_">this</span>.<span class="property">app</span>.<span class="property">appModel</span>.<span class="property">UserInvite</span>.<span class="title function_">hasOne</span>(<span class="variable language_">this</span>.<span class="property">app</span>.<span class="property">appModel</span>.<span class="property">User</span>, &#123; <span class="attr">foreignKey</span>: <span class="string">&#x27;phoneNumber&#x27;</span>, <span class="attr">sourceKey</span>: <span class="string">&#x27;invitePhone&#x27;</span> &#125;),</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">right</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">include</span>: [&#123;</span><br><span class="line">      <span class="attr">model</span>: <span class="variable language_">this</span>.<span class="property">app</span>.<span class="property">appModel</span>.<span class="property">LockUser</span>,</span><br><span class="line">      <span class="attr">as</span>: <span class="string">&#x27;lock_user&#x27;</span>,</span><br><span class="line">      <span class="attr">attributes</span>: [<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;isLock&#x27;</span>],</span><br><span class="line">      <span class="attr">association</span>: <span class="variable language_">this</span>.<span class="property">app</span>.<span class="property">appModel</span>.<span class="property">User</span>.<span class="title function_">hasOne</span>(<span class="variable language_">this</span>.<span class="property">app</span>.<span class="property">appModel</span>.<span class="property">LockUser</span>, &#123; <span class="attr">foreignKey</span>: <span class="string">&#x27;id&#x27;</span>, <span class="attr">sourceKey</span>: <span class="string">&#x27;id&#x27;</span> &#125;),</span><br><span class="line">      <span class="attr">require</span>: <span class="literal">true</span>,</span><br><span class="line">      right,</span><br><span class="line">      <span class="attr">where</span>: &#123; <span class="attr">isLock</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">      <span class="attr">raw</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">offset</span>: (page - <span class="number">1</span>) * pageSize,</span><br><span class="line">      <span class="attr">limit</span>: pageSize,</span><br><span class="line">    &#125;],</span><br><span class="line">  &#125;]</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 2022-08-19 11:39:33,037 ERROR 629766 nodejs.SequelizeDatabaseError: Too many keys specified; max 64 keys allowed</span></span><br></pre></td></tr></table></figure>
+<h3 id="INSERT-INTO-ON-DEPLICATE-KEY"><a href="#INSERT-INTO-ON-DEPLICATE-KEY" class="headerlink" title="INSERT INTO ON DEPLICATE KEY"></a>INSERT INTO ON DEPLICATE KEY</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table_name (column1, column2, column3, ...)</span><br><span class="line"><span class="keyword">VALUES</span> (value1, value2, value3, ...)</span><br><span class="line"><span class="keyword">ON</span> DUPLICATE KEY <span class="keyword">UPDATE</span> column1 <span class="operator">=</span> <span class="keyword">VALUES</span>(column1), column2 <span class="operator">=</span> <span class="keyword">VALUES</span>(column2), ...;</span><br><span class="line"></span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span> const [updateNum] <span class="operator">=</span> await CeremonyUser.update(</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>   &#123;</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>     chipCount: Sequelize.literal(`chip_count <span class="operator">+</span> $&#123;addValue&#125;`),</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>   &#125;,</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>   &#123;</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>     <span class="keyword">where</span>: &#123;</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>       userId: userId,</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>       ceremonyId: ceremonyId,</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>     &#125;,</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>   &#125;,</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span> );</span><br><span class="line"></span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span> await CeremonyUser.create(&#123;</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>   userId,</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>   ceremonyId: ceremonyId,</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>   chipCount: addValue,</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>   lotteryFailCount: <span class="number">0</span>,</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span>   fightValue: initFightValue,</span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span> &#125;);</span><br><span class="line"></span><br><span class="line">  const <span class="keyword">sql</span> <span class="operator">=</span> `<span class="keyword">INSERT</span> <span class="keyword">INTO</span> ceremony_user (user_id, ceremony_id, chip_count, lottery_fail_count, fight_value)</span><br><span class="line">  <span class="keyword">VALUES</span> ($&#123;userId&#125;, $&#123;ceremonyId&#125;, $&#123;addValue&#125;, <span class="number">0</span>, $&#123;initFightValue&#125;)</span><br><span class="line">  <span class="keyword">ON</span> DUPLICATE KEY <span class="keyword">UPDATE</span> chip_count <span class="operator">=</span> chip_count <span class="operator">+</span> $&#123;addValue&#125;;`;</span><br><span class="line">  const updateNum <span class="operator">=</span> await sequelize.query(<span class="keyword">sql</span>, &#123; type: QueryTypes.UPSERT, transaction &#125;);</span><br><span class="line">  <span class="keyword">return</span> (updateNum <span class="operator">=</span><span class="operator">=</span><span class="operator">=</span> <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>处理csv的字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Public Function BeforeSplit(szString As String) As String</span><br><span class="line">    Dim szFind As Long, szPoint As Long</span><br><span class="line">    szPoint = 1</span><br><span class="line">    Do While InStr(szPoint, szString, &quot;&quot;&quot;&quot;) &gt; 0</span><br><span class="line">        szFind = InStr(szPoint, szString, &quot;&quot;&quot;&quot;)</span><br><span class="line">        szPoint = InStr(szFind + 1, szString, &quot;&quot;&quot;&quot;)</span><br><span class="line">        Mid(szString, szFind, szPoint - szFind + 1) = Replace(Mid(szString, szFind, szPoint - szFind + 1), &quot;,&quot;, &quot;^&quot;)</span><br><span class="line">        Mid(szString, szPoint, 1) = &quot;$&quot;</span><br><span class="line">        Mid(szString, szFind, 1) = &quot;$&quot;</span><br><span class="line">        szPoint = szPoint + 1</span><br><span class="line">    Loop</span><br><span class="line">    BeforeSplit = szString</span><br><span class="line">End Function</span><br></pre></td></tr></table></figure>
+<p>js解析方式：</p>
+<p>拆分CSV一行数据可以使用JavaScript的String对象的split()方法，该方法可以将字符串按指定的分隔符拆分成数组。下面是一个使用JavaScript实现拆分CSV一行数据的代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">parseCSVLine</span>(<span class="params">line, delimiter = <span class="string">&#x27;,&#x27;</span></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> result = [];</span><br><span class="line">  <span class="keyword">let</span> start = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">let</span> end = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">let</span> quoted = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">while</span> (end &lt; line.<span class="property">length</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (line[end] === delimiter &amp;&amp; !quoted) &#123;</span><br><span class="line">      result.<span class="title function_">push</span>(line.<span class="title function_">slice</span>(start, end));</span><br><span class="line">      start = end + <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (line[end] === <span class="string">&#x27;&quot;&#x27;</span>) &#123;</span><br><span class="line">      quoted = !quoted;</span><br><span class="line">    &#125;</span><br><span class="line">    end++;</span><br><span class="line">  &#125;</span><br><span class="line">  result.<span class="title function_">push</span>(line.<span class="title function_">slice</span>(start, end));</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的代码中，parseCSVLine(line, delimiter = ‘,’)函数接受两个参数。其中第一个参数line表示需要解析的CSV一行数据，第二个参数delimiter表示分隔符，默认为逗号。函数会将解析后的结果作为一个数组返回。</p>
+<p>具体实现思路如下：</p>
+<p>初始化哨兵变量start和end，用于记录每个字段的开始和结束位置。</p>
+<p>初始化一个空数组result，用于保存解析后的字段值。</p>
+<p>初始化一个布尔变量quoted，用于标记当前字符是否在引号内。</p>
+<p>使用循环遍历字符串line的每个字符，并逐个检查是否到达字段的结束位置。</p>
+<p>如果当前字符是指定的分隔符（且不在引号内），则提取出当前字段的值，并将下一个字段的开始位置设置为end + 1。</p>
+<p>如果当前字符是引号，则将quoted设置为相反的值。</p>
+<p>将end加1，继续进行下一轮遍历。</p>
+<p>最后一个字段的结束位置就是字符串line的末尾，因此将最后一个字段提取出来并加入到result数组中。</p>
+<p>完整的使用示例代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> csvLine = <span class="string">&#x27;2,&quot;福利商城&quot;,1,0,0,&quot;[&#123;&quot;&quot;moneyType&quot;&quot;: 0,&quot;&quot;moneyParam&quot;&quot;: 0&#125;,&#123;&quot;&quot;moneyType&quot;&quot;: 6,&quot;&quot;moneyParam&quot;&quot;: 9&#125;,&#123;&quot;&quot;moneyType&quot;&quot;: 6,&quot;&quot;moneyParam&quot;&quot;: 10&#125;]&quot;&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> fields = <span class="title function_">parseCSVLine</span>(csvLine);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(fields);</span><br></pre></td></tr></table></figure>
+<p>该代码会将CSV行数据中每个字段提取出来并输出到控制台中，输出结果应如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span> &#x27;<span class="number">2</span>&#x27;<span class="punctuation">,</span></span><br><span class="line">  &#x27;<span class="string">&quot;福利商城&quot;</span>&#x27;<span class="punctuation">,</span></span><br><span class="line">  &#x27;<span class="number">1</span>&#x27;<span class="punctuation">,</span></span><br><span class="line">  &#x27;<span class="number">0</span>&#x27;<span class="punctuation">,</span></span><br><span class="line">  &#x27;<span class="number">0</span>&#x27;<span class="punctuation">,</span></span><br><span class="line">  &#x27;<span class="string">&quot;[&#123;&quot;</span><span class="string">&quot;moneyType&quot;</span><span class="string">&quot;: 0,&quot;</span><span class="string">&quot;moneyParam&quot;</span><span class="string">&quot;: 0&#125;,&#123;&quot;</span><span class="string">&quot;moneyType&quot;</span><span class="string">&quot;: 6,&quot;</span><span class="string">&quot;moneyParam&quot;</span><span class="string">&quot;: 9&#125;,&#123;&quot;</span><span class="string">&quot;moneyType&quot;</span><span class="string">&quot;: 6,&quot;</span><span class="string">&quot;moneyParam&quot;</span><span class="string">&quot;: 10&#125;]&quot;</span>&#x27; <span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/8476968/varbinary-vs-blob-in-mysql">stackoverflow-varbinary-vs-blob-in-mysql</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.0/en/blob.html">MySQL5.0-blob手册</a></li>
+<li>[3] <a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.7/en/binary-varbinary.html">MySQL5.7-varbinary手册</a></li>
+<li>[4] <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1140522">无邪-为什么MariaDB更优于MySQL</a></li>
+<li>[5] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/71073707">知乎-TiDB介绍</a></li>
+<li>[6] <a target="_blank" rel="noopener" href="https://docs.pingcap.com/zh/tidb/v4.0">PingCAP-TiDB</a></li>
+<li>[7] <a target="_blank" rel="noopener" href="https://mariadb.com/docs/reference/mdb/data-types/VARBINARY/">MariaDB-varbinary</a></li>
+<li>[8] <a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8e9cceee0101k65j.html">MySQL大字段问题</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/16/%E5%87%A0%E4%BD%95%E5%9B%BE%E5%85%83/" rel="prev" title="几何图元">
+      <i class="fa fa-chevron-left"></i> 几何图元
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/02/C++-gperftools/" rel="next" title="C++-gperftools使用">
+      C++-gperftools使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Blob-varbinary%E5%B7%AE%E5%BC%82"><span class="nav-number">1.1.</span> <span class="nav-text">Blob varbinary差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84mysql"><span class="nav-number">1.2.</span> <span class="nav-text">不同版本的mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#join%E8%AF%AD%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">join语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%89%E7%85%A7%E6%97%B6%E9%97%B4%E5%88%86%E7%BB%84"><span class="nav-number">1.4.</span> <span class="nav-text">按照时间分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E8%A1%A8%E8%81%94%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.5.</span> <span class="nav-text">三表联表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8update%E8%AF%AD%E5%8F%A5%E9%87%8C%E9%9D%A2%E5%A2%9E%E5%8A%A0if%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.6.</span> <span class="nav-text">在update语句里面增加if语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C"><span class="nav-number">1.7.</span> <span class="nav-text">简单的字符串操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="nav-number">1.8.</span> <span class="nav-text">时间函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%A2%9E%E5%AD%97%E6%AE%B5%E9%80%A0%E6%88%90%E7%9A%84bug"><span class="nav-number">1.9.</span> <span class="nav-text">自增字段造成的bug</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8mysql%E7%9A%84%E5%B7%A5%E5%85%B7%E6%9D%A5%E8%AF%84%E4%BC%B0%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.10.</span> <span class="nav-text">可以使用mysql的工具来评估语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8node-js%E9%87%8C%E9%9D%A2%E7%9A%84sql-orm%E6%9D%A5%E5%AE%9E%E7%8E%B0%E8%BF%9E%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.11.</span> <span class="nav-text">使用node.js里面的sql orm来实现连表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#INSERT-INTO-ON-DEPLICATE-KEY"><span class="nav-number">1.12.</span> <span class="nav-text">INSERT INTO ON DEPLICATE KEY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.13.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'd3889e70877983ab88e4a4c01aa8b4ff',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

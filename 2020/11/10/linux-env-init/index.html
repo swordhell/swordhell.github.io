@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介记录一下Linux运维相关的学习资料；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux-环境配置">
+<meta property="og:url" content="https://swordhell.github.io/2020/11/10/linux-env-init/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="简介记录一下Linux运维相关的学习资料；">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://swordhell.github.io/2020/11/10/linux-env-init/htop-H.jpg">
+<meta property="og:image" content="https://swordhell.github.io/2020/11/10/linux-env-init/htop-F2.jpg">
+<meta property="article:published_time" content="2020-11-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:59:34.655Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="运维">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swordhell.github.io/2020/11/10/linux-env-init/htop-H.jpg">
+
+<link rel="canonical" href="https://swordhell.github.io/2020/11/10/linux-env-init/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux-环境配置 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/10/linux-env-init/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux-环境配置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-10 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-10T00:00:00+08:00">2020-11-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:59:34" itemprop="dateModified" datetime="2023-06-07T09:59:34+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">3-其他</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-%E5%85%B6%E4%BB%96/%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>记录一下Linux运维相关的学习资料；</p>
+<span id="more"></span>
+<h2 id="Centos"><a href="#Centos" class="headerlink" title="Centos"></a>Centos</h2><p><em>安装完，可以直接将<code>/etc/sysconfig/network-scripts/ifcfg-xxx</code>此选项打开<code>ONBOOT=yes</code>。这样一般都能上网了。</em></p>
+<p>EPEL (Extra Packages for Enterprise Linux)是基于Fedora的一个项目，为“红帽系”的操作系统提供额外的软件包，适用于RHEL、CentOS和Scientific Linux.如果不安装这个库，将会少了很多的软件包。<code>yum -y install epel-release</code></p>
+<p>可以安装一下<code>zsh</code>，<code>autojump</code>，<code>autojump-zsh</code>，<code>oh-my-zsh</code>。自从2019年之后，<code>mac</code>就默认使用<code>zsh</code>代替了<code>bash</code>。</p>
+<p><code>sh -c &quot;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;</code></p>
+<p>安装zsh<code>yum install -y zsh</code>；查看shell类型<code>echo $SHELL</code>；切换默认的shell类型<code>chsh -s /bin/zsh</code>；</p>
+<p>安装了<code>zsh</code>之后，可以通过执行<code>chsh</code>来设置成默认的shell。安装完成之后xshell工具的home键无法使用。可以通过在zshrc文件里面添加这些内容。</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/27c8088dc8f7">zsh插件</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bindkey</span> <span class="string">&#x27;\e[1~&#x27;</span> beginning-of-line</span><br><span class="line"><span class="built_in">bindkey</span> <span class="string">&#x27;\e[4~&#x27;</span> end-of-line</span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> git://github.com/wting/autojump.git</span><br><span class="line"><span class="built_in">cd</span> autojump</span><br><span class="line">./install.py or ./uninstall.py</span><br></pre></td></tr></table></figure>
+<p>参考文档<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/161676/home-end-keys-in-zsh-dont-work-with-putty">home-end-keys-in-zsh-dont-work-with-putty</a></p>
+<p>有时候会升级失败，这个还是由于git访问不流畅造成。</p>
+<ol>
+<li>先将本地的oh my zsh目录找到，通过git pull直接拉取最新的版本；</li>
+<li>执行这个指令 upgrade_oh_my_zsh 就能将版本升级好了。</li>
+</ol>
+<p>常用的软件：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">yum install -y wget git screen libtool automake</span><br><span class="line">yum install zlib-devel -y</span><br><span class="line">yum install centos-release-scl -y</span><br><span class="line">yum makecache</span><br><span class="line">yum install devtoolset-7-gcc-c++ -y</span><br><span class="line">yum install llvm-toolset-7.0-y</span><br><span class="line">yum install cmake -y</span><br><span class="line">yum install python3-devel</span><br><span class="line">yum install curl-devel mariadb-devel.i686</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装man</span></span><br><span class="line">yum install man-pages man-db man</span><br><span class="line"></span><br><span class="line"><span class="comment"># c++ 帮助文件</span></span><br><span class="line">yum install man-pages libstdc++-docs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 网路分析工具</span></span><br><span class="line">yum install tcpdump</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装gcc调试信息</span></span><br><span class="line">debuginfo-install gcc</span><br><span class="line"><span class="comment"># 最后能切换gcc版本：</span></span><br><span class="line">scl <span class="built_in">enable</span> llvm-toolset-7 devtoolset-7 bash</span><br><span class="line">curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py</span><br><span class="line">python get-pip.py</span><br><span class="line">pip install shadowsocks</span><br><span class="line">yum install mariadb-libs</span><br><span class="line">yum install mariadb-devel</span><br><span class="line">yum install mariadb-server</span><br><span class="line">systemctl start mariadb</span><br><span class="line">systemctl <span class="built_in">enable</span> mariadb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过命令查看版本</span></span><br><span class="line">yum info cmake</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换脚本，如果不想用了，可以将这个从</span></span><br><span class="line">/etc/bashrc/profile</span><br><span class="line"><span class="comment"># 文件</span></span><br><span class="line"><span class="built_in">source</span> /opt/rh/llvm-toolset-7/enable</span><br><span class="line"><span class="built_in">source</span> /opt/rh/devtoolset-7/enable</span><br><span class="line"></span><br><span class="line">查看机器版本信息</span><br><span class="line"><span class="comment"># lsb_release -a</span></span><br><span class="line">LSB Version:    :core-4.1-amd64:core-4.1-noarch</span><br><span class="line">Distributor ID: CentOS</span><br><span class="line">Description:    CentOS Linux release 7.8.2003 (Core)</span><br><span class="line">Release:        7.8.2003</span><br><span class="line">Codename:       Core</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看服务器的cpu情况</span></span><br><span class="line"><span class="built_in">cat</span> /proc/cpuinfo | grep name | <span class="built_in">cut</span> -f2 -d: | <span class="built_in">uniq</span> -c</span><br><span class="line">     10  Intel(R) Xeon(R) CPU E5-2430 v4 @ 2.10GHz</span><br><span class="line"></span><br><span class="line">1. 命令行方式登陆</span><br><span class="line">systemctl set-default multi-user.target</span><br><span class="line">2. 图形化界面登陆</span><br><span class="line">systemctl set-default graphical.target</span><br></pre></td></tr></table></figure>
+<p>man帮助文件的章节意义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">The section numbers of the manual pages are as follows:</span><br><span class="line"></span><br><span class="line">    1 – Executable programs or shell commands</span><br><span class="line">    2 – System calls (functions provided by the kernel)</span><br><span class="line">    3 – Library calls (functions within program libraries)</span><br><span class="line">    4 – Special files (usually found in /dev)</span><br><span class="line">    5 – File formats and conventions eg /etc/passwd</span><br><span class="line">    6 – Games</span><br><span class="line">    7 – Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)</span><br><span class="line">    8 – System administration commands (usually only for root)</span><br><span class="line">    9 – Kernel routines [Non standard]</span><br></pre></td></tr></table></figure>
+<h3 id="centos-7防火墙"><a href="#centos-7防火墙" class="headerlink" title="centos 7防火墙"></a>centos 7防火墙</h3><h4 id="检查防火墙状态"><a href="#检查防火墙状态" class="headerlink" title="检查防火墙状态"></a>检查防火墙状态</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --list-all</span><br><span class="line">firewall-cmd --state</span><br></pre></td></tr></table></figure>
+<p>禁用随系统启动防火墙</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br></pre></td></tr></table></figure>
+<p>启用随系统启动防火墙</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> firewalld</span><br></pre></td></tr></table></figure>
+<p>关闭防火墙</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br></pre></td></tr></table></figure>
+<p>当前防火墙服务状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status firewalld</span><br></pre></td></tr></table></figure>
+<p>永久开放防火墙端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --permanent --zone=public --add-port=52310-52320/tcp </span><br><span class="line">sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent</span><br></pre></td></tr></table></figure>
+<p>重新加载防火墙规则</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<p>netcat 尝试端口连接</p>
+<p>使用tcp4方式连接一个ip地址的端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nc -4 ip_address port</span><br><span class="line">nc --<span class="built_in">help</span></span><br><span class="line">See the ncat(1) manpage <span class="keyword">for</span> full options, descriptions and usage examples</span><br><span class="line">man ncat</span><br><span class="line">Ncat 7.50 ( https://nmap.org/ncat )</span><br></pre></td></tr></table></figure>
+<p>在帮助文件里面可以获取更多的信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">       Connect to example.org on TCP port 8080.</span><br><span class="line">           ncat example.org 8080</span><br><span class="line"></span><br><span class="line">       Listen <span class="keyword">for</span> connections on TCP port 8080.</span><br><span class="line">           ncat -l 8080</span><br><span class="line"></span><br><span class="line">nc -l 10010</span><br><span class="line"><span class="comment"># nc -vv -w 5 xxx.xxx.xxx.xxx 10011-10010</span></span><br><span class="line">nc: connect to xxx.xxx.xxx.xxx port 10010 (tcp) failed: Connection timed out</span><br><span class="line">Connection to xxx.xxx.xxx.xxx 10011 port [tcp/*] succeeded!</span><br></pre></td></tr></table></figure>
+<p>检查端口情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -tnlp</span><br></pre></td></tr></table></figure>
+<p>检查当前</p>
+<h4 id="LNMP"><a href="#LNMP" class="headerlink" title="LNMP"></a>LNMP</h4><p>在centos中一般直接使用套件来安装。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/licess/lnmp">LNMP</a></p>
+<p><a target="_blank" rel="noopener" href="https://lnmp.org/download.html">LNMP-Home</a></p>
+<h2 id="Linux系统设置"><a href="#Linux系统设置" class="headerlink" title="Linux系统设置"></a>Linux系统设置</h2><h2 id="批量设置环境变量"><a href="#批量设置环境变量" class="headerlink" title="批量设置环境变量"></a>批量设置环境变量</h2><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs">https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs</a></p>
+<p>.env</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AA=xxx</span><br><span class="line">BB=bbb</span><br></pre></td></tr></table></figure>
+<p>env $(cat .env | xargs) rails</p>
+<h2 id="修改时区"><a href="#修改时区" class="headerlink" title="修改时区"></a>修改时区</h2><p>cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</p>
+<p>locale设置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@vm10-0-2-2 raw_database]<span class="comment"># locale</span></span><br><span class="line">LANG=en_US.UTF-8</span><br><span class="line">LC_CTYPE=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_NUMERIC=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_TIME=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_COLLATE=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_MONETARY=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_MESSAGES=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_PAPER=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_NAME=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_ADDRESS=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_TELEPHONE=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_MEASUREMENT=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_IDENTIFICATION=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line">LC_ALL=</span><br></pre></td></tr></table></figure>
+<p>如果发现有问题，可以通过在/etc/profile文件中添加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> LANG=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line"><span class="built_in">export</span> LC_ALL=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="检查coredump的配置"><a href="#检查coredump的配置" class="headerlink" title="检查coredump的配置"></a>检查coredump的配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看coredump信息</span></span><br><span class="line"><span class="built_in">cat</span> /proc/sys/kernel/core_pattern</span><br></pre></td></tr></table></figure>
+<p>一般我们将coredump文件生成目录重定向到一个固定的地方：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /data/cores/</span><br><span class="line"><span class="built_in">chmod</span> a+w /data/cores/ -R</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/home/cores/core-%e-%p-%t&quot;</span> &gt; /proc/sys/kernel/core_pattern</span><br></pre></td></tr></table></figure>
+<p>设置ulimit</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -n 65535</span><br><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接修改这个文件，在这个文件尾部放入3行</span></span><br><span class="line">vi /etc/security/limits.conf</span><br><span class="line"></span><br><span class="line">* soft nofile 65535</span><br><span class="line">* hard nofile 65535</span><br><span class="line">* soft core unlimited</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>centos yum proxy</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/etc/yum.conf</span><br><span class="line">proxy=http://代理服务器IP地址:端口号</span><br><span class="line">proxy=http://代理服务器IP地址:端口号</span><br><span class="line">proxy_username=代理服务器用户名</span><br><span class="line">proxy_password=代理服务器密码</span><br></pre></td></tr></table></figure>
+<p>centos安装python3.6</p>
+<p>softwarecollections.org</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. Install a package with repository for your system:</span></span><br><span class="line"><span class="comment"># On CentOS, install package centos-release-scl available in CentOS repository</span></span><br><span class="line"><span class="comment"># and enable the testing repository:</span></span><br><span class="line">$ sudo yum install centos-release-scl</span><br><span class="line">$ sudo yum-config-manager --<span class="built_in">enable</span> centos-sclo-rh-testing</span><br><span class="line"></span><br><span class="line"><span class="comment"># On RHEL, enable RHSCL and RHSCL-beta repositories for you system:</span></span><br><span class="line">$ sudo yum-config-manager --<span class="built_in">enable</span> rhel-server-rhscl-7-rpms</span><br><span class="line">$ sudo yum-config-manager --<span class="built_in">enable</span> rhel-server-rhscl-beta-7-rpms</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. Install the collection:</span></span><br><span class="line">$ sudo yum install rh-python36</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. Start using software collections:</span></span><br><span class="line">$ scl <span class="built_in">enable</span> rh-python36 bash</span><br></pre></td></tr></table></figure>
+<h4 id="遇到过的报错"><a href="#遇到过的报错" class="headerlink" title="遇到过的报错"></a>遇到过的报错</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error: ENOSPC:System <span class="built_in">limit</span> <span class="keyword">for</span> number of file watchers reached</span><br></pre></td></tr></table></figure>
+<p>这个错误的意思时系统对文件监控的数量已经到达限制数量了！！</p>
+<p>造成的结果： 执行的命令失败！或抛出警告（比如执行 react-native start 或者打开 vsocde）</p>
+<p>解决方法：</p>
+<p>修改系统监控文件数量</p>
+<p>Ubuntu</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/sysctl.conf</span><br><span class="line">最后加入</span><br><span class="line">fs.inotify.max_user_watches=524288</span><br><span class="line">搞定</span><br><span class="line">sudo sysctl -p</span><br></pre></td></tr></table></figure>
+<h2 id="ubuntu"><a href="#ubuntu" class="headerlink" title="ubuntu"></a>ubuntu</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update &amp;&amp; apt-get upgrade</span><br><span class="line">sudo apt-get install mariadb-server -y</span><br><span class="line">sudo apt-get install unzip -y</span><br><span class="line">sudo apt-get install zlib1g-dev -y</span><br><span class="line">sudo apt-get install libmariadbclient-dev -y</span><br><span class="line">sudo apt install p7zip-full -y</span><br><span class="line">sudo apt install -y <span class="string">&quot;screen&quot;</span></span><br><span class="line">sudo apt install clang-format -y</span><br><span class="line">sudo apt-get install gcc-7 g++-7 -y</span><br><span class="line">sudo apt-get install clang cmake unzip screen clang-format mariadb-server unzip golang python3-pip automake -y</span><br><span class="line">sudo apt-get install git libmariadbclient-dev p7zip-full openssl -y</span><br><span class="line">sudo apt-get install nodejs -y</span><br><span class="line">sudo apt-get install gdb -y</span><br><span class="line"></span><br><span class="line">apt update</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br><span class="line">sudo apt install build-essential ccache dos2unix autoconf manpages-dev glibc-doc libstdc++-10-doc \</span><br><span class="line">    unzip clangd -y</span><br><span class="line">apt -y install mariadb-server mariadb-client libmysqlclient-dev</span><br><span class="line">apt install libmysqlclient-dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># libstdc++-10-doc This package contains documentation files for the GNU stdc++ library.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># screen 无法使用的问题，其实就是重定向一下 screen 的工作目录就好了</span></span><br><span class="line">Cannot make directory <span class="string">&#x27;/run/screen&#x27;</span>: Permission denied</span><br><span class="line"><span class="built_in">export</span> SCREENDIR=<span class="variable">$HOME</span>/.screen</span><br><span class="line">abel@xiaozanbiao:~/learn/c++/octopus_svr/octopus_svr/build$ screen -S abel</span><br><span class="line">Directory /home/abel/.screen must have mode 700.</span><br><span class="line">abel@xiaozanbiao:~/learn/c++/octopus_svr/octopus_svr/build$ <span class="built_in">chmod</span> 700 ~/.screen/</span><br><span class="line">abel@xiaozanbiao:~/learn/c++/octopus_svr/octopus_svr/build$ screen -S abel</span><br><span class="line"></span><br><span class="line"><span class="comment"># screen 无法滚动的问题</span></span><br><span class="line"></span><br><span class="line">在使用 screen 命令创建了一个窗口后，你可以使用 Ctrl+a 和 Esc 进入「复制模式」，此时可以使用方向键或 PageUp/PageDown 键来滚动屏幕内容，也可以使用鼠标进行滚动。在复制模式下，你可以查看已经滚动到屏幕外的内容。</span><br><span class="line"></span><br><span class="line">如果你想直接查看已经滚动到屏幕外的内容而不进入复制模式，可以使用 Ctrl+a 和 ] 进入「回滚模式」。在回滚模式下，你可以使用方向键或 PageUp/PageDown 键来滚动屏幕内容，而当前窗口中的内容不会被清除。如果你想回到正常模式，可以使用 Ctrl+a 和 Ctrl+l 或输入 clear 命令清空屏幕。</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2020/12/18 添加一个命令，记录当前某个进程的cpu，内存情况；</span></span><br><span class="line">sudo apt install sysstat</span><br><span class="line"></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">prog_name=<span class="string">&quot;your_programe_name&quot;</span></span><br><span class="line">prog_mem=$(pidstat  -r -u -h -C <span class="variable">$prog_name</span> |awk <span class="string">&#x27;NR==4&#123;print $12&#125;&#x27;</span>)</span><br><span class="line">time=$(<span class="built_in">date</span> <span class="string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>)</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$time</span><span class="string">&quot;\tmemory(Byte)\t&quot;</span><span class="variable">$prog_mem</span> &gt;&gt;~/record/prog_mem.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 抓取某个进程的内存使用情况；</span></span><br><span class="line"><span class="comment"># 每2秒钟检测一次，持续5秒</span></span><br><span class="line">$ pidstat -r -u -h -C Level 2 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># CentOS7 如何升级Git</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用Wandisco GIT存储库，在此之前我们先写入新yum存储库配置文件，在终端输入：</span></span><br><span class="line">vim /etc/yum.repos.d/wandisco-git.repo</span><br><span class="line"></span><br><span class="line">[wandisco-git]</span><br><span class="line">name=Wandisco GIT Repository</span><br><span class="line">baseurl=http://opensource.wandisco.com/centos/7/git/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入存储库GPG密钥</span></span><br><span class="line">rpm --import http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装：</span></span><br><span class="line"></span><br><span class="line">yum install git</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装文档输出；</span></span><br><span class="line"></span><br><span class="line">sudo apt install graphviz</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="apt-相关知识"><a href="#apt-相关知识" class="headerlink" title="apt 相关知识"></a>apt 相关知识</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yjk13703623757/article/details/78945576">使用apt-get查询安装指定版本的软件</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">apt-cache show libjemalloc-dev</span><br><span class="line">Package: libjemalloc-dev</span><br><span class="line">Architecture: amd64</span><br><span class="line">Version: 5.2.1-1ubuntu1</span><br><span class="line">Priority: extra</span><br><span class="line">Section: universe/libdevel</span><br><span class="line">Source: jemalloc</span><br><span class="line">Origin: Ubuntu</span><br><span class="line">Maintainer: Ubuntu Developers &lt;ubuntu-devel-discuss@lists.ubuntu.com&gt;</span><br><span class="line">Original-Maintainer: Faidon Liambotis &lt;paravoid@debian.org&gt;</span><br><span class="line">Bugs: https://bugs.launchpad.net/ubuntu/+filebug</span><br><span class="line">Installed-Size: 2748</span><br><span class="line">Depends: libjemalloc2 (= 5.2.1-1ubuntu1)</span><br><span class="line">Suggests: binutils</span><br><span class="line">Filename: pool/universe/j/jemalloc/libjemalloc-dev_5.2.1-1ubuntu1_amd64.deb</span><br><span class="line">Size: 424588</span><br><span class="line">MD5sum: f519936da1e4557812ebad9cbf9e1029</span><br><span class="line">SHA1: 2e5e464c4c2f051b7f32ed44a805bd7f08ec3738</span><br><span class="line">SHA256: c5d64ba693ad45dd7c41f1d103a74816482601f7d0272ed49fc5441e9e1deb91</span><br><span class="line">Homepage: http://jemalloc.net/</span><br><span class="line">Description-en: development files and documentation <span class="keyword">for</span> jemalloc</span><br><span class="line"> Files used <span class="keyword">for</span> development with jemalloc. This package contains</span><br><span class="line"> headers and documentation.</span><br><span class="line"> .</span><br><span class="line"> jemalloc is a library providing a malloc(3) implementation <span class="keyword">for</span></span><br><span class="line"> multi-threaded processes on multi-processor systems.</span><br><span class="line">Description-md5: f91b42ea17991369b6b9cd46f2828e3f</span><br></pre></td></tr></table></figure>
+<p>man 帮助文件安装</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/aiwangtingyun/article/details/79273802">Linux下完整安装 manpages</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install linux-doc</span><br><span class="line">sudo apt-get install libcorelinux-dev</span><br><span class="line">sudo apt-get install libstdc++-7-dev</span><br><span class="line">sudo apt-get install libstdc++-7-doc</span><br><span class="line">sudo apt-get install manpages*</span><br></pre></td></tr></table></figure>
+<h3 id="安装g-11"><a href="#安装g-11" class="headerlink" title="安装g++-11"></a>安装g++-11</h3><p><a target="_blank" rel="noopener" href="https://lindevs.com/install-g-on-ubuntu/">ubuntu-g++-11</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test</span><br><span class="line">sudo apt install -y g++-11</span><br><span class="line"></span><br><span class="line">sudo apt purge --autoremove -y g++-11</span><br><span class="line">sudo <span class="built_in">rm</span> -rf /etc/apt/trusted.gpg.d/ubuntu-toolchain-r_ubuntu_test.gpg</span><br><span class="line">sudo <span class="built_in">rm</span> -rf /etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-test-focal.list</span><br></pre></td></tr></table></figure>
+<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><h3 id="权限相关"><a href="#权限相关" class="headerlink" title="权限相关"></a>权限相关</h3><p>安装完成之后，需要做一些简单的处理，防止安全问题。mysql最后限制访问的ip地址，给指定的ip地址开放访问的独立的密码。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;ip_address&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;yourpassword&#x27;</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> OPTION;</span><br><span class="line">FLUSH PRIVILEGES;</span><br><span class="line"><span class="keyword">CREATE</span> DATABASE IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> yourdbname <span class="keyword">DEFAULT</span> CHARSET utf8 <span class="keyword">COLLATE</span> utf8_general_ci;</span><br></pre></td></tr></table></figure>
+<p>使用这个命令将处理掉mysql的一些安全问题。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
+<p>mysql 8.0 版本 root 密码修改</p>
+<p>需要执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<p>然后再执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ALTER user <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED BY <span class="string">&#x27;root&#x27;</span>;--修改密码为root</span><br><span class="line">create user <span class="keyword">if</span> not exists <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> identified by <span class="string">&#x27;123456&#x27;</span>;</span><br><span class="line">GRANT ALL ON gamedata005.* TO <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/">MySQL8.0手册</a></p>
+<h3 id="备份数据库"><a href="#备份数据库" class="headerlink" title="备份数据库"></a>备份数据库</h3><p>将某个数据库导出，不需要导出数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump --no-create-db=TRUE --no-data=TRUE -h<span class="string">&quot;ip_address&quot;</span> -uroot -pyourpassword gamedb_10001 &gt; gamedb_10001.sql</span><br></pre></td></tr></table></figure>
+<p>具体参数可以通过mysqldump —help中看到。</p>
+<p>直接创建数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h<span class="string">&quot;ip_address&quot;</span> -uroot -pyourpassword -e <span class="string">&quot;create database gamedb_30001&quot;</span></span><br></pre></td></tr></table></figure>
+<p>将数据表创建到新库中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h<span class="string">&quot;ip_address&quot;</span> -uroot -pyourpassword gamedb_30001 &lt; gamedb_10001.sql</span><br></pre></td></tr></table></figure>
+<h2 id="cygwin多次grep没有输出"><a href="#cygwin多次grep没有输出" class="headerlink" title="cygwin多次grep没有输出"></a>cygwin多次grep没有输出</h2><p>在.bashrc文件里面增加这一句：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> grep=<span class="string">&#x27;grep --color --line-buffer&#x27;</span>                     <span class="comment"># show differences in colour</span></span><br></pre></td></tr></table></figure>
+<p>发现grep失效，无法做正确输出。google研究了一下，原因如下：</p>
+<p>管道 | 是全缓冲的，一般来说buffer_size为4096，有些是8192。不管具体值多少，只有buffer_size满了，才会看到输出。</p>
+<p>在操作里  &gt;&gt;file 这个操作也是全缓冲的。调整如下</p>
+<p>tail -f log | grep —line-buffer xxx | grep —line-buffer yyy</p>
+<p>结果输出正常。</p>
+<p>grep当带上了 —line-buffer 的时候，每输出一行，就刷新一次。</p>
+<p>在unix里，块设备和普通文件，以及管道都是全缓冲的。</p>
+<h2 id="ubuntu无法更新"><a href="#ubuntu无法更新" class="headerlink" title="ubuntu无法更新"></a>ubuntu无法更新</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The following packages have unmet dependencies</span><br></pre></td></tr></table></figure>
+<p>后来我把阿里源换回Ubuntu原生的源就可以安装了，因为阿里源的包太新。<a target="_blank" rel="noopener" href="https://www.cnblogs.com/willaty/p/9522591.html">转载原文</a></p>
+<h2 id="WSL"><a href="#WSL" class="headerlink" title="WSL"></a>WSL</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># WSL-Ubuntu18.04 LTS 重启方法</span></span><br><span class="line"><span class="comment"># 以管理员权限运行cmd</span></span><br><span class="line">&gt;net stop LxssManager    //停止</span><br><span class="line">&gt;net <span class="built_in">start</span> LxssManager    //启动</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将WSL搬家</span></span><br><span class="line"><span class="comment"># 首先查看所有分发版本</span></span><br><span class="line">&gt; wsl <span class="literal">-l</span> <span class="literal">--all</span>  <span class="literal">-v</span></span><br><span class="line"><span class="comment"># 导出分发版为tar文件到d盘</span></span><br><span class="line">&gt; wsl <span class="literal">--export</span> Ubuntu<span class="literal">-20</span>.<span class="number">04</span> d:\ubuntu20.<span class="number">04</span>.tar</span><br><span class="line"><span class="comment"># 注销当前分发版</span></span><br><span class="line">&gt; wsl <span class="literal">--unregister</span> Ubuntu<span class="literal">-20</span>.<span class="number">04</span></span><br><span class="line"><span class="comment"># 重新导入并安装分发版在d:\ubuntu</span></span><br><span class="line">wsl <span class="literal">--import</span> Ubuntu<span class="literal">-20</span>.<span class="number">04</span> d:\ubuntu d:\ubuntu20.<span class="number">04</span>.tar <span class="literal">--version</span> <span class="number">2</span></span><br><span class="line"><span class="comment"># 设置默认登陆用户为安装时用户名</span></span><br><span class="line">ubuntu2004 config <span class="literal">--default-user</span> Username</span><br><span class="line"><span class="comment"># 删除tar文件(可选)</span></span><br><span class="line"><span class="built_in">del</span> d:\ubuntu20.<span class="number">04</span>.tar</span><br><span class="line"><span class="comment"># 这个操作，完成之后我的WSL也从1升级到2了。</span></span><br><span class="line"><span class="comment"># 升级了之后，WSL完全拥有独立的ip地址；</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 强制指定启动的账号</span></span><br><span class="line"><span class="built_in">echo</span> <span class="literal">-e</span> <span class="string">&quot;[user]\ndefault=oduser&quot;</span> &gt;&gt; /etc/wsl.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># Windows update 之后发现如果 wsl 无法启动了，可以执行这个</span></span><br><span class="line">netsh winsock reset</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Linux找出全部可执行文件，并且删除掉。</span><br><span class="line"><span class="built_in">ls</span> -F|grep <span class="string">&#x27;*&#x27;</span> | sed <span class="string">&#x27;s#*##g&#x27;</span> | xargs <span class="built_in">rm</span></span><br><span class="line">参考网站： https://www.cnblogs.com/binyue/p/4707948.html</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.freesion.com/article/6352795169/">GPG生成</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">We need to generate a lot of random bytes</span><br><span class="line"><span class="comment"># 通过 yum install rng-tools完成安装。</span></span><br><span class="line"><span class="comment"># 之后再执行命令：rngd -r /dev/urandom，生成**就能瞬间完成了。</span></span><br></pre></td></tr></table></figure>
+<h2 id="查看进程启动时间运行时间"><a href="#查看进程启动时间运行时间" class="headerlink" title="查看进程启动时间运行时间"></a>查看进程启动时间运行时间</h2><blockquote>
+<p>lstart      STARTED   time the command started.  See also bsdstart, start, start_time, and stime.<br>etime       ELAPSED   elapsed time since the process was started, in the form [[DD-]hh:]mm:ss.</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -eo pid,lstart,etime,cmd | grep java</span><br><span class="line">14728 Tue Sep 28 18:01:10 2021 14-16:23:46 /usr/lib/jvm/java-7-openjdk-amd64/bin/java -Dzookeeper.log.dir</span><br></pre></td></tr></table></figure>
+<h2 id="手动清理内存"><a href="#手动清理内存" class="headerlink" title="手动清理内存"></a>手动清理内存</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在crontab里面每隔5分钟清理一次</span></span><br><span class="line">*/5 * * * * <span class="built_in">echo</span> 3 &gt; /proc/sys/vm/drop_caches</span><br></pre></td></tr></table></figure>
+<h2 id="htop减少重复的进程"><a href="#htop减少重复的进程" class="headerlink" title="htop减少重复的进程"></a>htop减少重复的进程</h2><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">按F2</span><br><span class="line">选择 Display options</span><br><span class="line">选择 Hide userland threads</span><br></pre></td></tr></table></figure>
+<h2 id="文件监视限制上限"><a href="#文件监视限制上限" class="headerlink" title="文件监视限制上限"></a>文件监视限制上限</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Error: ENOSPC: System limit for number of file watchers reached</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /proc/sys/fs/inotify/max_user_watch</span><br><span class="line"><span class="comment"># 临时增加</span></span><br><span class="line">sudo sysctl fs.inotify.max_user_watches=524288</span><br><span class="line">sudo sysctl -p</span><br><span class="line"><span class="comment"># 永久增加</span></span><br><span class="line"><span class="built_in">echo</span> fs.inotify.max_user_watches = 524288 | sudo <span class="built_in">tee</span> -a /etc/sysctl.conf</span><br><span class="line">sudo sysctl -p</span><br></pre></td></tr></table></figure>
+<h2 id="wsl"><a href="#wsl" class="headerlink" title="wsl"></a>wsl</h2><p>导入之后默认账号需要切换成自己想要的：</p>
+<p><a target="_blank" rel="noopener" href="https://superuser.com/questions/1566022/how-to-set-default-user-for-manually-installed-wsl-distro">superuser-提供的方案</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Method 1 - /etc/wsl.conf</span><br><span class="line">The current Microsoft recommended way of setting the username <span class="keyword">in</span> an instance is to create a /etc/wsl.conf <span class="keyword">in</span> the instance with the following setting:</span><br><span class="line"></span><br><span class="line">[user]</span><br><span class="line">default=username</span><br><span class="line">Changing, of course, username to be your default username.</span><br><span class="line"></span><br><span class="line">Exit your distro/instance, <span class="keyword">then</span> issue a wsl --terminate &lt;distroname&gt; from PowerShell or CMD. When you restart, the default user should be <span class="built_in">set</span>.</span><br><span class="line"></span><br><span class="line">This is safer and less error-prone than the registry-based methods.</span><br></pre></td></tr></table></figure>
+<h2 id="记录两款远程桌面工具"><a href="#记录两款远程桌面工具" class="headerlink" title="记录两款远程桌面工具"></a>记录两款远程桌面工具</h2><p><a target="_blank" rel="noopener" href="https://rustdesk.com/zh/">rustdesk</a><br><a target="_blank" rel="noopener" href="https://www.todesk.com/">todesk</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get purge openssh-server <span class="comment"># wsl2 自带的好像 sshd 不完整，先删除掉</span></span><br><span class="line">sudo apt-get install openssh-server <span class="comment"># 重新安装</span></span><br><span class="line">sudo vi /etc/ssh/sshd_config</span><br><span class="line">把你的 sshd_config PasswordAuthentication 参数改为和下图一致</span><br><span class="line">PasswordAuthentication no</span><br><span class="line">sudo service ssh restart</span><br><span class="line">service docker start</span><br><span class="line"><span class="built_in">sleep</span> 2</span><br><span class="line">sudo <span class="built_in">chmod</span> 666 /var/run/docker.sock</span><br></pre></td></tr></table></figure>
+<h2 id="frp"><a href="#frp" class="headerlink" title="frp"></a>frp</h2><p>推荐使用这个透传；</p>
+<p>将本地服务器gogs的3000转发出去：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 服务器配置</span></span><br><span class="line"><span class="comment"># 就是由于用了http方式来做，反而出问题了。</span></span><br><span class="line">frps error: <span class="built_in">type</span> [http] not support when vhost_http_port is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">[common]</span><br><span class="line">bind_port=3007</span><br><span class="line"><span class="comment">#vhost_http_port=3008                #当代理出来的是web服务时，在外网访问http://vps的IP:7001</span></span><br><span class="line"><span class="comment">#这两个字段都不要填写，反而是正确的</span></span><br><span class="line"><span class="comment">#vhost_https_port = 3010</span></span><br><span class="line"><span class="comment">#dashboard_port状态以及代理统计信息展示,网址:7500可查看详情</span></span><br><span class="line">dashboard_port=3009</span><br><span class="line"><span class="comment">#dashboard_user访问用户dashboard_pwd访问密码</span></span><br><span class="line">dashboard_user = admin</span><br><span class="line">dashboard_pwd = 你自己的密码</span><br><span class="line"><span class="comment">#log_file日志文件log_level记录的日志级别log_max_days日志留存3天authentication_timeout超时时间</span></span><br><span class="line">log_file = ./frps.log</span><br><span class="line">log_level = info</span><br><span class="line">log_max_days = 3</span><br><span class="line">authentication_timeout = 0</span><br><span class="line"><span class="comment">#max_pool_count最大链接池,每个代理预先与后端服务器建立起指定数量的最大链接数</span></span><br><span class="line">max_pool_count = 50</span><br><span class="line"></span><br><span class="line"><span class="comment"># 客户端配置</span></span><br><span class="line">[common]</span><br><span class="line">server_addr = 你的服务器ip地址</span><br><span class="line">server_port = 3007 <span class="comment"># 和这个对齐bind_port</span></span><br><span class="line"></span><br><span class="line">[ssh]</span><br><span class="line"><span class="built_in">type</span> = tcp</span><br><span class="line">local_ip=127.0.0.1</span><br><span class="line">local_port = 3008</span><br><span class="line">remote_port=3008</span><br></pre></td></tr></table></figure>
+<h2 id="zeronet-n2n"><a href="#zeronet-n2n" class="headerlink" title="zeronet n2n"></a>zeronet n2n</h2><p>去中心化通讯。</p>
+<h2 id="neovim"><a href="#neovim" class="headerlink" title="neovim"></a>neovim</h2><p><a target="_blank" rel="noopener" href="https://github.com/neovim/neovim/wiki/Installing-Neovim">Neovim</a></p>
+<h2 id="ubuntu安装-g-11"><a href="#ubuntu安装-g-11" class="headerlink" title="ubuntu安装 g++ 11"></a>ubuntu安装 g++ 11</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test</span><br><span class="line">sudo apt install -y g++-11</span><br></pre></td></tr></table></figure>
+<h2 id="htop"><a href="#htop" class="headerlink" title="htop"></a>htop</h2><p><img src="/2020/11/10/linux-env-init/htop-H.jpg" alt="htop-H"><br><img src="/2020/11/10/linux-env-init/htop-F2.jpg" alt="htop-F2"></p>
+<h2 id="通过指令看apt安装到什么目录了"><a href="#通过指令看apt安装到什么目录了" class="headerlink" title="通过指令看apt安装到什么目录了"></a>通过指令看apt安装到什么目录了</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg-query -L libssl-dev | grep -E &#x27;openssl\/.+\.h$&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="iperf"><a href="#iperf" class="headerlink" title="iperf"></a>iperf</h2><p>可以通过这个工具来测试网路情况。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">参数说明</span><br><span class="line">-s   以server模式启动，eg：iperf -s</span><br><span class="line">-c host 以client模式启动，host是server端地址，eg：iperf -c 222.35.11.23</span><br></pre></td></tr></table></figure>
+<h2 id="内存清理"><a href="#内存清理" class="headerlink" title="内存清理"></a>内存清理</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> 3 &gt; /proc/sys/vm/drop_caches</span><br></pre></td></tr></table></figure>
+<h2 id="bash工具"><a href="#bash工具" class="headerlink" title="bash工具"></a>bash工具</h2><p><a target="_blank" rel="noopener" href="https://www.fossmint.com/online-linux-bash-editors/">https://www.fossmint.com/online-linux-bash-editors/</a></p>
+<h2 id="科学上网"><a href="#科学上网" class="headerlink" title="科学上网"></a>科学上网</h2><p><a target="_blank" rel="noopener" href="https://一元机场.com/#/dashboard">科学上网1</a></p>
+<p><a target="_blank" rel="noopener" href="https://xn--4gq62f52gdss.com/#/login">科学上网2</a></p>
+<p><a target="_blank" rel="noopener" href="https://bityun.co">科学上网3</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.sctocloud.com/user">科学上网4</a></p>
+<h2 id="对比工具-替换掉之前的-beyond-compare"><a href="#对比工具-替换掉之前的-beyond-compare" class="headerlink" title="对比工具-替换掉之前的-beyond-compare"></a>对比工具-替换掉之前的-beyond-compare</h2><p><a target="_blank" rel="noopener" href="https://github.com/WinMerge/winmerge">winmerge</a></p>
+<h2 id="pgadmin"><a href="#pgadmin" class="headerlink" title="pgadmin"></a>pgadmin</h2><p><a target="_blank" rel="noopener" href="https://www.postgresql.org/ftp/pgadmin/pgadmin4/v7.0/windows/">pgadmin</a></p>
+<h2 id="go-attach-debug-fail"><a href="#go-attach-debug-fail" class="headerlink" title="go attach debug fail"></a>go attach debug fail</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;0&quot;</span>|sudo <span class="built_in">tee</span> /proc/sys/kernel/yama/ptrace_scope</span><br></pre></td></tr></table></figure>
+<h2 id="mac-multiple-account-github-com"><a href="#mac-multiple-account-github-com" class="headerlink" title="mac-multiple-account-github.com"></a>mac-multiple-account-github.com</h2><p><a target="_blank" rel="noopener" href="https://gist.github.com/Jonalogy/54091c98946cfe4f8cdab2bea79430f9">mac-multiple-account-github.com</a></p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://www.cnblogs.com/mrbug/p/12030777.html">CentOS7 如何升级Git</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_33797791/article/details/89593991">多次grep没有输出</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag"># 运维</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/04/Redis-%E4%B9%90%E8%A7%82%E9%94%81/" rel="prev" title="Redis-乐观锁">
+      <i class="fa fa-chevron-left"></i> Redis-乐观锁
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/12/bash/" rel="next" title="bash">
+      bash <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Centos"><span class="nav-number">1.1.</span> <span class="nav-text">Centos</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#centos-7%E9%98%B2%E7%81%AB%E5%A2%99"><span class="nav-number">1.1.1.</span> <span class="nav-text">centos 7防火墙</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E9%98%B2%E7%81%AB%E5%A2%99%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">检查防火墙状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LNMP"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">LNMP</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">Linux系统设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E8%AE%BE%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.3.</span> <span class="nav-text">批量设置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%97%B6%E5%8C%BA"><span class="nav-number">1.4.</span> <span class="nav-text">修改时区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5coredump%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">1.4.1.</span> <span class="nav-text">检查coredump的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E8%BF%87%E7%9A%84%E6%8A%A5%E9%94%99"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">遇到过的报错</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ubuntu"><span class="nav-number">1.5.</span> <span class="nav-text">ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#apt-%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86"><span class="nav-number">1.5.1.</span> <span class="nav-text">apt 相关知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85g-11"><span class="nav-number">1.5.2.</span> <span class="nav-text">安装g++-11</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql"><span class="nav-number">1.6.</span> <span class="nav-text">mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%9B%B8%E5%85%B3"><span class="nav-number">1.6.1.</span> <span class="nav-text">权限相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.6.2.</span> <span class="nav-text">备份数据库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cygwin%E5%A4%9A%E6%AC%A1grep%E6%B2%A1%E6%9C%89%E8%BE%93%E5%87%BA"><span class="nav-number">1.7.</span> <span class="nav-text">cygwin多次grep没有输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ubuntu%E6%97%A0%E6%B3%95%E6%9B%B4%E6%96%B0"><span class="nav-number">1.8.</span> <span class="nav-text">ubuntu无法更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WSL"><span class="nav-number">1.9.</span> <span class="nav-text">WSL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4"><span class="nav-number">1.10.</span> <span class="nav-text">查看进程启动时间运行时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E6%B8%85%E7%90%86%E5%86%85%E5%AD%98"><span class="nav-number">1.11.</span> <span class="nav-text">手动清理内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#htop%E5%87%8F%E5%B0%91%E9%87%8D%E5%A4%8D%E7%9A%84%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.12.</span> <span class="nav-text">htop减少重复的进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9B%91%E8%A7%86%E9%99%90%E5%88%B6%E4%B8%8A%E9%99%90"><span class="nav-number">1.13.</span> <span class="nav-text">文件监视限制上限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wsl"><span class="nav-number">1.14.</span> <span class="nav-text">wsl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E4%B8%A4%E6%AC%BE%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E5%B7%A5%E5%85%B7"><span class="nav-number">1.15.</span> <span class="nav-text">记录两款远程桌面工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#frp"><span class="nav-number">1.16.</span> <span class="nav-text">frp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zeronet-n2n"><span class="nav-number">1.17.</span> <span class="nav-text">zeronet n2n</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#neovim"><span class="nav-number">1.18.</span> <span class="nav-text">neovim</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ubuntu%E5%AE%89%E8%A3%85-g-11"><span class="nav-number">1.19.</span> <span class="nav-text">ubuntu安装 g++ 11</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#htop"><span class="nav-number">1.20.</span> <span class="nav-text">htop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E6%8C%87%E4%BB%A4%E7%9C%8Bapt%E5%AE%89%E8%A3%85%E5%88%B0%E4%BB%80%E4%B9%88%E7%9B%AE%E5%BD%95%E4%BA%86"><span class="nav-number">1.21.</span> <span class="nav-text">通过指令看apt安装到什么目录了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iperf"><span class="nav-number">1.22.</span> <span class="nav-text">iperf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B8%85%E7%90%86"><span class="nav-number">1.23.</span> <span class="nav-text">内存清理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bash%E5%B7%A5%E5%85%B7"><span class="nav-number">1.24.</span> <span class="nav-text">bash工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91"><span class="nav-number">1.25.</span> <span class="nav-text">科学上网</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94%E5%B7%A5%E5%85%B7-%E6%9B%BF%E6%8D%A2%E6%8E%89%E4%B9%8B%E5%89%8D%E7%9A%84-beyond-compare"><span class="nav-number">1.26.</span> <span class="nav-text">对比工具-替换掉之前的-beyond-compare</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pgadmin"><span class="nav-number">1.27.</span> <span class="nav-text">pgadmin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-attach-debug-fail"><span class="nav-number">1.28.</span> <span class="nav-text">go attach debug fail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mac-multiple-account-github-com"><span class="nav-number">1.29.</span> <span class="nav-text">mac-multiple-account-github.com</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">1.30.</span> <span class="nav-text">引用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : '11fae61fc211f4a002878b646bb95429',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

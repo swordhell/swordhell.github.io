@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介学习golang的入门的信息；本章只记录一下golang语言的历史，go语言环境搭建，如何编译go语言程序。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go[0]-入门">
+<meta property="og:url" content="https://swordhell.github.io/2020/11/03/go[0]-getstart/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="简介学习golang的入门的信息；本章只记录一下golang语言的历史，go语言环境搭建，如何编译go语言程序。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:59:34.655Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2020/11/03/go[0]-getstart/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>go[0]-入门 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/03/go[0]-getstart/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          go[0]-入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-03T00:00:00+08:00">2020-11-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:59:34" itemprop="dateModified" datetime="2023-06-07T09:59:34+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>学习golang的入门的信息；本章只记录一下golang语言的历史，go语言环境搭建，如何编译go语言程序。</p>
+<span id="more"></span>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>Go语言（或 Golang）起源于 2007 年，并在 2009 年正式对外发布。Go 是非常年轻的一门语言，它的主要目标是“兼具 Python 等动态语言的开发速度和 C/C++ 等编译型语言的性能与安全性”。golang的 1.13 版本的时候，被gc被重新，将增加内存回收速度（2014-05）。</p>
+<h2 id="环境部署"><a href="#环境部署" class="headerlink" title="环境部署"></a>环境部署</h2><p><a target="_blank" rel="noopener" href="https://golang.org/">官方网站</a></p>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tar -C /usr/local -xzf go1.15.3.linux-amd64.tar.gz</span><br><span class="line"><span class="comment"># 设置环境变量</span></span><br><span class="line">/etc/profile</span><br><span class="line"><span class="variable">$HOME</span>/.profile</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/local/go/bin</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>直接通过安装包安装；</p>
+<h3 id="需要配置的环境变量"><a href="#需要配置的环境变量" class="headerlink" title="需要配置的环境变量"></a>需要配置的环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GOPATH=D:\\work\\gopath</span><br><span class="line"><span class="comment"># 配置 GOPROXY 环境变量</span></span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.io,https://goproxy.cn,direct</span><br><span class="line"><span class="comment"># 还可以设置不走 proxy 的私有仓库或组，多个用逗号相隔（可选）</span></span><br><span class="line"><span class="built_in">export</span> GOPRIVATE=git.mycompany.com,github.com/my/private</span><br><span class="line"><span class="built_in">export</span> GO111MODULE=on</span><br></pre></td></tr></table></figure>
+<h4 id="linux环境搭建"><a href="#linux环境搭建" class="headerlink" title="linux环境搭建"></a>linux环境搭建</h4><p>先解压缩golang的包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -xf ./go.1.xxx.tar.gz -C /usr/local</span><br><span class="line"><span class="comment"># 可能需要删除掉之前的目录</span></span><br><span class="line"><span class="built_in">rm</span> -rf /usr/local/go/</span><br></pre></td></tr></table></figure>
+<p>升级的时候最好能将之前的目录都删除掉。</p>
+<p>使用go env查询具体的环境信息。通过编辑~/.bashrc文件的环境变量来修改配置。</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><h4 id="go-build"><a href="#go-build" class="headerlink" title="go build"></a>go build</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-o</td>
+<td>可执行文件名</td>
+<td></td>
+</tr>
+<tr>
+<td>-a</td>
+<td>强制重编译所有包()包含标准库</td>
+<td></td>
+</tr>
+<tr>
+<td>-p</td>
+<td>并行编译使用CPU核心数</td>
+<td></td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示等待编译包名</td>
+<td></td>
+</tr>
+<tr>
+<td>-n</td>
+<td>显示编译命令，但不执行</td>
+<td></td>
+</tr>
+<tr>
+<td>-x</td>
+<td>显示正在执行的编译命令</td>
+<td></td>
+</tr>
+<tr>
+<td>-work</td>
+<td>显示临时工作目录，完成后不删除</td>
+<td></td>
+</tr>
+<tr>
+<td>-race</td>
+<td>启动数据竞争检查（旨在amd64</td>
+<td></td>
+</tr>
+<tr>
+<td>-gcflags</td>
+<td>编译器参数</td>
+<td></td>
+</tr>
+<tr>
+<td>-ldflags</td>
+<td>链接器参数</td>
+<td></td>
+</tr>
+<tr>
+<td>-race</td>
+<td>开启DATA RACE检测</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>编译器选项</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-B</td>
+<td>禁用越界检查</td>
+</tr>
+<tr>
+<td>-N</td>
+<td>禁用优化</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>禁用内联</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>禁用unsafe</td>
+</tr>
+<tr>
+<td>-S</td>
+<td>输出汇编代码</td>
+</tr>
+<tr>
+<td>-m</td>
+<td>输出优化信息，检查内存逃逸也可以通过这个来检查</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>ldflags:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-s</td>
+<td>禁用符号表</td>
+</tr>
+<tr>
+<td>-w</td>
+<td>禁用DRAWF调试信息</td>
+</tr>
+<tr>
+<td>-X</td>
+<td>设置字符串全局变量值   -X ver=”0.99”</td>
+</tr>
+<tr>
+<td>-H</td>
+<td>设置可执行文件格式 -H windowsgui</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>详细参数可以通过：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go tool compile -h</span><br><span class="line">go tool <span class="built_in">link</span> -h</span><br></pre></td></tr></table></figure>
+<p>获取更多信息也可以直接到<br>src/cmd/[compile|link]<br>目录下阅读doc.go文档。</p>
+<h4 id="go-install"><a href="#go-install" class="headerlink" title="go install"></a>go install</h4><p>参数和go build一致，只是将编译结果安装到bin/pkg目录中。go install支持增量编译。如果没有修改，将会直接链接pkg目录中的静态包。编译器用buildid检查文件清单和导入依赖。</p>
+<p>在没有mod之前，有些项目都是通过<code>go install</code>来编译工程的，并且将<code>GOBIN</code>环境变量临时修改成发布目录，如果已经用上了mod方式，尽量使用go build来编译工程。</p>
+<p>算法源码可以阅读</p>
+<p>src/cmd/go/pkg.go</p>
+<h4 id="go-get"><a href="#go-get" class="headerlink" title="go get"></a>go get</h4><p>下载第三方包到GOPATH列表中第一个工作目录。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-d</td>
+<td>仅下载，不安装</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>更新包，包括其依赖项</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>和-u配合，强制更新，不检测过期与否</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>下载测试代码所需的依赖包</td>
+</tr>
+<tr>
+<td>-insecure</td>
+<td>使用HTTP非安全协议</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>输出详细信息verbose</td>
+</tr>
+<tr>
+<td>-x</td>
+<td>显示正在执行的命令</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="go-env"><a href="#go-env" class="headerlink" title="go env"></a>go env</h4><p>显示全部环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> GO111MODULE=</span><br><span class="line"><span class="built_in">set</span> GOARCH=amd64</span><br><span class="line"><span class="built_in">set</span> GOBIN=</span><br><span class="line"><span class="built_in">set</span> GOCACHE=C:\Users\abel\AppData\Local\go-build</span><br><span class="line"><span class="built_in">set</span> GOENV=C:\Users\abel\AppData\Roaming\go\<span class="built_in">env</span></span><br><span class="line"><span class="built_in">set</span> GOEXE=.exe</span><br><span class="line"><span class="built_in">set</span> GOFLAGS=</span><br><span class="line"><span class="built_in">set</span> GOHOSTARCH=amd64</span><br><span class="line"><span class="built_in">set</span> GOHOSTOS=windows</span><br><span class="line"><span class="built_in">set</span> GONOPROXY=</span><br><span class="line"><span class="built_in">set</span> GONOSUMDB=</span><br><span class="line"><span class="built_in">set</span> GOOS=windows</span><br><span class="line"><span class="built_in">set</span> GOPATH=C:\main\code\fanghaoli\server</span><br><span class="line"><span class="built_in">set</span> GOPRIVATE=</span><br><span class="line"><span class="built_in">set</span> GOPROXY=https://goproxy.cn</span><br><span class="line"><span class="built_in">set</span> GOROOT=c:\go</span><br><span class="line"><span class="built_in">set</span> GOSUMDB=sum.golang.org</span><br><span class="line"><span class="built_in">set</span> GOTMPDIR=</span><br><span class="line"><span class="built_in">set</span> GOTOOLDIR=c:\go\pkg\tool\windows_amd64</span><br><span class="line"><span class="built_in">set</span> GCCGO=gccgo</span><br><span class="line"><span class="built_in">set</span> AR=ar</span><br><span class="line"><span class="built_in">set</span> CC=gcc</span><br><span class="line"><span class="built_in">set</span> CXX=g++</span><br><span class="line"><span class="built_in">set</span> CGO_ENABLED=1</span><br><span class="line"><span class="built_in">set</span> GOMOD=</span><br><span class="line"><span class="built_in">set</span> CGO_CFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_CPPFLAGS=</span><br><span class="line"><span class="built_in">set</span> CGO_CXXFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_FFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_LDFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> PKG_CONFIG=pkg-config</span><br><span class="line"><span class="built_in">set</span> GOGCCFLAGS=-m64 -mthreads -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=C:\Users\abel\AppData\Local\Temp\go-build072770210=/tmp/go-build -gno-record-gcc-switches</span><br></pre></td></tr></table></figure>
+<h4 id="go-clean"><a href="#go-clean" class="headerlink" title="go clean"></a>go clean</h4><p>清理工作目录，伤处编译和安装遗留的目标文件<br>| 参数 | 说明                      |<br>| —— | ————————————- |<br>| -i   | 清理go install 安装的文件 |<br>| -r   | 递归清理所有依赖包        |<br>| -x   | 显示在执行的清理操作      |<br>| -n   | 仅显示清理命令，不执行    |</p>
+<h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h4><p>如果喜欢使用gdb调试，一般需要使用 -gcflags “-N -l”阻止优化和内联，否则调试的时候会找不到调试信息。<br>当发布是，参数-ldflags “-w-s”会让连机器剔除掉符号表和调试信息，除了可以减少可执行文件的大小外，还能稍微增加反编译的难度。可以借助工具来对可执行文件进行减肥upx</p>
+<h4 id="交叉编译"><a href="#交叉编译" class="headerlink" title="交叉编译"></a>交叉编译</h4><p>corss compile，就是在一个平台下出其他平台所需的可执行文件。只需要使用GOOS、GOARCH来调整环境变量指定平台和架构。<br>go env GOOS<br>使用go install命令为目标平台预编译好标准库，避免go build每次都完整编译。<br>交叉编译不支持cgo。</p>
+<p>编写一个build_linux.bat文件</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> GOARCH=amd64</span><br><span class="line"><span class="built_in">set</span> GOOS=linux</span><br><span class="line">go build</span><br></pre></td></tr></table></figure>
+<p>跨平台编译需要下载一些库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/golang/crypto.git</span><br><span class="line">https://github.com/golang/net.git</span><br><span class="line">https://github.com/golang/sys.git</span><br><span class="line">https://github.com/golang/tools.git</span><br></pre></td></tr></table></figure>
+<p>解压缩之后放到这个目录下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$GOPATH</span>/src/golang.org/x</span><br></pre></td></tr></table></figure>
+<h4 id="条件编译"><a href="#条件编译" class="headerlink" title="条件编译"></a>条件编译</h4><p>编译器支持文件级别的条件编译。</p>
+<p>1.将平台和架构信息添加到文件名尾部。</p>
+<p>hello_darwin.go hello_linux.go 测试一下<br>GOOS=darwin.go build -x<br>将会只编译hello_darwin.go。<br>也可以对架构做条件<br>sys_arm64.go sys_darwin_3866.s sys_freebsd_amd64.s<br>文件名中可以使用GOOS,或者加上GOARCH。</p>
+<p>2.使用build编译命令。</p>
+<p>a.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// +build windows</span></span><br><span class="line">       &lt;---必须有空行</span><br><span class="line">       </span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="built_in">println</span>(<span class="string">&quot;xxxx&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>b.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// +build linux darwin</span></span><br><span class="line"><span class="comment">// +build 386,/!cgo</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line">....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3.使用自定义tag指令。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// +build !release</span></span><br><span class="line"><span class="comment">// +build log</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> build-tags <span class="string">&quot;release log&quot;</span> &amp;&amp; ./xxxx</span><br></pre></td></tr></table></figure>
+<h3 id="go-mod"><a href="#go-mod" class="headerlink" title="go mod"></a>go mod</h3><h4 id="如何使用本地库"><a href="#如何使用本地库" class="headerlink" title="如何使用本地库"></a>如何使用本地库</h4><p>在本工程里面<code>go.mod</code>中写入这样的话，将本地下载好的工程引入。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replace gitee.com/zhenghexcs/bevtreestatus =&gt; D:\work\trunk\new_project_server\server\bevtreestatus</span><br></pre></td></tr></table></figure>
+<h3 id="go-vendor"><a href="#go-vendor" class="headerlink" title="go vendor"></a>go vendor</h3><p>最近有个项目的代码是使用的go1.13版本编写的，还使用了vendor来管理中三方依赖库。所以就开始使用这样的方式来处理。</p>
+<h4 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h4><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/397903998">知乎的介绍</a></p>
+<p>关闭module <code>export GO111MODULE=&quot;off&quot;</code>。</p>
+<p>安装<code>govendor</code> <code>go get -u -v github.com/kardianos/govendor</code></p>
+<p><code>Error: Package &quot;/home/franky/code/btcnode-master&quot; not a go package or not in GOPATH.</code></p>
+<p>这种情况是使用了老版本的golang，还想用新版本的指令安装程序造成的问题。只需要切换成最新版本。</p>
+<p>将这个工程拷贝到正确的目录下。</p>
+<p>老版本的golang管理这些工程的代码的时候，需要将代码拷贝到<code>$HOME/go/src/github.com/yourname/project/</code>目录下来运行编译。</p>
+<p>如果需要调试的时候，需要在工程的根目录里面创建<code>launch.json</code>文件，里面将会说明启动的时候需要什么参数。</p>
+<p>这个就是一个例子，定制了当前工程里面的<code>/client</code>子目录的调试方式。</p>
+<p>使用老版本的golang需要将<code>&quot;dlvFlags&quot;: [&quot;--check-go-version=false&quot;]</code>打开。</p>
+<p>最新delve仅支持调试go1.14及以上版本的代码，但有时有需要用较低版本golang，不方便升级golang。新版本的调试器，能挂载到老版本的程序上调试的。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="comment">// 使用 IntelliSense 了解相关属性。 </span></span><br><span class="line">    <span class="comment">// 悬停以查看现有属性的描述。</span></span><br><span class="line">    <span class="comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Launch Package&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;go&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;auto&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceFolder&#125;/client&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;dlvFlags&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;--check-go-version=false&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;--env&quot;</span><span class="punctuation">,</span> <span class="string">&quot;local&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>If you really don’t want to update your Go version, then you can downgrade your dlv version to 1.6, but I don’t see why you would want to go all the way back to 1.2.0 or 1.3.2 versions of dlv from 2019. Those are very old. Each version of dlv usually supports 3 versions of go - recent stable and 2 older versions. If you try using a version of Go that is older or newer than those 3 expected versions, you get the error above. You can suppress them and debugging would in general work, but some things might be off. You can observe the pattern from dlv release changelog:</p>
+<p>1.7.0: Add Go 1.17, drop Go 1.14<br>1.6.0-1: Add Go 1.16, drop Go 1.13<br>…<br>1.3.0: Add Go 1.13<br>1.2.0: Add Go 1.12</p>
+<p>老版本的go需要配合老版本的dlv否则会出现很多的问题。</p>
+<p>could not open debug info - debuggee must not be built with ‘go run’ or -ldflags=’-s -w’, which strip debug info</p>
+<p>查看-ldflags参数表：</p>
+<p>ldflags:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-s</td>
+<td>禁用符号表</td>
+</tr>
+<tr>
+<td>-w</td>
+<td>禁用DRAWF调试信息</td>
+</tr>
+<tr>
+<td>-X</td>
+<td>设置字符串全局变量值   -X ver=”0.99”</td>
+</tr>
+<tr>
+<td>-H</td>
+<td>设置可执行文件格式 -H windowsgui</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>很细碎，最终还是用了新版本的dlv挂载调试老版本的代码。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://www.runoob.com/go/go-tutorial.html">Go语言菜鸟</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="http://c.biancheng.net/golang/">Go语言入门</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/03/go%5B1%5D-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/" rel="prev" title="go[1]-程序结构">
+      <i class="fa fa-chevron-left"></i> go[1]-程序结构
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/03/docker%5B0%5D-nginx/" rel="next" title="docker运行nginx">
+      docker运行nginx <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%86%E5%8F%B2"><span class="nav-number">1.1.</span> <span class="nav-text">历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2"><span class="nav-number">1.2.</span> <span class="nav-text">环境部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux"><span class="nav-number">1.2.1.</span> <span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows"><span class="nav-number">1.2.2.</span> <span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AE%E7%9A%84%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.3.</span> <span class="nav-text">需要配置的环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#linux%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">linux环境搭建</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.4.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#go-build"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">go build</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-install"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">go install</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-get"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">go get</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-env"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">go env</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-clean"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">go clean</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.4.6.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.4.7.</span> <span class="nav-text">交叉编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.4.8.</span> <span class="nav-text">条件编译</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-mod"><span class="nav-number">1.2.5.</span> <span class="nav-text">go mod</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%BA%93"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">如何使用本地库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-vendor"><span class="nav-number">1.2.6.</span> <span class="nav-text">go vendor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">基本用法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'ffebe0cc573f3802e877de289860a39c',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

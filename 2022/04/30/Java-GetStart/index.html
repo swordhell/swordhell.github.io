@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介在开发的时候，Java是经常需要使用的一门开发语言。Java拥有众多的工程强度的框架，能以很少的时间就能写出很棒的服务器。golang现在的发展也很好，但是短期难以撼动Java的地位。写一系列文章，来了解一些Java编程相关的知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java-GetStart">
+<meta property="og:url" content="https://swordhell.github.io/2022/04/30/Java-GetStart/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="简介在开发的时候，Java是经常需要使用的一门开发语言。Java拥有众多的工程强度的框架，能以很少的时间就能写出很棒的服务器。golang现在的发展也很好，但是短期难以撼动Java的地位。写一系列文章，来了解一些Java编程相关的知识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://swordhell.github.io/images/asset/maven-structure.png">
+<meta property="og:image" content="https://swordhell.github.io/images/asset/reload-all-maven.png">
+<meta property="article:published_time" content="2022-04-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-07T01:46:42.061Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swordhell.github.io/images/asset/maven-structure.png">
+
+<link rel="canonical" href="https://swordhell.github.io/2022/04/30/Java-GetStart/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java-GetStart | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2022/04/30/Java-GetStart/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java-GetStart
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-30 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-30T00:00:00+08:00">2022-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在开发的时候，Java是经常需要使用的一门开发语言。Java拥有众多的工程强度的框架，能以很少的时间就能写出很棒的服务器。golang现在的发展也很好，但是短期难以撼动Java的地位。写一系列文章，来了解一些Java编程相关的知识。</p>
+<span id="more"></span>
+<h2 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h2><p>我这里将会使用<code>1.8.0_151</code>。开发工具是使用的<code>JetBrains</code>公司的<code>IntelliJ Idea</code>。 <a target="_blank" rel="noopener" href="https://www.jetbrains.com/zh-cn/idea/">Idea下载地址</a></p>
+<h2 id="工具部分"><a href="#工具部分" class="headerlink" title="工具部分"></a>工具部分</h2><h3 id="JVM-http-proxy"><a href="#JVM-http-proxy" class="headerlink" title="JVM-http-proxy"></a>JVM-http-proxy</h3><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/120797/how-do-i-set-the-proxy-to-be-used-by-the-jvm">how-do-i-set-the-proxy-to-be-used-by-the-jvm</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://stackoverflow.com/questions/120797/how-do-i-set-the-proxy-to-be-used-by-the-jvm</span></span><br><span class="line">System.setProperty(<span class="string">&quot;java.net.useSystemProxies&quot;</span>, <span class="string">&quot;true&quot;</span>);</span><br><span class="line"><span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> <span class="string">&quot;https://xxxxxxxx&quot;</span>;</span><br><span class="line"><span class="type">String</span> <span class="variable">param</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="type">BufferedReader</span> <span class="variable">in</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line"> <span class="type">String</span> <span class="variable">urlNameString</span> <span class="operator">=</span> url + <span class="string">&quot;?&quot;</span> + param;</span><br><span class="line"> <span class="type">URL</span> <span class="variable">realUrl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(urlNameString);</span><br><span class="line"> <span class="comment">// 打开和URL之间的连接</span></span><br><span class="line"> <span class="type">URLConnection</span> <span class="variable">connection</span> <span class="operator">=</span> realUrl.openConnection();</span><br><span class="line"> <span class="comment">// 设置通用的请求属性</span></span><br><span class="line"> connection.setRequestProperty(<span class="string">&quot;accept&quot;</span>, <span class="string">&quot;*/*&quot;</span>);</span><br><span class="line"> connection.setRequestProperty(<span class="string">&quot;connection&quot;</span>, <span class="string">&quot;Keep-Alive&quot;</span>);</span><br><span class="line"> connection.setRequestProperty(<span class="string">&quot;user-agent&quot;</span>,</span><br><span class="line">   <span class="string">&quot;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)&quot;</span>);</span><br><span class="line"> <span class="comment">// 建立实际的连接</span></span><br><span class="line"> connection.connect();</span><br><span class="line"> <span class="comment">// 获取所有响应头字段</span></span><br><span class="line"> Map&lt;String, List&lt;String&gt;&gt; map = connection.getHeaderFields();</span><br><span class="line"> <span class="comment">// 遍历所有的响应头字段</span></span><br><span class="line"> <span class="keyword">for</span> (String key : map.keySet()) &#123;</span><br><span class="line">  System.out.println(key + <span class="string">&quot;---&gt;&quot;</span> + map.get(key));</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">// 定义 BufferedReader输入流来读取URL的响应</span></span><br><span class="line"> in = <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(</span><br><span class="line">   connection.getInputStream()));</span><br><span class="line"> String line;</span><br><span class="line"> <span class="keyword">while</span> ((line = in.readLine()) != <span class="literal">null</span>) &#123;</span><br><span class="line">  result += line;</span><br><span class="line"> &#125;</span><br><span class="line"> System.out.println(result);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line"> System.out.println(<span class="string">&quot;发送GET请求出现异常！&quot;</span> + e);</span><br><span class="line"> e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 使用finally块来关闭输入流</span></span><br><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line"> <span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (in != <span class="literal">null</span>) &#123;</span><br><span class="line">   in.close();</span><br><span class="line">  &#125;</span><br><span class="line"> &#125; <span class="keyword">catch</span> (Exception e2) &#123;</span><br><span class="line">  e2.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Maven项目管理"><a href="#Maven项目管理" class="headerlink" title="Maven项目管理"></a>Maven项目管理</h3><ul>
+<li>引用原文：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wsm540/p/15803056.html">Idea操作Maven详细使用</a></li>
+</ul>
+<p><img src="https://swordhell.github.io/images/asset/maven-structure.png" alt="maven-structure"></p>
+<p>重点可以看看里面的dependencies</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://maven.aliyun.com/repository/public">aliyun地址</a></p>
+<p>使用指令直接安装jar包到本地</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn install:install-file -Dfile=D:/taobao-sdk-java-auto-20160607.jar -DgroupId=com.ganshane.specs -DartifactId=taobao-sdk-java-auto-20160607 -Dversion=1.0.0 -Dpackaging=jar</span><br></pre></td></tr></table></figure>
+<p>使用JetBrains-IDEA的时候，修改了pom.xml之后，需要点击刷新</p>
+<p><img src="https://swordhell.github.io/images/asset/reload-all-maven.png" alt="reload-all-maven"></p>
+<p>否则idea还会读取自己本地的缓存配置来加载库文件。</p>
+<p>windows下，<code>%userprofile%</code>/.m2目录里面有一个setting.xml文件。可以在里面配置我们自己私有的maven库地址。这样就会去找私人的库。如果万一有些jar包无法从github上拿到，就能通过这种方式来同步jar包。</p>
+<p>一种报错的修复： <code>maven-default-http-blocker (http://0.0.0.0/):</code></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/bufegar0/article/details/124532209">https://blog.csdn.net/bufegar0/article/details/124532209</a></p>
+<h2 id="流行框架入门"><a href="#流行框架入门" class="headerlink" title="流行框架入门"></a>流行框架入门</h2><h3 id="spring"><a href="#spring" class="headerlink" title="spring"></a>spring</h3><p>Spring是一种轻量级的控制反转（IOC）和面向切面编程（AOP）的容器框架，能够为企业级开发提供一站式服务。IOC（Inverse Of Control）IOC（控制反转）是Spring最重要的原理，它将创建对象的主动权交给Spring容器，Spring程序只需要进行一些配置，就可以使用不同的对象，极大的降低了代码耦合性，提高了程序的灵活性，IOC的实现原理是反射机制。</p>
+<h4 id="Scheduled"><a href="#Scheduled" class="headerlink" title="Scheduled"></a>Scheduled</h4><p>定时执行任务。<a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1673860744450241524&amp;wfr=spider&amp;for=pc">两行代码搞定定时任务</a>。利用<code>注入技术</code>，可以做一些修饰就能让其工作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.scheduling.annotation.EnableScheduling;</span><br><span class="line"><span class="keyword">import</span> org.springframework.scheduling.annotation.Scheduled;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="meta">@EnableScheduling</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MySchedul</span> <span class="keyword">extends</span> <span class="title class_">Logging</span> &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Scheduled(fixedDelay = 3000)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fixedDelayRun</span><span class="params">()</span> &#123;</span><br></pre></td></tr></table></figure>
+<h3 id="spring-boot"><a href="#spring-boot" class="headerlink" title="spring-boot"></a>spring-boot</h3><h2 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h2><h3 id="com-fasterxml-jackson-databind-ObjectMapper"><a href="#com-fasterxml-jackson-databind-ObjectMapper" class="headerlink" title="com.fasterxml.jackson.databind.ObjectMapper"></a>com.fasterxml.jackson.databind.ObjectMapper</h3><p>这个是java里面object和json互相转换的一个库。在制作web开发的时候，经常会用到。</p>
+<p><a target="_blank" rel="noopener" href="https://www.journaldev.com/2324/jackson-json-java-parser-api-example-tutorial">jackson-json</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">123</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Pankaj&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;permanent&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;address&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;street&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Albany Dr&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;city&quot;</span><span class="punctuation">:</span> <span class="string">&quot;San Jose&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;zipcode&quot;</span><span class="punctuation">:</span> <span class="number">95129</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;phoneNumbers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="number">123456</span><span class="punctuation">,</span></span><br><span class="line">    <span class="number">987654</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;role&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Manager&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;cities&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;Los Angeles&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;New York&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;properties&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;age&quot;</span><span class="punctuation">:</span> <span class="string">&quot;29 years&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;salary&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1000 USD&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Address</span> &#123;</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">private</span> String street;</span><br><span class="line"> <span class="keyword">private</span> String city;</span><br><span class="line"> <span class="keyword">private</span> <span class="type">int</span> zipcode;</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">public</span> String <span class="title function_">getStreet</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> street;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setStreet</span><span class="params">(String street)</span> &#123;</span><br><span class="line">  <span class="built_in">this</span>.street = street;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">public</span> String <span class="title function_">getCity</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> city;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCity</span><span class="params">(String city)</span> &#123;</span><br><span class="line">  <span class="built_in">this</span>.city = city;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getZipcode</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> zipcode;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setZipcode</span><span class="params">(<span class="type">int</span> zipcode)</span> &#123;</span><br><span class="line">  <span class="built_in">this</span>.zipcode = zipcode;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> getStreet() + <span class="string">&quot;, &quot;</span>+getCity()+<span class="string">&quot;, &quot;</span>+getZipcode();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//create ObjectMapper instance</span></span><br><span class="line">  <span class="type">ObjectMapper</span> <span class="variable">objectMapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectMapper</span>();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//convert json string to object</span></span><br><span class="line">  <span class="type">Employee</span> <span class="variable">emp</span> <span class="operator">=</span> objectMapper.readValue(jsonData, Employee.class);</span><br></pre></td></tr></table></figure>
+<h3 id="通过命令直接安装jar"><a href="#通过命令直接安装jar" class="headerlink" title="通过命令直接安装jar"></a>通过命令直接安装jar</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean install -DskipTests</span><br></pre></td></tr></table></figure>
+<h3 id="启动之后报错如何处理"><a href="#启动之后报错如何处理" class="headerlink" title="启动之后报错如何处理"></a>启动之后报错如何处理</h3><p>jvm里面增加一个选项</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-Dspring.profiles.active=bkk</span><br><span class="line">Unknown time-zone ID: GMTB8</span><br></pre></td></tr></table></figure>
+<p>能抓取更加详细的信息。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://spring.io/">spring官网</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://spring.io/projects/spring-boot">spring-boot</a></li>
+<li>[3] <a target="_blank" rel="noopener" href="https://github.com/forezp/SpringCloudLearning">SpringCloudLearning</a></li>
+<li>[4] <a target="_blank" rel="noopener" href="https://github.com/zhoutaoo/SpringCloud">SpringCloud</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/30/keccak256/" rel="prev" title="keccak256">
+      <i class="fa fa-chevron-left"></i> keccak256
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/04/Redis-Streams/" rel="next" title="Redis-Streams-译">
+      Redis-Streams-译 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">环境介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E9%83%A8%E5%88%86"><span class="nav-number">1.2.</span> <span class="nav-text">工具部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM-http-proxy"><span class="nav-number">1.2.1.</span> <span class="nav-text">JVM-http-proxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maven%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.2.</span> <span class="nav-text">Maven项目管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E8%A1%8C%E6%A1%86%E6%9E%B6%E5%85%A5%E9%97%A8"><span class="nav-number">1.3.</span> <span class="nav-text">流行框架入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#spring"><span class="nav-number">1.3.1.</span> <span class="nav-text">spring</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Scheduled"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">Scheduled</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-boot"><span class="nav-number">1.3.2.</span> <span class="nav-text">spring-boot</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="nav-number">1.4.</span> <span class="nav-text">小技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#com-fasterxml-jackson-databind-ObjectMapper"><span class="nav-number">1.4.1.</span> <span class="nav-text">com.fasterxml.jackson.databind.ObjectMapper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%91%BD%E4%BB%A4%E7%9B%B4%E6%8E%A5%E5%AE%89%E8%A3%85jar"><span class="nav-number">1.4.2.</span> <span class="nav-text">通过命令直接安装jar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B9%8B%E5%90%8E%E6%8A%A5%E9%94%99%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86"><span class="nav-number">1.4.3.</span> <span class="nav-text">启动之后报错如何处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'c336cecd317513ad174ba15253f34ec4',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
