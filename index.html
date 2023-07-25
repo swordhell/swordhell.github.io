@@ -156,6 +156,85 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2023/07/24/Unity-Manual-01-create-with-Unity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/24/Unity-Manual-01-create-with-Unity/" class="post-title-link" itemprop="url">Unity学习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-07-24 00:00:00 / 修改时间：10:15:32" itemprop="dateCreated datePublished" datetime="2023-07-24T00:00:00+08:00">2023-07-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">2-应用</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/2-%E5%BA%94%E7%94%A8/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">游戏开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>用来记录学习unity3d-官方手册的读书笔记。具体细则可以阅读官方手册。这里面记录一些需要背诵的点。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/24/Unity-Manual-01-create-with-Unity/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2023/07/12/cosmos/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -179,10 +258,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-07-12 00:00:00 / 修改时间：20:15:34" itemprop="dateCreated datePublished" datetime="2023-07-12T00:00:00+08:00">2023-07-12</time>
+              <time title="创建时间：2023-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-12T00:00:00+08:00">2023-07-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-23 20:05:19" itemprop="dateModified" datetime="2023-07-23T20:05:19+08:00">2023-07-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -212,584 +297,14 @@
 <blockquote>
 <p>目前我们用的是cosoms-sdk 0.46，所以还是建议先把这里的文档全部看一遍， <a target="_blank" rel="noopener" href="https://docs.cosmos.network/v0.46/">https://docs.cosmos.network/v0.46/</a> tendermint是共识层和网络层，现阶段不需要深入理解，对于开发来说，我们面向的是cosmos-sdk开发</p>
 </blockquote>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="高层次概述"><a href="#高层次概述" class="headerlink" title="高层次概述"></a>高层次概述</h3><h4 id="什么是-cosmos-sdk"><a href="#什么是-cosmos-sdk" class="headerlink" title="什么是 cosmos-sdk"></a>什么是 cosmos-sdk</h4><p>提供快速开发区块链框架，使用了 Object-Capability Model。模块之间使用对象功能模型来构架。</p>
-<h4 id="什么是-application-specific-blockchains"><a href="#什么是-application-specific-blockchains" class="headerlink" title="什么是 application-specific blockchains"></a>什么是 application-specific blockchains</h4><p>特定于应用程序的区块链提供了与虚拟机区块链完全不同的开发范式。特定于应用程序的区块链是为操作单个应用程序而定制的区块链：开发人员可以自由地做出应用程序最佳运行所需的设计决策。它们还可以提供更好的主权、安全和绩效。</p>
-<h4 id="为什么使用-Cosmos-SDK"><a href="#为什么使用-Cosmos-SDK" class="headerlink" title="为什么使用 Cosmos SDK"></a>为什么使用 Cosmos SDK</h4><p>Cosmos SDK 是当今用于构建自定义应用程序特定区块链的最先进的框架。下面是你可能要考虑使用 Cosmos SDK 构建分散式应用程序的几个原因：</p>
-<ul>
-<li>Cosmos SDK中可用的默认共识引擎是Tendermint Core。Tendermint是现存最（也是唯一）成熟的BFT共识引擎。它在整个行业中被广泛使用，被认为是构建权益证明系统的黄金标准共识引擎。</li>
-<li>Cosmos SDK是开源的，旨在使从可组合模块构建区块链变得容易。随着开源 Cosmos SDK 模块生态系统的发展，使用它构建复杂的去中心化平台将变得越来越容易。</li>
-<li>Cosmos SDK的灵感来自基于功能的安全性，并受到多年与区块链状态机搏斗的启发。这使得Cosmos SDK成为一个非常安全的构建区块链的环境。</li>
-<li>最重要的是，Cosmos SDK已被用于构建许多已经在生产中的特定于应用程序的区块链。其中，我们可以引用Cosmos Hub，IRIS Hub，Binance Chain，Terra或Kava。更多的人正在Cosmos SDK上构建。</li>
-</ul>
-<h4 id="Cosmos-SDK-入门"><a href="#Cosmos-SDK-入门" class="headerlink" title="Cosmos SDK 入门"></a>Cosmos SDK 入门</h4><ul>
-<li>详细了解 Cosmos SDK 应用程序的体系结构</li>
-<li>了解如何通过 Cosmos SDK 教程从头开始构建特定于应用程序的区块链</li>
-</ul>
-<h3 id="特定于应用程序的区块链-application-specific-blockchains"><a href="#特定于应用程序的区块链-application-specific-blockchains" class="headerlink" title="特定于应用程序的区块链 application-specific blockchains"></a>特定于应用程序的区块链 application-specific blockchains</h3><blockquote>
-<p>本文档解释了什么是特定于应用程序的区块链，以及为什么开发人员想要构建一个区块链而不是编写智能合约。</p>
-</blockquote>
-<h4 id="什么是特定于应用程序的区块链"><a href="#什么是特定于应用程序的区块链" class="headerlink" title="什么是特定于应用程序的区块链"></a>什么是特定于应用程序的区块链</h4><p>特定于应用程序的区块链是为操作单个应用程序而定制的区块链。开发人员不是在以太坊等底层区块链之上构建去中心化应用程序，而是从头开始构建自己的区块链。这意味着构建一个全节点客户端、一个轻客户端和所有必要的接口（CLI、REST 等）来与节点交互。</p>
-<h4 id="智能合约的缺点是什么"><a href="#智能合约的缺点是什么" class="headerlink" title="智能合约的缺点是什么"></a>智能合约的缺点是什么</h4><p>像以太坊这样的虚拟机区块链早在2014年就解决了对更多可编程性的需求。当时，可用于构建去中心化应用程序的选择非常有限。大多数开发人员会建立在复杂且有限的比特币脚本语言之上，或者分叉难以使用和定制的比特币代码库。</p>
-<p>虚拟机区块链带来了新的价值主张。他们的状态机包含一个虚拟机，能够解释称为智能合约的图灵完备程序。这些智能合约非常适合一次性事件（例如ICO）等用例，但它们可能不足以构建复杂的去中心化平台。原因如下：</p>
-<ul>
-<li>智能合约通常使用特定的编程语言开发，这些编程语言可以由底层虚拟机解释。这些编程语言通常不成熟，并且受到虚拟机本身约束的固有限制。例如，以太坊虚拟机不允许开发人员实现代码的自动执行。开发人员也仅限于基于帐户的 EVM 系统，他们只能从一组有限的功能中进行选择以进行加密操作。这些都是例子，但它们暗示了智能合约环境通常缺乏灵活性。</li>
-<li>智能合约都由同一个虚拟机运行。这意味着它们会争夺资源，这会严重限制性能。即使状态机被拆分为多个子集（例如通过分片），智能合约仍然需要由虚拟机解释，与在状态机级别实现的本机应用程序相比，这将限制性能（我们的基准测试显示，当虚拟机被删除时，性能提高了10倍）。</li>
-<li>智能合约共享相同底层环境这一事实的另一个问题是由此产生的主权限制。去中心化应用程序是一个涉及多个参与者的生态系统。如果应用程序构建在通用虚拟机区块链上，则利益相关者对其应用程序的主权非常有限，最终被底层区块链的治理所取代。如果应用程序中存在错误，则几乎无能为力。</li>
-</ul>
-<p>特定于应用程序的区块链旨在解决这些缺点。</p>
-<h4 id="特定于应用程序的区块链优势"><a href="#特定于应用程序的区块链优势" class="headerlink" title="特定于应用程序的区块链优势"></a>特定于应用程序的区块链优势</h4><h5 id="Flexibility-灵活性"><a href="#Flexibility-灵活性" class="headerlink" title="Flexibility 灵活性"></a>Flexibility 灵活性</h5><p>特定于应用程序的区块链为开发人员提供了最大的灵活性：</p>
-<ul>
-<li>在Cosmos区块链中，状态机通常通过称为ABCI的接口连接到底层共识引擎。该接口可以包装在任何编程语言中，这意味着开发人员可以使用他们选择的编程语言构建他们的状态机。</li>
-<li>开发人员可以在多个框架中进行选择来构建他们的状态机。今天使用最广泛的是Cosmos SDK，但其他SDK也存在（例如化妆水，Weave等）。通常，选择将根据他们想要使用的编程语言进行（Cosmos SDK和Weave在Golang中，Weave在Javascript中，…）。</li>
-<li>ABCI还允许开发人员交换其特定应用区块链的共识引擎。今天，只有Tendermint可以生产，但在未来，预计会出现其他共识引擎。</li>
-<li>即使他们满足于框架和共识引擎，如果开发人员不能完全满足原始形式的需求，开发人员仍然可以自由调整它们。</li>
-<li>开发人员可以自由探索全方位的权衡（例如，验证者数量与事务吞吐量，异步的安全性与可用性等）和设计选择（用于存储的数据库或IAVL树，UTXO或帐户模型，…）。</li>
-<li>开发人员可以实现代码的自动执行。在 Cosmos SDK 中，可以在每个块的开头和结尾自动触发逻辑。他们还可以自由选择其应用程序中使用的加密库，而不是在虚拟机区块链的情况下受到底层环境提供的约束。</li>
-</ul>
-<p>上面的列表包含一些示例，这些示例显示了特定于应用程序的区块链为开发人员提供了多少灵活性。Cosmos 和 Cosmos SDK 的目标是使开发人员工具尽可能通用和可组合，以便堆栈的每个部分都可以分叉、调整和改进，而不会失去兼容性。随着社区的发展，每个核心构建块的更多替代方案将出现，为开发人员提供更多选择。</p>
-<h5 id="Performance-性能"><a href="#Performance-性能" class="headerlink" title="Performance 性能"></a>Performance 性能</h5><p>使用智能合约构建的去中心化应用程序本质上受底层环境的性能限制。对于一个分散的应用程序来优化性能，它需要构建为特定于应用程序的区块链。接下来是特定于应用程序的区块链在性能方面带来的一些好处：</p>
-<ul>
-<li>特定应用区块链的开发人员可以选择使用新颖的共识引擎（如Tendermint BFT）进行操作。与工作量证明（当今大多数虚拟机区块链使用）相比，它在吞吐量方面提供了显着的收益。</li>
-<li>特定于应用程序的区块链仅运行单个应用程序，因此该应用程序不会与其他应用程序竞争计算和存储。这与当今大多数非分片虚拟机区块链相反，其中智能合约都在竞争计算和存储。</li>
-<li>即使虚拟机区块链提供基于应用程序的分片以及高效的共识算法，性能仍然会受到虚拟机本身的限制。真正的吞吐量瓶颈是状态机，要求事务由虚拟机解释会显著增加处理它们的计算复杂性。</li>
-</ul>
-<h5 id="Security-安全"><a href="#Security-安全" class="headerlink" title="Security 安全"></a>Security 安全</h5><p>安全性很难量化，并且因平台而异。也就是说，以下是特定于应用程序的区块链在安全性方面可以带来的一些重要好处：</p>
-<ul>
-<li>开发人员在构建特定于应用程序的区块链时可以选择经过验证的编程语言，例如Go，而不是通常更不成熟的智能合约编程语言。</li>
-<li>开发人员不受底层虚拟机提供的加密函数的约束。他们可以使用自己的自定义加密，并依赖于经过良好审核的加密库。</li>
-<li>开发人员不必担心底层虚拟机中的潜在错误或可利用的机制，从而更容易推理应用程序的安全性。</li>
-</ul>
-<h5 id="Sovereignty-主权"><a href="#Sovereignty-主权" class="headerlink" title="Sovereignty 主权"></a>Sovereignty 主权</h5><p>特定于应用程序的区块链的主要好处之一是主权。去中心化应用程序是一个涉及许多参与者的生态系统：用户、开发人员、第三方服务等。当开发人员构建在众多去中心化应用共存的虚拟机区块链上时，应用的社区与底层区块链的社区不同，后者在治理过程中取代了前者。如果存在错误或需要新功能，应用程序的利益相关者几乎没有升级代码的余地。如果底层区块链的社区拒绝采取行动，什么都不会发生。</p>
-<p>这里的根本问题是应用程序的治理和网络的治理不一致。此问题由特定于应用程序的区块链解决。由于特定于应用程序的区块链专门用于操作单个应用程序，因此应用程序的利益相关者可以完全控制整个链。这确保了如果发现错误，社区不会被卡住，并且可以自由选择如何发展。</p>
-<h3 id="区块链架构"><a href="#区块链架构" class="headerlink" title="区块链架构"></a>区块链架构</h3><h4 id="状态机"><a href="#状态机" class="headerlink" title="状态机"></a>状态机</h4><p>区块链的核心是复制的确定性状态机。</p>
-<p>状态机是一种计算机科学概念，其中一台机器可以具有多个状态，但在任何给定时间只能具有一种状态。有一个 ，用于描述系统的当前状态，以及 state transactions ，用于触发状态转换。</p>
-<p>给定状态 S 和事务 T，状态机将返回新的状态 S’。</p>
-<p>在实践中，交易被捆绑在块中，以使流程更有效率。给定一个状态 S 和一个事务块 B，状态机将返回一个新的状态 S’。</p>
-<p>在区块链上下文中，状态机是确定性的。这意味着，如果一个节点在给定状态下启动并重播相同的事务序列，它将始终以相同的最终状态结束。</p>
-<p>Cosmos SDK 为开发人员提供了最大的灵活性来定义其应用程序的状态、事务类型和状态转换函数。以下部分将更深入地介绍使用 Cosmos SDK 构建状态机的过程。但首先，让我们看看如何使用 Tendermint 复制状态机。</p>
-<h4 id="tendermint"><a href="#tendermint" class="headerlink" title="tendermint"></a>tendermint</h4><p>多亏了Cosmos SDK，开发人员只需要定义状态机，Tendermint将为他们处理网络上的复制。</p>
-<p>Tendermint是一个与应用程序无关的引擎，负责处理区块链的网络和共识层。实际上，这意味着 Tendermint 负责传播和排序事务字节。Tendermint Core依靠同名的拜占庭容错（BFT）算法来就交易顺序达成共识。</p>
-<p>Tendermint共识算法与一组称为验证器的特殊节点一起工作。验证者负责将交易块添加到区块链中。在任何给定的区块中，都有一个验证器集 V。算法选择V中的验证者作为下一个区块的提议者。如果超过 2/3 的 V 在其上签名 a 和 a prevote precommit ，并且它包含的所有交易都有效，则认为此块有效。验证器集可以通过在状态机中编写的规则来更改。</p>
-<h4 id="ABCI"><a href="#ABCI" class="headerlink" title="ABCI"></a>ABCI</h4><p>Tendermint通过称为ABCI的接口将事务传递给应用程序，应用程序必须实现该接口。</p>
-<p>请注意，Tendermint 只处理事务字节。它不知道这些字节的含义。Tendermint所做的只是确定地对这些交易字节进行排序。Tendermint 通过 ABCI 将字节传递给应用程序，并期望返回代码通知它事务中包含的消息是否成功处理。</p>
-<p>以下是ABCI最重要的信息：</p>
-<ul>
-<li>CheckTx ：当Tendermint Core收到交易时，它被传递给应用程序以检查是否满足一些基本要求。 CheckTx 用于保护全节点的内存池免受垃圾邮件事务的侵害。.一个名为 的特殊 AnteHandler 处理程序用于执行一系列验证步骤，例如检查是否有足够的费用和验证签名。如果检查有效，事务将添加到内存池并中继到对等节点。请注意，交易不会被处理（即不会发生状态修改）， CheckTx 因为它们尚未包含在区块中。</li>
-<li>DeliverTx ：当Tendermint Core收到有效区块时，区块中的每个交易都会通过传递给 DeliverTx 应用程序以进行处理。正是在这个阶段，状态转换发生了。再次执行， AnteHandler 以及事务中每条消息的实际 Msg 服务 RPC。</li>
-<li>BeginBlock / EndBlock ：这些消息在每个区块的开头和结尾执行，无论该区块是否包含交易。触发逻辑的自动执行很有用。不过，请谨慎行事，因为计算昂贵的循环可能会减慢您的区块链速度，如果循环是无限的，甚至会冻结它。</li>
-</ul>
-<h3 id="cosmos主要组件"><a href="#cosmos主要组件" class="headerlink" title="cosmos主要组件"></a>cosmos主要组件</h3><p>Cosmos SDK是一个框架，有助于在Tendermint之上开发安全状态机。Cosmos SDK的核心是Golang中ABCI的样板实现。它带有一个用于持久化数据和一个 multistore router 用于处理事务的功能。</p>
-<p>下面是一个简化的视图，说明当通过以下方式从 DeliverTx Tendermint 传输时，基于 Cosmos SDK 构建的应用程序如何处理事务：</p>
-<ol>
-<li>从 Tendermint 共识引擎收到的解码 transactions （请记住，Tendermint 只处理 []bytes ）。</li>
-<li>提取 messages transactions 并执行基本的健全性检查。</li>
-<li>将每条消息路由到相应的模块，以便对其进行处理。</li>
-<li>提交状态更改。</li>
-</ol>
-<h4 id="baseapp"><a href="#baseapp" class="headerlink" title="baseapp"></a>baseapp</h4><p>baseapp 是 Cosmos SDK 应用程序的样板实现。它带有ABCI的实现，以处理与底层共识引擎的连接。通常，Cosmos SDK 应用程序 baseapp 通过将 嵌入 app.go .</p>
-<p>下面是来自 Cosmos SDK 演示应用的示例 simapp ：</p>
-<p>的目标是 baseapp 在存储和可扩展状态机之间提供安全接口，同时尽可能少地定义状态机（忠于 ABCI）。</p>
-<p>有关 baseapp 的更多信息，请单击此处。</p>
-<h4 id="multistore"><a href="#multistore" class="headerlink" title="multistore"></a>multistore</h4><p>Cosmos SDK 提供用于 multistore 持久化的状态。多存储允许开发人员声明任意数量的 KVStores .它们 KVStores 仅接受 []byte 类型作为值，因此任何自定义结构都需要在存储之前使用编解码器进行编组。</p>
-<p>多存储抽象用于将状态划分为不同的隔间，每个隔间由其自己的模块管理。有关多存储的更多信息，请单击此处</p>
-<h4 id="modules"><a href="#modules" class="headerlink" title="modules"></a>modules</h4><p>Cosmos SDK的强大之处在于它的模块化。Cosmos SDK 应用程序是通过聚合可互操作模块的集合来构建的。每个模块定义状态的子集，并包含自己的消息/事务处理器，而 Cosmos SDK 负责将每条消息路由到其各自的模块。</p>
-<p>以下是每个完整节点的应用程序在有效区块中接收交易时如何处理交易的简化视图：</p>
-<p>每个模块都可以看作是一个小的状态机。开发人员需要定义模块处理的状态的子集，以及修改状态的自定义消息类型（注意： messages 由 提取 baseapp 自 transactions ）。通常，每个模块在 中 multistore 声明自己的 KVStore 状态，以保留其定义的状态的子集。大多数开发人员在构建自己的模块时都需要访问其他第三方模块。鉴于 Cosmos SDK 是一个开放框架，某些模块可能是恶意的，这意味着需要安全原则来推理模块间的交互。这些原则基于对象功能。实际上，这意味着不是让每个模块保留其他模块的访问控制列表，而是每个模块实现调用 keepers 的特殊对象，这些对象可以传递给其他模块以授予一组预定义的功能。</p>
-<p>Cosmos SDK 模块在 Cosmos SDK 的 x/ 文件夹中定义。一些核心模块包括：</p>
-<ul>
-<li>x/auth ：用于管理帐户和签名。</li>
-<li>x/bank ：用于启用token和token转移。</li>
-<li>x/staking + x/slashing ： 用于构建权益证明区块链。</li>
-</ul>
-<p>除了任何人都可以在其应用中使用的 中 x/ 现有的模块之外，Cosmos SDK 还允许你生成自己的自定义模块。您可以在教程中<a target="_blank" rel="noopener" href="https://tutorials.cosmos.network/">查看示例</a>。</p>
-<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="cosmos-sdk-应用程序的剖析"><a href="#cosmos-sdk-应用程序的剖析" class="headerlink" title="cosmos-sdk 应用程序的剖析"></a>cosmos-sdk 应用程序的剖析</h3><blockquote>
-<p>本文档介绍 Cosmos SDK 应用程序的核心部分。在整个文档中，将使用名为的 app 占位符应用程序。</p>
-</blockquote>
-<h4 id="节点客户端"><a href="#节点客户端" class="headerlink" title="节点客户端"></a>节点客户端</h4><p>守护进程或全节点客户端是基于 Cosmos SDK 的区块链的核心进程。网络中的参与者运行此过程以初始化其状态机，与其他全节点连接，并在新块进入时更新其状态机。</p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">                ^  +-------------------------------+  ^</span><br><span class="line">                |  |                               |  |</span><br><span class="line">                |  |  State-machine = Application  |  |</span><br><span class="line">                |  |                               |  |   Built with Cosmos SDK</span><br><span class="line">                |  |            ^      +           |  |</span><br><span class="line">                |  +----------- | ABCI | ----------+  v</span><br><span class="line">                |  |            +      v           |  ^</span><br><span class="line">                |  |                               |  |</span><br><span class="line">Blockchain Node |  |           Consensus           |  |</span><br><span class="line">                |  |                               |  |</span><br><span class="line">                |  +-------------------------------+  |   Tendermint Core</span><br><span class="line">                |  |                               |  |</span><br><span class="line">                |  |           Networking          |  |</span><br><span class="line">                |  |                               |  |</span><br><span class="line">                v  +-------------------------------+  v</span><br></pre></td></tr></table></figure>
-<p>区块链全节点将自己呈现为二进制文件，通常后缀为 -d “daemon”（例如 appd for app 或 gaiad for gaia ）。此二进制文件是通过运行放置在 中的 ./cmd/appd/ 简单 main.go 函数来构建的。此操作通常通过生成文件进行。</p>
-<p>构建主二进制文件后，可以通过运行 start 命令来启动节点。此命令函数主要执行三项操作：</p>
-<ol>
-<li>创建 中 app.go 定义的状态机实例。</li>
-<li>使用最新的已知状态初始化状态机，从存储在 ~/.app/data 文件夹中提取 db 。此时，状态机处于高度 appBlockHeight 。</li>
-<li>创建并启动一个新的 Tendermint 实例。除此之外，节点将与其对等节点进行握手。它将从他们那里获得最新的 blockHeight ，如果它大于本地 appBlockHeight .如果是，则 appBlockHeight 节点从创世开始 0 ，Tendermint 通过 ABCI 向 app 发送消息 InitChain ，这会触发 InitChainer .</li>
-</ol>
-<h4 id="核心应用程序文件"><a href="#核心应用程序文件" class="headerlink" title="核心应用程序文件"></a>核心应用程序文件</h4><p>通常，状态机的核心是在名为 的 app.go 文件中定义的。它主要包含应用程序的类型定义以及创建和初始化它的函数。</p>
-<h5 id="应用程序的类型定义"><a href="#应用程序的类型定义" class="headerlink" title="应用程序的类型定义"></a>应用程序的类型定义</h5><p>中 app.go 定义的第一件事是 type 应用程序的。它通常由以下部分组成：</p>
-<ol>
-<li>对 的 baseapp 引用。中 app.go 定义的自定义应用程序是 的 baseapp 扩展。当事务由 Tendermint 中继到应用程序时， app 使用 baseapp 的 方法将它们路由到相应的模块。 baseapp 实现应用程序的大部分核心逻辑，包括所有 ABCI 方法和路由逻辑。</li>
-<li>模块的列表 keeper 。每个模块定义一个名为 的抽象，用于处理此模块存储 keeper 的读取和写入。一个模块的 keeper s 方法可以从其他模块（如果已授权）调用，这就是为什么它们在应用程序类型中声明并导出为其他模块的接口，以便后者只能访问授权函数。</li>
-<li>对 legacyAmino 编解码器的引用。Cosmos SDK 的某些部分尚未迁移到使用上述内容 appCodec ，并且仍硬编码为使用 Amino。其他部分明确使用 Amino 以实现向后兼容性。由于这些原因，应用程序仍保留对旧版 Amino 编解码器的引用。请注意，在即将发布的版本中，Amino 编解码器将从 SDK 中删除。</li>
-<li>对模块管理器和基本模块管理器的引用。模块管理器是一个对象，其中包含应用程序模块的列表。它有助于与这些模块相关的操作，例如注册其 Msg 服务和 gRPC Query 服务，或者为各种函数（如 InitChainer 和 EndBlocker ） BeginBlocker 设置模块之间的执行顺序。</li>
-</ol>
-<p>请参阅来自 、Cosmos SDK 自己的用于演示和测试目的的应用中的 simapp 应用程序类型定义示例：</p>
-<h5 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h5><p>此函数构造上一节中定义的类型的新应用程序。它必须满足 AppCreator 签名才能在应用程序的守护程序命令的 start 命令中使用。</p>
-<p>以下是此函数执行的主要操作：</p>
-<ul>
-<li>使用基本管理器实例化一个新的 codec 并初始化 codec 每个应用程序的模块</li>
-<li>使用对实例、编解码器和所有相应存储密钥的引用来 baseapp 实例化新应用程序。</li>
-<li>type 使用应用程序每个模块的功能实例 NewKeeper 化应用程序中定义的所有 keeper s。请注意， keepers 必须以正确的顺序实例化，因为一个模块的 可能需要引用另一个模块 NewKeeper 的 keeper .</li>
-<li>使用应用程序的每个模块的对象实例 AppModule 化应用程序的模块管理器。</li>
-<li>使用模块管理器初始化应用程序的 Msg 服务、gRPC Query 服务、旧版路由和旧 Msg 版查询路由。当交易由 Tendermint 通过 ABCI 中继到应用程序时，它使用此处定义的路由路由到相应模块的服务 Msg 。同样，当应用程序收到 gRPC 查询请求时，将使用此处定义的 gRPC 路由 gRPC query service 将其路由到相应的模块。Cosmos SDK 仍支持旧版和旧版 Tendermint 查询，这些查询分别使用旧版路由和旧 Msg Msg 版查询路由进行路由。</li>
-<li>使用模块管理器，注册应用程序的模块的不变量。不变量是在每个区块末尾评估的变量（例如代币的总供应量）。检查不变量的过程是通过称为 的特殊 InvariantsRegistry 模块完成的。不变值应等于模块中定义的预测值。如果该值与预测的值不同，则将触发固定注册表中定义的特殊逻辑（通常链会停止）。这对于确保没有关键错误被忽视并产生难以修复的长期影响非常有用。</li>
-<li>使用模块管理器，设置应用程序每个模块的 InitGenesis 和 BeginBlocker EndBlocker 函数之间的执行顺序。请注意，并非所有模块都实现这些功能。</li>
-<li>设置应用程序的其余参数：<ul>
-<li>InitChainer ：用于在应用程序首次启动时对其进行初始化。</li>
-<li>BeginBlocker ， EndBlocker ：在每个块的开头和结尾调用）。</li>
-<li>anteHandler ：用于处理费用和签名验证。</li>
-</ul>
-</li>
-<li>挂载store</li>
-<li>返回application</li>
-</ul>
-<p>请注意，此函数仅创建应用的一个实例，而如果节点重新启动，则实际状态将从 ~/.app/data 文件夹继承，或者如果节点首次启动，则从创世文件生成。</p>
-<p>请参阅以下应用程序 simapp 构造函数的示例：</p>
-<h5 id="InitChainer"><a href="#InitChainer" class="headerlink" title="InitChainer"></a>InitChainer</h5><p>这是一个 InitChainer 从创世文件初始化应用程序状态的函数（即创世账户的代币余额）。当应用程序收到 InitChain 来自 Tendermint 引擎的消息时调用它，这发生在节点启动时 appBlockHeight == 0 （即创世时）。应用程序必须通过 SetInitChainer 该方法在其构造函数中设置 。 InitChainer</p>
-<p>通常， InitChainer 主要由应用程序的每个模块的功能组成 InitGenesis 。这是通过调用模块管理器的函数来完成的，而模块管理器又将调用它包含的每个模块的 InitGenesis InitGenesis 函数。请注意，必须使用模块管理器的方法 SetOrderInitGenesis 在模块管理器中设置调用模块函数 InitGenesis 的顺序。这是在应用程序的构造函数中完成的， SetOrderInitGenesis 并且必须在 . SetInitChainer</p>
-<p>请参阅 InitChainer 来自 simapp 以下示例：</p>
-<h5 id="BeginBlocker-和-EndBlocker"><a href="#BeginBlocker-和-EndBlocker" class="headerlink" title="BeginBlocker 和 EndBlocker"></a>BeginBlocker 和 EndBlocker</h5><p>Cosmos SDK 为开发人员提供了在其应用程序中实现代码自动执行的可能性。这是通过两个称为 BeginBlocker 和 EndBlocker 的函数实现的。当应用程序分别从 Tendermint 引擎接收 BeginBlock and EndBlock 消息时，将调用它们，这发生在每个块的开头和结尾。应用程序必须通过 and 方法在其构造函数中设置 BeginBlocker SetBeginBlocker and SetEndBlocker EndBlocker 。</p>
-<p>通常， BeginBlocker 和 EndBlocker 函数主要由应用程序每个模块的 BeginBlock and EndBlock 函数组成。这是通过调用模块管理器的 and 函数来完成的，而模块管理器又将调用它包含的每个模块的 BeginBlock BeginBlock and EndBlock EndBlock 函数。请注意，必须分别使用 and SetOrderBeginBlockers SetOrderEndBlockers 方法在模块管理器中设置模块和 BeginBlock EndBlock 函数的调用顺序。这是通过应用程序构造函数中的模块管理器完成的，并且必须在 and 函数之前调用 SetOrderBeginBlockers SetBeginBlocker and SetOrderEndBlockers SetEndBlocker 方法。</p>
-<p>作为旁注，重要的是要记住，特定于应用程序的区块链是确定性的。开发人员必须小心不要在 or EndBlocker 中 BeginBlocker 引入非确定性，并且还必须注意不要使它们的计算成本太高，因为 gas 不会限制成本 BeginBlocker 和执行 EndBlocker 。</p>
-<p>查看 和 EndBlocker 函数 BeginBlocker 的示例 simapp</p>
-<h5 id="注册协议解析器"><a href="#注册协议解析器" class="headerlink" title="注册协议解析器"></a>注册协议解析器</h5><p>结构 EncodingConfig 是 app.go 文件的最后一个重要部分。此结构的目标是定义将在整个应用中使用的编解码器。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// EncodingConfig specifies the concrete encoding types to use for a given app.</span></span><br><span class="line"><span class="comment">// This is provided for compatibility between protobuf and amino implementations.</span></span><br><span class="line"><span class="keyword">type</span> EncodingConfig <span class="keyword">struct</span> &#123;</span><br><span class="line">	InterfaceRegistry types.InterfaceRegistry</span><br><span class="line">	Codec             codec.Codec</span><br><span class="line">	TxConfig          client.TxConfig</span><br><span class="line">	Amino             *codec.LegacyAmino</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以下是四个字段中每个字段的含义的说明：</p>
-<ul>
-<li>InterfaceRegistry ：Protobuf 编解码器 google.protobuf.Any 使用 . InterfaceRegistry Any 可以被认为是包含 a（实现接口的具体类型的名称）和 a type_url value （其编码字节）的结构。 InterfaceRegistry 提供一种用于注册可从 安全 Any 解压缩的接口和实现的机制。应用程序的每个模块都实现可用于 RegisterInterfaces 注册模块自己的接口和实现的方法。<ul>
-<li>您可以在 ADR-19 中阅读有关 Any 的更多信息。</li>
-<li>为了更详细地了解，Cosmos SDK 使用名为 gogoprotobuf 的 Protobuf 规范的实现。默认情况下，gogo Any protobuf 实现使用全局类型注册来解码打包到 Any 具体 Go 类型的值。这引入了一个漏洞，即依赖关系树中的任何恶意模块都可以向全局 protobuf 注册表注册类型，并导致在 type_url 字段中引用它的事务加载和取消封送该类型。有关更多信息，请参阅 ADR-019。</li>
-</ul>
-</li>
-<li>Codec ：整个 Cosmos SDK 中使用的默认编解码器。它由一个 BinaryCodec 用于编码和解码状态和一个 JSONCodec 用于向用户输出数据（例如在CLI中）组成。默认情况下，SDK 使用 Protobuf 作为 Codec 。</li>
-<li>TxConfig ： TxConfig 定义客户端可用于生成应用程序定义的具体事务类型的接口。目前，SDK 处理两种事务类型： SIGN_MODE_DIRECT （使用 Protobuf 二进制作为在线编码）和 SIGN_MODE_LEGACY_AMINO_JSON （取决于 Amino）。在此处阅读有关交易的更多信息。</li>
-<li>Amino ：Cosmos SDK 的某些旧部分仍使用 Amino 实现向后兼容性。每个模块都公开一个 RegisterLegacyAmino 方法，用于在 Amino 中注册模块的特定类型。应用 Amino 开发人员不应再使用此编解码器，并将在将来的版本中删除。</li>
-</ul>
-<p>Cosmos SDK 公开了一个函数，用于 MakeTestEncodingConfig EncodingConfig 为应用构造函数 （ ） 创建 NewApp 。它使用 Protobuf 作为默认值 Codec 。</p>
-<p>注意：此函数已弃用，应仅用于创建应用程序或测试。</p>
-<p>请参阅 MakeTestEncodingConfig 来自 simapp 以下示例：</p>
-<h5 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h5><p>模块是 Cosmos SDK 应用程序的核心和灵魂。它们可以被视为嵌套在状态机中的状态机。当交易通过 ABCI 从底层 Tendermint 引擎中继到应用程序时，它被路由 baseapp 到相应的模块以便进行处理。这种范式使开发人员能够轻松构建复杂的状态机，因为他们需要的大多数模块通常已经存在。对于开发人员而言，生成 Cosmos SDK 应用程序所涉及的大部分工作都围绕着构建其应用程序所需的尚不存在的自定义模块，并将其与已存在的模块集成到一个一致的应用程序中。在应用程序目录中，标准做法是将模块存储在 x/ 文件夹中（不要与包含已生成模块的 Cosmos SDK x/ 文件夹混淆）。</p>
-<h5 id="应用模块接口"><a href="#应用模块接口" class="headerlink" title="应用模块接口"></a>应用模块接口</h5><p>模块必须实现 Cosmos SDK 中定义的接口， AppModuleBasic 并且 AppModule .前者实现模块的基本非依赖元素，例如 codec ，而后者处理大部分模块方法（包括需要引用其他模块的方法 keeper ）。 AppModule 按照惯例，和 AppModuleBasic 类型都在名为 module.go 的文件中定义。</p>
-<p>AppModule 在模块上公开一组有用的方法，这些方法有助于将模块组合成一致的应用程序。这些方法从 调用 module manager ，它管理应用程序的模块集合。</p>
-<h5 id="Msg-Services"><a href="#Msg-Services" class="headerlink" title="Msg Services"></a>Msg Services</h5><p>每个模块定义两个 Protobuf 服务：一个服务用于处理消息，一个 Msg gRPC Query 服务用于处理查询。如果我们将模块视为状态机，那么 Msg 服务就是一组状态转换 RPC 方法。每个 Protobuf 服务方法都与 Protobuf Msg 请求类型 1：1 相关，该请求类型必须实现 sdk.Msg 接口。请注意， sdk.Msg s 捆绑在事务中，每个事务包含一条或多条消息。</p>
-<p>当全节点收到有效的交易块时，Tendermint 会通过 将 DeliverTx 每个交易块中继到应用程序。然后，应用程序处理事务：</p>
-<ol>
-<li>收到事务后，应用程序首先将其从 []byte 中解组。</li>
-<li>然后，它会在提取交易中包含的内容 Msg 之前验证有关交易的一些事情，例如费用支付和签名。</li>
-<li>sdk.Msg s 使用 Protobuf Any s 进行编码。通过分析每个 Any 模块，baseapp路由 msgServiceRouter sdk.Msg 到相应模块 type_url 的服务 Msg 。</li>
-<li>如果消息处理成功，则状态将更新。</li>
-</ol>
-<p>有关更多详细信息，请查看<a target="_blank" rel="noopener" href="https://docs.cosmos.network/v0.46/basics/tx-lifecycle.html">事务生命周期</a>。</p>
-<p>模块开发人员在构建自己的模块时创建自定义 Msg 服务。一般做法是在 tx.proto 文件中定义 Msg Protobuf 服务。例如，该 x/bank 模块使用两种方法来传输令牌来定义服务：</p>
-<p>用于 keeper 更新模块状态的服务方法。</p>
-<p>每个模块还应将该方法实现为 RegisterServices AppModule 接口的一部分。此方法应调用生成的 Protobuf 代码提供的 RegisterMsgServer 函数。</p>
-<h5 id="gRPC-Query-Services"><a href="#gRPC-Query-Services" class="headerlink" title="gRPC Query Services"></a>gRPC Query Services</h5><p>gRPC 服务允许用户使用 gRPC Query 查询状态。默认情况下，它们处于启用状态，并且可以在 中的 grpc.enable app.toml 和 grpc.address 字段下进行配置。</p>
-<p>gRPC Query 服务在模块的 Protobuf 定义文件中定义，特别是在 中 query.proto 。 query.proto 定义文件公开单个 Query Protobuf 服务。每个 gRPC 查询终结点对应于 Query 服务内部的服务方法，从 rpc 关键字开始。</p>
-<p>Protobuf 为每个模块生成一个 QueryServer 接口，其中包含所有服务方法。 keeper 然后，模块需要通过提供每种服务方法的具体实现来实现此 QueryServer 接口。此具体实现是相应 gRPC 查询终结点的处理程序。</p>
-<p>最后，每个模块还应将该方法实现为 RegisterServices 接口的一部分 AppModule 。此方法应调用生成的 Protobuf 代码提供的 RegisterQueryServer 函数。</p>
-<h5 id="keeper"><a href="#keeper" class="headerlink" title="keeper"></a>keeper</h5><p>Keepers 是其模块存储的看门人。要在模块的存储区中读取或写入，必须通过其 keeper 的方法之一。这是通过 Cosmos SDK 的对象功能模型来确保的。只有持有存储密钥的对象才能访问它，并且只有模块的对象 keeper 才能保存模块存储的密钥。</p>
-<p>Keepers 通常在名为 keeper.go 的文件中定义。它包含 keeper 的类型定义和方法。</p>
-<p>keeper 类型定义通常包括：</p>
-<ul>
-<li>多存储中模块存储的键。</li>
-<li>引用其他模块的 keepers .仅当需要访问其他模块的存储（从中读取或写入）时才 keeper 需要。</li>
-<li>对应用程序的编解码器的引用。需要 keeper 它在存储结构之前封送结构，或者在检索它们时取消封送它们，因为存储只接受 []bytes 作为值。</li>
-</ul>
-<p>除了类型定义之外， keeper.go 该文件的下一个重要组件是 keeper 的构造函数。 NewKeeper 此函数实例化上面定义的类型的新 keeper 函数，其中 codec 、存储 keys 并可能引用其他模块的 keeper 参数。该 NewKeeper 函数从应用程序的构造函数调用。文件的其余部分定义了 keeper 的方法，主要是 getter 和 setter。</p>
-<h5 id="命令行、gRPC-服务和-REST-接口"><a href="#命令行、gRPC-服务和-REST-接口" class="headerlink" title="命令行、gRPC 服务和 REST 接口"></a>命令行、gRPC 服务和 REST 接口</h5><p>每个模块定义要通过应用程序接口向最终用户公开的命令行命令、gRPC 服务和 REST 路由。这使最终用户能够创建模块中定义的类型的消息，或查询模块管理的状态子集。</p>
-<h6 id="cli"><a href="#cli" class="headerlink" title="cli"></a>cli</h6><p>通常，与模块相关的命令是在模块文件夹中调用 client/cli 的文件夹中定义的。CLI 将命令分为两类，即事务和查询，分别在 和 client/cli/query.go 中 client/cli/tx.go 定义。这两个命令都构建在 Cobra 库之上：</p>
-<ul>
-<li>事务命令允许用户生成新的事务，以便它们可以包含在块中并最终更新状态。应为模块中定义的每个消息类型创建一个命令。该命令使用最终用户提供的参数调用消息的构造函数，并将其包装到事务中。Cosmos SDK 处理签名和其他事务元数据的添加。</li>
-<li>查询允许用户查询模块定义的状态的子集。查询命令将查询转发到应用程序的查询路由器，后者将查询路由到提供的参数的 queryRoute 相应查询器。</li>
-</ul>
-<h6 id="gRPC"><a href="#gRPC" class="headerlink" title="gRPC"></a>gRPC</h6><p>gRPC 是一个现代开源高性能 RPC 框架，支持多种语言。这是外部客户端（如钱包、浏览器和其他后端服务）与节点交互的推荐方式。</p>
-<p>每个模块都可以公开 gRPC 终结点，称为服务方法，并在模块的 Protobuf query.proto 文件中定义。服务方法由其名称、输入参数和输出响应定义。然后，该模块需要：</p>
-<ul>
-<li>定义 AppModuleBasic 一个 RegisterGRPCGatewayRoutes 方法，将客户端 gRPC 请求连接到模块内的正确处理程序。</li>
-<li>对于每个服务方法，定义相应的处理程序。处理程序实现为 gRPC 请求提供服务所需的核心逻辑，并位于 keeper/grpc_query.go 文件中。</li>
-</ul>
-<h6 id="gRPC-gateway-REST-Endpoints"><a href="#gRPC-gateway-REST-Endpoints" class="headerlink" title="gRPC-gateway REST Endpoints"></a>gRPC-gateway REST Endpoints</h6><p>某些外部客户端可能不希望使用 gRPC。在这种情况下，Cosmos SDK 提供 gRPC 网关服务，该服务将每个 gRPC 服务公开为相应的 REST 终结点。请参考 grpc 网关文档以了解更多信息。</p>
-<p>REST 终结点与 gRPC 服务一起在 Protobuf 文件中使用 Protobuf 注释进行定义。想要公开 REST 查询的模块应向其 rpc 方法添加 google.api.http 注释。默认情况下，SDK 中定义的所有 REST 终结点都有一个以前缀开头的 /cosmos/ URL。</p>
-<p>Cosmos SDK 还提供一个开发终结点，用于为这些 REST 终结点生成 Swagger 定义文件。可以在 app.toml 配置文件中的 api.swagger 密钥下启用此终结点。</p>
-<h5 id="应用程序接口"><a href="#应用程序接口" class="headerlink" title="应用程序接口"></a>应用程序接口</h5><p>接口允许最终用户与全节点客户端进行交互。这意味着从全节点查询数据或创建和发送新事务，由全节点中继并最终包含在块中。</p>
-<p>主界面是命令行界面。Cosmos SDK 应用程序的 CLI 是通过聚合应用程序使用的每个模块中定义的 CLI 命令来构建的。应用程序的 CLI 与守护程序相同（例如 appd ），并在名为 appd/main.go 的文件中定义。该文件包含：</p>
-<ul>
-<li>执行 main() 以构建 appd 接口客户端的函数。此函数准备每个命令，并在生成它们之前将它们添加到 中 rootCmd 。在 的 appd 根目录中，该函数添加了通用命令，如 status 、 、 config 查询命令、 keys tx 命令和 rest-server 。</li>
-<li>查询命令是通过调用 queryCmd 函数添加的。此函数返回一个 Cobra 命令，其中包含在每个应用程序的模块中定义的查询命令（作为从 sdk.ModuleClients main() 函数的数组传递），以及其他一些较低级别的查询命令，例如块或验证程序查询。查询命令是使用 CLI 的命令 appd query [query] 调用的。</li>
-<li>事务命令是通过调用 txCmd 函数添加的。与 类似 queryCmd ，该函数返回一个 Cobra 命令，其中包含应用程序每个模块中定义的 tx 命令，以及较低级别的 tx 命令，如事务签名或广播。使用 CLI 的命令调用 Tx 命令 appd tx [tx] 。</li>
-</ul>
-<p>从 Cosmos 中心查看应用程序的主命令行文件的示例</p>
-<h5 id="依赖项和生成文件"><a href="#依赖项和生成文件" class="headerlink" title="依赖项和生成文件"></a>依赖项和生成文件</h5><p>中 go-grpc v1.34.0 引入的修补程序使 gRPC 与 gogoproto 库不兼容，使某些 gRPC 查询死机。因此，Cosmos SDK 要求 go-grpc &lt;=v1.33.2 在 go.mod .</p>
-<p>若要确保 gRPC 正常工作，强烈建议在应用程序的 中添加 go.mod 以下行：</p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replace google.golang.org/grpc =&gt; google.golang.org/grpc v1.33.2</span><br></pre></td></tr></table></figure>
-<p>有关详细信息，请参阅问题 #8392。</p>
-<p>此部分是可选的，因为开发人员可以自由选择其依赖项管理器和项目构建方法。也就是说，目前最常用的版本控制框架是 go.mod 。它确保整个应用程序中使用的每个库都以正确的版本导入。</p>
-<p>下面提供了 宇宙集线器 go.mod 作为示例。</p>
-<p>为了构建应用程序，通常使用生成文件。生成文件主要确保在构建应用程序的两个入口点之前运行 ， go.mod appd 并且 appd .</p>
-<p>下面是 Cosmos Hub Makefile 的示例。</p>
-<h3 id="交易生命周期"><a href="#交易生命周期" class="headerlink" title="交易生命周期"></a>交易生命周期</h3><blockquote>
-<p>本文档介绍事务从创建到提交状态更改的生命周期。事务定义在不同的文档中进行了描述。该事务将称为 Tx 。</p>
-</blockquote>
-<h4 id="Creation"><a href="#Creation" class="headerlink" title="Creation"></a>Creation</h4><h4 id="交易创建"><a href="#交易创建" class="headerlink" title="交易创建"></a>交易创建</h4><p>主要的应用程序界面之一是命令行界面。用户可以从命令行输入以下格式的命令来创建事务，在 中提供事务 Tx 类型 [command] 、参数 [args] 和配置 [flags] ，例如 中的 gas 价格：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[appname] tx [command] [args] [flags]</span><br></pre></td></tr></table></figure>
-<p>此命令将自动创建事务，使用帐户的私钥对其进行签名，并将其广播到指定的对等节点。</p>
-<p>有几个用于事务创建的必需标志和可选标志。该 —from 标志指定交易源自哪个帐户。例如，如果交易是发送硬币，则资金将从指定的 from 地址提取。</p>
-<h5 id="Gas-and-Fees"><a href="#Gas-and-Fees" class="headerlink" title="Gas and Fees"></a>Gas and Fees</h5><p>此外，用户可以使用几个标志来表明他们愿意支付多少费用：</p>
-<ul>
-<li>—gas 指代表计算资源的气体 Tx 消耗量。Gas 取决于交易，在执行之前不会精确计算，但可以通过提供 auto 的值 —gas 来估计。</li>
-<li>—gas-adjustment （可选）可用于纵向扩展 gas 以避免低估。例如，用户可以将其气体调整指定为 1.5，以使用估计气体的 1.5 倍。</li>
-<li>—gas-prices 指定用户愿意为每单位 gas 支付多少费用，可以是一个或多个面额的代币。例如， —gas-prices=0.025uatom, 0.025upho 表示用户愿意为每单位气体支付0.025uatom和0.025upho。</li>
-<li>—fees 指定用户愿意支付的总费用。</li>
-<li>—timeout-height 指定块超时高度以防止 TX 提交超过特定高度。</li>
-</ul>
-<p>所支付费用的最终价值等于天然气乘以天然气价格。换句话说， fees = ceil(gas * gasPrices) .因此，由于可以使用gas价格计算费用，反之亦然，因此用户仅指定两者之一。</p>
-<p>之后，验证者通过将给定或计算 gas-prices 的与其本地 min-gas-prices 进行比较来决定是否将交易包含在他们的区块中。 Tx 如果它 gas-prices 不够高，就会被拒绝，因此用户被激励支付更多费用。</p>
-<h5 id="CLI示例"><a href="#CLI示例" class="headerlink" title="CLI示例"></a>CLI示例</h5><p>应用程序 app 用户可以在其 CLI 中输入以下命令以生成事务以将 1000uatom 从 a senderAddress 发送到 recipientAddress .它规定了他们愿意支付多少天然气：自动估计放大 1.5 倍，天然气价格为每单位天然气 0.025uatom。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appd tx send &lt;recipientAddress&gt; 1000uatom --from &lt;senderAddress&gt; --gas auto --gas-adjustment 1.5 --gas-prices 0.025uatom</span><br></pre></td></tr></table></figure>
-<h5 id="其他交易创建方法"><a href="#其他交易创建方法" class="headerlink" title="其他交易创建方法"></a>其他交易创建方法</h5><p>命令行是与应用程序交互的简单方法，但也 Tx 可以使用 gRPC 或 REST 接口或应用程序开发人员定义的其他入口点创建。从用户的角度来看，交互取决于他们正在使用的 Web 界面或钱包（例如，使用 Lunie.io 创建 Tx 并使用 Ledger Nano S 对其进行签名）。</p>
-<h4 id="内存池的补充"><a href="#内存池的补充" class="headerlink" title="内存池的补充"></a>内存池的补充</h4><p>每个接收 的 Tx 全节点（运行 Tendermint）都会向应用层发送 ABCI 消息 以 CheckTx 检查有效性，并收到 abci.ResponseCheckTx .如果 Tx 通过检查，它将被保存在节点的内存池中，内存中每个节点唯一的事务池，等待包含在块中 - 如果发现它无效，诚实节点将被丢弃 Tx 。在达成共识之前，节点会不断检查传入的交易并将其八卦给对等方。</p>
-<h4 id="Types-of-Checks"><a href="#Types-of-Checks" class="headerlink" title="Types of Checks"></a>Types of Checks</h4><p>全节点在 Tx 期间 CheckTx 执行无状态，然后执行有状态检查，目的是尽早识别和拒绝无效事务，以避免浪费计算。</p>
-<p>无状态检查不需要节点访问状态 - 轻客户端或脱机节点可以执行此操作 - 因此计算成本较低。无状态检查包括确保地址不为空、强制实施非负数以及定义中指定的其他逻辑。</p>
-<p>有状态检查根据提交状态验证事务和消息。示例包括检查相关值是否存在并且可以进行交易，地址是否有足够的资金，以及发件人是否获得授权或具有正确的所有权进行交易。在任何给定时刻，全节点通常具有用于不同目的的应用程序内部状态的多个版本。例如，节点将在验证事务的过程中执行状态更改，但仍需要上次提交状态的副本才能回答查询 - 它们不应使用未提交更改的状态进行响应。</p>
-<p>为了验证一个 Tx ，全节点调用 CheckTx ，其中包括无状态和有状态检查。进一步的验证将在 DeliverTx 阶段的后面进行。 CheckTx 经历了几个步骤，从 解码 Tx .</p>
-<h4 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h4><p>当应用程序从底层共识引擎（例如 Tendermint）接收到时 Tx ，它仍然处于编码 []byte 形式，需要解组才能进行处理。然后，调用该函数以在 runTxModeCheck 模式下运行，这意味着该 runTx 函数将运行所有检查，但在执行消息和写入状态更改之前退出。</p>
-<h4 id="验证基本"><a href="#验证基本" class="headerlink" title="验证基本"></a>验证基本</h4><p>消息 （ ） 是从事务 （ sdk.Msg ） 中提取的 Tx 。模块开发人员实现的 sdk.Msg 接口 ValidateBasic 方法针对每个事务运行。为了丢弃明显无效的消息，该 BaseApp 类型在 和 CheckTx DeliverTx 事务中的消息处理中很早就调用该方法 ValidateBasic 。 ValidateBasic 只能包括无状态检查（不需要访问状态的检查）。</p>
-<p>执行时 ValidateBasic 不收取 gas，因此我们建议仅执行所有必要的无状态检查以启用中间件操作（例如，解析所需的签名者帐户以通过中间件验证签名）和不影响 CheckTx 阶段性能的无状态健全性检查。处理模块消息服务器中的消息时，必须执行其他验证操作。</p>
-<p>例如，如果消息是将硬币从一个地址发送到另一个地址，则可能会检查非空地址和非负硬币金额， ValidateBasic 但不需要知道诸如地址的帐户余额之类的状态。</p>
-<p>另请参阅<a target="_blank" rel="noopener" href="https://docs.cosmos.network/v0.46/building-modules/msg-services.html#Validation">消息服务验证</a>。  </p>
-<h4 id="AnteHandler"><a href="#AnteHandler" class="headerlink" title="AnteHandler"></a>AnteHandler</h4><p>在验证基本检查之后，将运行 AnteHandler s。从技术上讲，它们是可选的，但在实践中，它们经常用于执行签名验证、gas计算、费用扣除和其他与区块链交易相关的核心操作。</p>
-<p>缓存上下文的副本将提供给 ， AnteHandler 后者执行为事务类型指定的有限检查。使用副本允许 在不 AnteHandler Tx 修改上次提交状态的情况下执行有状态检查，并在执行失败时恢复为原始状态。</p>
-<p>例如，该 auth 模块 AnteHandler 检查并递增序列号，检查签名和帐号，并从事务的第一个签名者那里扣除费用 - 所有状态更改都使用 . checkState</p>
-<h4 id="Gas"><a href="#Gas" class="headerlink" title="Gas"></a>Gas</h4><p>初始化 Context ，它保留 将 GasMeter 跟踪在执行 Tx 期间使用了多少气体。用户 Tx 提供的气体量称为 GasWanted 。如果执行期间消耗的 gas 量超过 GasWanted ，执行 GasConsumed 将停止，并且不会提交对状态的缓存副本所做的更改。否则， CheckTx 设置为 GasUsed 等于 GasConsumed 并在结果中返回它。在计算gas和费用值后，验证器节点检查用户指定的 gas-prices 值是否大于其本地定义的 min-gas-prices 。</p>
-<h4 id="丢弃或添加到内存池"><a href="#丢弃或添加到内存池" class="headerlink" title="丢弃或添加到内存池"></a>丢弃或添加到内存池</h4><p>如果在 Tx 失败期间 CheckTx 的任何时候，它将被丢弃，事务生命周期就此结束。否则，如果它成功通过 CheckTx ，默认协议是将其中继到对等节点并将其添加到内存池中，以便成为 Tx 包含在下一个块中的候选者。</p>
-<p>内存池用于跟踪所有全节点看到的交易。全节点保留它们看到的最后 mempool.cache_size 事务的内存池缓存，作为防止重放攻击的第一道防线。理想情况下，它足够大， mempool.cache_size 可以包含整个内存池中的所有事务。如果内存池缓存太小而无法跟踪所有事务， CheckTx 则负责识别和拒绝重放的事务。</p>
-<p>目前现有的预防措施包括费用和 sequence （随机数）计数器，以区分重放交易和相同但有效的交易。如果攻击者试图向节点发送垃圾邮件，其中包含许多副本，保留内存池缓存的完整节点将拒绝相同的副本 Tx CheckTx ，而不是在所有副本上运行。即使副本数量增加了 sequence ，攻击者也因需要付费而失去动力。</p>
-<p>验证者节点保留一个内存池以防止重放攻击，就像全节点一样，但也将其用作未确认交易池以准备区块包含。请注意，即使 a Tx 在此阶段通过了所有检查，以后仍然有可能被发现无效，因为 CheckTx 没有完全验证事务（即它实际上没有执行消息）。</p>
-<h4 id="包含在块中"><a href="#包含在块中" class="headerlink" title="包含在块中"></a>包含在块中</h4><p>共识是验证者节点就接受哪些交易达成一致的过程，是分轮进行的。每一轮都以提议者创建一个最新交易块开始，以验证者结束，验证者是负责共识的具有投票权的特殊全节点，同意接受该区块或改用 nil 区块。验证人节点执行共识算法，例如Tendermint BFT，使用ABCI请求向应用程序确认交易，以便达成本协议。</p>
-<p>共识的第一步是区块提案。验证者中的一个提议者由共识算法选择来创建和提议一个区块 - 为了包含 a Tx ，它必须位于该提议者的内存池中。</p>
-<h4 id="状态更改"><a href="#状态更改" class="headerlink" title="状态更改"></a>状态更改</h4><p>共识的下一步是执行交易以完全验证它们。所有从正确的提议者那里收到区块提案的全节点都通过调用 ABCI 函数 BeginBlock 来执行事务， DeliverTx 对于每个事务，以及 EndBlock 。虽然每个完整节点在本地运行所有内容，但此过程会产生一个单一的、明确的结果，因为消息的状态转换是确定性的，并且事务在区块提案中显式排序。</p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">-----------------------</span><br><span class="line">|Receive Block Proposal|</span><br><span class="line">-----------------------</span><br><span class="line">          |</span><br><span class="line">	  v</span><br><span class="line">-----------------------</span><br><span class="line">| BeginBlock	      |</span><br><span class="line">-----------------------</span><br><span class="line">          |</span><br><span class="line">	  v</span><br><span class="line">-----------------------</span><br><span class="line">| DeliverTx(tx0)      |</span><br><span class="line">| DeliverTx(tx1)      |</span><br><span class="line">| DeliverTx(tx2)      |</span><br><span class="line">| DeliverTx(tx3)      |</span><br><span class="line">|   .                 |</span><br><span class="line">|   .                 |</span><br><span class="line">|   .                 |</span><br><span class="line">-----------------------</span><br><span class="line">          |</span><br><span class="line">	  v</span><br><span class="line">-----------------------</span><br><span class="line">| EndBlock	      |</span><br><span class="line">-----------------------</span><br><span class="line">          |</span><br><span class="line">	  v</span><br><span class="line">-----------------------</span><br><span class="line">| Consensus	      |</span><br><span class="line">-----------------------</span><br><span class="line">          |</span><br><span class="line">	  v</span><br><span class="line">-----------------------</span><br><span class="line">| Commit	      |</span><br><span class="line">-----------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="DeliverTx"><a href="#DeliverTx" class="headerlink" title="DeliverTx"></a>DeliverTx</h4><p>中 BaseApp 定义的 DeliverTx ABCI函数执行大部分状态转换：它按照共识期间提交的顺序为区块中的每个事务运行。在引擎盖下， DeliverTx 几乎与 CheckTx 但在传递模式而不是检查模式下调用 runTx 函数。代替使用它们的 checkState ，全节点使用 deliverState ：</p>
-<ul>
-<li>解码：由于是ABCI调用， Tx 因此 DeliverTx 以编码 []byte 形式接收。节点首先使用应用程序中定义的解 TxConfig 组事务，然后调用 runTx ，这与 非常相似 runTxModeDeliver CheckTx ，但也执行和写入状态更改。</li>
-<li>检查和前置处理程序：全节点调用并 AnteHandler 再次调用 validateBasicMsgs 。进行第二次检查是因为他们在添加到内存池阶段可能没有看到相同的交易，并且恶意提议者可能包含无效的交易。这里的一个区别是 不会 AnteHandler gas-prices 与节点进行比较， min-gas-prices 因为该值是每个节点的本地值 - 节点之间的不同值将产生不确定的结果。</li>
-<li>MsgServiceRouter ：虽然会退出， DeliverTx 但 CheckTx 继续运行 runMsgs 以完全执行事务 Msg 中的每个内容。由于事务可能有来自不同模块的消息， BaseApp 因此需要知道哪个模块可以找到合适的处理程序。这是使用 BaseApp ‘s 实现的， MsgServiceRouter 以便它可以由模块的 Protobuf Msg 服务处理。对于 LegacyMsg 路由，通过模块管理器调用该 Route 函数以检索路由名称并查找模块中的旧版 Handler 。</li>
-<li>Msg 服务：Protobuf Msg 服务负责执行 中的 Tx 每条消息，并使状态转换保留在 deliverTxState 中。</li>
-<li>后处理程序： PostHandler 在消息执行后运行。如果它们失败，则 的状态更改以及 的状态 runMsgs PostHandlers 更改都将还原。</li>
-<li>gas：在交付 a 时，a Tx GasMeter 用于跟踪正在使用的气体量;如果执行完成， GasUsed 则在 中设置并返回 abci.ResponseDeliverTx 。如果执行因或已用完或其他问题而 BlockGasMeter 停止，则最后的延迟函数会适当地出错或 GasMeter 死机。</li>
-</ul>
-<p>如果由于无效或 GasMeter 用完而导致 Tx 任何失败的状态更改，事务处理将终止，并且任何状态更改都将还原。区块提案中的无效交易会导致验证者节点拒绝该区块并投票支持 nil 区块。</p>
-<h4 id="commit"><a href="#commit" class="headerlink" title="commit"></a>commit</h4><p>最后一步是节点提交块和状态更改。验证器节点执行执行状态转换的上一步以验证交易，然后对区块进行签名以确认交易。不是验证者的完整节点不参与共识 - 即它们不能投票 - 但会倾听投票以了解它们是否应该提交状态更改。</p>
-<p>当它们收到足够的验证者投票（2/3+预提交由投票权加权）时，全节点会提交到要添加到区块链中的新区块，并在应用层中完成状态转换。将生成一个新的状态根，作为状态转换的默克尔证明。应用程序使用从 Baseapp 继承的 Commit ABCI 方法;它通过将 写入 deliverState 应用程序的内部状态来同步所有状态转换。提交状态更改后， checkState 请从最近提交的状态重新开始并重置为 nil ，以便保持一致并 deliverState 反映更改。</p>
-<p>请注意，并非所有区块都有相同数量的交易，共识可能会产生一个区块或一个 nil 根本没有的区块。在公共区块链网络中，验证者也可能是拜占庭式的，或者是恶意的，这可能会阻止在区块链中提交。 Tx 可能的恶意行为包括提议者决定通过将其排除在区块之外来审查 a Tx 或验证者投票反对该区块。</p>
-<p>至此，事务 Tx 生命周期结束：节点已验证其有效性，通过执行其状态更改来交付它，并提交这些更改。本身 Tx 在形式上 []byte 存储在一个块中并附加到区块链中。</p>
-<h3 id="查询生命周期"><a href="#查询生命周期" class="headerlink" title="查询生命周期"></a>查询生命周期</h3><blockquote>
-<p>本文档介绍 Cosmos SDK 应用程序中查询的生命周期，从用户界面到应用程序存储，然后再返回。</p>
-</blockquote>
-<h4 id="查询创建"><a href="#查询创建" class="headerlink" title="查询创建"></a>查询创建</h4><p>查询是应用程序的最终用户通过接口发出并由全节点处理的信息请求。用户可以直接从应用程序的存储或模块查询有关网络、应用程序本身和应用程序状态的信息。请注意，查询与事务不同（在此处查看生命周期），特别是因为它们不需要处理共识（因为它们不会触发状态转换）;它们可以完全由一个全节点处理。</p>
-<p>为了解释查询生命周期，假设 MyQuery 正在请求由应用程序中 simapp 的某个委托人地址进行的委派列表，称为 。正如预期的那样，该 staking 模块处理此查询。但首先，用户可以创建几种方法 MyQuery 。</p>
-<h4 id="CLI"><a href="#CLI" class="headerlink" title="CLI"></a>CLI</h4><p>应用程序的主界面是命令行界面。用户连接到全节点并直接从其计算机运行 CLI - CLI 直接与全节点交互。要从其终端创建 MyQuery ，用户请键入以下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">simd query staking delegations &lt;delegatorAddress&gt;</span><br></pre></td></tr></table></figure>
-<p>此查询命令由 staking 模块开发人员定义，并由应用程序开发人员在创建 CLI 时添加到子命令列表中。</p>
-<p>请注意，一般格式如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">simd query [moduleName] [<span class="built_in">command</span>] &lt;arguments&gt; --flag &lt;flagArg&gt;</span><br></pre></td></tr></table></figure>
-<p>要提供诸如 —node （CLI 连接到的完整节点）之类的值，用户可以使用 app.toml 配置文件来设置它们或将它们作为标志提供。</p>
-<p>CLI 理解一组特定的命令，这些命令由应用程序开发人员以分层结构定义：从根命令 （ ）、命令类型 （ simd Myquery ）、包含命令的模块 （ staking ） 和命令本身 （ delegations ）。因此，CLI 确切地知道哪个模块处理此命令并直接将调用传递到那里。</p>
-<p>用户可以通过其进行查询的另一个接口是对 gRPC 服务器的 gRPC 请求。端点被定义为文件中的 .proto 协议缓冲区服务方法，用Protobuf自己的语言无关的接口定义语言（IDL）编写。Protobuf生态系统开发了从文件生成 *.proto 各种语言的代码的工具。这些工具允许轻松构建 gRPC 客户端。</p>
-<p>一个这样的工具是 grpcurl，使用此客户端的 MyQuery gRPC 请求如下所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">grpcurl \</span><br><span class="line">    -plaintext                                           <span class="comment"># We want results in plain test</span></span><br><span class="line">    -import-path ./proto \                               <span class="comment"># Import these .proto files</span></span><br><span class="line">    -proto ./proto/cosmos/staking/v1beta1/query.proto \  <span class="comment"># Look into this .proto file for the Query protobuf service</span></span><br><span class="line">    -d <span class="string">&#x27;&#123;&quot;address&quot;:&quot;$MY_DELEGATOR&quot;&#125;&#x27;</span> \                   <span class="comment"># Query arguments</span></span><br><span class="line">    localhost:9090 \                                     <span class="comment"># gRPC server endpoint</span></span><br><span class="line">    cosmos.staking.v1beta1.Query/Delegations             <span class="comment"># Fully-qualified service method name</span></span><br></pre></td></tr></table></figure>
-<h4 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h4><p>用户可以通过另一个接口进行查询是通过对 REST 服务器的 HTTP 请求。REST 服务器是使用 gRPC 网关从 Protobuf 服务完全自动生成的。</p>
-<p>示例 HTTP MyQuery 请求如下所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET http://localhost:1317/cosmos/staking/v1beta1/delegators/&#123;delegatorAddr&#125;/delegations</span><br></pre></td></tr></table></figure>
-<h4 id="CLI-如何处理查询"><a href="#CLI-如何处理查询" class="headerlink" title="CLI 如何处理查询"></a>CLI 如何处理查询</h4><p>上面的示例显示了外部用户如何通过查询节点的状态来与节点进行交互。为了更详细地了解查询的确切生命周期，让我们深入了解 CLI 如何准备查询，以及节点如何处理查询。从用户的角度来看，交互略有不同，但基础功能几乎相同，因为它们是模块开发人员定义的相同命令的实现。这一步处理发生在 CLI、gRPC 或 REST 服务器中，并且严重涉及 client.Context .</p>
-<h4 id="context"><a href="#context" class="headerlink" title="context"></a>context</h4><p>在执行 CLI 命令时创建的第一件事是 client.Context .A client.Context 是一个对象，用于存储用户端处理请求所需的所有数据。具体而言，a client.Context 存储以下内容：</p>
-<ul>
-<li>编解码器：应用程序使用的编码器/解码器，用于在发出 Tendermint RPC 请求之前封送参数和查询，并将返回的响应取消封送为 JSON 对象。CLI 使用的默认编解码器是 Protobuf。</li>
-<li>帐户解码器： auth 模块中的帐户解码器，用于转换为 []byte 帐户。</li>
-<li>RPC 客户端：请求将中继到的 Tendermint RPC 客户端或节点。</li>
-<li>密钥环：用于使用密钥签署事务和处理其他操作的密钥管理器。</li>
-<li>输出编写器：用于输出响应的编写器。</li>
-<li>配置：用户为此命令配置的标志，包括 ，指定 —height 要查询的区块链的高度，以及 —indent ，指示向 JSON 响应添加缩进。</li>
-</ul>
-<p>它还 client.Context 包含各种函数，例如 Query() 检索 RPC 客户端并进行 ABCI 调用以将查询中继到全节点。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Context implements a typical context created in SDK modules for transaction</span></span><br><span class="line"><span class="comment">// handling and queries.</span></span><br><span class="line"><span class="keyword">type</span> Context <span class="keyword">struct</span> &#123;</span><br><span class="line">	FromAddress       sdk.AccAddress</span><br><span class="line">	Client            rpcclient.Client</span><br><span class="line">	GRPCClient        *grpc.ClientConn</span><br><span class="line">	ChainID           <span class="type">string</span></span><br><span class="line">	Codec             codec.Codec</span><br><span class="line">	InterfaceRegistry codectypes.InterfaceRegistry</span><br><span class="line">	Input             io.Reader</span><br><span class="line">	Keyring           keyring.Keyring</span><br><span class="line">	KeyringOptions    []keyring.Option</span><br><span class="line">	Output            io.Writer</span><br><span class="line">	OutputFormat      <span class="type">string</span></span><br><span class="line">	Height            <span class="type">int64</span></span><br><span class="line">	HomeDir           <span class="type">string</span></span><br><span class="line">	KeyringDir        <span class="type">string</span></span><br><span class="line">	From              <span class="type">string</span></span><br><span class="line">	BroadcastMode     <span class="type">string</span></span><br><span class="line">	FromName          <span class="type">string</span></span><br><span class="line">	SignModeStr       <span class="type">string</span></span><br><span class="line">	UseLedger         <span class="type">bool</span></span><br><span class="line">	Simulate          <span class="type">bool</span></span><br><span class="line">	GenerateOnly      <span class="type">bool</span></span><br><span class="line">	Offline           <span class="type">bool</span></span><br><span class="line">	SkipConfirm       <span class="type">bool</span></span><br><span class="line">	TxConfig          TxConfig</span><br><span class="line">	AccountRetriever  AccountRetriever</span><br><span class="line">	NodeURI           <span class="type">string</span></span><br><span class="line">	FeePayer          sdk.AccAddress</span><br><span class="line">	FeeGranter        sdk.AccAddress</span><br><span class="line">	Viper             *viper.Viper</span><br><span class="line"></span><br><span class="line">	<span class="comment">// IsAux is true when the signer is an auxiliary signer (e.g. the tipper).</span></span><br><span class="line">	IsAux <span class="type">bool</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// <span class="doctag">TODO:</span> Deprecated (remove).</span></span><br><span class="line">	LegacyAmino *codec.LegacyAmino</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>的主要 client.Context 作用是存储与最终用户交互期间使用的数据，并提供与此数据交互的方法 - 它在全节点处理查询之前和之后使用。具体来说，在处理 MyQuery 中，用于 client.Context 对查询参数进行编码、检索全节点和写入输出。在中继到全节点之前，需要将查询编码为表单 []byte ，因为全节点与应用程序无关，并且不理解特定类型。全节点（RPC 客户端）本身使用 检索 client.Context ，该 知道用户 CLI 连接到哪个节点。查询将中继到此完整节点进行处理。最后，在 client.Context 返回响应时包含要 Writer 写入的输出。这些步骤将在后面的部分中进一步描述。</p>
-<h4 id="参数和路由创建"><a href="#参数和路由创建" class="headerlink" title="参数和路由创建"></a>参数和路由创建</h4><p>在生命周期的这一点上，用户已创建一个 CLI 命令，其中包含他们希望包含在查询中的所有数据。A client.Context 的存在是为了协助 MyQuery 的其余旅程。现在，下一步是解析命令或请求，提取参数，并对所有内容进行编码。这些步骤都发生在用户端的界面中，他们正在与之交互。</p>
-<h5 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h5><p>在我们的例子中（查询地址的委托）， MyQuery 包含一个地址 delegatorAddress 作为其唯一的参数。但是，请求只能包含 []byte s，因为它将被中继到一个全节点的共识引擎（例如Tendermint Core），该引擎对应用程序类型没有固有的知识。因此， codec of client.Context 用于封送地址。</p>
-<p>下面是 CLI 命令的代码外观：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">delAddr, err := sdk.AccAddressFromBech32(args[<span class="number">0</span>])</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="gRPC-查询客户端创建"><a href="#gRPC-查询客户端创建" class="headerlink" title="gRPC 查询客户端创建"></a>gRPC 查询客户端创建</h5><p>Cosmos SDK 利用从 Protobuf 服务生成的代码进行查询。模块 staking 的服务 MyQuery 生成一个 queryClient ，CLI 将使用该 进行查询。以下是相关代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">clientCtx, err := client.GetClientQueryContext(cmd)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br><span class="line">queryClient := types.NewQueryClient(clientCtx)</span><br><span class="line"></span><br><span class="line">delAddr, err := sdk.AccAddressFromBech32(args[<span class="number">0</span>])</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">pageReq, err := client.ReadPageRequest(cmd.Flags())</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">params := &amp;types.QueryDelegatorDelegationsRequest&#123;</span><br><span class="line">	DelegatorAddr: delAddr.String(),</span><br><span class="line">	Pagination:    pageReq,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">res, err := queryClient.DelegatorDelegations(cmd.Context(), params)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>在引擎盖下，有一个 client.Context Query() 函数用于检索预配置的节点并向其中继查询;该函数将查询完全限定的服务方法名称作为路径（在本例中为：）， /cosmos.staking.v1beta1.Query/Delegations 并将参数作为参数。它首先检索用户配置的 RPC 客户端（称为节点）以将此查询中继到，并创建 ABCIQueryOptions （为 ABCI 调用格式化的参数）。然后使用该节点进行 ABCI 调用 。 ABCIQueryWithOptions()</p>
-<p>代码如下所示：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(ctx Context)</span></span> queryABCI(req abci.RequestQuery) (abci.ResponseQuery, <span class="type">error</span>) &#123;</span><br><span class="line">	node, err := ctx.GetNode()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> abci.ResponseQuery&#123;&#125;, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> queryHeight <span class="type">int64</span></span><br><span class="line">	<span class="keyword">if</span> req.Height != <span class="number">0</span> &#123;</span><br><span class="line">		queryHeight = req.Height</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// fallback on the context height</span></span><br><span class="line">		queryHeight = ctx.Height</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	opts := rpcclient.ABCIQueryOptions&#123;</span><br><span class="line">		Height: queryHeight,</span><br><span class="line">		Prove:  req.Prove,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	result, err := node.ABCIQueryWithOptions(context.Background(), req.Path, req.Data, opts)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> abci.ResponseQuery&#123;&#125;, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> !result.Response.IsOK() &#123;</span><br><span class="line">		<span class="keyword">return</span> abci.ResponseQuery&#123;&#125;, sdkErrorToGRPCError(result.Response)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// data from trusted node or subspace query doesn&#x27;t need verification</span></span><br><span class="line">	<span class="keyword">if</span> !opts.Prove || !isQueryStoreWithProof(req.Path) &#123;</span><br><span class="line">		<span class="keyword">return</span> result.Response, <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> result.Response, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h5><p>通过对 的 ABCIQueryWithOptions() MyQuery 调用，由全节点接收，然后该全节点将处理请求。请注意，虽然 RPC 是针对全节点的共识引擎（例如 Tendermint Core）进行的，但查询不是共识的一部分，也不会广播到网络的其余部分，因为它们不需要网络需要同意的任何内容。</p>
-<p>在Tendermint文档中阅读有关ABCI Client和Tendermint RPC的更多信息。</p>
-<h5 id="应用程序查询处理"><a href="#应用程序查询处理" class="headerlink" title="应用程序查询处理"></a>应用程序查询处理</h5><p>当一个查询在从底层共识引擎中继后被全节点接收到时，它现在正在一个理解特定于应用程序的类型并具有状态副本的环境中处理。 baseapp 实现 ABCI Query() 函数并处理 gRPC 查询。解析查询路由，它匹配现有服务方法的完全限定服务方法名称（最有可能在其中一个模块中），然后将 baseapp 请求中继到相关模块。</p>
-<p>除了 gRPC 路由外， baseapp 还处理四种不同类型的查询： app 、 p2p 、 store 和 custom 。前三种类型（ app store 、、 p2p ）是纯粹的应用程序级，因此直接由 baseapp 或 存储处理，但查询类型需要 baseapp 将查询路由到模块的旧 custom 查询器。要了解有关这些查询的更多信息，请参阅本指南。</p>
-<p>由于具有来自 staking 模块的 Protobuf 完全限定的服务方法名称（召回）， /cosmos.staking.v1beta1.Query/Delegations baseapp 因此 MyQuery 首先分析路径，然后使用其自己的内部 GRPCQueryRouter 检索相应的 gRPC 处理程序，并将查询路由到模块。gRPC 处理程序负责识别此查询、从应用程序的存储中检索适当的值并返回响应。在此处阅读有关查询服务的更多信息。</p>
-<p>从查询器收到结果后， baseapp 开始向用户返回响应的过程。</p>
-<h5 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h5><p>由于是 ABCI 函数，因此 Query() 将 baseapp 响应作为 abci.ResponseQuery 类型返回。例程接收 client.Context Query() 响应和。</p>
-<h5 id="CLI-Response"><a href="#CLI-Response" class="headerlink" title="CLI Response"></a>CLI Response</h5><p>该应用程序 codec 用于取消封送对 JSON 的响应，并将输出 client.Context 打印到命令行，应用任何配置，例如输出类型（文本、JSON 或 YAML）。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(ctx Context)</span></span> printOutput(out []<span class="type">byte</span>) <span class="type">error</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> err <span class="type">error</span></span><br><span class="line">	<span class="keyword">if</span> ctx.OutputFormat == <span class="string">&quot;text&quot;</span> &#123;</span><br><span class="line">		out, err = yaml.JSONToYAML(out)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> err</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	writer := ctx.Output</span><br><span class="line">	<span class="keyword">if</span> writer == <span class="literal">nil</span> &#123;</span><br><span class="line">		writer = os.Stdout</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	_, err = writer.Write(out)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ctx.OutputFormat != <span class="string">&quot;text&quot;</span> &#123;</span><br><span class="line">		<span class="comment">// append new-line for formats besides YAML</span></span><br><span class="line">		_, err = writer.Write([]<span class="type">byte</span>(<span class="string">&quot;\n&quot;</span>))</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> err</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这是一个包装！查询结果由 CLI 输出到控制台。</p>
-<h3 id="账号"><a href="#账号" class="headerlink" title="账号"></a>账号</h3><blockquote>
-<p>本文档介绍 Cosmos SDK 的内置帐户和公钥系统。</p>
-</blockquote>
-<h4 id="账号定义"><a href="#账号定义" class="headerlink" title="账号定义"></a>账号定义</h4><p>在 Cosmos SDK 中，帐户指定一对公钥 PubKey 和私钥 PrivKey 。 PubKey 可以派生生成各种 Addresses ，用于识别应用程序中的用户（以及其他各方）。 Addresses 还与 message s 相关联，以标识 的 message 发送方。该 PrivKey 用于生成数字签名以证明 Address 与给定 message 的 PrivKey 批准相关联的.</p>
-<p>对于HD密钥派生，Cosmos SDK使用称为BIP32的标准。BIP32允许用户创建一个HD钱包（如BIP44中指定） - 一组从初始秘密种子派生的帐户。种子通常由 12 或 24 个单词的助记符创建。单个种子可以使用单向加密函数派生任意数量的 PrivKey s。然后， PubKey 可以从 . PrivKey 当然，助记符是最敏感的信息，因为如果保留助记符，私钥总是可以重新生成。</p>
-<p>在 Cosmos SDK 中，密钥是使用名为 . Keyring</p>
-<h4 id="密钥、帐户、地址和签名"><a href="#密钥、帐户、地址和签名" class="headerlink" title="密钥、帐户、地址和签名"></a>密钥、帐户、地址和签名</h4><p>对用户进行身份验证的主要方法是使用数字签名完成的。用户使用自己的私钥签署交易。签名验证是使用关联的公钥完成的。出于链上签名验证的目的，我们将公钥存储在一个 Account 对象中（以及正确交易验证所需的其他数据）。</p>
-<p>在节点中，所有数据都使用协议缓冲区序列化进行存储。</p>
-<p>Cosmos SDK 支持以下用于创建数字签名的数字密钥方案：</p>
-<ul>
-<li>secp256k1 ，如在 Cosmos SDK crypto/keys/secp256k1 的包中实现的那样。</li>
-<li>secp256r1 ，如在 Cosmos SDK crypto/keys/secp256r1 的包中实现的那样，</li>
-<li>tm-ed25519 ，如在宇宙 SDK crypto/keys/ed25519 包中实现的那样。此方案仅支持共识验证。</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:left"></th>
-<th style="text-align:left">Address length in bytes</th>
-<th style="text-align:left">Public key length in bytes</th>
-<th style="text-align:left">Used for transaction authentication</th>
-<th style="text-align:left">Used for consensus (tendermint)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">secp256k1</td>
-<td style="text-align:left">20</td>
-<td style="text-align:left">33</td>
-<td style="text-align:left">yes</td>
-<td style="text-align:left">no</td>
-</tr>
-<tr>
-<td style="text-align:left">secp256r1</td>
-<td style="text-align:left">32</td>
-<td style="text-align:left">33</td>
-<td style="text-align:left">yes</td>
-<td style="text-align:left">no</td>
-</tr>
-<tr>
-<td style="text-align:left">tm-ed25519</td>
-<td style="text-align:left">—not used—</td>
-<td style="text-align:left">32</td>
-<td style="text-align:left">no</td>
-<td style="text-align:left">yes</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h4 id="地址"><a href="#地址" class="headerlink" title="地址"></a>地址</h4><p>Addresses 和 PubKey 都是标识应用程序中的参与者的公共信息。 Account 用于存储身份验证信息。基本帐户实现由 BaseAccount 对象提供。</p>
-<p>每个帐户都使用 Address 从公钥派生的字节序列进行标识。在 Cosmos SDK 中，我们定义了 3 种类型的地址，用于指定使用帐户的上下文：</p>
-<ul>
-<li>AccAddress 标识用户（发送 message 者）。</li>
-<li>ValAddress 识别验证器操作员。</li>
-<li>ConsAddress 识别参与共识的验证者节点。验证器节点是使用 ed25519 曲线推导的。</li>
-</ul>
-<p>这些类型实现接口： Address</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Address is a common interface for different types of addresses used by the SDK</span></span><br><span class="line"><span class="keyword">type</span> Address <span class="keyword">interface</span> &#123;</span><br><span class="line">	Equals(Address) <span class="type">bool</span></span><br><span class="line">	Empty() <span class="type">bool</span></span><br><span class="line">	Marshal() ([]<span class="type">byte</span>, <span class="type">error</span>)</span><br><span class="line">	MarshalJSON() ([]<span class="type">byte</span>, <span class="type">error</span>)</span><br><span class="line">	Bytes() []<span class="type">byte</span></span><br><span class="line">	String() <span class="type">string</span></span><br><span class="line">	Format(s fmt.State, verb <span class="type">rune</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Ensure that different address types implement the interface</span></span><br><span class="line"><span class="keyword">var</span> _ Address = AccAddress&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	_ Address = ValAddress&#123;&#125;</span><br><span class="line">	_ Address = ConsAddress&#123;&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>地址构造算法在 ADR-28 中定义。以下是从 pub 公钥获取帐户地址的标准方法：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sdk.AccAddress(pub.Address().Bytes())</span><br></pre></td></tr></table></figure>
-<p>值得注意的是， Marshal() and Bytes() 方法都返回相同的地址原始 []byte 形式。 Marshal() 是 Protobuf 兼容性所必需的。</p>
-<p>对于用户交互，地址使用 Bech32 格式化，并通过该方法 String 实现。Bech32 方法是与区块链交互时唯一支持的格式。Bech32 人类可读部分（Bech32 前缀）用于表示地址类型。例：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// String implements the Stringer interface.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(aa AccAddress)</span></span> String() <span class="type">string</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> aa.Empty() &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	key := conv.UnsafeBytesToStr(aa)</span><br><span class="line">	accAddrMu.Lock()</span><br><span class="line">	<span class="keyword">defer</span> accAddrMu.Unlock()</span><br><span class="line">	addr, ok := accAddrCache.Get(key)</span><br><span class="line">	<span class="keyword">if</span> ok &#123;</span><br><span class="line">		<span class="keyword">return</span> addr.(<span class="type">string</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> cacheBech32Addr(GetConfig().GetBech32AccountAddrPrefix(), aa, accAddrCache, key)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>bech32 前缀规律</p>
-<p>accounts: cosmos</p>
-<p>validator operator: cosmosvaloper</p>
-<p>consensus nodes: cosmosvalcons</p>
-<h4 id="共钥"><a href="#共钥" class="headerlink" title="共钥"></a>共钥</h4><p>Cosmos SDK 中的公钥由 cryptotypes.PubKey 接口定义。由于公钥保存在存储区中，因此扩展 cryptotypes.PubKey 了 proto.Message 接口：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PubKey defines a public key and extends proto.Message.</span></span><br><span class="line"><span class="keyword">type</span> PubKey <span class="keyword">interface</span> &#123;</span><br><span class="line">	proto.Message</span><br><span class="line"></span><br><span class="line">	Address() Address</span><br><span class="line">	Bytes() []<span class="type">byte</span></span><br><span class="line">	VerifySignature(msg []<span class="type">byte</span>, sig []<span class="type">byte</span>) <span class="type">bool</span></span><br><span class="line">	Equals(PubKey) <span class="type">bool</span></span><br><span class="line">	Type() <span class="type">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>压缩格式用于 secp256k1 和 secp256r1 序列化。</p>
-<ul>
-<li>如果 -坐标是与 y x -坐标关联的两个字节中字典顺序上最大的字节，则第一个字节是一个 0x02 字节。</li>
-<li>否则，第一个字节为 0x03 .</li>
-</ul>
-<p>此前缀后跟 x -coordinate。</p>
-<p>公钥不用于引用帐户（或用户），通常不会在撰写事务消息时使用（少数例外： MsgCreateValidator 和 Validator Multisig 消息）。对于用户交互， PubKey 使用 Protobufs JSON（ProtoMarshalJSON 函数）进行格式化。例：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// NewKeyOutput creates a default KeyOutput instance without Mnemonic, Threshold and PubKeys</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewKeyOutput</span><span class="params">(name <span class="type">string</span>, keyType KeyType, a sdk.Address, pk cryptotypes.PubKey)</span></span> (KeyOutput, <span class="type">error</span>) &#123; <span class="comment">// nolint:interfacer</span></span><br><span class="line">	apk, err := codectypes.NewAnyWithValue(pk)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> KeyOutput&#123;&#125;, err</span><br><span class="line">	&#125;</span><br><span class="line">	bz, err := codec.ProtoMarshalJSON(apk, <span class="literal">nil</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> KeyOutput&#123;&#125;, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> KeyOutput&#123;</span><br><span class="line">		Name:    name,</span><br><span class="line">		Type:    keyType.String(),</span><br><span class="line">		Address: a.String(),</span><br><span class="line">		PubKey:  <span class="type">string</span>(bz),</span><br><span class="line">	&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Keyring-钥匙圈"><a href="#Keyring-钥匙圈" class="headerlink" title="Keyring 钥匙圈"></a>Keyring 钥匙圈</h4><p>A Keyring 是存储和管理帐户的对象。在 Cosmos SDK 中，实现遵循 Keyring 以下 Keyring 接口：</p>
-<p>的默认 Keyring 实现来自第三方 99designs/keyring 库。</p>
-<p>关于 Keyring 方法的一些说明：</p>
-<ul>
-<li>Sign(uid string, msg []byte) ([]byte, types.PubKey, error) 严格处理 msg 字节的签名。您必须准备事务并将其编码为规范 []byte 形式。由于 protobuf 不是确定性的，因此在 ADR-020 中已确定要签名的规范 payload 是结构， SignDoc 使用 ADR-027 进行确定性编码。请注意，默认情况下，签名验证不会在 Cosmos SDK 中实现，它会延迟到 anteHandler .</li>
-<li>NewAccount(uid, mnemonic, bip39Passphrase, hdPath string, algo SignatureAlgo) (*Record, error) 基于 创建一个 bip44 path 新帐户并将其保留在磁盘上。永远不会 PrivKey 以未加密的方式存储，而是在持久保存之前使用密码进行加密。在此方法的上下文中，密钥类型和序列号是指 BIP44 派生路径的段（例如， 0 、、 1 2 、…），该段用于从助记符派生私钥和公钥。使用相同的助记符和派生路径，生成相同的 PrivKey 和 PubKey Address 。密钥环支持以下密钥：</li>
-<li>secp256k1</li>
-<li>ed25519</li>
-<li>ExportPrivKeyArmor(uid, encryptPassphrase string) (armor string, err error) 使用给定的密码以 ASCII 装甲加密格式导出私钥。然后，您可以使用该 ImportPrivKey(uid, armor, passphrase string) 函数将私钥再次导入密钥环，也可以使用该 UnarmorDecryptPrivKey(armorStr string, passphrase string) 函数将其解密为原始私钥。</li>
-</ul>
-<h3 id="gas和fees"><a href="#gas和fees" class="headerlink" title="gas和fees"></a>gas和fees</h3><blockquote>
-<p>本文档介绍在 Cosmos SDK 应用程序中处理气体和费用的默认策略。</p>
-</blockquote>
-<h4 id="导言-gas-amp-fees"><a href="#导言-gas-amp-fees" class="headerlink" title="导言 gas &amp; fees"></a>导言 gas &amp; fees</h4><p>在 Cosmos SDK 中，是一个特殊单元， gas 用于跟踪执行期间的资源消耗。 gas 通常在对存储进行读取和写入时使用，但如果需要执行昂贵的计算，也可以使用。它有两个主要目的：</p>
-<ul>
-<li>确保区块不会消耗太多资源，并且会最终确定。默认情况下，这是通过块燃气表在 Cosmos SDK 中实现的。</li>
-<li>防止来自最终用户的垃圾邮件和滥用行为。为此， gas 通常在执行期间 message 使用，从而产生 fee （ fees = gas * gas-prices ）。 fees 一般必须由寄件人支付 message 。请注意，Cosmos SDK 默认情况下不强制定价 gas ，因为可能还有其他方法可以防止垃圾邮件（例如带宽方案）。尽管如此，大多数应用程序仍将实施 fee 防止垃圾邮件的机制。这是通过 AnteHandler .</li>
-</ul>
-<h4 id="Gas-Meter"><a href="#Gas-Meter" class="headerlink" title="Gas Meter"></a>Gas Meter</h4><p>在 Cosmos SDK 中， gas 是 的 uint64 简单别名，由称为燃气表的对象管理。燃气表实现接口 GasMeter</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// GasMeter interface to track gas consumption</span></span><br><span class="line"><span class="keyword">type</span> GasMeter <span class="keyword">interface</span> &#123;</span><br><span class="line">	GasConsumed() Gas</span><br><span class="line">	GasConsumedToLimit() Gas</span><br><span class="line">	GasRemaining() Gas</span><br><span class="line">	Limit() Gas</span><br><span class="line">	ConsumeGas(amount Gas, descriptor <span class="type">string</span>)</span><br><span class="line">	RefundGas(amount Gas, descriptor <span class="type">string</span>)</span><br><span class="line">	IsPastLimit() <span class="type">bool</span></span><br><span class="line">	IsOutOfGas() <span class="type">bool</span></span><br><span class="line">	String() <span class="type">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>GasConsumed() 返回燃气表实例消耗的气体量。</li>
-<li>GasConsumedToLimit() 返回燃气表实例消耗的气体量，或达到限制（如果达到限制）。</li>
-<li>GasRemaining() 返回煤气表中剩余的气体。</li>
-<li>Limit() 返回燃气表实例的限制。 0 如果燃气表是无限大的。</li>
-<li>ConsumeGas(amount Gas, descriptor string) 消耗提供的数量 gas 。如果溢出， gas 它会对 descriptor 消息感到恐慌。如果燃气表不是无限的，如果消耗超过限制，它会 gas 惊慌失措。</li>
-<li>RefundGas() 从消耗的气体中扣除给定的量。此功能可以将gas退还到交易或区块gas池，以便EVM兼容链可以完全支持go-ethereum StateDB接口。</li>
-<li>IsPastLimit() 如果燃气表实例消耗的 gas 量严格高于限制， false 则返回 true 。</li>
-<li>IsOutOfGas() 如果燃气表实例消耗的 gas 量高于或等于限制， false 则返回，否则返回 true 。</li>
-</ul>
-<p>燃气表一般握在 中 ctx ，消耗燃气的模式如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctx.GasMeter().ConsumeGas(amount, <span class="string">&quot;description&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>默认情况下，Cosmos SDK 使用两个不同的燃气表：主燃气表和块燃气表。</p>
-<h4 id="Main-Gas-Meter"><a href="#Main-Gas-Meter" class="headerlink" title="Main Gas Meter"></a>Main Gas Meter</h4><p>ctx.GasMeter() 是应用的主要燃气表。主燃气表在 via 中 BeginBlock 初始化，然后在导致状态转换的执行序列期间跟踪气体消耗，即最初由 BeginBlock 和 DeliverTx EndBlock 触发的气体 setDeliverState 消耗。在每个 DeliverTx 开头，主燃气表必须在 中 AnteHandler 设置为 0，以便它可以跟踪每笔交易的燃气消耗量。</p>
-<p>气体消耗可以手动完成，通常由模块开发人员在 或 Msg 服务中完成，但大多数情况下，只要有读取 BeginBlocker 或 EndBlocker 写入存储，它就会自动完成。此自动耗气逻辑在名为 的特殊 GasKv 存储中实现。</p>
-<h4 id="Block-Gas-Meter"><a href="#Block-Gas-Meter" class="headerlink" title="Block Gas Meter"></a>Block Gas Meter</h4><p>ctx.BlockGasMeter() 是用于跟踪每个街区的燃气消耗量并确保其不超过一定限制的燃气表。每次 BeginBlock 调用 都会创建一个新的实例 BlockGasMeter 。这是 BlockGasMeter 有限的，每个区块的气体限制在应用程序的共识参数中定义。默认情况下，Cosmos SDK 应用程序使用 Tendermint 提供的默认共识参数：</p>
-<p>当通过 处理 DeliverTx 新事务时，将检查 的 BlockGasMeter 当前值以查看它是否高于限制。如果是， DeliverTx 请立即返回。即使区块中的第一笔交易也可能发生这种情况，因为 BeginBlock 其本身会消耗气体。否则，事务将正常处理。在结束时 DeliverTx ，跟踪的气体将增加处理交易所消耗的 ctx.BlockGasMeter() 量：</p>
-<h4 id="AnteHandler-1"><a href="#AnteHandler-1" class="headerlink" title="AnteHandler"></a>AnteHandler</h4><p>在事务 sdk.Msg 期间 CheckTx 和之前为每个 DeliverTx 事务运行 Protobuf Msg AnteHandler 服务方法。</p>
-<p>anteHandler不是在核心Cosmos SDK中实现，而是在模块中实现。也就是说，目前大多数应用程序都使用 auth 模块中定义的默认实现。下面是在普通 Cosmos SDK 应用程序中要执行的操作 anteHandler ：</p>
-<ul>
-<li>验证事务的类型是否正确。事务类型在实现 的 anteHandler 模块中定义，它们遵循事务接口：</li>
-<li>验证事务中包含的每个 message 签名。每个 message 签名都应由一个或多个发件人签名，并且必须在 中 anteHandler 验证这些签名。</li>
-<li>在 期间 CheckTx ，验证交易提供的 gas 价格是否大于本地 min-gas-prices 价格（提醒一下，gas-价格可以从以下等式中扣除： fees = gas * gas-prices ）。 min-gas-prices 是每个完整节点的本地参数， CheckTx 用于丢弃不提供最低费用的事务。这可确保内存池不会被垃圾事务发送垃圾邮件。</li>
-<li>验证交易的发送方是否有足够的资金来支付 fees .当最终用户生成事务时，他们必须指示以下 3 个参数中的 2 个（第三个是隐式的）： fees 和 gas gas-prices 。这表明他们愿意为节点支付多少费用来执行他们的交易。提供 gas 的值存储在调用 GasWanted 的参数中供以后使用。</li>
-<li>设置为 newCtx.GasMeter 0，限制为 GasWanted .这一步至关重要，因为它不仅确保交易不能消耗无限的gas，而且还 ctx.GasMeter 在每个交易之间重置 DeliverTx （ ctx 设置为运行 newCtx 后 anteHandler ，并且 anteHandler 每次 DeliverTx 调用运行）。</li>
-</ul>
-<p>如上所述， anteHandler 返回事务在 gas 执行期间可以消耗的最大限制称为 GasWanted 。最终实际消耗的金额是计价 GasUsed 的，因此我们必须有 GasUsed =&lt; GasWanted 。两者在 GasWanted GasUsed 返回时 DeliverTx 都会中继到底层共识引擎。</p>
-<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><h3 id="BaseApp"><a href="#BaseApp" class="headerlink" title="BaseApp"></a>BaseApp</h3><blockquote>
-<p>本文档介绍 BaseApp 实现 Cosmos SDK 应用程序核心功能的抽象。</p>
-</blockquote>
-<h4 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h4><p>BaseApp 是实现 Cosmos SDK 应用程序核心的基类型，即：</p>
-<ul>
-<li>应用程序区块链接口，用于状态机与底层共识引擎（例如Tendermint）进行通信。</li>
-<li>服务路由器，用于将消息和查询路由到相应的模块。</li>
-<li>不同的状态，因为状态机可以根据收到的 ABCI 消息更新不同的易失性状态。</li>
-</ul>
-<p>的目标是 BaseApp 提供 Cosmos SDK 应用程序的基本层，开发人员可以轻松扩展该层以生成自己的自定义应用程序。通常，开发人员会为其应用程序创建自定义类型，如下所示：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> App <span class="keyword">struct</span> &#123;</span><br><span class="line">  <span class="comment">// reference to a BaseApp</span></span><br><span class="line">  *baseapp.BaseApp</span><br><span class="line"></span><br><span class="line">  <span class="comment">// list of application store keys</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// list of application keepers</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// module manager</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>扩展应用程序 使 BaseApp 前者可以访问 BaseApp 的所有方法。这允许开发人员使用他们想要的模块来编写他们的自定义应用程序，而不必担心实现 ABCI、服务路由器和状态管理逻辑的艰苦工作。</p>
-<h4 id="Type-Definition"><a href="#Type-Definition" class="headerlink" title="Type Definition"></a>Type Definition</h4><p>该 BaseApp 类型包含任何基于 Cosmos SDK 的应用程序的许多重要参数。</p>
-<p>让我们来看看最重要的组成部分。</p>
-<blockquote>
-<p>注意：并非所有参数都描述，仅描述最重要的参数。有关完整列表，请参阅类型定义。</p>
-</blockquote>
-<ul>
-<li>CommitMultiStore ：这是应用程序的主存储区，它保存在每个块末尾提交的规范状态。此存储不缓存，这意味着它不用于更新应用程序的易失性（未提交）状态。这是一个 CommitMultiStore 多存储，意思是存储的存储。应用程序的每个模块都使用多存储 KVStores 中的一个或多个模块来保存其状态子集。</li>
-<li>数据库： db 由 用于 CommitMultiStore 处理数据持久性。</li>
-<li>Msg 服务路由器： msgServiceRouter 便于将请求路由 sdk.Msg 到相应的模块 Msg 服务进行处理。这里 a sdk.Msg 是指需要由服务处理以更新应用程序状态的事务组件，而不是实现应用程序和底层共识引擎之间接口的 ABCI 消息。</li>
-<li>gRPC 查询路由器： grpcQueryRouter 有助于将 gRPC 查询路由到相应的模块以进行处理。这些查询本身不是 ABCI 消息，而是中继到相关模块的 gRPC Query 服务。</li>
-<li>TxDecoder ：它用于解码底层 Tendermint 引擎中继的原始事务字节。</li>
-<li>ParamStore ：用于获取和设置应用共识参数的参数库。</li>
-<li>AnteHandler ：此处理程序用于在收到交易时处理签名验证、费用支付和其他消息前执行检查。它在 和 DeliverTx 期间 CheckTx/RecheckTx 执行。</li>
-<li>InitChainer 和 BeginBlocker EndBlocker ： 这些是应用程序从底层 Tendermint 引擎接收 InitChain 和 BeginBlock EndBlock ABCI 消息时执行的函数。</li>
-</ul>
-<p>然后，用于定义易失性状态（即缓存状态）的参数：</p>
-<ul>
-<li>checkState ：此状态在 期间 CheckTx 更新，并在 重置。 Commit</li>
-<li>deliverState ：此状态在 期间 DeliverTx 更新，并设置为 nil on Commit 并在 BeginBlock 上重新初始化。</li>
-</ul>
-<p>最后，几个更重要的参数：</p>
-<ul>
-<li>voteInfos ：此参数包含缺少预承诺的验证者列表，因为他们没有投票，或者因为提议者没有包括他们的投票。此信息由上下文携带，并可由应用程序用于各种事情，例如惩罚缺席的验证者。</li>
-<li>minGasPrices ：此参数定义节点接受的最低gas价格。这是一个本地参数，这意味着每个全节点可以设置不同的 minGasPrices .它用于 AnteHandler 期间 CheckTx ，主要作为垃圾邮件保护机制。只有当交易的gas价格大于最低 minGasPrices gas价格之一时，交易才会进入内存池（例如，如果 minGasPrices == 1uatom,1photon ，交易 gas-price 的必须大于 1uatom OR 1photon ）。</li>
-<li>appVersion ：应用程序的版本。它在应用程序的构造函数中设置。</li>
-</ul>
-<h4 id="构造函数-1"><a href="#构造函数-1" class="headerlink" title="构造函数"></a>构造函数</h4><p>BaseApp 构造函数非常简单。唯一值得注意的是提供附加 options BaseApp 功能的可能性，这将按顺序执行它们。这些 options 通常是 setter 重要参数的函数，例如 SetPruning() 设置修剪选项或 SetMinGasPrices() 设置节点的 min-gas-prices .</p>
-<p>当然，开发人员可以根据其应用程序的需求添加其他 options 内容。</p>
-<h4 id="状态更新"><a href="#状态更新" class="headerlink" title="状态更新"></a>状态更新</h4><p>维护 BaseApp 两个主要易失性状态和一个根或主状态。主状态是应用程序的规范状态和易失性状态， checkState 以及 deliverState 用于处理期间 Commit 进行的主状态之间的状态转换。</p>
-<p>在内部，只有一个 CommitMultiStore 我们称之为主状态或根状态。从这个根状态，我们使用一种称为存储分支的机制（由函数执行 CacheWrap ）派生出两个易失性状态。类型可以说明如下：</p>
-<p><img src="/2023/07/12/cosmos/baseapp_state_types.b1d93ad7.png" alt="state-update"></p>
-<h4 id="InitChain-State-Updates"><a href="#InitChain-State-Updates" class="headerlink" title="InitChain State Updates"></a>InitChain State Updates</h4><p>期间 InitChain ，两种易失性状态， checkState 并通过 deliverState 分支根 CommitMultiStore 来设置。任何后续读取和写入都发生在 的 CommitMultiStore 分支版本上。为了避免不必要的主状态往返，将缓存对分支存储的所有读取。</p>
-<p><img src="/2023/07/12/cosmos/baseapp_state-initchain.28cdb535.png" alt="initchain"></p>
-<h4 id="CheckTx-State-Updates"><a href="#CheckTx-State-Updates" class="headerlink" title="CheckTx State Updates"></a>CheckTx State Updates</h4><p>在 期间 CheckTx ，基于根存储中上次提交状态的 checkState 用于任何读取和写入。在这里，我们只执行并 AnteHandler 验证事务中每条消息是否存在服务路由器。注意，当我们执行 AnteHandler 时，我们会对已经分支的 checkState .这有副作用，如果 AnteHandler 失败，状态转换将不会反映在 checkState - 即 checkState 仅在成功时更新。</p>
-<p><img src="/2023/07/12/cosmos/baseapp_state-checktx.bbe754e7.png" alt></p>
-<h4 id="BeginBlock-State-Updates"><a href="#BeginBlock-State-Updates" class="headerlink" title="BeginBlock State Updates"></a>BeginBlock State Updates</h4><p>在 期间 BeginBlock ， deliverState 设置为在后续 DeliverTx ABCI 消息中使用。基于 deliverState 根存储中上次提交的状态，并具有分支。请注意，设置为 deliverState nil on Commit 。</p>
-<p><img src="/2023/07/12/cosmos/baseapp_state-begin_block.60e8a1a8.png" alt></p>
-<h4 id="DeliverTx-State-Updates"><a href="#DeliverTx-State-Updates" class="headerlink" title="DeliverTx State Updates"></a>DeliverTx State Updates</h4><p>的状态 DeliverTx 流几乎与 相同， CheckTx 只是状态转换发生在 上 deliverState ，并且执行事务中的消息。与 类似 CheckTx ，状态转换发生在双分支状态 — deliverState 上。成功的消息执行会导致写入 deliverState 。请注意，如果消息执行失败，则会保留来自 AnteHandler 的状态转换。</p>
-<p><img src="/2023/07/12/cosmos/baseapp_state-deliver_tx.d706bb70.png" alt></p>
-<h4 id="Commit-State-Updates"><a href="#Commit-State-Updates" class="headerlink" title="Commit State Updates"></a>Commit State Updates</h4><p>在 中 deliverState 发生的所有状态转换最终 Commit 写入根，根目录又提交到磁盘并生成新的应用程序根 CommitMultiStore 哈希。这些状态转换现在被认为是最终的。最后，设置为 新提交状态，并 checkState deliverState 设置为 nil 重置 BeginBlock 。</p>
-<p><img src="/2023/07/12/cosmos/baseapp_state-commit.fbc84e90.png" alt></p>
-<h4 id="ParamStore"><a href="#ParamStore" class="headerlink" title="ParamStore"></a>ParamStore</h4><p>期间 InitChain ， RequestInitChain 除了 ConsensusParams 证据参数外，还提供与块执行相关的参数，例如最大gas和大小。如果这些参数为非 nil，则在 BaseApp 的 ParamStore .在幕后，实际上是 ParamStore 由一个 x/params 模块 Subspace 管理的。这允许通过链上治理来调整参数。</p>
-<h4 id="Service-Routers"><a href="#Service-Routers" class="headerlink" title="Service Routers"></a>Service Routers</h4><p>当应用程序收到消息和查询时，必须将它们路由到相应的模块才能进行处理。路由是通过 完成 BaseApp 的，其中包含 for msgServiceRouter 消息和 grpcQueryRouter for 查询。</p>
-<h4 id="Msg-Service-Router"><a href="#Msg-Service-Router" class="headerlink" title="Msg Service Router"></a>Msg Service Router</h4><p>sdk.Msg 在从交易中提取后需要路由，这些交易通过 CheckTx 和 DeliverTx ABCI 消息从底层 Tendermint 引擎发送。为此， BaseApp 持有一个 msgServiceRouter 将完全限定的服务方法（在每个模块的 Protobuf Msg 服务中定义 string ）映射到相应模块的 MsgServer 实现。</p>
-<p>中包含的 BaseApp 默认值 msgServiceRouter 为无状态。但是，某些应用程序可能希望使用更有状态的路由机制，例如允许治理禁用某些路由或将它们指向新模块以进行升级。因此，也会 sdk.Context 传递到 内部 msgServiceRouter 的每个路由处理程序中。对于不想使用它的无状态路由器，您可以忽略 ctx .</p>
-<p>应用程序的模块管理器使用应用程序的所有路由（通过 RegisterServices 方法）进行初始化，该方法本身使用应用程序构造函数中的所有应用程序模块 msgServiceRouter 进行初始化。</p>
-<h4 id="gRPC-Query-Router"><a href="#gRPC-Query-Router" class="headerlink" title="gRPC Query Router"></a>gRPC Query Router</h4><p>与 s 类似 sdk.Msg ， queries 需要路由到相应模块的服务 Query 。为此，持有一个 grpcQueryRouter ， BaseApp 它将模块的完全限定服务方法（在其 Protobuf Query gRPC 中定义 string ）映射到它们的 QueryServer 实现。在 grpcQueryRouter 查询处理的初始阶段调用，可以通过直接向 gRPC 终结点发送 gRPC 查询，也可以通过 Tendermint RPC 终结点上的 Query ABCI 消息调用。</p>
-<p>就像 msgServiceRouter 一样，使用 应用程序的模块管理器（通过 RegisterServices 方法）使用 grpcQueryRouter 所有查询路由进行初始化，该方法本身使用应用程序构造函数中的所有应用程序模块进行初始化。</p>
-<h4 id="Main-ABCI-Messages"><a href="#Main-ABCI-Messages" class="headerlink" title="Main ABCI Messages"></a>Main ABCI Messages</h4><p>应用区块链接口（ABCI）是一个通用接口，它将状态机与共识引擎连接起来，形成一个功能齐全的全节点。它可以包装在任何语言中，并且需要由构建在ABCI兼容共识引擎（如Tendermint）之上的每个特定于应用程序的区块链来实现。</p>
-<p>共识引擎处理两个主要任务：</p>
-<ul>
-<li>网络逻辑，主要由八卦区块部分、交易和共识投票组成。</li>
-<li>共识逻辑，它导致以区块形式对交易进行确定性排序。</li>
-</ul>
-<p>定义交易的状态或有效性不是共识引擎的作用。通常，事务由共识引擎以 的形式 []bytes 处理，并通过 ABCI 中继到应用程序进行解码和处理。在网络和共识过程中的关键时刻（例如，区块的开始，区块的提交，未确认的交易的接收等），共识引擎发出ABCI消息供状态机采取行动。</p>
-<p>基于 Cosmos SDK 构建的开发人员不需要自己实现 ABCI，因为 BaseApp 该接口的内置实现是附带的。让我们来看看实现的主要 ABCI 消息 BaseApp ： CheckTx 和 DeliverTx</p>
-<h4 id="CheckTx"><a href="#CheckTx" class="headerlink" title="CheckTx"></a>CheckTx</h4><p>CheckTx 当全节点收到新的未经确认（即尚未包含在有效区块中）的交易时，由底层共识引擎发送。的作用 CheckTx 是保护全节点的内存池（未确认的交易被存储到块中，直到它们被包含在块中）免受垃圾邮件交易的侵害。未经确认的交易只有在通过 CheckTx 时才中继给对等方。</p>
-<p>CheckTx() 可以执行有状态和无状态检查，但开发人员应努力使检查轻量级，因为不对期间使用的资源（CPU、数据加载等）收取 gas 费用 CheckTx 。</p>
-<p>在 Cosmos SDK 中，解码事务后， CheckTx() 实现执行以下检查：</p>
-<ol>
-<li>从事务中提取 sdk.Msg s。</li>
-<li>通过调用 ValidateBasic() 每个 sdk.Msg s 来执行无状态检查。首先完成此操作，因为无状态检查的计算成本低于有状态检查。如果失败， CheckTx 则 ValidateBasic() 在运行有状态检查之前返回，从而节省资源。</li>
-<li>对帐户执行与模块无关的状态检查。此步骤主要是检查 sdk.Msg 签名是否有效，是否提供了足够的费用以及发送帐户是否有足够的资金来支付上述费用。请注意，此处不会进行精确 gas 计数，因为 sdk.Msg 不会处理 s。通常， AnteHandler 会根据原始交易大小检查与交易 gas 一起提供的是否优于最小参考气体金额，以避免提供 0 gas 的交易的垃圾邮件。</li>
-</ol>
-<p>CheckTx 不处理 sdk.Msg - 仅当需要更新规范状态时才需要处理 DeliverTx 它们，这发生在 期间。</p>
-<p>步骤 2.和 3.由 AnteHandler In 函数 RunTx() 执行，该 CheckTx() 函数使用 runTxModeCheck Mode 调用。在 的每一 CheckTx() 步中，都会更新一个称为 checkState 的特殊易失性状态。此状态用于跟踪每个事务的 CheckTx() 调用触发的临时更改，而无需修改主规范状态。例如，当交易通过 CheckTx() 时，交易的费用将从发送 checkState 方的帐户中扣除。如果在处理第一笔交易之前从同一账户收到第二笔交易，并且该账户 checkState 在第一笔交易期间已经消耗了所有资金，则第二笔交易将失败 CheckTx （） 并被拒绝。无论如何，在交易实际包含在区块中之前，发送者的帐户不会实际支付费用，因为 checkState 永远不会提交到主状态。每次 checkState 提交块时，都会重置为主状态的最新状态。</p>
-<p>CheckTx 返回对 类型 abci.ResponseCheckTx 为 的底层共识引擎的响应。响应包含：</p>
-<ul>
-<li>Code (uint32) ：响应代码。 0 如果成功。</li>
-<li>Data ([]byte) ：结果字节（如果有）。</li>
-<li>Log (string): 应用程序记录器的输出。可能是不确定的。</li>
-<li>Info (string): 其他信息。可能是不确定的。</li>
-<li>GasWanted (int64) ：交易请求的气体量。它由用户在生成事务时提供。</li>
-<li>GasUsed (int64) ：交易消耗的气体量。在 期间 CheckTx ，此值的计算方法是将事务字节的标准开销乘以原始事务的大小。下面是一个示例：</li>
-</ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctx.GasMeter().ConsumeGas(params.TxSizeCostPerByte*sdk.Gas(<span class="built_in">len</span>(ctx.TxBytes())), <span class="string">&quot;txSize&quot;</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>Events ([]cmn.KVPair) ：用于过滤和索引交易的键值标签（例如按账户）。有关详细信息，请参阅 event s。</li>
-<li>Codespace (string) ：代码的命名空间。</li>
-</ul>
-<h4 id="RecheckTx"><a href="#RecheckTx" class="headerlink" title="RecheckTx"></a>RecheckTx</h4><p>之后 Commit ， CheckTx 将再次对节点本地内存池中保留的所有事务运行，不包括块中包含的事务。为了防止内存池在每次提交区块时重新检查所有事务，可以设置配置选项 mempool.recheck=false 。从 Tendermint v0.32.1 开始，函数可以使用一个附加 Type 参数来指示传入事务是新的 （ CheckTxType_New ） 还是重新检查 （ CheckTxType_Recheck ）。 CheckTx 这允许在 期间 CheckTxType_Recheck 跳过某些检查，例如签名验证。</p>
-<h4 id="DeliverTx-1"><a href="#DeliverTx-1" class="headerlink" title="DeliverTx"></a>DeliverTx</h4><p>当底层共识引擎收到区块提案时，区块中的每个交易都需要由应用程序处理。为此，底层共识引擎按顺序向应用程序发送每 DeliverTx 笔交易的消息。</p>
-<p>在处理给定块的第一笔事务之前，在 期间 BeginBlock 初始化称为 deliverState 易失状态的易失状态。每次通过 处理 DeliverTx 事务时，此状态都会更新，并在提交块时提交到主状态，在设置为 nil 之后提交到 main 状态。</p>
-<p>DeliverTx 执行与 完全相同 CheckTx 的步骤，但在步骤 3 中略有警告，并添加了第五步：</p>
-<ol>
-<li>不 AnteHandler 检查事务是否 gas-prices 足够。这是因为 min-gas-prices gas-prices 检查的值是节点的本地值，因此对于一个完整节点来说足够的东西可能不适用于另一个完整节点。这意味着提议者可以免费包含交易，尽管他们没有动力这样做，因为他们从他们提议的区块的总费用中获得奖金。</li>
-<li>对于事务中的每个， sdk.Msg 路由到相应模块的 Protobuf Msg 服务。将执行其他有状态检查，并且 中 deliverState 保存的分支多存储 context 由模块的 keeper 更新。如果 Msg 服务成功返回，则 中 context 保存的分支多存储将写入 deliverState CacheMultiStore 。</li>
-</ol>
-<p>在 （2） 中概述的附加第五步中，对存储的每次读/写都会增加 的值 GasConsumed 。您可以找到每个操作的默认成本：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// KVGasConfig returns a default gas config for KVStores.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">KVGasConfig</span><span class="params">()</span></span> GasConfig &#123;</span><br><span class="line">	<span class="keyword">return</span> GasConfig&#123;</span><br><span class="line">		HasCost:          <span class="number">1000</span>,</span><br><span class="line">		DeleteCost:       <span class="number">1000</span>,</span><br><span class="line">		ReadCostFlat:     <span class="number">1000</span>,</span><br><span class="line">		ReadCostPerByte:  <span class="number">3</span>,</span><br><span class="line">		WriteCostFlat:    <span class="number">2000</span>,</span><br><span class="line">		WriteCostPerByte: <span class="number">30</span>,</span><br><span class="line">		IterNextCostFlat: <span class="number">30</span>,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在任何时候，如果 ，函数 GasConsumed &gt; GasWanted 返回 和 Code != 0 DeliverTx 失败。</p>
-<p>DeliverTx 返回对 类型 abci.ResponseDeliverTx 为 的底层共识引擎的响应。响应包含：</p>
-<ul>
-<li>Code (uint32) ：响应代码。 0 如果成功。</li>
-<li>Data ([]byte) ：结果字节（如果有）。</li>
-<li>Log (string): 应用程序记录器的输出。可能是不确定的。</li>
-<li>Info (string): 其他信息。可能是不确定的。</li>
-<li>GasWanted (int64) ：交易请求的气体量。它由用户在生成事务时提供。</li>
-<li>GasUsed (int64) ：交易消耗的气体量。在 期间 DeliverTx ，此值的计算方法是将事务字节的标准成本乘以原始事务的大小，并在每次对存储进行读/写时添加 gas。</li>
-<li>Events ([]cmn.KVPair) ：用于过滤和索引交易的键值标签（例如按账户）。有关详细信息，请参阅 event s。</li>
-<li>Codespace (string) ：代码的命名空间。</li>
-</ul>
-<h2 id="准备问题"><a href="#准备问题" class="headerlink" title="准备问题"></a>准备问题</h2><ol>
-<li>为啥已经有 erc20 的货币 soul 的记账体系了，还需要再次在 bank/account 两个模块里面将这个帐重新记录一次？两份账本如果在不出错的时候将不会有差异。</li>
-<li>在 bank/account 中的账目能否查询流水？</li>
-<li>是否已经部署好的合约，我们在合约上预留一些函数可以去调整数值，当运行一段时间之后，通过发起proposal，提案通过之后去修改一个合约里面的控制数值。</li>
-</ol>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
-<li>[1] <a target="_blank" rel="noopener" href="https://cosmos.network/">cosmos-website</a></li>
-<li>[2] <a target="_blank" rel="noopener" href="https://docs.cosmos.network/main">cosmos-sdk</a></li>
-<li>[3] <a target="_blank" rel="noopener" href="https://forum.cosmos.network/t/ibc-security-advisory-huckleberry/10731">IBC-修复bug</a></li>
-<li>[4] <a target="_blank" rel="noopener" href="https://github.com/cosmos/">cosmos-github</a></li>
-<li>[5] <a target="_blank" rel="noopener" href="https://learnblockchain.cn/docs/cosmos/">cosmos-中文文档</a></li>
-<li>[6] <a target="_blank" rel="noopener" href="https://tutorials.cosmos.network/tutorials/3-run-node/">cosmos-tutorials</a></li>
-<li>[7] <a target="_blank" rel="noopener" href="https://v1.cosmos.network/sdk">cosmos-sdk</a></li>
-<li>[8] <a target="_blank" rel="noopener" href="https://docs.cosmos.network/main">cosmos-doc</a></li>
-<li>[9] <a target="_blank" rel="noopener" href="https://tutorials.cosmos.network/tutorials/9-path-to-prod/3-keys.html">cosmos-keys</a></li>
-<li>[10] <a target="_blank" rel="noopener" href="https://tutorials.cosmos.network/tutorials/3-run-node/">cosmos-3-run-node</a></li>
-<li>[11] <a target="_blank" rel="noopener" href="https://tutorials.cosmos.network/tutorials/6-ibc-dev/#ics-20-token-transfer">ics-20-token-transfer</a></li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/12/cosmos/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1480,93 +995,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2022/11/19/merkle%E6%A0%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/19/merkle%E6%A0%91/" class="post-title-link" itemprop="url">merkle树</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-11-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-19T00:00:00+08:00">2022-11-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><img src="/2022/11/19/merkle%E6%A0%91/hash-tree.png" alt="hash-tree"></p>
-<p>hash树是一种校验机制，全部树的叶子节点就是我们需要做hash的原始数据，按照两个为一组，产生hash，层层建设这棵树，最后形成一个根。这样其中每个产出的hash节点如果被修改了，将会被父节点觉察到，层层推算到根的hash都不会匹配。</p>
-<p>hash函数是存在碰撞的可能性的，如果有人需要去破解merkle树的校验，就需要从篡改的节点，一直到根的全部的hash过程的碰撞的函数都搞定，这个难度可想而知。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/11/19/merkle%E6%A0%91/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1638,7 +1066,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-count">95</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
