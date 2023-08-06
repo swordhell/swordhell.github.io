@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言go colly 是一个开源的项目能用于做爬虫的。开一个文档来记录这个相关的知识。 爬虫一般都做下面三个步骤的事情：  筛选网站； 抓取页面中的特定的内容，写入到pipeline中； pipeline提供各种实现，最终将数据写入到文件、数据库、redis之类；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go-colly">
+<meta property="og:url" content="https://swordhell.github.io/2023/08/04/go-colly/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="前言go colly 是一个开源的项目能用于做爬虫的。开一个文档来记录这个相关的知识。 爬虫一般都做下面三个步骤的事情：  筛选网站； 抓取页面中的特定的内容，写入到pipeline中； pipeline提供各种实现，最终将数据写入到文件、数据库、redis之类；">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-06T03:46:27.333Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2023/08/04/go-colly/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>go-colly | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2023/08/04/go-colly/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          go-colly
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-04 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-04T00:00:00+08:00">2023-08-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-08-06 11:46:27" itemprop="dateModified" datetime="2023-08-06T11:46:27+08:00">2023-08-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>go colly 是一个开源的项目能用于做爬虫的。开一个文档来记录这个相关的知识。</p>
+<p>爬虫一般都做下面三个步骤的事情：</p>
+<ol>
+<li>筛选网站；</li>
+<li>抓取页面中的特定的内容，写入到pipeline中；</li>
+<li>pipeline提供各种实现，最终将数据写入到文件、数据库、redis之类；</li>
+</ol>
+<span id="more"></span>
+<ul>
+<li>PhantomJS 之前有人用这个虚拟的浏览器来跑爬虫；</li>
+<li>selenium+chrome 这种方案是 java 来做的；</li>
+</ul>
+<h2 id="sdk文档"><a href="#sdk文档" class="headerlink" title="sdk文档"></a>sdk文档</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/gocolly/colly/...</span><br></pre></td></tr></table></figure>
+<h4 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h4><p>先需要创建一个 collector ，里面保存了连接信息，以及回调函数之类。</p>
+<p><a target="_blank" rel="noopener" href="https://pkg.go.dev/github.com/gocolly/colly#Collector">Collector-文档</a></p>
+<p>通过回调函数来通知处理。</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>可以创建的 collector 的时候制定，也能直接修改 struct 里面的成员变量。</p>
+<p>也能通过修改环境变量来修改配置。环境变量能覆盖掉之前全部设置的配置，这样可以在没有编译的情况下，修改配置。</p>
+<ul>
+<li>ALLOWED_DOMAINS (comma separated list of domains)</li>
+<li>CACHE_DIR (string)</li>
+<li>DETECT_CHARSET (y/n)</li>
+<li>DISABLE_COOKIES (y/n)</li>
+<li>DISALLOWED_DOMAINS (comma separated list of domains)</li>
+<li>IGNORE_ROBOTSTXT (y/n)</li>
+<li>MAX_BODY_SIZE (int)</li>
+<li>MAX_DEPTH (int - 0 means infinite)</li>
+<li>PARSE_HTTP_ERROR_RESPONSE (y/n)</li>
+<li>USER_AGENT (string)</li>
+</ul>
+<p>默认已经按照通用的golang-http服务器来实现的。也能通过下面这段代码修改成和 HTTP-Roundtripper</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">c := colly.NewCollector()</span><br><span class="line">c.WithTransport(&amp;http.Transport&#123;</span><br><span class="line">	Proxy: http.ProxyFromEnvironment,</span><br><span class="line">	DialContext: (&amp;net.Dialer&#123;</span><br><span class="line">		Timeout:   <span class="number">30</span> * time.Second,</span><br><span class="line">		KeepAlive: <span class="number">30</span> * time.Second,</span><br><span class="line">		DualStack: <span class="literal">true</span>,</span><br><span class="line">	&#125;).DialContext,</span><br><span class="line">	MaxIdleConns:          <span class="number">100</span>,</span><br><span class="line">	IdleConnTimeout:       <span class="number">90</span> * time.Second,</span><br><span class="line">	TLSHandshakeTimeout:   <span class="number">10</span> * time.Second,</span><br><span class="line">	ExpectContinueTimeout: <span class="number">1</span> * time.Second,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><h4 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h4><p>可以用这个来调试中间的问题。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c := colly.NewCollector(colly.Debugger(&amp;debug.LogDebugger&#123;&#125;))</span><br></pre></td></tr></table></figure>
+<h4 id="分布式抓取"><a href="#分布式抓取" class="headerlink" title="分布式抓取"></a>分布式抓取</h4><h5 id="分布式代理"><a href="#分布式代理" class="headerlink" title="分布式代理"></a>分布式代理</h5><p>可以通过设置多个代理地址，分布式抓取内容，默认是使用轮训机制来抓取，我们自己也能编写一个随机机制选择代理来抓取数据。这个主要是为了提高并发效率。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> p, err := proxy.RoundRobinProxySwitcher(</span><br><span class="line">	<span class="string">&quot;socks5://127.0.0.1:1337&quot;</span>,</span><br><span class="line">	<span class="string">&quot;socks5://127.0.0.1:1338&quot;</span>,</span><br><span class="line">	<span class="string">&quot;http://127.0.0.1:8080&quot;</span>,</span><br><span class="line">); err == <span class="literal">nil</span> &#123;</span><br><span class="line">	c.SetProxyFunc(p)</span><br><span class="line">&#125;</span><br><span class="line">   <span class="comment">// 随机机制选择代理来抓取数据</span></span><br><span class="line">   <span class="keyword">var</span> proxies []*url.URL = []*url.URL&#123;</span><br><span class="line">&amp;url.URL&#123;Host: <span class="string">&quot;127.0.0.1:8080&quot;</span>&#125;,</span><br><span class="line">&amp;url.URL&#123;Host: <span class="string">&quot;127.0.0.1:8081&quot;</span>&#125;,</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">func</span> <span class="title">randomProxySwitcher</span><span class="params">(_ *http.Request)</span></span> (*url.URL, <span class="type">error</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> proxies[random.Intn(<span class="built_in">len</span>(proxies))], <span class="literal">nil</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">   c.SetProxyFunc(randomProxySwitcher)</span><br></pre></td></tr></table></figure>
+<h5 id="分布式爬虫"><a href="#分布式爬虫" class="headerlink" title="分布式爬虫"></a>分布式爬虫</h5><p>要管理独立和分布式抓取工具，可以将抓取包装到一个服务里面。示例里面有个 scraper_server。可以直接阅读相关的资料。</p>
+<h5 id="分布式存储"><a href="#分布式存储" class="headerlink" title="分布式存储"></a>分布式存储</h5><p>实现了在内存中存储的数据。</p>
+<h4 id="存储后端"><a href="#存储后端" class="headerlink" title="存储后端"></a>存储后端</h4><p>colly 有个内存后段来实现存储cookie和访问过的URL，它可以被任意实现这个接口的对象来覆盖，存储。</p>
+<p>实现方式</p>
+<p>默认为内存方式；</p>
+<p>Redis 方式；</p>
+<p>SQLite 方式；</p>
+<p>MongoDB 方式；</p>
+<h4 id="使用选择器"><a href="#使用选择器" class="headerlink" title="使用选择器"></a>使用选择器</h4><p>如果任务足够复杂或具有不同类型的子任务，建议对一个抓取作业使用多个收集器。一个很好的例子是 coursera 课程抓取器，其中使用两个收集器 - 一个解析列表视图并处理分页，另一个收集课程详细信息。</p>
+<p>这个相关的知识应该属于 css 相关。</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>解析数据：使用正则表达式、XPath或CSS选择器等工具，解析网页中的数据。</p>
+<h3 id="基础知识-1"><a href="#基础知识-1" class="headerlink" title="基础知识"></a>基础知识</h3><p>在解析 HTML 时，Go 语言提供了两个常用的库：htmlquery 和 goquery。虽然它们都可以用于解析 HTML，但它们之间有一些区别。</p>
+<p>htmlquery：</p>
+<ol>
+<li>htmlquery 是一个基于 Go 语言的库，用于解析 HTML 并提取和操作数据。它使用 XPath 来选择和操作 HTML 中的元素。</li>
+<li>htmlquery 提供了方便的函数和方法，可以快速地选择和提取 HTML 中的元素。</li>
+<li>htmlquery 适用于简单的 HTML 解析任务，但可能无法处理一些复杂的 HTML 结构。</li>
+</ol>
+<p>goquery：</p>
+<ol>
+<li>goquery 是另一个基于 Go 语言的库，用于解析和操作 HTML。它提供了一种类似于 jQuery 的语法来操作 HTML。</li>
+<li>goquery 使用 CSS 选择器来选择和操作 HTML 中的元素。它的语法与 jQuery 相似，因此对于熟悉 jQuery 的开发者来说更容易上手。</li>
+<li>goquery 具有更灵活的 HTML 解析能力，可以更好地处理复杂的 HTML 结构。</li>
+</ol>
+<p>总结：</p>
+<p>htmlquery 和 goquery 都是用于解析 HTML 的库，但它们使用不同的方法和语法。htmlquery 使用 XPath，而 goquery 使用 CSS 选择器。对于简单的 HTML 解析任务，htmlquery 可能是一个更方便的选择。而对于更复杂的 HTML 结构和操作需求，goquery 可能更适合。根据具体的需求和项目要求，可以选择合适的库进行 HTML 解析。</p>
+<h3 id="goquery-css选择器"><a href="#goquery-css选择器" class="headerlink" title="* goquery-css选择器"></a>* goquery-css选择器</h3><p><a href="#10-css-selector">10种css-selector</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.flysnow.org/2018/01/20/golang-goquery-examples-selector">飞雪无情</a></p>
+<h3 id="htmlquery-XPath"><a href="#htmlquery-XPath" class="headerlink" title="htmlquery-XPath"></a>htmlquery-XPath</h3><p><a href="#xpath-w3school">xpath-w3school</a></p>
+<p>可以使用这个库来做一些事情：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;github.com/antchfx/htmlquery&quot;</span></span><br><span class="line"></span><br><span class="line">c.OnResponse(<span class="function"><span class="keyword">func</span><span class="params">(r *colly.Response)</span></span> &#123;</span><br><span class="line">    doc, err := htmlquery.Parse(strings.NewReader(<span class="type">string</span>(r.Body)))</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    nodes := htmlquery.Find(doc, <span class="string">`//*[@id=&quot;secondary&quot;]/section[2]/ul//li`</span>)</span><br><span class="line">    <span class="keyword">for</span> _, node := <span class="keyword">range</span> nodes &#123;</span><br><span class="line">        a := htmlquery.FindOne(node, <span class="string">&quot;./a[@href]&quot;</span>)</span><br><span class="line">        fmt.Println(htmlquery.SelectAttr(a,<span class="string">&quot;href&quot;</span>),htmlquery.InnerText(a))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><h3 id="colly-github"><a href="#colly-github" class="headerlink" title="colly-github"></a><a target="_blank" rel="noopener" href="https://github.com/gocolly/colly">colly-github</a></h3><h3 id="colly-official-website"><a href="#colly-official-website" class="headerlink" title="colly-official-website"></a><a target="_blank" rel="noopener" href="https://go-colly.org/">colly-official-website</a></h3><h3 id="10-css-selector"><a href="#10-css-selector" class="headerlink" title="10-css-selector"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_35124385/article/details/114997966">10-css-selector</a></h3><h3 id="xpath-w3school"><a href="#xpath-w3school" class="headerlink" title="xpath-w3school"></a><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/xpath/index.asp">xpath-w3school</a></h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/24/Unity-Manual-01-create-with-Unity/" rel="prev" title="Unity学习">
+      <i class="fa fa-chevron-left"></i> Unity学习
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sdk%E6%96%87%E6%A1%A3"><span class="nav-number">1.1.</span> <span class="nav-text">sdk文档</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A5%E9%97%A8"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">入门</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">1.1.2.</span> <span class="nav-text">最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">调试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%93%E5%8F%96"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">分布式抓取</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%A3%E7%90%86"><span class="nav-number">1.1.2.2.1.</span> <span class="nav-text">分布式代理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB"><span class="nav-number">1.1.2.2.2.</span> <span class="nav-text">分布式爬虫</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="nav-number">1.1.2.2.3.</span> <span class="nav-text">分布式存储</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%90%8E%E7%AB%AF"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">存储后端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">使用选择器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.2.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goquery-css%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">* goquery-css选择器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#htmlquery-XPath"><span class="nav-number">1.2.3.</span> <span class="nav-text">htmlquery-XPath</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#colly-github"><span class="nav-number">1.3.1.</span> <span class="nav-text">colly-github</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#colly-official-website"><span class="nav-number">1.3.2.</span> <span class="nav-text">colly-official-website</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-css-selector"><span class="nav-number">1.3.3.</span> <span class="nav-text">10-css-selector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xpath-w3school"><span class="nav-number">1.3.4.</span> <span class="nav-text">xpath-w3school</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'e24a26dea4bee70ea8fdac658cde7006',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
