@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://swordhell.github.io/2020/11/10/linux-env-init/htop-H.jpg">
 <meta property="og:image" content="https://swordhell.github.io/2020/11/10/linux-env-init/htop-F2.jpg">
 <meta property="article:published_time" content="2020-11-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-10-24T07:58:45.633Z">
+<meta property="article:modified_time" content="2023-11-09T03:13:55.508Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="运维">
 <meta property="article:tag" content="Linux">
@@ -196,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-10-24 15:58:45" itemprop="dateModified" datetime="2023-10-24T15:58:45+08:00">2023-10-24</time>
+                <time title="修改时间：2023-11-09 11:13:55" itemprop="dateModified" datetime="2023-11-09T11:13:55+08:00">2023-11-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -370,7 +370,7 @@
 <p><a target="_blank" rel="noopener" href="https://www.sctocloud.com/user">科学上网4</a></p>
 <h2 id="对比工具-替换掉之前的-beyond-compare"><a href="#对比工具-替换掉之前的-beyond-compare" class="headerlink" title="对比工具-替换掉之前的-beyond-compare"></a>对比工具-替换掉之前的-beyond-compare</h2><p><a target="_blank" rel="noopener" href="https://github.com/WinMerge/winmerge">winmerge</a></p>
 <h2 id="pgadmin"><a href="#pgadmin" class="headerlink" title="pgadmin"></a>pgadmin</h2><p><a target="_blank" rel="noopener" href="https://www.postgresql.org/ftp/pgadmin/pgadmin4/v7.0/windows/">pgadmin</a></p>
-<h2 id="go-attach-debug-fail"><a href="#go-attach-debug-fail" class="headerlink" title="go attach debug fail"></a>go attach debug fail</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;0&quot;</span>|sudo <span class="built_in">tee</span> /proc/sys/kernel/yama/ptrace_scope</span><br></pre></td></tr></table></figure>
+<h2 id="go-attach-debug-fail"><a href="#go-attach-debug-fail" class="headerlink" title="go attach debug fail"></a>go attach debug fail</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">echo</span> <span class="string">&quot;0&quot;</span>|sudo <span class="built_in">tee</span> /proc/sys/kernel/yama/ptrace_scope</span><br></pre></td></tr></table></figure>
 <h2 id="mac-multiple-account-github-com"><a href="#mac-multiple-account-github-com" class="headerlink" title="mac-multiple-account-github.com"></a>mac-multiple-account-github.com</h2><p><a target="_blank" rel="noopener" href="https://gist.github.com/Jonalogy/54091c98946cfe4f8cdab2bea79430f9">mac-multiple-account-github.com</a></p>
 <h2 id="阿里云服务器升级硬盘"><a href="#阿里云服务器升级硬盘" class="headerlink" title="阿里云服务器升级硬盘"></a>阿里云服务器升级硬盘</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/619157907">升级阿里云的硬盘</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看是否已经分配了</span></span><br><span class="line">fdisk -lu</span><br><span class="line"><span class="comment"># 查看硬盘情况</span></span><br><span class="line"><span class="built_in">df</span> -Th</span><br><span class="line"><span class="comment"># 安装升级软件</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install -y cloud-guest-utils</span><br><span class="line"><span class="comment"># 注意这里面有个空格</span></span><br><span class="line">growpart /dev/vda 1</span><br><span class="line"><span class="comment"># 开始扩容</span></span><br><span class="line">resize2fs /dev/vda1</span><br></pre></td></tr></table></figure>
