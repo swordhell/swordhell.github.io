@@ -28,7 +28,7 @@
 <meta property="og:description" content="学习 nginx 相关的操作。资料都是来自于网络。 简介nginx 太常见于web开发的环境，这篇文章来记录一下如何使用这些东西。 nginx+phpNginx 和 PHP 都是 Web 应用程序所需的组件，它们在 Web 应用程序的运行过程中起着重要的作用。 Nginx 是一个功能强大的 Web 服务器，可以作为静态 Web 页面、反向代理和负载均衡器使用。Nginx 的高性能和并发处理能力使其">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-12-13T02:18:09.151Z">
+<meta property="article:modified_time" content="2024-01-07T12:59:37.830Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="运维">
 <meta name="twitter:card" content="summary">
@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-12-13 10:18:09" itemprop="dateModified" datetime="2023-12-13T10:18:09+08:00">2023-12-13</time>
+                <time title="修改时间：2024-01-07 20:59:37" itemprop="dateModified" datetime="2024-01-07T20:59:37+08:00">2024-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,6 +233,8 @@
 <p>PHP 是一种流行的服务器端编程语言，用于创建动态 Web 站点和 Web 应用程序。PHP 解释器将 PHP 代码解析为 HTML 和其他输出。通常，在 Web 服务器上，PHP 脚本使用 PHP-FPM（FastCGI 进程管理器）从 Web 服务器接收请求和响应。</p>
 <p>因此，Nginx 提供了可以处理丰富的请求，使 Web 应用程序能够安全、高效地进行反向代理、负载均衡和静态页面服务。而 PHP 作为后端语言，能够与 MySQL 数据库等交互生成动态页面，并在请求中处理更复杂的业务逻辑，二者结合来处理 Web 请求，可以构建动态、高效、安全的 Web 应用程序。</p>
 <h2 id="使用nginx将https域名用起来"><a href="#使用nginx将https域名用起来" class="headerlink" title="使用nginx将https域名用起来"></a>使用nginx将https域名用起来</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       443 ssl;</span><br><span class="line">    listen       [::]:443 ssl;</span><br><span class="line">    server_name  &lt;你的域名&gt;;</span><br><span class="line"></span><br><span class="line">    #允许跨域</span><br><span class="line">    #add_header &#x27;Access-Control-Allow-Origin&#x27; &#x27;*&#x27;;</span><br><span class="line">    ##add_header &#x27;Access-Control-Allow-Credentials&#x27; &#x27;true&#x27;;</span><br><span class="line">    #add_header &#x27;Access-Control-Allow-Methods&#x27; &#x27;*&#x27;;</span><br><span class="line">    #add_header &#x27;Access-Control-Allow-Headers&#x27; &#x27;*&#x27;;</span><br><span class="line"></span><br><span class="line">    ssl_certificate &quot;/usr/local/nginx/conf/ssl/&lt;证书&gt;.pem&quot;;</span><br><span class="line">    ssl_certificate_key &quot;/usr/local/nginx/conf/ssl/&lt;证书的key&gt;.key&quot;;</span><br><span class="line">    ssl_session_cache shared:SSL:1m;</span><br><span class="line">    ssl_session_timeout  10m;</span><br><span class="line">    ssl_ciphers HIGH:!aNULL:!MD5;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line"></span><br><span class="line">    client_max_body_size 500m;</span><br><span class="line"></span><br><span class="line">    # Load configuration files for the default server block.</span><br><span class="line">    #include /etc/nginx/default.d/*.conf;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_set_header Host $host:$server_port;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        # 内部服务器的地址</span><br><span class="line">        proxy_pass http://127.0.0.1:9002;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # 将某个API定制</span><br><span class="line">    location /specialAPI &#123;</span><br><span class="line">        proxy_set_header Host $host:$server_port;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;       </span><br><span class="line">        proxy_pass http://127.0.0.1:9002/api/v1/myAPI;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    error_page 404 /404.html;</span><br><span class="line">        location = /40x.html &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    error_page 500 502 503 504 /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    access_log /data/wwwlogs/marketdata.privatex.io.access.log;</span><br><span class="line">    error_log /data/wwwlogs/marketdata.privatex.io.error.log;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>子目录无法访问的时候需要配置这句话：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ index.html;</span><br><span class="line">其实就是将子目录路由到根目录，让前端拿到子目录去接着找合适的网址。</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -389,7 +391,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
