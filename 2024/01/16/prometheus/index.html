@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://swordhell.github.io/2024/01/16/prometheus/prometheus-alerts.jpg">
 <meta property="og:image" content="https://swordhell.github.io/2024/01/16/prometheus/alertmanager.jpg">
 <meta property="article:published_time" content="2024-01-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-01-25T02:42:09.579Z">
+<meta property="article:modified_time" content="2024-01-25T08:36:05.150Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="运维">
 <meta name="twitter:card" content="summary">
@@ -195,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-25 10:42:09" itemprop="dateModified" datetime="2024-01-25T10:42:09+08:00">2024-01-25</time>
+                <time title="修改时间：2024-01-25 16:36:05" itemprop="dateModified" datetime="2024-01-25T16:36:05+08:00">2024-01-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,6 +277,71 @@ alertmanager
 <h4 id="发现的问题"><a href="#发现的问题" class="headerlink" title="发现的问题"></a>发现的问题</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ts=2024-01-25T01:37:17.880Z caller=notify.go:745 level=warn component=dispatcher receiver=telegram integration=telegram[0] aggrGroup=&quot;&#123;&#125;:&#123;alertname=\&quot;NodeExporterDown\&quot;&#125;&quot; msg=&quot;Notify attempt failed, will retry later&quot; attempts=1 err=&quot;telegram: chat not found (400)&quot;</span><br><span class="line">ts=2024-01-25T01:42:16.210Z caller=dispatch.go:352 level=error component=dispatcher msg=&quot;Notify for alerts failed&quot; num_alerts=1 err=&quot;telegram/telegram[0]: notify retry canceled after 16 attempts: telegram: chat not found (400)&quot;</span><br><span class="line">ts=2024-01-25T01:42:16.536Z caller=notify.go:745 level=warn component=dispatcher receiver=telegram integration=telegram[0] aggrGroup=&quot;&#123;&#125;:&#123;alertname=\&quot;NodeExporterDown\&quot;&#125;&quot; msg=&quot;Notify attempt failed, will retry later&quot; attempts=1 err=&quot;telegram: chat not found (400)&quot;</span><br></pre></td></tr></table></figure>
 <p>这个问题过了一段时间之后又好起来了。应该问题还是来自于没有将 prometheus 里面的警报规则配置好造成的。</p>
 <h5 id="报警出来的内容"><a href="#报警出来的内容" class="headerlink" title="报警出来的内容"></a>报警出来的内容</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Alerts Resolved:</span><br><span class="line">Labels:</span><br><span class="line"> - alertname = NodeExporterDown</span><br><span class="line"> - instance = 开发机</span><br><span class="line"> - job = 开发</span><br><span class="line">Annotations:</span><br><span class="line"> - description = Node Exporter on 开发机 is down. Please investigate.</span><br><span class="line"> - summary = Node Exporter is down</span><br><span class="line">Source: </span><br></pre></td></tr></table></figure>
+<h4 id="PromQL-ChatGPT"><a href="#PromQL-ChatGPT" class="headerlink" title="PromQL-ChatGPT"></a>PromQL-ChatGPT</h4><p>当然，我可以为你提供一个从基础到逐渐复杂的 Prometheus PromQL 学习梯度。PromQL 是 Prometheus 查询语言，用于从 Prometheus 时间序列数据库中提取和分析数据。</p>
+<h3 id="1-基础概念："><a href="#1-基础概念：" class="headerlink" title="1. 基础概念："></a>1. 基础概念：</h3><p><strong>Metric（度量标准）：</strong></p>
+<ul>
+<li>Prometheus 收集的数据的基本单位。</li>
+<li>例子：<code>http_requests_total</code>，表示HTTP请求数量。</li>
+</ul>
+<p><strong>Selector（选择器）：</strong></p>
+<ul>
+<li>通过标签（key-value对）来筛选数据。</li>
+<li>例子：<code>http_requests_total&#123;job=&quot;api-server&quot;, method=&quot;GET&quot;&#125;</code>，选择 API 服务器上的 GET 请求。</li>
+</ul>
+<h3 id="2-基本操作："><a href="#2-基本操作：" class="headerlink" title="2. 基本操作："></a>2. 基本操作：</h3><p><strong>基本查看：</strong></p>
+<ul>
+<li>查询所有指标：<code>up</code>。</li>
+<li>查询特定指标：<code>http_requests_total</code>。</li>
+</ul>
+<p><strong>时间范围：</strong></p>
+<ul>
+<li>默认时间范围是最近5分钟。</li>
+<li>指定时间范围：<code>http_requests_total&#123;job=&quot;api-server&quot;&#125;[1h]</code>，表示过去1小时的数据。</li>
+</ul>
+<h3 id="3-聚合和函数："><a href="#3-聚合和函数：" class="headerlink" title="3. 聚合和函数："></a>3. 聚合和函数：</h3><p><strong>聚合操作：</strong></p>
+<ul>
+<li><code>sum()</code>：求和。</li>
+<li><code>avg()</code>：求平均。</li>
+<li>例子：<code>sum(http_requests_total)</code>，表示所有实例的请求数之和。</li>
+</ul>
+<p><strong>函数：</strong></p>
+<ul>
+<li><code>rate()</code>：计算速率。</li>
+<li><code>increase()</code>：计算增长量。</li>
+<li>例子：<code>rate(http_requests_total[5m])</code>，表示过去5分钟的请求速率。</li>
+</ul>
+<h3 id="4-进阶操作："><a href="#4-进阶操作：" class="headerlink" title="4. 进阶操作："></a>4. 进阶操作：</h3><p><strong>多维数据操作：</strong></p>
+<ul>
+<li>使用 <code>group by</code> 对结果进行分组。</li>
+<li>例子：<code>sum(http_requests_total) by (job)</code>，表示按作业（job）对请求数进行求和。</li>
+</ul>
+<p><strong>条件和比较：</strong></p>
+<ul>
+<li>使用 <code>if</code> 和 <code>==</code> 等条件操作符。</li>
+<li>例子：<code>http_requests_total &gt; 100</code>，表示请求数量大于100的情况。</li>
+</ul>
+<h3 id="5-子查询和子表达式："><a href="#5-子查询和子表达式：" class="headerlink" title="5. 子查询和子表达式："></a>5. 子查询和子表达式：</h3><p><strong>子查询：</strong></p>
+<ul>
+<li>使用子查询可以嵌套一个查询到另一个查询中。</li>
+<li>例子：<code>(sum(rate(http_requests_total[5m])) / 100) * 60</code>，表示每分钟请求数超过100的百分比。</li>
+</ul>
+<p><strong>子表达式：</strong></p>
+<ul>
+<li>使用括号来组合表达式。</li>
+<li>例子：<code>http_requests_total * (1 - error_rate)</code>，表示请求总数减去错误率。</li>
+</ul>
+<h3 id="6-函数式编程："><a href="#6-函数式编程：" class="headerlink" title="6. 函数式编程："></a>6. 函数式编程：</h3><p><strong>使用 <code>label_replace</code> 函数：</strong></p>
+<ul>
+<li>用于修改标签。</li>
+<li>例子：<code>label_replace(http_requests_total, &quot;status&quot;, &quot;2xx&quot;, &quot;&quot;, &quot;(.*)&quot; == &quot;2.*&quot;)</code>，将 status 标签中以 “2” 开头的值替换为 “2xx”。</li>
+</ul>
+<p><strong>使用 <code>absent</code> 函数：</strong></p>
+<ul>
+<li>用于查找缺失的时间序列。</li>
+<li>例子：<code>absent(http_requests_total)</code>，查找缺少 http_requests_total 时间序列的实例。</li>
+</ul>
+<p>这是一个逐渐增加难度的学习路径，你可以根据需要深入研究每个主题。PromQL 是一个非常强大和灵活的查询语言，对于监控和分析系统性能非常有帮助。</p>
+<h3 id="golang-gin-添加-Prometheus"><a href="#golang-gin-添加-Prometheus" class="headerlink" title="golang gin 添加  Prometheus"></a>golang gin 添加  Prometheus</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/gin-contrib/prometheus&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/prometheus/client_golang/prometheus/promhttp&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 使用 gin-contrib/prometheus 中间件</span></span><br><span class="line">	p := prometheus.NewPrometheus(<span class="string">&quot;gin&quot;</span>)</span><br><span class="line">	p.Use(r)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 添加路由</span></span><br><span class="line">	r.GET(<span class="string">&quot;/&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">		c.JSON(<span class="number">200</span>, gin.H&#123;</span><br><span class="line">			<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Hello, Prometheus!&quot;</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 添加 /metrics 路由，用于 Prometheus 收集</span></span><br><span class="line">	r.GET(<span class="string">&quot;/metrics&quot;</span>, gin.WrapH(promhttp.Handler()))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 启动服务器</span></span><br><span class="line">	r.Run(<span class="string">&quot;:8080&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://grafana.com/grafana/dashboards/">grafana-dashboards</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/">prometheus-node-exporter</a></li>
@@ -306,7 +371,10 @@ alertmanager
     <a href="/2024/01/12/Elastic-Kibana/" rel="prev" title="Elastic-Kibanna">
       <i class="fa fa-chevron-left"></i> Elastic-Kibanna
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2024/01/25/swag/" rel="next" title="swag">
+      swag <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -366,7 +434,7 @@ alertmanager
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87-docker-compose-%E9%83%A8%E7%BD%B2"><span class="nav-number">1.1.</span> <span class="nav-text">通过 docker compose 部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">总配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#prometheus-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">prometheus 配置文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%A5%E8%AD%A6%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">报警系统配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BAdocker"><span class="nav-number">1.1.3.</span> <span class="nav-text">新建docker</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-nginx"><span class="nav-number">1.2.</span> <span class="nav-text">配置 nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%8E%A5%E7%9B%91%E6%8E%A7"><span class="nav-number">1.3.</span> <span class="nav-text">对接监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%93%E5%8F%96%E9%80%BB%E8%BE%91"><span class="nav-number">1.3.1.</span> <span class="nav-text">抓取逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEprometheus-grafana"><span class="nav-number">1.3.2.</span> <span class="nav-text">配置prometheus+grafana</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEaltermanager"><span class="nav-number">1.3.3.</span> <span class="nav-text">配置altermanager</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0-1"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%88%E6%9E%9C%E5%9B%BE"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">效果图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">如何配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#prometheus"><span class="nav-number">1.3.3.3.1.</span> <span class="nav-text">prometheus</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#alertmanager"><span class="nav-number">1.3.3.3.2.</span> <span class="nav-text">alertmanager</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%91%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.3.4.</span> <span class="nav-text">发现的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8A%A5%E8%AD%A6%E5%87%BA%E6%9D%A5%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">1.3.3.4.1.</span> <span class="nav-text">报警出来的内容</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">引用</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87-docker-compose-%E9%83%A8%E7%BD%B2"><span class="nav-number">1.1.</span> <span class="nav-text">通过 docker compose 部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">总配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#prometheus-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">prometheus 配置文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%A5%E8%AD%A6%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">报警系统配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BAdocker"><span class="nav-number">1.1.3.</span> <span class="nav-text">新建docker</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-nginx"><span class="nav-number">1.2.</span> <span class="nav-text">配置 nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%8E%A5%E7%9B%91%E6%8E%A7"><span class="nav-number">1.3.</span> <span class="nav-text">对接监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%93%E5%8F%96%E9%80%BB%E8%BE%91"><span class="nav-number">1.3.1.</span> <span class="nav-text">抓取逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEprometheus-grafana"><span class="nav-number">1.3.2.</span> <span class="nav-text">配置prometheus+grafana</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEaltermanager"><span class="nav-number">1.3.3.</span> <span class="nav-text">配置altermanager</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0-1"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%88%E6%9E%9C%E5%9B%BE"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">效果图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">如何配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#prometheus"><span class="nav-number">1.3.3.3.1.</span> <span class="nav-text">prometheus</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#alertmanager"><span class="nav-number">1.3.3.3.2.</span> <span class="nav-text">alertmanager</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%91%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.3.4.</span> <span class="nav-text">发现的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8A%A5%E8%AD%A6%E5%87%BA%E6%9D%A5%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">1.3.3.4.1.</span> <span class="nav-text">报警出来的内容</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PromQL-ChatGPT"><span class="nav-number">1.3.3.5.</span> <span class="nav-text">PromQL-ChatGPT</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%EF%BC%9A"><span class="nav-number">1.3.4.</span> <span class="nav-text">1. 基础概念：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="nav-number">1.3.5.</span> <span class="nav-text">2. 基本操作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%81%9A%E5%90%88%E5%92%8C%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="nav-number">1.3.6.</span> <span class="nav-text">3. 聚合和函数：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%BF%9B%E9%98%B6%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="nav-number">1.3.7.</span> <span class="nav-text">4. 进阶操作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AD%90%E6%9F%A5%E8%AF%A2%E5%92%8C%E5%AD%90%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%9A"><span class="nav-number">1.3.8.</span> <span class="nav-text">5. 子查询和子表达式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%9A"><span class="nav-number">1.3.9.</span> <span class="nav-text">6. 函数式编程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang-gin-%E6%B7%BB%E5%8A%A0-Prometheus"><span class="nav-number">1.3.10.</span> <span class="nav-text">golang gin 添加  Prometheus</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">引用</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -382,20 +450,20 @@ alertmanager
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
