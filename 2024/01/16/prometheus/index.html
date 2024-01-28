@@ -29,8 +29,9 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://swordhell.github.io/2024/01/16/prometheus/prometheus-alerts.jpg">
 <meta property="og:image" content="https://swordhell.github.io/2024/01/16/prometheus/alertmanager.jpg">
+<meta property="og:image" content="https://swordhell.github.io/2024/01/16/prometheus/blackbox_exporter.jpg">
 <meta property="article:published_time" content="2024-01-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-01-25T08:36:05.150Z">
+<meta property="article:modified_time" content="2024-01-28T23:59:00.550Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="运维">
 <meta name="twitter:card" content="summary">
@@ -195,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-25 16:36:05" itemprop="dateModified" datetime="2024-01-25T16:36:05+08:00">2024-01-25</time>
+                <time title="修改时间：2024-01-29 07:59:00" itemprop="dateModified" datetime="2024-01-29T07:59:00+08:00">2024-01-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -342,6 +343,47 @@ alertmanager
 </ul>
 <p>这是一个逐渐增加难度的学习路径，你可以根据需要深入研究每个主题。PromQL 是一个非常强大和灵活的查询语言，对于监控和分析系统性能非常有帮助。</p>
 <h3 id="golang-gin-添加-Prometheus"><a href="#golang-gin-添加-Prometheus" class="headerlink" title="golang gin 添加  Prometheus"></a>golang gin 添加  Prometheus</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/gin-contrib/prometheus&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/prometheus/client_golang/prometheus/promhttp&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 使用 gin-contrib/prometheus 中间件</span></span><br><span class="line">	p := prometheus.NewPrometheus(<span class="string">&quot;gin&quot;</span>)</span><br><span class="line">	p.Use(r)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 添加路由</span></span><br><span class="line">	r.GET(<span class="string">&quot;/&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">		c.JSON(<span class="number">200</span>, gin.H&#123;</span><br><span class="line">			<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Hello, Prometheus!&quot;</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 添加 /metrics 路由，用于 Prometheus 收集</span></span><br><span class="line">	r.GET(<span class="string">&quot;/metrics&quot;</span>, gin.WrapH(promhttp.Handler()))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 启动服务器</span></span><br><span class="line">	r.Run(<span class="string">&quot;:8080&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/2024/01/16/prometheus/blackbox_exporter.jpg" alt="Prometheus 监控网站证书是否过期"></p>
+<p>要使用 Prometheus 监控网站证书是否过期，你可以使用 <code>blackbox_exporter</code>，这是 Prometheus 的一种 exporter，专门用于执行对端（例如 HTTP、HTTPS）的探测。以下是基本的步骤：</p>
+<ol>
+<li><p><strong>使用docker-compose安装： <code>blackbox_exporter</code>：</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">blackbox-exporter:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">prom/blackbox-exporter</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;9115:9115&quot;</span></span><br><span class="line">  <span class="attr">networks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">prom</span></span><br></pre></td></tr></table></figure>
+<p>在这个例子中，我们定义了一个探测模块，它使用 HTTP GET 请求检测一个网站（<code>example.com</code>）的证书是否过期。你可以根据需要调整配置。</p>
+</li>
+<li><p><strong>配置 Prometheus：</strong></p>
+<p>将 <code>blackbox_exporter</code> 添加到 Prometheus 的配置文件中。以下是一个简单的示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">scrape_configs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">&#x27;blackbox&#x27;</span> </span><br><span class="line"> <span class="attr">metrics_path:</span> <span class="string">/probe</span></span><br><span class="line"> <span class="attr">params:</span> </span><br><span class="line">   <span class="attr">module:</span> [<span class="string">http_2xx</span>] </span><br><span class="line"> <span class="attr">static_configs:</span> </span><br><span class="line">   <span class="bullet">-</span> <span class="attr">targets:</span> </span><br><span class="line">     <span class="comment">#需要监控SSL的域名</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">https://www.baidu.com</span></span><br><span class="line"> <span class="attr">relabel_configs:</span> </span><br><span class="line">   <span class="bullet">-</span> <span class="attr">source_labels:</span> [<span class="string">__address__</span>]</span><br><span class="line">     <span class="attr">target_label:</span> <span class="string">__param_target</span> </span><br><span class="line">   <span class="bullet">-</span> <span class="attr">source_labels:</span> [<span class="string">__param_target</span>]</span><br><span class="line">     <span class="attr">target_label:</span> <span class="string">instance</span> </span><br><span class="line">   <span class="bullet">-</span> <span class="attr">target_label:</span> <span class="string">__address__</span> </span><br><span class="line">     <span class="attr">replacement:</span> <span class="string">blackbox-exporter:9115</span></span><br></pre></td></tr></table></figure>
+<p>在这个例子中，我们配置了一个 <code>blackbox</code> 作业，告诉 Prometheus 去 <code>/probe</code> 路径下检测 <code>http_2xx</code> 模块。</p>
+</li>
+<li><p><strong>重新启动 Prometheus：</strong></p>
+<p>重启 Prometheus 以应用新的配置。</p>
+</li>
+<li><p><strong>查看监控数据：</strong></p>
+<p>在 Prometheus 的 Web UI 或 Grafana 等监控工具中查看证书过期的监控数据。你可以使用 Prometheus 查询语言（PromQL）来创建仪表板或警报规则。</p>
+</li>
+</ol>
+<p>请注意，上述步骤中的配置仅供参考，你需要根据你的具体需求和网络环境进行适当调整。此外，为了避免在生产环境中使用 <code>insecure_skip_verify: true</code>，你应该配置证书验证来提高安全性。<br>在 Docker Compose 中部署 <code>blackbox_exporter</code>，你可以使用一个简单的 Docker Compose 文件来定义 <code>blackbox_exporter</code> 服务。以下是一个基本的示例：</p>
+<ol>
+<li><p><strong>创建 Docker Compose 文件（<code>docker-compose.yml</code>）：</strong></p>
+<p>创建一个文件，例如 <code>docker-compose.yml</code>，并添加以下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">blackbox-exporter:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">prom/blackbox-exporter</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;9115:9115&quot;</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;--config.file=/etc/blackbox_exporter/config.yml&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./config.yml:/etc/blackbox_exporter/config.yml</span></span><br></pre></td></tr></table></figure>
+<p>在这个示例中，我们使用 <code>prom/blackbox-exporter</code> 镜像，将容器的 <code>9115</code> 端口映射到主机的 <code>9115</code> 端口上，并将配置文件 <code>config.yml</code> 挂载到容器的 <code>/etc/blackbox_exporter/</code> 目录下。</p>
+</li>
+<li><p><strong>创建 Blackbox Exporter 配置文件（<code>config.yml</code>）：</strong></p>
+<p>在与 <code>docker-compose.yml</code> 同级的目录下创建 <code>config.yml</code> 文件，用于配置 <code>blackbox_exporter</code>。以下是一个简单的示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">modules:</span></span><br><span class="line">  <span class="attr">http_2xx:</span></span><br><span class="line">    <span class="attr">prober:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">timeout:</span> <span class="string">5s</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">method:</span> <span class="string">GET</span></span><br><span class="line">    <span class="attr">tls:</span></span><br><span class="line">      <span class="attr">insecure_skip_verify:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>这个示例与之前提到的 <code>blackbox.yml</code> 类似。</p>
+</li>
+<li><p><strong>运行 Docker Compose：</strong></p>
+<p>在包含 <code>docker-compose.yml</code> 的目录中执行以下命令启动 <code>blackbox_exporter</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+<p><code>-d</code> 标志表示在后台运行。</p>
+</li>
+<li><p><strong>查看监控数据：</strong></p>
+<p>访问 <code>http://localhost:9115/metrics</code>，你应该能够看到 <code>blackbox_exporter</code> 的监控数据。你也可以将 <code>blackbox-exporter</code> 集成到 Prometheus 中，并在 Grafana 或其他监控工具中查看数据。</p>
+</li>
+</ol>
+<p>确保你的主机上已经安装了 Docker 和 Docker Compose。此外，根据需要，可以调整配置文件和 <code>docker-compose.yml</code> 文件以适应你的环境和需求。</p>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://grafana.com/grafana/dashboards/">grafana-dashboards</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/">prometheus-node-exporter</a></li>
