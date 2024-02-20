@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://swordhell.github.io/2020/11/10/linux-env-init/htop-F2.jpg">
 <meta property="og:image" content="https://swordhell.github.io/2020/11/10/linux-env-init/ncdu.jpg">
 <meta property="article:published_time" content="2020-11-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-01-29T06:16:58.121Z">
+<meta property="article:modified_time" content="2024-02-20T00:07:13.483Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="运维">
 <meta property="article:tag" content="Linux">
@@ -197,7 +197,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-29 14:16:58" itemprop="dateModified" datetime="2024-01-29T14:16:58+08:00">2024-01-29</time>
+                <time title="修改时间：2024-02-20 08:07:13" itemprop="dateModified" datetime="2024-02-20T08:07:13+08:00">2024-02-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -433,7 +433,7 @@
 <p>LDFLAGS</p>
 <h3 id="如何获取当前机器的internet出口"><a href="#如何获取当前机器的internet出口" class="headerlink" title="如何获取当前机器的internet出口"></a>如何获取当前机器的internet出口</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl ifconfig.me</span><br><span class="line">curl icanhazip.com</span><br></pre></td></tr></table></figure>
 <h3 id="安装roguelike游戏"><a href="#安装roguelike游戏" class="headerlink" title="安装roguelike游戏"></a>安装roguelike游戏</h3><p>sudo apt-get install bsdgames-nonfree</p>
-<h3 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useradd -s /bin/bash -m &lt;用户名称&gt;</span><br><span class="line"></span><br><span class="line">新增key信息。</span><br><span class="line"></span><br><span class="line">~/.ssh/authorized_keys</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">useradd -s /bin/bash -m &lt;用户名称&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将用户增加sudo的权限</span></span><br><span class="line">sudo usermod -aG sudo 新用户名</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新增key信息。</span></span><br><span class="line"></span><br><span class="line">~/.ssh/authorized_keys</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p><a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-comm-useradd.html">Linux useradd 命令</a></p>
 <h3 id="aria2"><a href="#aria2" class="headerlink" title="aria2"></a>aria2</h3><p>下载工具；</p>
 <p><a target="_blank" rel="noopener" href="https://aria2.github.io/">https://aria2.github.io/</a></p>
