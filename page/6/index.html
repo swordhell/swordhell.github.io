@@ -710,7 +710,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-29 08:20:34" itemprop="dateModified" datetime="2024-03-29T08:20:34+08:00">2024-03-29</time>
+                <time title="修改时间：2024-03-30 08:01:34" itemprop="dateModified" datetime="2024-03-30T08:01:34+08:00">2024-03-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -738,12 +738,13 @@
 
       
           <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>Bloom Filter布隆过滤器用法。</p>
+<p><img src="/2022/03/15/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/720px-Bloom_filter.svg.png" alt></p>
 <ol>
 <li>如果被判断不是集合的，一定是真；</li>
 <li>被判断为集合的，不一定是真；</li>
 <li>不能删除数据；</li>
 </ol>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">做过一个工程数据记录</span><br><span class="line">加载了60,910 条数据；</span><br><span class="line">占用 1,632 字节；</span><br></pre></td></tr></table></figure>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">做过一个工程数据记录</span><br><span class="line">bloom filter 加载了60,910 条数据；</span><br><span class="line">序列化成json: 111,856 长度</span><br><span class="line">内存中占用 670,955 bytes</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/03/15/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/#more" rel="contents">
