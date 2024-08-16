@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://swordhell.github.io/2021/09/28/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Redis-Data-Type.png">
 <meta property="og:image" content="https://swordhell.github.io/2021/09/28/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Redis-Data-Structure.png">
 <meta property="article:published_time" content="2021-09-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-09T08:21:39.360Z">
+<meta property="article:modified_time" content="2024-08-16T07:52:53.705Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary">
@@ -195,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-08-09 16:21:39" itemprop="dateModified" datetime="2024-08-09T16:21:39+08:00">2024-08-09</time>
+                <time title="修改时间：2024-08-16 15:52:53" itemprop="dateModified" datetime="2024-08-16T15:52:53+08:00">2024-08-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -322,6 +322,9 @@
 </li>
 </ol>
 <p>如果以上方法都无法解决问题，请考虑在 Homebrew 的 GitHub 仓库或相关社区论坛上查找或提出问题，可能会有更多用户遇到相同的问题并找到了解决方案。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">❯ sudo brew services list</span><br><span class="line">Password:</span><br><span class="line">Error: uninitialized constant Homebrew::Service</span><br><span class="line">/opt/homebrew/Library/Homebrew/formula.rb:1267:<span class="keyword">in</span> `service<span class="string">&#x27;</span></span><br><span class="line"><span class="string">/opt/homebrew/Library/Homebrew/formula.rb:1238:in `plist_name&#x27;</span></span><br><span class="line">/opt/homebrew/Library/Homebrew/formula.rb:1250:<span class="keyword">in</span> `launchd_service_path<span class="string">&#x27;</span></span><br><span class="line"><span class="string">/opt/homebrew/Library/Taps/homebrew/homebrew-services/lib/service/formula_wrapper.rb:58:in `service_file&#x27;</span></span><br><span class="line">/opt/homebrew/Library/Taps/homebrew/homebrew-services/lib/service/formula_wrapper.rb:92:<span class="keyword">in</span> `plist?<span class="string">&#x27;</span></span><br><span class="line"><span class="string">/opt/homebrew/Library/Taps/homebrew/homebrew-services/lib/service/formulae.rb:12:in `select&#x27;</span></span><br><span class="line">/opt/homebrew/Library/Taps/homebrew/homebrew-services/lib/service/formulae.rb:12:<span class="keyword">in</span> `available_services<span class="string">&#x27;</span></span><br><span class="line"><span class="string">/opt/homebrew/Library/Taps/homebrew/homebrew-services/lib/service/formulae.rb:17:in `services_list&#x27;</span></span><br><span class="line">/opt/homebrew/Library/Taps/homebrew/homebrew-services/lib/service/commands/list.rb:13:<span class="keyword">in</span> `run<span class="string">&#x27;</span></span><br><span class="line"><span class="string">/opt/homebrew/Library/Taps/homebrew/homebrew-services/cmd/services.rb:102:in `services&#x27;</span></span><br><span class="line">/opt/homebrew/Library/Homebrew/brew.rb:98:<span class="keyword">in</span> `public_send<span class="string">&#x27;</span></span><br><span class="line"><span class="string">/opt/homebrew/Library/Homebrew/brew.rb:98:in `&lt;main&gt;&#x27;</span></span><br><span class="line">If reporting this issue please <span class="keyword">do</span> so at (not Homebrew/brew or Homebrew/homebrew-core):</span><br><span class="line">  https://github.com/homebrew/homebrew-services/issues/new</span><br><span class="line">❯ git -C $(brew --repo homebrew/services) remote get-url origin</span><br><span class="line">https://gitee.com/imirror/homebrew-services.git</span><br><span class="line">❯ git -C $(brew --repo homebrew/services) show HEAD</span><br><span class="line">❯ git -C <span class="string">&quot;<span class="subst">$(brew --repo homebrew/services)</span>&quot;</span> remote set-url origin https://github.com/Homebrew/homebrew-services.git</span><br><span class="line">brew update</span><br></pre></td></tr></table></figure>
+<p>国内的mac使用的brew有可能是gitee，这个山寨货。</p>
+<p>参考： <a target="_blank" rel="noopener" href="https://github.com/Homebrew/homebrew-core/issues/127329">https://github.com/Homebrew/homebrew-core/issues/127329</a></p>
 <h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ul>
 <li>[ ] <a target="_blank" rel="noopener" href="https://www.runoob.com/redis/redis-tutorial.html">Redis菜鸟入门</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://www.cnblogs.com/qqflying/p/9192331.html">超强、超详细Redis入门教程【转】</a></li>
