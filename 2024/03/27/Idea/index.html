@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://swordhell.github.io/2024/03/27/Idea/jetbrains_logo.webp">
 <meta property="article:published_time" content="2024-03-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-03-27T09:37:46.816Z">
+<meta property="article:modified_time" content="2024-09-05T06:45:09.777Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="vscode">
 <meta name="twitter:card" content="summary">
@@ -186,10 +186,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-03-27 00:00:00 / 修改时间：17:37:46" itemprop="dateCreated datePublished" datetime="2024-03-27T00:00:00+08:00">2024-03-27</time>
+              <time title="创建时间：2024-03-27 00:00:00" itemprop="dateCreated datePublished" datetime="2024-03-27T00:00:00+08:00">2024-03-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-09-05 14:45:09" itemprop="dateModified" datetime="2024-09-05T14:45:09+08:00">2024-09-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -231,6 +237,15 @@
 <p>cmd+shift+u</p>
 <p>加书签🔖</p>
 <p>F3</p>
+<p>在更新了 go 版本后，使用 goland 进行调试会报错</p>
+<p>WARNING: undefined behavior - version of Delve is too old for Go version 1.20.5 (maximum supported version 1.19)</p>
+<p>这是因为 go 的版本升级后，相对 dlv 的版本就低了。<br>所以解决办法就是升级对应的 dlv 版本</p>
+<p>进入到 GOPATH 中<br>如果忘记了 GOPATH 是什么，输入 go env GOPATH 即可。</p>
+<p>在 GOPATH 对应目录下安装最新版的 dlv<br>go install github.com/go-delve/delve/cmd/dlv@latest</p>
+<p>安装完毕后，其被安装在 GOPATH/bin 目录下，即 GOPATH/bin/dlv</p>
+<p>打开 Goland 菜单栏 Help 下的 Edit Custom Properties，会自动打开一个文件 idea.properties</p>
+<p>添加如下内容到 idea.properites<br>dlv.path=/Users/solego/go/bin/dlv</p>
+<p>重启Goland即可</p>
 
     </div>
 
