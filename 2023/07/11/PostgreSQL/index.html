@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://swordhell.github.io/2023/07/11/PostgreSQL/PostgreSQL.webp">
 <meta property="article:published_time" content="2023-07-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-07T06:44:34.061Z">
+<meta property="article:modified_time" content="2024-09-07T10:28:16.202Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
@@ -194,7 +194,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-08-07 14:44:34" itemprop="dateModified" datetime="2024-08-07T14:44:34+08:00">2024-08-07</time>
+                <time title="修改时间：2024-09-07 18:28:16" itemprop="dateModified" datetime="2024-09-07T18:28:16+08:00">2024-09-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -357,7 +357,7 @@
 <p>这样，用户密码就会被正确设置，连接时不会再出现缺少密码的错误。</p>
 <p>要在 Ubuntu 中卸载 PostgreSQL，可以按照以下步骤操作：</p>
 <h3 id="1-停止-PostgreSQL-服务"><a href="#1-停止-PostgreSQL-服务" class="headerlink" title="1. 停止 PostgreSQL 服务"></a>1. 停止 PostgreSQL 服务</h3><p>在卸载之前，最好先停止 PostgreSQL 服务：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop postgresql</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop postgresql</span><br><span class="line">sudo systemctl start postgresql</span><br><span class="line">sudo systemctl status postgresql</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> postgresql</span><br><span class="line">sudo systemctl <span class="built_in">cat</span> postgresql</span><br></pre></td></tr></table></figure>
 <h3 id="2-卸载-PostgreSQL-包"><a href="#2-卸载-PostgreSQL-包" class="headerlink" title="2. 卸载 PostgreSQL 包"></a>2. 卸载 PostgreSQL 包</h3><p>使用 <code>apt</code> 命令卸载 PostgreSQL 及其相关的包：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get --purge remove postgresql postgresql-client postgresql-contrib</span><br></pre></td></tr></table></figure>
 <p>这将卸载 PostgreSQL 服务器、客户端和扩展工具。</p>
