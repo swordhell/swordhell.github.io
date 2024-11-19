@@ -28,7 +28,7 @@
 <meta property="og:description" content="记录一些比较好的库，到时候可以方便使用。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-10-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-06-05T13:35:20.483Z">
+<meta property="article:modified_time" content="2024-11-17T22:59:00.534Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-06-05 21:35:20" itemprop="dateModified" datetime="2024-06-05T21:35:20+08:00">2024-06-05</time>
+                <time title="修改时间：2024-11-18 06:59:00" itemprop="dateModified" datetime="2024-11-18T06:59:00+08:00">2024-11-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,6 +240,66 @@
 <li>使用标准的<code>crypto/rand</code>库来生成安全的随机数，确保密码的强度和随机性。</li>
 </ol>
 <p>运行此程序将生成一个包含至少每种类型字符的8位密码。</p>
+<p>sh: 1: vite: not found<br>这个错误表明在执行 Vite 命令时，系统找不到 vite 可执行文件。以下是可能的原因和解决方案：</p>
+<p>原因分析</p>
+<pre><code>1.    未安装 Vite：
+•    你可能没有安装 Vite 或者安装失败。
+2.    全局路径问题：
+•    Vite 未安装为全局模块，或者环境变量未正确配置。
+3.    运行环境问题：
+•    你可能是在非项目目录下运行了 vite 命令。
+</code></pre><p>解决方案</p>
+<ol>
+<li>确保 Vite 已正确安装</li>
+</ol>
+<p>Vite 可以作为全局依赖或项目本地依赖安装。首先，尝试以下命令：</p>
+<pre><code>•    全局安装 Vite：
+</code></pre><p>npm install -g vite</p>
+<pre><code>•    或者在项目中安装：
+</code></pre><p>npm install vite —save-dev</p>
+<ol>
+<li>检查 node_modules 中的 Vite</li>
+</ol>
+<p>如果安装为本地依赖，运行以下命令来确保 vite 安装在 node_modules 中：</p>
+<p>ls node_modules/.bin/vite</p>
+<p>如果存在，则用 npx 命令执行：</p>
+<p>npx vite</p>
+<ol>
+<li>检查全局路径</li>
+</ol>
+<p>如果你安装了全局 Vite (-g 选项)，但仍然出现错误，可能是 npm 的全局路径未加入环境变量。</p>
+<p>运行以下命令检查全局路径：</p>
+<p>npm list -g —depth=0</p>
+<p>确保 Vite 在全局模块中。如果存在但无法找到，手动添加路径到环境变量：</p>
+<pre><code>•    查看全局路径：
+</code></pre><p>npm config get prefix</p>
+<p>通常是 /usr/local 或类似路径。</p>
+<pre><code>•    将全局路径添加到 PATH 环境变量中：
+</code></pre><p>export PATH=$PATH:$(npm config get prefix)/bin</p>
+<p>将此行添加到 ~/.bashrc 或 ~/.zshrc，以便永久生效。</p>
+<ol>
+<li>运行环境问题</li>
+</ol>
+<p>确保你在项目目录中运行 vite 命令。如果是启动开发服务器，应该进入包含 package.json 的目录，再运行以下命令：</p>
+<p>npm run dev</p>
+<ol>
+<li>重装 Node.js 和 Vite</li>
+</ol>
+<p>如果问题依然存在，可能需要重新安装 Node.js 和 Vite：</p>
+<pre><code>1.    删除旧的 Node.js 和全局模块。
+2.    安装 Node.js 最新版本。
+3.    按需重新安装 Vite。
+</code></pre><p>验证安装是否成功</p>
+<p>安装完成后，运行以下命令检查：</p>
+<p>vite —version</p>
+<p>如果显示版本号，说明安装成功。</p>
+<p>额外建议</p>
+<pre><code>•    如果你使用的是 Yarn 或 PNPM，可以尝试对应的命令安装 Vite：
+</code></pre><p>yarn add vite —dev<br>pnpm add vite —save-dev</p>
+<pre><code>•    如果是一个特定项目问题，检查 package.json 的 scripts 配置是否正确。
+</code></pre><p>gin-admin-vue</p>
+<p>默认密码 123456</p>
+<p>默认端口： 前端 8080 后端 8888</p>
 
     </div>
 
@@ -340,7 +400,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
