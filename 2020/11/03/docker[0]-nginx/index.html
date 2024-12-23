@@ -28,7 +28,7 @@
 <meta property="og:description" content="学习docker 简介docker是为了简化外网服务器软件环境部署的工作。现在初浅的理解是，可以在linux机器上通过docker单独安装mysql,nginx,应用程序的也可以跑在一个docker之上。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-11T00:56:34.362Z">
+<meta property="article:modified_time" content="2024-12-19T00:27:31.623Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="运维">
 <meta name="twitter:card" content="summary">
@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-11 08:56:34" itemprop="dateModified" datetime="2024-12-11T08:56:34+08:00">2024-12-11</time>
+                <time title="修改时间：2024-12-19 08:27:31" itemprop="dateModified" datetime="2024-12-19T08:27:31+08:00">2024-12-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -456,6 +456,12 @@
 </ol>
 <p>通过以上步骤，你应该能够更好地管理和释放 <code>/var/lib/docker/overlay2</code> 目录的磁盘空间。如果还有其他问题，欢迎随时咨询。</p>
 <p>可能还需要重启服务器一次。</p>
+<ol>
+<li>使用 docker-compose 配置解决权限问题</li>
+</ol>
+<p>现在是由于docker在运行的时候无法写入。需要如何做比较合适。</p>
+<p>如果使用 docker-compose，可以通过 volumes 和 user 选项来配置。例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">bsc-node:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">your_image</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">bsc_node</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/bsc/node:/bsc/node</span></span><br><span class="line">    <span class="attr">user:</span> <span class="string">&quot;$&#123;UID&#125;:$&#123;GID&#125;&quot;</span> <span class="comment"># 使用宿主机用户运行</span></span><br></pre></td></tr></table></figure>
 <h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://www.docker.com/">官方网站</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-tutorial.html">菜鸟入门</a></li>
