@@ -28,7 +28,7 @@
 <meta property="og:description" content="简介学习golang的入门的信息；本章只记录一下golang语言的历史，go语言环境搭建，如何编译go语言程序。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-09-23T13:27:45.396Z">
+<meta property="article:modified_time" content="2025-02-12T09:17:33.450Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-09-23 21:27:45" itemprop="dateModified" datetime="2024-09-23T21:27:45+08:00">2024-09-23</time>
+                <time title="修改时间：2025-02-12 17:17:33" itemprop="dateModified" datetime="2025-02-12T17:17:33+08:00">2025-02-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -545,6 +545,84 @@
 <h3 id="调试器失灵"><a href="#调试器失灵" class="headerlink" title="调试器失灵"></a>调试器失灵</h3><p>could not launch process: error reading debug_info: decoding dwarf section info at offset 0x94ca8b: DW_FORM_strx with no .debug_str_offsets section</p>
 <p>go install github.com/go-delve/delve/cmd/dlv@master</p>
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/78996918/getting-the-following-error-while-trying-to-debug-go-tests-in-vscode-on-mac">https://stackoverflow.com/questions/78996918/getting-the-following-error-while-trying-to-debug-go-tests-in-vscode-on-mac</a></p>
+<p>是的，Git Submodule 支持指定分支，你可以在添加子模块时指定它跟踪的分支，而不是默认的 HEAD。下面是详细操作：</p>
+<ol>
+<li>添加 Submodule 并指定分支</li>
+</ol>
+<p>默认情况下，git submodule add 只会添加一个固定的 commit，而不会跟踪远程分支。要让 Submodule 跟踪特定分支，可以这样做：</p>
+<p>步骤 1：添加子模块并指定分支</p>
+<p>git submodule add -b my-branch <a target="_blank" rel="noopener" href="https://github.com/user/dependency-project.git">https://github.com/user/dependency-project.git</a> internal/dependency</p>
+<p>这里：<br>    •    -b my-branch 让 dependency-project 跟踪 my-branch 分支。<br>    •    internal/dependency 是存放子模块的路径。</p>
+<ol>
+<li>更新 Submodule 以同步远程分支</li>
+</ol>
+<p>默认情况下，git submodule update 只会获取固定的 commit，而不会自动拉取最新的分支。所以，你需要执行：</p>
+<p>git submodule update —remote</p>
+<p>这会让所有子模块更新到 远程分支的最新提交。</p>
+<p>如果你只想更新某个特定的子模块：</p>
+<p>git submodule update —remote internal/dependency</p>
+<ol>
+<li>自动拉取最新代码</li>
+</ol>
+<p>如果你希望每次 git pull 时，Submodule 也自动更新，可以这样配置：</p>
+<p>git config -f .gitmodules submodule.internal/dependency.branch my-branch</p>
+<p>然后，在主项目里执行：</p>
+<p>git submodule update —remote —merge</p>
+<p>这会 自动更新 Submodule 到远程 my-branch 的最新提交。</p>
+<ol>
+<li>提交子模块的变更</li>
+</ol>
+<p>当 Submodule 有变更后，你需要在主项目中提交更新：</p>
+<p>git add internal/dependency<br>git commit -m “Update submodule to latest commit on my-branch”<br>git push origin main</p>
+<ol>
+<li>克隆包含 Submodule 的项目</li>
+</ol>
+<p>如果其他人克隆你的项目，需要执行：</p>
+<p>git clone —recurse-submodules <a target="_blank" rel="noopener" href="https://github.com/user/main-project.git">https://github.com/user/main-project.git</a></p>
+<p>如果已经克隆了主项目但没有子模块，可以手动初始化：</p>
+<p>git submodule update —init —recursive</p>
+<p>总结</p>
+<p>命令    作用<br>git submodule add -b my-branch <repo> <path>    添加子模块并指定分支<br>git submodule update —remote    更新所有 Submodule 到最新的远程分支<br>git submodule update —remote —merge    更新 Submodule 并合并最新变更<br>git config -f .gitmodules submodule.<path>.branch my-branch    配置子模块跟踪分支<br>git clone —recurse-submodules <repo>    克隆项目并初始化子模块</repo></path></path></repo></p>
+<p>这样，你的子模块就能自动跟随远程分支，而不只是固定在某个 commit 了！🚀<br>如果你想彻底移除某个 Git Submodule，需要清理多个地方。以下是完整的移除步骤：</p>
+<ol>
+<li>取消 Submodule 关联</li>
+</ol>
+<p>首先，使用以下命令从 Git 记录中删除子模块：</p>
+<p>git submodule deinit -f — internal/dependency</p>
+<p>这里：<br>    •    internal/dependency 是你的子模块路径。</p>
+<p>这会移除 .git/modules/internal/dependency 目录，并取消子模块的关联。</p>
+<ol>
+<li>删除子模块目录</li>
+</ol>
+<p>手动删除子模块的代码目录：</p>
+<p>rm -rf internal/dependency</p>
+<p>此时，子模块的代码文件已经被删除。</p>
+<ol>
+<li>从 Git 配置中删除 Submodule</li>
+</ol>
+<p>编辑 .gitmodules 文件，找到类似下面的内容：</p>
+<p>[submodule “internal/dependency”]<br>    path = internal/dependency<br>    url = <a target="_blank" rel="noopener" href="https://github.com/user/dependency-project.git">https://github.com/user/dependency-project.git</a></p>
+<p>删除该部分的配置，然后保存。</p>
+<ol>
+<li>从 Git 记录中删除 Submodule</li>
+</ol>
+<p>从 Git 索引中删除子模块的记录：</p>
+<p>git rm —cached internal/dependency</p>
+<p>然后提交变更：</p>
+<p>git commit -m “Remove submodule internal/dependency”</p>
+<ol>
+<li>清理 Git 残留（可选）</li>
+</ol>
+<p>可以执行以下命令，彻底清理子模块的缓存：</p>
+<p>rm -rf .git/modules/internal/dependency</p>
+<ol>
+<li>推送到远程仓库</li>
+</ol>
+<p>最后，把删除 Submodule 的变更推送到远程：</p>
+<p>git push origin main</p>
+<p>总结</p>
+<p>步骤    命令<br>取消子模块关联    git submodule deinit -f — <submodule_path><br>删除子模块目录    rm -rf <submodule_path><br>移除 .gitmodules 里的配置    手动删除相关条目<br>从 Git 记录中删除    git rm —cached <submodule_path><br>清理 .git/modules 目录    rm -rf .git/modules/<submodule_path><br>提交变更    git commit -m “Remove submodule <submodule_path>“ &amp;&amp; git push</submodule_path></submodule_path></submodule_path></submodule_path></submodule_path></p>
+<p>这样，你的 Git 仓库就完全清理掉了这个子模块！🚀</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://www.runoob.com/go/go-tutorial.html">Go语言菜鸟</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="http://c.biancheng.net/golang/">Go语言入门</a></li>
