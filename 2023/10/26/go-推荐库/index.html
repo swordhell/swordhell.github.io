@@ -28,7 +28,7 @@
 <meta property="og:description" content="记录一些比较好的库，到时候可以方便使用。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-10-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-17T22:59:00.534Z">
+<meta property="article:modified_time" content="2025-02-27T01:52:14.173Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-18 06:59:00" itemprop="dateModified" datetime="2024-11-18T06:59:00+08:00">2024-11-18</time>
+                <time title="修改时间：2025-02-27 09:52:14" itemprop="dateModified" datetime="2025-02-27T09:52:14+08:00">2025-02-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -300,6 +300,102 @@
 </code></pre><p>gin-admin-vue</p>
 <p>默认密码 123456</p>
 <p>默认端口： 前端 8080 后端 8888</p>
+<p>要快速检查你的 Golang 项目中 go.mod 文件所依赖的库是否存在已知的安全风险，可以使用以下几种方法：</p>
+<ol>
+<li>使用 GoSec 工具</li>
+</ol>
+<p>GoSec 是一个静态分析工具，可以帮助你扫描 Go 代码中的安全漏洞。</p>
+<p>安装 GoSec</p>
+<p>你可以通过以下命令安装 GoSec：</p>
+<p>go install github.com/securego/gosec/v2/cmd/gosec@latest</p>
+<p>使用 GoSec 扫描项目</p>
+<p>然后，使用 gosec 对你的 Go 项目进行扫描：</p>
+<p>gosec ./…</p>
+<p>GoSec 会扫描项目中的所有 .go 文件，并报告可能的安全问题。它并不直接针对 go.mod 文件，但可以帮助你发现代码中可能的安全漏洞。</p>
+<ol>
+<li>使用 Snyk 扫描 Go 依赖库</li>
+</ol>
+<p>Snyk 是一个流行的安全工具，提供了对 go.mod 中的所有依赖包进行漏洞扫描的功能。</p>
+<p>安装 Snyk CLI</p>
+<p>你可以通过以下命令安装 Snyk：</p>
+<p>npm install -g snyk</p>
+<p>扫描项目中的依赖</p>
+<p>然后，使用以下命令扫描 go.mod 中的依赖：</p>
+<p>snyk test —all-projects</p>
+<p>Snyk 会检查项目的依赖库（包括 go.mod 和 go.sum 文件）是否有已知的漏洞，并显示安全报告。</p>
+<p>注册并连接你的项目</p>
+<p>你还可以通过 Snyk 的官方网站注册账户并连接你的 GitHub、GitLab 等代码仓库，定期扫描并监控项目的安全性。</p>
+<ol>
+<li>使用 Dependabot 或 GitHub Security Alerts</li>
+</ol>
+<p>如果你的项目托管在 GitHub 上，你可以启用 GitHub 提供的安全功能（如 Dependabot 或 Security Alerts）来自动检测依赖项中的漏洞。</p>
+<p>启用 Dependabot</p>
+<pre><code>1.    在你的 GitHub 项目中，点击 “Settings”。
+2.    在 “Security &amp; analysis” 部分，启用 “Dependabot alerts” 和 “Dependabot security updates”。
+3.    Dependabot 会自动扫描你项目的 go.mod 文件，并在发现依赖项存在已知漏洞时，自动创建一个拉取请求来更新依赖库。
+</code></pre><p>使用 GitHub Security Alerts</p>
+<p>如果启用了 GitHub 的安全功能，它会在发现项目中使用的库存在安全漏洞时，直接给出警告通知，并提供修复建议。</p>
+<ol>
+<li>使用 Go Modules Vulnerability Database</li>
+</ol>
+<p>Go 官方提供了一个名为 Go Modules Vulnerability Database 的数据库，你可以使用它来查找 Go 模块中已知的漏洞。</p>
+<p>手动查询</p>
+<p>你可以访问 Go 官方的漏洞数据库网站来查看某个库是否有已知的漏洞：</p>
+<p>Go Vulnerability Database</p>
+<ol>
+<li>使用 govulncheck</li>
+</ol>
+<p>govulncheck 是 Go 官方提供的工具，可以扫描 Go 代码中的漏洞。</p>
+<p>安装 govulncheck</p>
+<p>使用以下命令安装 govulncheck：</p>
+<p>go install golang.org/x/vuln/cmd/govulncheck@latest</p>
+<p>扫描 Go 项目</p>
+<p>然后，在项目根目录下运行以下命令：</p>
+<p>govulncheck ./…</p>
+<p>该工具会扫描 Go 代码并报告与已知漏洞相关的任何依赖库。</p>
+<p>总结<br>    •    GoSec 和 govulncheck 适合检查代码中的安全漏洞。<br>    •    Snyk 是一个跨语言的工具，能够检测 go.mod 依赖中的安全问题。<br>    •    如果你的代码托管在 GitHub 上，可以利用 Dependabot 和 GitHub Security Alerts 来自动扫描和更新存在漏洞的依赖。</p>
+<p>结合这些工具，你可以快速检测和修复 go.mod 文件中的潜在安全风险，确保依赖项的安全性。</p>
+<p>是的，Go 语言有多个 lint 插件可以用来检查代码质量、风格以及潜在的错误。最常用的工具是 golint 和 staticcheck，它们都可以帮助你发现代码中的常见问题。</p>
+<ol>
+<li>golint</li>
+</ol>
+<p>golint 是一个非常基础的 Go 代码检查工具，主要关注代码风格。它会检查诸如注释风格、变量命名、函数命名等问题。golint 并不会像 staticcheck 那样检查更复杂的潜在错误，但它能帮助你写出符合 Go 编码规范的代码。</p>
+<p>安装 golint</p>
+<p>go install golang.org/x/lint/golint@latest</p>
+<p>使用 golint 检查代码</p>
+<p>在你的 Go 项目中，你可以通过命令行使用 golint 来检查某个文件或目录：</p>
+<p>golint ./…</p>
+<p>这会检查当前目录及其子目录中的所有 Go 文件，并输出建议。</p>
+<ol>
+<li>staticcheck</li>
+</ol>
+<p>staticcheck 是一个功能更强大的工具，不仅会检查代码风格问题，还会检查潜在的逻辑错误、性能问题、冗余代码等。它比 golint 更全面，更适合用于大型项目。</p>
+<p>安装 staticcheck</p>
+<p>go install honnef.co/go/tools/cmd/staticcheck@latest</p>
+<p>使用 staticcheck 检查代码</p>
+<p>同样，你可以通过命令行在 Go 项目中使用 staticcheck：</p>
+<p>staticcheck ./…</p>
+<ol>
+<li>VS Code 插件（如果你使用 VS Code）</li>
+</ol>
+<p>如果你使用 VS Code 编辑器，有很多插件可以集成 Go lint 工具，提升开发体验。</p>
+<p>Go 扩展插件<br>    •    安装 Go 插件：首先，在 VS Code 中安装 Go 插件。这个插件会自动集成 golint、staticcheck 和其他 Go 工具。<br>    •    配置 Go 插件：在安装完 Go 插件后，你可以通过设置来启用或禁用 golint、staticcheck 等工具的集成，通常 VS Code 会自动检测并提示你安装需要的工具。</p>
+<p>配置 VS Code 使用 Lint 工具</p>
+<pre><code>1.    打开 VS Code 的设置（Ctrl + ,）。
+2.    搜索 Go Lint，然后根据需要启用或禁用相应的 lint 工具。
+3.    在 .vscode/settings.json 中，你可以手动配置 lint 工具的路径：
+</code></pre><p>{<br>  “go.lintTool”: “golint”, // 或 “staticcheck”<br>  “go.lintOnSave”: “file”,<br>  “go.lintFlags”: []<br>}</p>
+<ol>
+<li>其他 Lint 工具</li>
+</ol>
+<p>除了 golint 和 staticcheck，你还可以使用一些其他 Go 的 lint 工具：<br>    •    golangci-lint: 它是一个非常流行的 Go lint 集成工具，支持多种 lint 引擎（包括 golint、staticcheck 等）。它是一个多功能的 linter，可以通过配置文件控制启用哪些检查。</p>
+<p>安装 golangci-lint</p>
+<p>go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest</p>
+<p>使用 golangci-lint</p>
+<p>golangci-lint run</p>
+<p>你也可以创建一个配置文件 .golangci.yml 来定制化 lint 行为。</p>
+<p>总结<br>    •    golint 适合用于基础的代码风格检查。<br>    •    staticcheck 更适合查找潜在的错误和优化建议。<br>    •    golangci-lint 可以集成多个 lint 工具，提供更全面的检查。</p>
+<p>这些工具都可以提高代码质量，减少潜在的错误，建议你在项目中使用它们进行自动化代码检查。</p>
 
     </div>
 
