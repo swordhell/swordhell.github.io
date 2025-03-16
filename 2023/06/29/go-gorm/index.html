@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://swordhell.github.io/2023/06/29/go-gorm/gorm.svg">
 <meta property="article:published_time" content="2023-06-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-22T06:39:48.321Z">
+<meta property="article:modified_time" content="2025-03-16T02:20:25.114Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -194,7 +194,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-10-22 14:39:48" itemprop="dateModified" datetime="2024-10-22T14:39:48+08:00">2024-10-22</time>
+                <time title="修改时间：2025-03-16 10:20:25" itemprop="dateModified" datetime="2025-03-16T10:20:25+08:00">2025-03-16</time>
               </span>
 
           
@@ -320,7 +320,51 @@
 <pre><code>•    如果要批量更新相同字段值，可以直接使用 GORM 的 Updates 方法。
 •    如果要批量更新不同字段值，可以使用构造的原生 SQL 或使用事务逐条更新的方式。
 •    如果你的需求是根据主键批量插入或更新，可以使用 Save 方法。
-</code></pre><p>具体选择哪种方式取决于你的业务需求和性能考虑。</p>
+</code></pre><p>具体选择哪种方式取决于你的业务需求和性能考虑。<br>GORM 默认在 First 查询时会在 ORDER BY 里自动添加 id，这是因为 First 方法通常用于查找最早的记录，而 id 通常是主键。因此，GORM 会默认追加 ORDER BY id，但你的场景不需要这个行为。</p>
+<p>⸻</p>
+<p>✅ 解决方案</p>
+<p>方法 1：使用 Select 指定查询字段</p>
+<p>tx := dbinit.Gormdb.Debug().<br>    Model(&amp;model.TblLogs{}).<br>    Select(“*”).  // 显式选择所有字段，避免 GORM 默认加 <code>id</code><br>    Where(“workchain = ? AND shard = ? AND robot_id = ?”, workchain, shard, viper.GetInt(“chain.robot_id”)).<br>    Order(“seqno DESC”).<br>    Limit(1).<br>    Find(&amp;row) // 改用 <code>Find</code> 而不是 <code>First</code></p>
+<p>为什么？<br>    •    First(&amp;row) 会默认添加 ORDER BY id，导致你的 SQL 出现 ORDER BY seqno DESC, id。<br>    •    Find(&amp;row) 不会自动追加 id，但仍然可以使用 Limit(1) 来获取最新一条数据。</p>
+<p>⸻</p>
+<p>方法 2：使用 Session(&amp;gorm.Session{SkipDefaultTransaction: true})</p>
+<p>如果你仍想使用 First，但不想要 id，可以用 Session 让 GORM 忽略一些默认行为：</p>
+<p>tx := dbinit.Gormdb.Debug().<br>    Session(&amp;gorm.Session{QueryFields: true}). // 让 GORM 严格按 <code>SELECT *</code> 查询<br>    Model(&amp;model.TblLogs{}).<br>    Where(“workchain = ? AND shard = ? AND robot_id = ?”, workchain, shard, viper.GetInt(“chain.robot_id”)).<br>    Order(“seqno DESC”).<br>    First(&amp;row)</p>
+<p>但是 方法 1 更推荐，因为 Find 不会加 id，更符合你的需求。</p>
+<p>⸻</p>
+<p>✅ 结论</p>
+<p>推荐方法：使用 Find(&amp;row).Limit(1)，避免 GORM 在 ORDER BY 里强制加 id。</p>
+<h2 id="删除掉数据的时候按照这个逻辑来写"><a href="#删除掉数据的时候按照这个逻辑来写" class="headerlink" title="删除掉数据的时候按照这个逻辑来写"></a>删除掉数据的时候按照这个逻辑来写</h2><p>```golang<br>func ClearPersonData(timeLimit time.Time, countLimit int) {<br>    var ids []int64</p>
+<pre><code>// 1️⃣ 查询符合条件的 ID，限制 countLimit
+err := Gormdb.Model(&amp;model.TblPersonData&#123;&#125;).
+    Select(&quot;id&quot;, &quot;open_time&quot;).
+    Where(&quot;open_time &lt; ?&quot;, timeLimit).
+    Order(&quot;id ASC&quot;).
+    Limit(countLimit).
+    Pluck(&quot;id&quot;, &amp;ids).Error
+
+if err != nil &#123;
+    logrus.Warnln(&quot;Query Person IDs failed&quot;, err, &quot;timeLimit&quot;, timeLimit, &quot;countLimit&quot;, countLimit)
+    return
+&#125;
+
+// 2️⃣ 没有数据可删，直接返回
+if len(ids) == 0 &#123;
+    logrus.Infoln(&quot;No outdated Person data found, skipping deletion&quot;)
+    return
+&#125;
+
+// 3️⃣ 按 ID 删除，避免全表扫描
+tx := Gormdb.Where(&quot;id IN (?)&quot;, ids).Delete(&amp;model.TblPersonData&#123;&#125;)
+if tx.Error != nil &#123;
+    logrus.Warnln(&quot;ClearPersonData delete error&quot;, tx.Error, &quot;timeLimit&quot;, timeLimit, &quot;countLimit&quot;, countLimit)
+&#125; else &#123;
+    logrus.Infoln(&quot;ClearPersonData success&quot;,
+        &quot;timeLimit&quot;, timeLimit,
+        &quot;countLimit&quot;, countLimit,
+        &quot;RowsAffected&quot;, tx.RowsAffected)
+&#125;
+</code></pre><p>}</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm">gorm-github</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://gorm.io/zh_CN/docs/index.html">gorm中文资料</a></li>
@@ -411,7 +455,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5-mysql"><span class="nav-number">1.0.1.</span> <span class="nav-text">连接 mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA"><span class="nav-number">1.0.2.</span> <span class="nav-text">创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#upsert"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">upsert</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#group%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%8F%96%E6%8C%87%E5%AE%9A%E6%9F%90%E4%B8%AA%E6%95%B0%E6%8D%AE"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">group方式读取指定某个数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E7%A9%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.1.1.</span> <span class="nav-text">处理空字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E4%B8%8D%E5%87%BA%E6%9D%A5%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">查询不出来问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E6%97%A0%E9%9C%80%E5%81%9Aescape"><span class="nav-number">1.1.3.</span> <span class="nav-text">密码无需做escape</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%AD%97%E6%AE%B5unique"><span class="nav-number">1.1.4.</span> <span class="nav-text">多字段unique</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E8%B0%83%E6%9F%A5%E4%B8%80%E4%B8%8B"><span class="nav-number">1.1.5.</span> <span class="nav-text">需要调查一下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E5%88%A0%E9%99%A4"><span class="nav-number">1.1.6.</span> <span class="nav-text">软删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E4%B8%BA%E7%A9%BA%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">1.1.7.</span> <span class="nav-text">时间为空的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-COALESCE-%E9%98%B2%E6%AD%A2%E6%8A%A5%E9%94%99"><span class="nav-number">1.1.8.</span> <span class="nav-text">使用 COALESCE 防止报错</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.2.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5-mysql"><span class="nav-number">1.0.1.</span> <span class="nav-text">连接 mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA"><span class="nav-number">1.0.2.</span> <span class="nav-text">创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#upsert"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">upsert</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#group%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%8F%96%E6%8C%87%E5%AE%9A%E6%9F%90%E4%B8%AA%E6%95%B0%E6%8D%AE"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">group方式读取指定某个数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E7%A9%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.1.1.</span> <span class="nav-text">处理空字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E4%B8%8D%E5%87%BA%E6%9D%A5%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">查询不出来问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E6%97%A0%E9%9C%80%E5%81%9Aescape"><span class="nav-number">1.1.3.</span> <span class="nav-text">密码无需做escape</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%AD%97%E6%AE%B5unique"><span class="nav-number">1.1.4.</span> <span class="nav-text">多字段unique</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E8%B0%83%E6%9F%A5%E4%B8%80%E4%B8%8B"><span class="nav-number">1.1.5.</span> <span class="nav-text">需要调查一下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E5%88%A0%E9%99%A4"><span class="nav-number">1.1.6.</span> <span class="nav-text">软删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E4%B8%BA%E7%A9%BA%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">1.1.7.</span> <span class="nav-text">时间为空的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-COALESCE-%E9%98%B2%E6%AD%A2%E6%8A%A5%E9%94%99"><span class="nav-number">1.1.8.</span> <span class="nav-text">使用 COALESCE 防止报错</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%8E%89%E6%95%B0%E6%8D%AE%E7%9A%84%E6%97%B6%E5%80%99%E6%8C%89%E7%85%A7%E8%BF%99%E4%B8%AA%E9%80%BB%E8%BE%91%E6%9D%A5%E5%86%99"><span class="nav-number">1.2.</span> <span class="nav-text">删除掉数据的时候按照这个逻辑来写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
