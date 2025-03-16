@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在 MySQL 中，你可以使用以下方法来诊断某个慢 SQL 的执行速度以及它命中的索引。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-慢查询诊断">
+<meta property="og:url" content="https://swordhell.github.io/2025/03/16/MySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E8%AF%8A%E6%96%AD/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="在 MySQL 中，你可以使用以下方法来诊断某个慢 SQL 的执行速度以及它命中的索引。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-16T01:37:09.927Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2025/03/16/MySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E8%AF%8A%E6%96%AD/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MySQL-慢查询诊断 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/03/16/MySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E8%AF%8A%E6%96%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL-慢查询诊断
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-03-16 00:00:00 / 修改时间：09:37:09" itemprop="dateCreated datePublished" datetime="2025-03-16T00:00:00+08:00">2025-03-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/DB/" itemprop="url" rel="index"><span itemprop="name">DB</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在 MySQL 中，你可以使用以下方法来诊断某个慢 SQL 的执行速度以及它命中的索引。</p>
+<span id="more"></span>
+<p>⸻</p>
+<ol>
+<li>使用 EXPLAIN 分析 SQL 执行计划</li>
+</ol>
+<p>MySQL 提供了 EXPLAIN 关键字，它可以告诉你：<br>    •    查询的执行方式<br>    •    是否使用索引<br>    •    索引的选择情况<br>    •    是否存在全表扫描</p>
+<p>🔹 语法</p>
+<p>EXPLAIN SELECT * FROM tb_person_data WHERE symbol = ‘CNY’ AND kline_type = ‘1m’ ORDER BY open_time DESC LIMIT 1;</p>
+<p>🔹 结果示例</p>
+<p>id    select_type    table    type    possible_keys    key    key_len    ref    rows    Extra<br>1    SIMPLE    tb_person_data    index    idx_symbol_time    idx_symbol_time    12    NULL    100    Using where; Using index</p>
+<p>字段解析<br>    •    type：索引使用类型（ALL=全表扫描，index=索引扫描，range=范围扫描，ref=索引查找）<br>    •    possible_keys：查询可能使用的索引<br>    •    key：实际使用的索引<br>    •    key_len：索引的字节长度<br>    •    rows：MySQL 估算的扫描行数<br>    •    Extra：<br>    •    Using index：查询只使用索引，不需要回表，速度最快<br>    •    Using where：需要额外的 WHERE 过滤<br>    •    Using temporary; Using filesort：可能存在排序或临时表，性能较差</p>
+<p>➡️ 重点关注：</p>
+<pre><code>1.    key 是否为空？如果为空，说明没有命中索引。
+2.    rows 数量是否过大？如果扫描行数过多，说明索引可能没起作用。
+</code></pre><p>⸻</p>
+<ol>
+<li>使用 SHOW INDEX FROM table 查看索引</li>
+</ol>
+<p>如果 EXPLAIN 发现索引未被使用，你可以查看表的索引结构：</p>
+<p>SHOW INDEX FROM tb_person_data;</p>
+<p>结果示例</p>
+<p>Table    Non_unique    Key_name    Seq_in_index    Column_name    Collation    Cardinality    Index_type<br>tb_person_data    0    PRIMARY    1    id    A    100000    BTREE<br>tb_person_data    1    idx_symbol_time    1    symbol    A    10000    BTREE<br>tb_person_data    1    idx_symbol_time    2    open_time    A    5000    BTREE</p>
+<p>关键点<br>    •    Key_name 是索引的名称。<br>    •    Column_name 是索引包含的列。<br>    •    Cardinality 代表索引的唯一性，值越大越好。<br>    •    Index_type 通常是 BTREE（默认索引类型）。</p>
+<p>⸻</p>
+<ol>
+<li>使用 SHOW PROFILE 诊断 SQL 执行步骤</li>
+</ol>
+<p>你可以开启 SQL 性能分析：</p>
+<p>SET profiling = 1;</p>
+<p>然后运行你的 SQL：</p>
+<p>SELECT * FROM tb_person_data WHERE symbol = ‘CNY’ AND kline_type = ‘1m’ ORDER BY open_time DESC LIMIT 1;</p>
+<p>再查看 SQL 详细执行情况：</p>
+<p>SHOW PROFILES;</p>
+<p>选取 Query_ID 后再执行：</p>
+<p>SHOW PROFILE FOR QUERY 1;</p>
+<p>可以看到 CPU 时间、I/O 操作、排序、锁等待等 详细信息。</p>
+<p>⸻</p>
+<ol>
+<li>使用 SHOW STATUS LIKE ‘Handler%’ 观察索引命中</li>
+</ol>
+<p>执行 SQL 后运行：</p>
+<p>SHOW STATUS LIKE ‘Handler%’;</p>
+<p>你会看到类似结果：</p>
+<p>变量名    值<br>Handler_read_rnd_next    120000<br>Handler_read_key    100<br>Handler_read_first    1</p>
+<p>如何分析<br>    •    Handler_read_rnd_next 值过大，说明存在全表扫描（索引未生效）。<br>    •    Handler_read_key 值较高，说明查询通过索引查找数据，性能较优。</p>
+<p>⸻</p>
+<ol>
+<li>使用 ANALYZE TABLE 更新索引统计信息</li>
+</ol>
+<p>有时，索引统计信息过时会导致查询优化器选择错误的索引。可以执行：</p>
+<p>ANALYZE TABLE tb_person_data;</p>
+<p>这可以让 MySQL 重新计算索引统计信息，可能会改善查询性能。</p>
+<p>⸻</p>
+<ol>
+<li>可能的优化方法</li>
+</ol>
+<p>如果 EXPLAIN 发现索引未命中，可以尝试以下优化：</p>
+<p>✅ 创建合适的索引</p>
+<p>如果你的 WHERE 条件涉及多个字段，可以创建联合索引：</p>
+<p>CREATE INDEX idx_symbol_time ON tb_person_data(symbol, open_time);</p>
+<p>这样 MySQL 可以高效利用索引进行 ORDER BY 操作。</p>
+<p>⸻</p>
+<p>✅ 避免 WHERE 条件中的计算</p>
+<p>MySQL 无法使用索引：</p>
+<p>WHERE DATE(open_time) = ‘2024-01-01’</p>
+<p>优化后：</p>
+<p>WHERE open_time &gt;= ‘2024-01-01 00:00:00’ AND open_time &lt; ‘2024-01-02 00:00:00’</p>
+<p>⸻</p>
+<p>✅ 避免 SELECT *，只查询需要的字段</p>
+<p>SELECT id, open_time FROM tb_person_data WHERE symbol = ‘CNY’ AND kline_type = ‘1m’ ORDER BY open_time DESC LIMIT 1;</p>
+<p>这样可以减少 I/O 负担，加速查询。</p>
+<p>⸻</p>
+<p>✅ 分区表优化</p>
+<p>如果 tb_person_data 是一个大表，并且 open_time 是查询的主要条件，可以使用分区表：</p>
+<p>ALTER TABLE tb_person_data PARTITION BY RANGE (UNIX_TIMESTAMP(open_time)) (<br>    PARTITION p202401 VALUES LESS THAN (UNIX_TIMESTAMP(‘2024-02-01’)),<br>    PARTITION p202402 VALUES LESS THAN (UNIX_TIMESTAMP(‘2024-03-01’))<br>);</p>
+<p>这样 WHERE open_time &lt; ‘2024-02-01’ 只会扫描对应分区，而不是整个表，提高查询效率。</p>
+<p>⸻</p>
+<p>总结<br>    •    使用 EXPLAIN 确定索引是否生效<br>    •    用 SHOW INDEX FROM 检查索引结构<br>    •    使用 SHOW PROFILE 诊断执行瓶颈<br>    •    观察 Handler_read_rnd_next 来判断是否是全表扫描<br>    •    用 ANALYZE TABLE 更新索引统计<br>    •    优化索引结构，避免 WHERE 计算，减少 SELECT *</p>
+<p>这样，你可以准确分析 SQL 速度慢的原因，并优化查询效率！ 🚀</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/02/08/%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93/" rel="prev" title="量化交易">
+      <i class="fa fa-chevron-left"></i> 量化交易
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">138</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'dd1d17e883c09c2dbf99a7bf4e142791',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
