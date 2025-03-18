@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://swordhell.github.io/2020/11/04/git/git-vscode-setting-rebase-whensync.png">
 <meta property="og:image" content="https://swordhell.github.io/2020/11/04/git/git-vscode-setting-auto-stash.png">
 <meta property="article:published_time" content="2020-11-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-02-18T09:14:05.809Z">
+<meta property="article:modified_time" content="2025-03-18T00:00:38.298Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
@@ -196,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-18 17:14:05" itemprop="dateModified" datetime="2025-02-18T17:14:05+08:00">2025-02-18</time>
+                <time title="修改时间：2025-03-18 08:00:38" itemprop="dateModified" datetime="2025-03-18T08:00:38+08:00">2025-03-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -480,6 +480,165 @@
 <p>命令    作用    是否影响历史<br>git checkout <commit-hash> 或 git switch —detach <commit-hash>    仅查看旧版本    否<br>git reset —soft <commit-hash>    回滚 commit，但保留文件    否<br>git reset —hard <commit-hash>    回滚 commit，删除所有修改    是<br>git checkout -b <new-branch> <commit-hash>    基于旧 commit 创建新分支    否</commit-hash></new-branch></commit-hash></commit-hash></commit-hash></commit-hash></p>
 <p>如果只是临时回滚查看代码，推荐 git checkout <commit-hash>，之后 git checkout main 即可回到最新代码！🚀</commit-hash></p>
 <p>git checkout -b m 388a25291f9a182a23c0558293028cf6987991bc</p>
+<h2 id="不能推送大的项目问题"><a href="#不能推送大的项目问题" class="headerlink" title="不能推送大的项目问题"></a>不能推送大的项目问题</h2><ol>
+<li>我搭建了一个gogs的仓库；使用了cloudflare和nginx来做的域名；</li>
+<li>当客户端同事推送git仓库的时候，无法推送成功将会卡住，并且出现下面的报错；<br>Writing objects: 100% (10141/10141), 131.04 MiB | 500.69 MiB/s, done.<br>Total 10141 (delta 2793), reused 10136 (delta 2791), pack-reused 0<br>error: RPC failed; HTTP 413 curl 22 The requested URL returned error: 413<br>send-pack: unexpected disconnect while reading sideband packet<br>fatal: the remote end hung up unexpectedly<br>Everything up-to-date</li>
+<li>我让客户端同事将项目打包，我直接放到gogs服务器机器本地，使用<a target="_blank" rel="noopener" href="http://127.0.0.1推送，是能迅速提送成功；">http://127.0.0.1推送，是能迅速提送成功；</a></li>
+<li>当前gogs的app.ini配置里面我添加下面配置，已经重启；<br>[server]<br>MAX_REQUEST_BODY_SIZE = 0</li>
+<li>在nginx里面我添加了下面的配置，已经重启；<br>server {<br>client_max_body_size 800m;<br>client_body_buffer_size 128k;<br>fastcgi_intercept_errors on;<br>}</li>
+<li>现在问题是为啥会出现无法通过域名，远程推送，而老是会爆出 hung up的问题；</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看 Gogs 当前生效配置</span></span><br><span class="line">curl -s http://localhost:3000/api/v1/settings | jq .repository.file_upload_max_size</span><br><span class="line"></span><br><span class="line"><span class="comment"># 预期输出（假设设置为1024）：</span></span><br><span class="line"><span class="comment"># 1048576  # 单位是字节（1024MB = 1073741824字节，此处可能显示计算后的值）</span></span><br></pre></td></tr></table></figure>
+<p>你的问题很可能是 Nginx 仍然限制了 HTTP 请求体的大小，即使你已经设置了 client_max_body_size 800m，也可能还有其他地方影响，比如：</p>
+<p>可能的原因与解决方案</p>
+<ol>
+<li>确保 Nginx 的 client_max_body_size 设置生效</li>
+</ol>
+<p>在 正确的 server 或 location 配置块中 添加：</p>
+<p>server {<br>    listen 80;<br>    server_name your.domain.com;</p>
+<pre><code>client_max_body_size 800m;
+client_body_buffer_size 128k;
+
+location / &#123;
+    proxy_pass http://127.0.0.1:3000;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+    proxy_buffering off;
+&#125;
+</code></pre><p>}</p>
+<p>然后 重启 Nginx 并查看是否生效：</p>
+<p>nginx -t  # 检查配置是否正确<br>systemctl restart nginx  # 重启 Nginx</p>
+<p>如果是 Docker 运行的 Nginx，可能还需要 docker restart nginx。</p>
+<ol>
+<li>确保 Gogs 的 MAX_REQUEST_BODY_SIZE 设置生效</li>
+</ol>
+<p>你已经在 app.ini 中添加了：</p>
+<p>[server]<br>MAX_REQUEST_BODY_SIZE = 0</p>
+<p>但 Gogs 可能 仍然默认使用 32MB 的限制，你可以 尝试明确设置为更大的值：</p>
+<p>[server]<br>MAX_REQUEST_BODY_SIZE = 800</p>
+<p>然后重启 Gogs：</p>
+<p>systemctl restart gogs  # 如果是 systemd 方式<br>supervisorctl restart gogs  # 如果用的是 Supervisor</p>
+<ol>
+<li>Cloudflare 可能拦截大文件上传</li>
+</ol>
+<p>Cloudflare 免费版的 最大文件上传限制是 100MB，如果你的 Git push 超过了这个大小，Cloudflare 可能会返回 413 Request Entity Too Large。</p>
+<p>解决方案<br>    •    方法 1：直接绕过 Cloudflare，使用 “直接 IP + Nginx” 的方式推送：</p>
+<p>git remote set-url origin <a target="_blank" rel="noopener" href="http://your-server-ip:3000/your-repo.git">http://your-server-ip:3000/your-repo.git</a><br>git push origin main</p>
+<p>如果这样可以推送，说明 Cloudflare 限制了文件大小。</p>
+<pre><code>•    方法 2：如果你使用 Cloudflare Pro 版或更高级别，可以进入 Cloudflare Dashboard：
+1.    选择你的域名。
+2.    进入 Network 设置，找到 Maximum Upload Size 并调大。
+3.    在 Caching 选项中关闭 Cache Everything，让大文件不被缓存。
+•    方法 3：使用 Cloudflare “grey-cloud” 直连模式（绕过 CDN）：
+1.    进入 Cloudflare Dashboard。
+2.    找到你的 Gogs 绑定的域名。
+3.    把 Proxy Status 从 Proxied (Orange Cloud) 改为 DNS Only (Grey Cloud)。
+</code></pre><ol>
+<li>增加 Nginx 超时配置</li>
+</ol>
+<p>如果 网络环境不稳定 或者 Gogs 处理数据较慢，可能导致 超时 断开连接。可以增加 Nginx 的超时时间：</p>
+<p>server {<br>    client_max_body_size 800m;<br>    client_body_buffer_size 512k;</p>
+<pre><code>location / &#123;
+    proxy_pass http://127.0.0.1:3000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    # 防止长时间推送导致超时
+    proxy_connect_timeout 600;
+    proxy_send_timeout 600;
+    proxy_read_timeout 600;
+    send_timeout 600;
+&#125;
+</code></pre><p>}</p>
+<p>然后重启 Nginx：</p>
+<p>systemctl restart nginx</p>
+<p>⸻</p>
+<p>总结</p>
+<p>你的问题很可能是 Cloudflare 限制 或 Nginx 配置未生效：</p>
+<pre><code>1.    先 尝试用 IP 直连 (http://your-server-ip:3000/your-repo.git)，看看能否推送成功。
+2.    如果 IP 直连成功，而域名不行，说明 Cloudflare 限制，可以：
+•    关掉 Cloudflare Proxy（改成 DNS Only）。
+•    或者 升级 Cloudflare 计划 来增加上传限制。
+3.    确保 Nginx 的 client_max_body_size 和超时配置生效：
+</code></pre><p>nginx -t &amp;&amp; systemctl restart nginx</p>
+<pre><code>4.    确保 Gogs MAX_REQUEST_BODY_SIZE 不是 0，而是 800MB 以上。
+</code></pre><p>试试这些方案，看看哪一步解决了问题！🚀</p>
+<p>sudo nginx -T | grep -C 10 “client_max_body_size”</p>
+<p>在客户端执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 清除旧配置</span></span><br><span class="line">git config --global --<span class="built_in">unset</span> http.postBuffer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置缓冲区为 200MB (必须大于推送文件大小)</span></span><br><span class="line">git config --global http.postBuffer 209715200</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试时添加详细日志</span></span><br><span class="line">GIT_CURL_VERBOSE=1 GIT_TRACE=1 git push --all origin</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl;</span><br><span class="line">    <span class="attribute">server_name</span> your-domain.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">client_max_body_size</span> <span class="number">1024m</span>;  <span class="comment"># 关键参数</span></span><br><span class="line">    <span class="attribute">client_body_buffer_size</span> <span class="number">1m</span>;</span><br><span class="line">    <span class="attribute">client_body_timeout</span> <span class="number">300s</span>;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://127.0.0.1:3000;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_read_timeout</span> <span class="number">600s</span>;  <span class="comment"># 增加超时时间</span></span><br><span class="line">        <span class="attribute">proxy_request_buffering</span> <span class="literal">off</span>;  <span class="comment"># 禁用缓冲提升大文件性能</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>app.ini</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[repository]</span></span><br><span class="line"><span class="attr">FILE_UPLOAD_MAX_SIZE</span> = <span class="number">2048</span>  <span class="comment"># 单位 MB，建议为 Nginx 值的 2 倍</span></span><br><span class="line"></span><br><span class="line"><span class="section">[server]</span></span><br><span class="line"><span class="attr">HTTP_POST_BUFFER_SIZE</span> = <span class="number">209715200</span>  <span class="comment"># 200MB 缓冲区</span></span><br></pre></td></tr></table></figure>
+<p>sudo systemctl restart nginx gogs</p>
+<p>在 Gogs 中，你可以通过修改 app.ini 配置文件来调整 日志级别 和 日志文件大小管理。</p>
+<p>⸻</p>
+<ol>
+<li>调整 Gogs 日志级别</li>
+</ol>
+<p>Gogs 的日志级别可以在 app.ini 文件的 [log] 配置部分进行修改：</p>
+<p>步骤</p>
+<pre><code>1.    打开 app.ini 配置文件（默认路径：/path/to/gogs/custom/conf/app.ini）
+</code></pre><p>nano /path/to/gogs/custom/conf/app.ini</p>
+<pre><code>2.    修改日志级别
+</code></pre><p>在 [log] 部分，设置 更详细的日志级别：</p>
+<p>[log]<br>MODE      = file<br>LEVEL     = debug<br>ROOT_PATH = /var/log/gogs</p>
+<pre><code>•    MODE：
+•    console  —— 直接输出到终端
+•    file  —— 记录到日志文件
+•    console, file  —— 同时输出到终端和日志文件
+•    LEVEL：
+•    trace  —— 最高级别，输出所有日志（最详细）
+•    debug  —— 调试信息
+•    info  —— 重要的正常日志（默认）
+•    warn  —— 仅警告
+•    error  —— 仅错误信息
+•    critical  —— 仅严重错误
+
+3.    重启 Gogs 使配置生效：
+</code></pre><p>systemctl restart gogs  # 如果使用 systemd<br>supervisorctl restart gogs  # 如果使用 Supervisor</p>
+<p>⸻</p>
+<ol>
+<li>控制日志文件大小</li>
+</ol>
+<p>为了避免日志文件过大，可以使用 logrotate 来管理 Gogs 的日志。</p>
+<p>方法 1：Gogs 内置日志切割</p>
+<p>从 Gogs 0.12.0 版本开始，支持 DAILY_ROTATE 配置：</p>
+<p>[log]<br>MODE      = file<br>LEVEL     = info<br>ROOT_PATH = /var/log/gogs<br>DAILY_ROTATE = true  # 每天生成一个新的日志文件<br>MAX_DAYS = 7  # 只保留最近 7 天的日志</p>
+<p>这会让 Gogs 每天 生成一个新日志，并自动删除超过 7 天的旧日志。</p>
+<p>⸻</p>
+<p>方法 2：使用 logrotate 自动管理日志</p>
+<p>如果你使用的是 较老版本的 Gogs，或者希望更灵活地管理日志，可以用 logrotate 进行日志切割。</p>
+<p>步骤</p>
+<pre><code>1.    创建 Logrotate 配置文件
+</code></pre><p>sudo nano /etc/logrotate.d/gogs</p>
+<pre><code>2.    添加如下配置
+</code></pre><p>/var/log/gogs/*.log {<br>    daily<br>    rotate 7<br>    compress<br>    missingok<br>    notifempty<br>    copytruncate<br>}</p>
+<pre><code>•    daily  —— 每天轮转日志
+•    rotate 7  —— 只保留最近 7 份日志
+•    compress  —— 使用 gzip 压缩老的日志
+•    missingok  —— 如果日志文件不存在，则跳过，不报错
+•    notifempty  —— 如果日志为空，则不进行轮转
+•    copytruncate  —— 先复制日志再清空原始文件（适用于 Gogs 正在写入的日志）
+
+3.    测试 logrotate
+</code></pre><p>sudo logrotate -d /etc/logrotate.d/gogs</p>
+<p>如果没有错误，就可以手动执行：</p>
+<p>sudo logrotate -f /etc/logrotate.d/gogs</p>
+<p>⸻</p>
+<ol>
+<li>观察日志</li>
+</ol>
+<p>可以使用以下命令查看日志：</p>
+<p>tail -f /var/log/gogs/gogs.log</p>
+<p>如果启用了 debug 级别，可以看到更详细的日志。</p>
+<p>⸻</p>
+<p>总结</p>
+<p>✅ 调整日志级别<br>    •    LEVEL = debug（调试） 或 LEVEL = trace（最详细）<br>    •    重启 Gogs 使生效</p>
+<p>✅ 限制日志大小<br>    •    方法 1：Gogs 自带 DAILY_ROTATE = true（推荐）<br>    •    方法 2：logrotate（适用于所有版本）</p>
+<p>这样可以 获得详细日志，同时 避免日志过大 🚀</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/gogs/gogs/blob/v0.13.0/conf/app.ini">https://github.com/gogs/gogs/blob/v0.13.0/conf/app.ini</a></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://www.runoob.com/git/git-tutorial.html">Git菜鸟教程</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/896043488029600">廖雪峰-Git教程</a></li>
@@ -572,7 +731,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux"><span class="nav-number">1.1.</span> <span class="nav-text">Linux</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8C%BA%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">工作区操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">远程操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="nav-number">2.3.1.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">2.3.2.</span> <span class="nav-text">切换编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6"><span class="nav-number">2.3.3.</span> <span class="nav-text">分支合并</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%BF%9C%E7%A8%8B%E7%9A%84url%E5%9C%B0%E5%9D%80"><span class="nav-number">2.3.4.</span> <span class="nav-text">查看远程的url地址</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-%E4%BF%AE%E6%94%B9%E8%BF%9C%E7%A8%8B%E7%9A%84%E7%9B%AE%E5%BD%95"><span class="nav-number">3.</span> <span class="nav-text">git 修改远程的目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E8%BD%AC%E6%8D%A2%E6%8D%A2%E8%A1%8C%E7%AC%A6%EF%BC%88%E5%9B%9E%E8%BD%A6%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">git转换换行符（回车）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tags%E5%86%B2%E7%AA%81"><span class="nav-number">5.</span> <span class="nav-text">tags冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-stash"><span class="nav-number">6.</span> <span class="nav-text">git stash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E5%B5%8C%E5%A5%97%E4%BA%86git%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">处理嵌套了git的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8workflow%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83%E7%89%88%E6%9C%AC"><span class="nav-number">8.</span> <span class="nav-text">使用workflow自动发布版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vscode%E4%B8%AD%E8%AE%BE%E7%BD%AEgit%E6%8A%80%E5%B7%A7"><span class="nav-number">9.</span> <span class="nav-text">vscode中设置git技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E5%87%BA%E7%9A%84%E6%97%B6%E5%80%99%E5%8F%91%E7%94%9F%E9%97%AE%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text">检出的时候发生问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-rebase"><span class="nav-number">11.</span> <span class="nav-text">git rebase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-trace"><span class="nav-number">12.</span> <span class="nav-text">git trace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E6%8A%A5%E9%94%99"><span class="nav-number">13.</span> <span class="nav-text">git报错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-submodule"><span class="nav-number">14.</span> <span class="nav-text">git submodule</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E9%80%9F%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F"><span class="nav-number">15.</span> <span class="nav-text">加速访问方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#submodules"><span class="nav-number">16.</span> <span class="nav-text">submodules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8git-clone%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E6%8C%87%E5%AE%9A%E8%87%AA%E5%B7%B1%E7%9A%84key%EF%BC%8C%E7%94%A8%E5%A4%9A%E4%B8%AA%E8%B4%A6%E5%8F%B7"><span class="nav-number">17.</span> <span class="nav-text">在git clone的时候，指定自己的key，用多个账号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github-%E5%8A%A0%E9%80%9F%E7%BD%91%E7%AB%99"><span class="nav-number">18.</span> <span class="nav-text">github 加速网站</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Permission-denied-publickey"><span class="nav-number">18.1.</span> <span class="nav-text">Permission denied (publickey)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ghcr"><span class="nav-number">19.</span> <span class="nav-text">ghcr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E7%BA%A6%E5%AE%9A"><span class="nav-number">20.</span> <span class="nav-text">提交约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%87%E6%8D%A2-git-%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84"><span class="nav-number">21.</span> <span class="nav-text">切换 git 绝对路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E6%8E%A8%E9%80%81%E6%96%B0%E7%89%88%E6%9C%AC"><span class="nav-number">22.</span> <span class="nav-text">git推送新版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-pull-rebase"><span class="nav-number">23.</span> <span class="nav-text">git-pull-rebase</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E4%BD%9C%E8%80%85%E4%BF%A1%E6%81%AF"><span class="nav-number">23.1.</span> <span class="nav-text">修改历史上的作者信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-large-file-storage"><span class="nav-number">23.2.</span> <span class="nav-text">git large file storage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-remote-main"><span class="nav-number">23.3.</span> <span class="nav-text">git remote main</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-push%E6%8A%A5%E9%94%99"><span class="nav-number">23.4.</span> <span class="nav-text">git push报错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%8E%89git%E7%9A%84%E7%BC%93%E5%AD%98"><span class="nav-number">23.5.</span> <span class="nav-text">删除掉git的缓存</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%85%E7%90%86%E8%BF%BD%E8%B8%AA%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-number"></span> <span class="nav-text">清理追踪的文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%B0%86git%E4%B8%AD%E7%9A%84%E5%86%85%E5%AE%B9%E5%AF%BC%E5%87%BA%E6%9D%A5"><span class="nav-number">1.</span> <span class="nav-text">如何将git中的内容导出来</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number"></span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2-Gogs"><span class="nav-number"></span> <span class="nav-text">停止 Gogs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-Gogs"><span class="nav-number"></span> <span class="nav-text">启动 Gogs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%96%E8%80%85"><span class="nav-number"></span> <span class="nav-text">或者</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%96%E8%80%85-1"><span class="nav-number"></span> <span class="nav-text">或者</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux"><span class="nav-number">1.1.</span> <span class="nav-text">Linux</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8C%BA%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">工作区操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">远程操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="nav-number">2.3.1.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">2.3.2.</span> <span class="nav-text">切换编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6"><span class="nav-number">2.3.3.</span> <span class="nav-text">分支合并</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%BF%9C%E7%A8%8B%E7%9A%84url%E5%9C%B0%E5%9D%80"><span class="nav-number">2.3.4.</span> <span class="nav-text">查看远程的url地址</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-%E4%BF%AE%E6%94%B9%E8%BF%9C%E7%A8%8B%E7%9A%84%E7%9B%AE%E5%BD%95"><span class="nav-number">3.</span> <span class="nav-text">git 修改远程的目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E8%BD%AC%E6%8D%A2%E6%8D%A2%E8%A1%8C%E7%AC%A6%EF%BC%88%E5%9B%9E%E8%BD%A6%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">git转换换行符（回车）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tags%E5%86%B2%E7%AA%81"><span class="nav-number">5.</span> <span class="nav-text">tags冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-stash"><span class="nav-number">6.</span> <span class="nav-text">git stash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E5%B5%8C%E5%A5%97%E4%BA%86git%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">处理嵌套了git的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8workflow%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83%E7%89%88%E6%9C%AC"><span class="nav-number">8.</span> <span class="nav-text">使用workflow自动发布版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vscode%E4%B8%AD%E8%AE%BE%E7%BD%AEgit%E6%8A%80%E5%B7%A7"><span class="nav-number">9.</span> <span class="nav-text">vscode中设置git技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E5%87%BA%E7%9A%84%E6%97%B6%E5%80%99%E5%8F%91%E7%94%9F%E9%97%AE%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text">检出的时候发生问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-rebase"><span class="nav-number">11.</span> <span class="nav-text">git rebase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-trace"><span class="nav-number">12.</span> <span class="nav-text">git trace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E6%8A%A5%E9%94%99"><span class="nav-number">13.</span> <span class="nav-text">git报错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-submodule"><span class="nav-number">14.</span> <span class="nav-text">git submodule</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E9%80%9F%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F"><span class="nav-number">15.</span> <span class="nav-text">加速访问方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#submodules"><span class="nav-number">16.</span> <span class="nav-text">submodules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8git-clone%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E6%8C%87%E5%AE%9A%E8%87%AA%E5%B7%B1%E7%9A%84key%EF%BC%8C%E7%94%A8%E5%A4%9A%E4%B8%AA%E8%B4%A6%E5%8F%B7"><span class="nav-number">17.</span> <span class="nav-text">在git clone的时候，指定自己的key，用多个账号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github-%E5%8A%A0%E9%80%9F%E7%BD%91%E7%AB%99"><span class="nav-number">18.</span> <span class="nav-text">github 加速网站</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Permission-denied-publickey"><span class="nav-number">18.1.</span> <span class="nav-text">Permission denied (publickey)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ghcr"><span class="nav-number">19.</span> <span class="nav-text">ghcr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E7%BA%A6%E5%AE%9A"><span class="nav-number">20.</span> <span class="nav-text">提交约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%87%E6%8D%A2-git-%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84"><span class="nav-number">21.</span> <span class="nav-text">切换 git 绝对路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E6%8E%A8%E9%80%81%E6%96%B0%E7%89%88%E6%9C%AC"><span class="nav-number">22.</span> <span class="nav-text">git推送新版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-pull-rebase"><span class="nav-number">23.</span> <span class="nav-text">git-pull-rebase</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E4%BD%9C%E8%80%85%E4%BF%A1%E6%81%AF"><span class="nav-number">23.1.</span> <span class="nav-text">修改历史上的作者信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-large-file-storage"><span class="nav-number">23.2.</span> <span class="nav-text">git large file storage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-remote-main"><span class="nav-number">23.3.</span> <span class="nav-text">git remote main</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-push%E6%8A%A5%E9%94%99"><span class="nav-number">23.4.</span> <span class="nav-text">git push报错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%8E%89git%E7%9A%84%E7%BC%93%E5%AD%98"><span class="nav-number">23.5.</span> <span class="nav-text">删除掉git的缓存</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%85%E7%90%86%E8%BF%BD%E8%B8%AA%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-number"></span> <span class="nav-text">清理追踪的文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%B0%86git%E4%B8%AD%E7%9A%84%E5%86%85%E5%AE%B9%E5%AF%BC%E5%87%BA%E6%9D%A5"><span class="nav-number">1.</span> <span class="nav-text">如何将git中的内容导出来</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number"></span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2-Gogs"><span class="nav-number"></span> <span class="nav-text">停止 Gogs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-Gogs"><span class="nav-number"></span> <span class="nav-text">启动 Gogs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%96%E8%80%85"><span class="nav-number"></span> <span class="nav-text">或者</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%96%E8%80%85-1"><span class="nav-number"></span> <span class="nav-text">或者</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%83%BD%E6%8E%A8%E9%80%81%E5%A4%A7%E7%9A%84%E9%A1%B9%E7%9B%AE%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">不能推送大的项目问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
