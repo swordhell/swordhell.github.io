@@ -28,7 +28,7 @@
 <meta property="og:description" content="在Linux里面使用gdb&#x2F;delve工具来调试程序。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-07T01:46:42.074Z">
+<meta property="article:modified_time" content="2025-08-08T05:38:58.569Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+                <time title="修改时间：2025-08-08 13:38:58" itemprop="dateModified" datetime="2025-08-08T13:38:58+08:00">2025-08-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,6 +233,8 @@
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line"> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Attach to Process&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;go&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;attach&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;local&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="comment">// &quot;remotePath&quot;: &quot;$&#123;workspaceFolder:bin&#125;\\Lobby.exe&quot;,</span></span><br><span class="line">  <span class="attr">&quot;presentation&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;hidden&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;group&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="number">2</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;processId&quot;</span><span class="punctuation">:</span> <span class="number">2956</span></span><br><span class="line"> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
 <p>使用vscode，安装连接到远程，工具栏里面选择“运行”-“安装附加调试器”</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Could not attach to pid 2956: this could be caused by a kernel security setting, try writing <span class="string">&quot;0&quot;</span> to /proc/sys/kernel/yama/ptrace_scope</span><br></pre></td></tr></table></figure>
+<h2 id="远程调试"><a href="#远程调试" class="headerlink" title="远程调试"></a>远程调试</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go install github.com/go-delve/delve/cmd/dlv@latest</span><br><span class="line">go build -gcflags <span class="string">&quot;all=-N -l&quot;</span> -o your_program</span><br><span class="line">ps aux | grep your_binary_name</span><br><span class="line">dlv attach 12345 --headless --listen=:2345 --<span class="built_in">log</span> --api-version=2 --accept-multiclient</span><br></pre></td></tr></table></figure>
+<p>{<br>  “name”: “Attach to Remote”,<br>  “type”: “go”,<br>  “request”: “attach”,<br>  “mode”: “remote”,<br>  “remotePath”: “/home/youruser/your_project”, // 改成你远程项目路径<br>  “port”: 2345,<br>  “host”: “127.0.0.1”,<br>  “apiVersion”: 2,<br>  “showLog”: true,<br>  “cwd”: “${workspaceFolder}”<br>}</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://github.com/derekparker/delve">github-delv</a></li>
 </ul>
@@ -320,7 +322,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux"><span class="nav-number">1.1.</span> <span class="nav-text">Linux</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux"><span class="nav-number">1.1.</span> <span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95"><span class="nav-number">1.2.</span> <span class="nav-text">远程调试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -336,20 +338,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">142</span>
+          <span class="site-state-item-count">144</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

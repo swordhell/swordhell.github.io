@@ -28,7 +28,7 @@
 <meta property="og:description" content="简介学习golang的入门的信息；本章只记录一下golang语言的历史，go语言环境搭建，如何编译go语言程序。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-02-19T00:34:27.859Z">
+<meta property="article:modified_time" content="2025-08-20T10:21:32.191Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-19 08:34:27" itemprop="dateModified" datetime="2025-02-19T08:34:27+08:00">2025-02-19</time>
+                <time title="修改时间：2025-08-20 18:21:32" itemprop="dateModified" datetime="2025-08-20T18:21:32+08:00">2025-08-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,7 +235,7 @@
 <h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>直接通过安装包安装；</p>
 <h3 id="需要配置的环境变量"><a href="#需要配置的环境变量" class="headerlink" title="需要配置的环境变量"></a>需要配置的环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GOPATH=D:\\work\\gopath</span><br><span class="line"><span class="comment"># 配置 GOPROXY 环境变量</span></span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.io,https://goproxy.cn,direct</span><br><span class="line"><span class="comment"># 还可以设置不走 proxy 的私有仓库或组，多个用逗号相隔（可选）</span></span><br><span class="line"><span class="built_in">export</span> GOPRIVATE=git.mycompany.com,github.com/my/private</span><br><span class="line"><span class="built_in">export</span> GO111MODULE=on</span><br><span class="line"></span><br><span class="line">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span><br></pre></td></tr></table></figure>
 <h4 id="linux环境搭建"><a href="#linux环境搭建" class="headerlink" title="linux环境搭建"></a>linux环境搭建</h4><p>先解压缩golang的包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -xf ./go1.xxx.tar.gz -C /usr/local</span><br><span class="line"><span class="comment"># 可能需要删除掉之前的目录</span></span><br><span class="line"><span class="built_in">rm</span> -rf /usr/local/go/</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -xf ./go1.25.0.linux-amd64.tar.gz -C /usr/local</span><br><span class="line"><span class="comment"># 可能需要删除掉之前的目录</span></span><br><span class="line"><span class="built_in">rm</span> -rf /usr/local/go/</span><br><span class="line"><span class="comment"># Go 1.16+ 支持</span></span><br><span class="line">go install github.com/go-delve/delve/cmd/dlv@latest</span><br></pre></td></tr></table></figure>
 <p>升级的时候最好能将之前的目录都删除掉。</p>
 <p>使用go env查询具体的环境信息。通过编辑~/.bashrc文件的环境变量来修改配置。</p>
 <h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><h4 id="go-build"><a href="#go-build" class="headerlink" title="go build"></a>go build</h4><div class="table-container">
@@ -623,6 +623,19 @@
 <p>总结</p>
 <p>步骤    命令<br>取消子模块关联    git submodule deinit -f — <submodule_path><br>删除子模块目录    rm -rf <submodule_path><br>移除 .gitmodules 里的配置    手动删除相关条目<br>从 Git 记录中删除    git rm —cached <submodule_path><br>清理 .git/modules 目录    rm -rf .git/modules/<submodule_path><br>提交变更    git commit -m “Remove submodule <submodule_path>“ &amp;&amp; git push</submodule_path></submodule_path></submodule_path></submodule_path></submodule_path></p>
 <p>这样，你的 Git 仓库就完全清理掉了这个子模块！🚀</p>
+<p>WARNING: undefined behavior - version of Delve is too old for Go version 1.20.5 (maximum supported version 1.19)</p>
+<p>这是因为 go 的版本升级后，相对 dlv 的版本就低了。<br>所以解决办法就是升级对应的 dlv 版本</p>
+<p>进入到 GOPATH 中<br>如果忘记了 GOPATH 是什么，输入 go env GOPATH 即可。</p>
+<p>在 GOPATH 对应目录下安装最新版的 dlv<br>go install github.com/go-delve/delve/cmd/dlv@latest</p>
+<p>安装完毕后，其被安装在 GOPATH/bin 目录下，即 GOPATH/bin/dlv</p>
+<p>打开 Goland 菜单栏 Help 下的 Edit Custom Properties，会自动打开一个文件 idea.properties</p>
+<p>添加如下内容到 idea.properites<br>dlv.path=/Users/solego/go/bin/dlv</p>
+<p>重启Goland即可</p>
+<p>打开 Goland 菜单栏 Help 下的 Edit Custom Properties，会自动打开一个文件 idea.properties</p>
+<p>添加如下内容到 idea.properites<br>dlv.path=/Users/solego/go/bin/dlv</p>
+<p>go install github.com/go-delve/delve/cmd/dlv@latest</p>
+<p>可以做go语言的校验；</p>
+<p>curl -sSfL <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh">https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh</a> \<br>  | sh -s — -b $(go env GOPATH)/bin v2.4.0<br>go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.4.0<br>golangci-lint —version</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://www.runoob.com/go/go-tutorial.html">Go语言菜鸟</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="http://c.biancheng.net/golang/">Go语言入门</a></li>
@@ -728,20 +741,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">142</span>
+          <span class="site-state-item-count">144</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
