@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.2">
@@ -75,12 +75,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -228,13 +228,17 @@
       
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>学习一下PHP相关的知识</p>
 <span id="more"></span>
+
 <h2 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">$ brew install php@8.2</span><br><span class="line"></span><br><span class="line">==&gt; php</span><br><span class="line">To enable PHP in Apache add the following to httpd.conf and restart Apache:</span><br><span class="line">    LoadModule php_module /opt/homebrew/opt/php/lib/httpd/modules/libphp.so</span><br><span class="line"></span><br><span class="line">    &lt;FilesMatch \.php$&gt;</span><br><span class="line">        SetHandler application/x-httpd-php</span><br><span class="line">    &lt;/FilesMatch&gt;</span><br><span class="line"></span><br><span class="line">Finally, check DirectoryIndex includes index.php</span><br><span class="line">    DirectoryIndex index.php index.html</span><br><span class="line"></span><br><span class="line">The php.ini and php-fpm.ini file can be found in:</span><br><span class="line">    /opt/homebrew/etc/php/8.2/</span><br><span class="line"></span><br><span class="line">To start php now and restart at login:</span><br><span class="line">  brew services start php</span><br><span class="line">Or, if you don&#x27;t want/need a background service you can just run:</span><br><span class="line">  /opt/homebrew/opt/php/sbin/php-fpm --nodaemonize</span><br><span class="line">(base) abel@abeldeMacBook-Pro ~&gt; /opt/homebrew/opt/php/sbin/php-fpm --nodaemonize</span><br><span class="line">[21-Oct-2023 12:44:28] NOTICE: [pool www] &#x27;user&#x27; directive is ignored when FPM is not running as root</span><br><span class="line">[21-Oct-2023 12:44:28] NOTICE: [pool www] &#x27;group&#x27; directive is ignored when FPM is not running as root</span><br><span class="line">[21-Oct-2023 12:44:28] NOTICE: fpm is running, pid 9918</span><br><span class="line">[21-Oct-2023 12:44:28] NOTICE: ready to handle connections</span><br><span class="line">^C[21-Oct-2023 12:53:09] NOTICE: Terminating ...</span><br><span class="line">[21-Oct-2023 12:53:09] NOTICE: exiting, bye-bye!</span><br><span class="line">(base) abel@abeldeMacBook-Pro ~&gt; brew install nginx</span><br><span class="line"></span><br><span class="line">==&gt; Caveats</span><br><span class="line">Docroot is: /opt/homebrew/var/www</span><br><span class="line"></span><br><span class="line">The default port has been set in /opt/homebrew/etc/nginx/nginx.conf to 8080 so that</span><br><span class="line">nginx can run without sudo.</span><br><span class="line"></span><br><span class="line">nginx will load all files in /opt/homebrew/etc/nginx/servers/.</span><br><span class="line"></span><br><span class="line">To start nginx now and restart at login:</span><br><span class="line">  brew services start nginx</span><br><span class="line">Or, if you don&#x27;t want/need a background service you can just run:</span><br><span class="line">  /opt/homebrew/opt/nginx/bin/nginx -g daemon\ off\;</span><br><span class="line">==&gt; Summary</span><br><span class="line">🍺  /opt/homebrew/Cellar/nginx/1.25.2: 26 files, 2.4MB</span><br><span class="line">==&gt; Running `brew cleanup nginx`...</span><br><span class="line">Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.</span><br><span class="line">Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).</span><br><span class="line"></span><br><span class="line">curl -sS https://getcomposer.org/installer | php</span><br><span class="line">sudo mv composer.phar /usr/local/bin/composer</span><br><span class="line"></span><br><span class="line">docker run -p 80:8080 -v ~/my-codebase:/var/www/html trafex/php-nginx</span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line">  if (!-e $request_filename) &#123;</span><br><span class="line">    rewrite ^(.*)$ /index.php?s=$1 last;</span><br><span class="line">    break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h3 id="nginx中设定自动将url增加-index-php"><a href="#nginx中设定自动将url增加-index-php" class="headerlink" title="nginx中设定自动将url增加 index.php"></a>nginx中设定自动将url增加 index.php</h3><p>因为thinkphp里面的 url 访问的时候，需要每次自己手动增加这个配置。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!-e $request_filename) &#123;</span><br><span class="line">    rewrite ^(.*)$ /index.<span class="property">php</span>?s=$1 last;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>最终还是通过安装一个宝塔服务器，将配置全部生成出来，这样解决问题是非常顺利的。如果是手动来处理这个事情，还是非常多容易犯错的点。任何的一个错误都会让人花大量时间来处理。</p>
 <p>里面的redis库，也是使用的c语言来编写的，如果安装需要将php安装成一个开发版本，然后通过命令行将其启动，在php.ini文件中将这个插件启动。</p>
 <p>也有一种方法，去到网上找到合适的php docker 镜像来安装来搭建这个。宝塔系统是比较好用，但是存在安全隐患。</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">phpinfo</span>();</span><br></pre></td></tr></table></figure>
+
 <h3 id="ThinkPHP6-手册"><a href="#ThinkPHP6-手册" class="headerlink" title="ThinkPHP6.* 手册"></a>ThinkPHP6.* 手册</h3><p><a target="_blank" rel="noopener" href="https://www.kancloud.cn/manual/thinkphp6_0/1037479">ThinkPHP6.0</a></p>
 <p>这里面有一套类似<code>ORM</code>的用法。 PHP其实就是个脚本，网站访问就会执行。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
@@ -472,19 +476,6 @@
 
 
 
-<script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'forest',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    });
-  }, window.mermaid);
-}
-</script>
 
 
   
@@ -511,7 +502,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

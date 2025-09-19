@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.2">
@@ -93,12 +93,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -246,6 +246,7 @@
       
         <p>在游戏开发中，需要使用到向量，三角函数之类的知识。先学会里面的概念，后续应用才会容易制作。</p>
 <span id="more"></span>
+
 <h1 id="3d数学"><a href="#3d数学" class="headerlink" title="3d数学"></a>3d数学</h1><h2 id="1-笛卡尔坐标系（Cartesian）"><a href="#1-笛卡尔坐标系（Cartesian）" class="headerlink" title="1.笛卡尔坐标系（Cartesian）"></a>1.笛卡尔坐标系（Cartesian）</h2><p>2d坐标系：x,y</p>
 <p>3d坐标系：x,y,z</p>
 <p>在3d坐标系里面有左手坐标系和右手坐标系。这个可能对人来说有直观认知上的区别，其实是不相悖。</p>
@@ -265,56 +266,54 @@
 <li>斜边 Hypotenuse（hyp） r</li>
 </ul>
 <p>勾股定理（毕达哥拉斯定理）</p>
-<p>$r=\sqrt{x^2+y^2}$</p>
-<p>$5=\sqrt{3^2+4^2}$</p>
+<p>$r&#x3D;\sqrt{x^2+y^2}$</p>
+<p>$5&#x3D;\sqrt{3^2+4^2}$</p>
 <p>$∠A 为\theta$</p>
 <h4 id="余弦-cosine"><a href="#余弦-cosine" class="headerlink" title="余弦 cosine"></a>余弦 cosine</h4><p>邻边比斜边。</p>
-<p>$cos(\theta) = \frac{x}{r}$</p>
+<p>$cos(\theta) &#x3D; \frac{x}{r}$</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/rqrTSO"><img src="https://s3.ax1x.com/2020/12/30/rqrTSO.png" alt="rqrTSO.png"></a></p>
 <h4 id="正弦-sine"><a href="#正弦-sine" class="headerlink" title="正弦 sine"></a>正弦 sine</h4><p>对边比斜边。</p>
-<p>$sin(\theta) = \frac{y}{r}$</p>
+<p>$sin(\theta) &#x3D; \frac{y}{r}$</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/rqrIfK"><img src="https://s3.ax1x.com/2020/12/30/rqrIfK.png" alt="rqrIfK.png"></a></p>
 <p><strong>正弦余弦背诵的时候，按照字母排序，x &lt; y ，cos &lt; sin。</strong></p>
-<h4 id="割线-secant"><a href="#割线-secant" class="headerlink" title="割线 secant"></a>割线 secant</h4><p>$\sec(\theta)=\frac{1}{\cos(\theta)}$</p>
-<p>$\sec(\theta)=\frac{r}{x}$</p>
-<h4 id="余割-cosecant"><a href="#余割-cosecant" class="headerlink" title="余割 cosecant"></a>余割 cosecant</h4><p>$\csc(\theta)=\frac{1}{\sin(\theta)}$</p>
-<p>$\csc(\theta)=\frac{r}{y}$</p>
+<h4 id="割线-secant"><a href="#割线-secant" class="headerlink" title="割线 secant"></a>割线 secant</h4><p>$\sec(\theta)&#x3D;\frac{1}{\cos(\theta)}$</p>
+<p>$\sec(\theta)&#x3D;\frac{r}{x}$</p>
+<h4 id="余割-cosecant"><a href="#余割-cosecant" class="headerlink" title="余割 cosecant"></a>余割 cosecant</h4><p>$\csc(\theta)&#x3D;\frac{1}{\sin(\theta)}$</p>
+<p>$\csc(\theta)&#x3D;\frac{r}{y}$</p>
 <h4 id="切线-tangent"><a href="#切线-tangent" class="headerlink" title="切线 tangent"></a>切线 tangent</h4><p>对边比邻边。</p>
-<p>$\tan(\theta)=\frac{\sin(\theta)}{\cos(\theta)}$</p>
-<p>$\tan(\theta) = \frac{y}{x}$</p>
+<p>$\tan(\theta)&#x3D;\frac{\sin(\theta)}{\cos(\theta)}$</p>
+<p>$\tan(\theta) &#x3D; \frac{y}{x}$</p>
 <h4 id="余切-cotangent"><a href="#余切-cotangent" class="headerlink" title="余切 cotangent"></a>余切 cotangent</h4><p>邻边比对边。</p>
-<p>$\cot(\theta) = \frac{1}{\tan(\theta)}=\frac{\cos(\theta)}{sin(\theta)}$</p>
-<p>$\cot(\theta) = \frac{x}{y}$</p>
+<p>$\cot(\theta) &#x3D; \frac{1}{\tan(\theta)}&#x3D;\frac{\cos(\theta)}{sin(\theta)}$</p>
+<p>$\cot(\theta) &#x3D; \frac{x}{y}$</p>
 <h4 id="反切线函数"><a href="#反切线函数" class="headerlink" title="反切线函数"></a>反切线函数</h4><p>反切线函数的反函数 arctangent</p>
-<p>$\arctan(\tan(\theta)) = \theta$</p>
+<p>$\arctan(\tan(\theta)) &#x3D; \theta$</p>
 <h3 id="2-角度弧度"><a href="#2-角度弧度" class="headerlink" title="2.角度弧度"></a>2.角度弧度</h3><p>半径为1的园，全弧长为2$\pi$r。</p>
-<p>$radian=degree*(\pi/180)$</p>
-<p>$degree = radian*(180/\pi)$</p>
+<p>$radian&#x3D;degree*(\pi&#x2F;180)$</p>
+<p>$degree &#x3D; radian*(180&#x2F;\pi)$</p>
 <p>角度是两条线段的夹角，弧度是两条线段和园相交的点，在圆弧上走过的距离。</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/sr7ghV"><img src="https://s3.ax1x.com/2021/01/17/sr7ghV.jpg" alt="sr7ghV.jpg"></a></p>
 <p>角度使用360°，原因来自于日历。波斯日历就是360天。360能被整除的数字（不算自己和1）有22个数字。</p>
-<h3 id="3-三角恒等式"><a href="#3-三角恒等式" class="headerlink" title="3.三角恒等式"></a>3.三角恒等式</h3><h4 id="对称性恒等式"><a href="#对称性恒等式" class="headerlink" title="对称性恒等式"></a>对称性恒等式</h4><script type="math/tex; mode=display">
-\sin(-\theta)=-\sin(\theta),    cos(-\theta)=cos(\theta),\tan(-\theta)=-tan(-\theta),\\
-\sin(\frac{\pi}{2}-\theta)=\cos(\theta),    \cos(\frac{\pi}{2}-\theta)=\sin(\theta),\tan(\frac{\pi}{2}-\theta)=\cot(\theta)</script><h4 id="毕达哥拉斯恒等式"><a href="#毕达哥拉斯恒等式" class="headerlink" title="毕达哥拉斯恒等式"></a>毕达哥拉斯恒等式</h4><p>这是由勾股定理推算出来的。</p>
-<script type="math/tex; mode=display">\sin^2\theta+\cos^2\theta=1,    1+\tan^2\theta=\sec^2\theta,    1+\cot^2\theta=\csc^2\theta</script><h4 id="和或差恒等式"><a href="#和或差恒等式" class="headerlink" title="和或差恒等式"></a>和或差恒等式</h4><script type="math/tex; mode=display">\sin(a+b)=\sin(a)\cos(b)+\cos(a)+\sin(b)\\
-\sin(a-b)=\sin(a)\cos(b)-\cos(a)+\sin(b)\\
-\cos(a+b)=\cos(a)\cos(b)-\sin(a)+\sin(b)\\
-\cos(a-b)=\cos(a)\cos(b)+\sin(a)+\sin(b)\\
-\tan(a-b)=\frac{\tan(a)+\tan(b)}{1-\tan(a)\tan(b)}\\
-\tan(a-b)=\frac{\tan(a)-\tan(b)}{1+\tan(a)\tan(b)}</script><p>背诵的时候，只需要记住一半，其他的是符号相反。</p>
-<h4 id="等腰三角形恒等式"><a href="#等腰三角形恒等式" class="headerlink" title="等腰三角形恒等式"></a>等腰三角形恒等式</h4><p>其实就是<strong>和或差恒等式</strong>公式里面a=b的情况下，推导出来的。</p>
-<script type="math/tex; mode=display">\sin(2\theta)=2\sin(\theta)\cos(\theta)</script><p>在阅读Detour源码里面有这样的应用。里面将会读取一个sin cos的一半做乘法。</p>
-<script type="math/tex; mode=display">\cos(2\theta)=\cos^2(\theta)-\sin^2\theta=2\cos^2(\theta)-1=1-2\sin^2(\theta)</script><script type="math/tex; mode=display">\tan(2\theta)=\frac{2\tan(\theta)}{1-\tan^2\theta}</script><h4 id="正弦、余弦定理"><a href="#正弦、余弦定理" class="headerlink" title="正弦、余弦定理"></a>正弦、余弦定理</h4><p>如果已知边长，已知角度，需要推算出未知边长度，就需要使用这个定理。而且是任意三角形。</p>
+<h3 id="3-三角恒等式"><a href="#3-三角恒等式" class="headerlink" title="3.三角恒等式"></a>3.三角恒等式</h3><h4 id="对称性恒等式"><a href="#对称性恒等式" class="headerlink" title="对称性恒等式"></a>对称性恒等式</h4><p>$$<br>\sin(-\theta)&#x3D;-\sin(\theta),    cos(-\theta)&#x3D;cos(\theta),\tan(-\theta)&#x3D;-tan(-\theta),\<br>\sin(\frac{\pi}{2}-\theta)&#x3D;\cos(\theta),    \cos(\frac{\pi}{2}-\theta)&#x3D;\sin(\theta),\tan(\frac{\pi}{2}-\theta)&#x3D;\cot(\theta)$$</p>
+<h4 id="毕达哥拉斯恒等式"><a href="#毕达哥拉斯恒等式" class="headerlink" title="毕达哥拉斯恒等式"></a>毕达哥拉斯恒等式</h4><p>这是由勾股定理推算出来的。</p>
+<p>$$\sin^2\theta+\cos^2\theta&#x3D;1,    1+\tan^2\theta&#x3D;\sec^2\theta,    1+\cot^2\theta&#x3D;\csc^2\theta$$</p>
+<h4 id="和或差恒等式"><a href="#和或差恒等式" class="headerlink" title="和或差恒等式"></a>和或差恒等式</h4><p>$$\sin(a+b)&#x3D;\sin(a)\cos(b)+\cos(a)+\sin(b)\<br>\sin(a-b)&#x3D;\sin(a)\cos(b)-\cos(a)+\sin(b)\<br>\cos(a+b)&#x3D;\cos(a)\cos(b)-\sin(a)+\sin(b)\<br>\cos(a-b)&#x3D;\cos(a)\cos(b)+\sin(a)+\sin(b)\<br>\tan(a-b)&#x3D;\frac{\tan(a)+\tan(b)}{1-\tan(a)\tan(b)}\<br>\tan(a-b)&#x3D;\frac{\tan(a)-\tan(b)}{1+\tan(a)\tan(b)}<br>$$</p>
+<p>背诵的时候，只需要记住一半，其他的是符号相反。</p>
+<h4 id="等腰三角形恒等式"><a href="#等腰三角形恒等式" class="headerlink" title="等腰三角形恒等式"></a>等腰三角形恒等式</h4><p>其实就是<strong>和或差恒等式</strong>公式里面a&#x3D;b的情况下，推导出来的。</p>
+<p>$$\sin(2\theta)&#x3D;2\sin(\theta)\cos(\theta)$$</p>
+<p>在阅读Detour源码里面有这样的应用。里面将会读取一个sin cos的一半做乘法。</p>
+<p>$$\cos(2\theta)&#x3D;\cos^2(\theta)-\sin^2\theta&#x3D;2\cos^2(\theta)-1&#x3D;1-2\sin^2(\theta)$$</p>
+<p>$$\tan(2\theta)&#x3D;\frac{2\tan(\theta)}{1-\tan^2\theta}$$</p>
+<h4 id="正弦、余弦定理"><a href="#正弦、余弦定理" class="headerlink" title="正弦、余弦定理"></a>正弦、余弦定理</h4><p>如果已知边长，已知角度，需要推算出未知边长度，就需要使用这个定理。而且是任意三角形。</p>
 <ul>
 <li>正弦定理</li>
 </ul>
-<script type="math/tex; mode=display">\frac{\sin(A)}{a}=\frac{\sin(B)}{b}=\frac{\sin(C)}{c}</script><ul>
+<p>$$\frac{\sin(A)}{a}&#x3D;\frac{\sin(B)}{b}&#x3D;\frac{\sin(C)}{c}$$</p>
+<ul>
 <li>余弦定理</li>
 </ul>
-<script type="math/tex; mode=display">
-a^2=b^2+c^2-2bc\cos(A)\\
-b^2=a^2+c^2-2ac\cos(B)\\
-c^2=b^2+b^2-2ab\cos(C)</script><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/6kRlCD"><img src="https://s3.ax1x.com/2021/03/02/6kRlCD.png" alt="6kRlCD.png"></a></p>
+<p>$$<br>a^2&#x3D;b^2+c^2-2bc\cos(A)\<br>b^2&#x3D;a^2+c^2-2ac\cos(B)\<br>c^2&#x3D;b^2+b^2-2ab\cos(C)<br>$$</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/6kRlCD"><img src="https://s3.ax1x.com/2021/03/02/6kRlCD.png" alt="6kRlCD.png"></a></p>
 <h2 id="3-向量"><a href="#3-向量" class="headerlink" title="3.向量"></a>3.向量</h2><p>向量计算应用于游戏中来计算位置，里面和三角函数也有关系。</p>
 <p>向量和标量不一样，</p>
 <p><strong>标量</strong>(scale)只表示数值大小；</p>
@@ -324,150 +323,112 @@ c^2=b^2+b^2-2ab\cos(C)</script><p><a target="_blank" rel="noopener" href="https:
 <p>速率、长度是标量</p>
 <p><strong>零向量</strong>是指的长度为0，无方向的向量。</p>
 <h3 id="1-加法"><a href="#1-加法" class="headerlink" title="1.加法"></a>1.加法</h3><p>将两个向量拼接成平行四边形，对角向量就是加法的结果。两个相同的向量相加，等于将向量长度增加一倍。</p>
-<script type="math/tex; mode=display">\vec{u} + \vec{v} = \vec{a}</script><p><a target="_blank" rel="noopener" href="https://imgchr.com/i/snVdeS"><img src="https://s3.ax1x.com/2021/01/08/snVdeS.png" alt="snVdeS.png"></a></p>
+<p>$$\vec{u} + \vec{v} &#x3D; \vec{a} $$</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/snVdeS"><img src="https://s3.ax1x.com/2021/01/08/snVdeS.png" alt="snVdeS.png"></a></p>
 <h3 id="2-减法"><a href="#2-减法" class="headerlink" title="2.减法"></a>2.减法</h3><p>u向量-v向量，就是指的从u向量目的点指向v向量目标点</p>
-<script type="math/tex; mode=display">\vec{v} - \vec{u} = \vec{w} = \vec{a}</script><p><a target="_blank" rel="noopener" href="https://imgchr.com/i/snVUL8"><img src="https://s3.ax1x.com/2021/01/08/snVUL8.png" alt="snVUL8.png"></a></p>
+<p>$$\vec{v} - \vec{u} &#x3D; \vec{w} &#x3D; \vec{a}$$</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/snVUL8"><img src="https://s3.ax1x.com/2021/01/08/snVUL8.png" alt="snVUL8.png"></a></p>
 <h3 id="3-向量与标量乘"><a href="#3-向量与标量乘" class="headerlink" title="3.向量与标量乘"></a>3.向量与标量乘</h3><p>向量与标量乘法，将向量按照某个长度缩放，一般用于单位向量向前行进、缩回多少距离。</p>
 <h3 id="4-获取长度"><a href="#4-获取长度" class="headerlink" title="4.获取长度"></a>4.获取长度</h3><p>获取向量从开始到结束的距离。从向量得到标量。利用勾股定理，向量记录的就是直角三角形斜边在x,y轴上的投影长度，斜边长度就是x,y的平方和的开方。</p>
 <p>数学公式里面向量长度使用双竖线引用。</p>
-<script type="math/tex; mode=display">\left||\vec{v}\right||=\sqrt{a^2+b^2}</script><h3 id="5-normalized"><a href="#5-normalized" class="headerlink" title="5.normalized"></a>5.normalized</h3><p>归一化需要将向量长度计算出来，然后将向量在各个维度的分量都除以长度。这样就能得到一个单位向量。归一化用一条竖线。</p>
-<script type="math/tex; mode=display">\vec{v}_{norm} = \frac{\vec{v}} {\left||\vec{v}\right||}</script><p>单位化的向量分量的几何意义</p>
-<script type="math/tex; mode=display">x=\cos(\theta)</script><script type="math/tex; mode=display">y=\sin(\theta)</script><p>这个特性将会应用于计算位置。</p>
-<h3 id="6-Dot-Product"><a href="#6-Dot-Product" class="headerlink" title="6. Dot Product"></a>6. Dot Product</h3><script type="math/tex; mode=display">\cos\theta=\frac{\vec{u} \cdot \vec{v}} {\left||\vec{u}\right||\left||\vec{v}\right||}</script><p>点乘能计算两向量的夹角的cos值。cos有一个特点，在取值±90°的值域都是&gt;0。在游戏中，这种计算能很快判断一个怪物是否在玩家身后。这个函数不能判断左右，但是能判断前后。</p>
-<h3 id="7-cross-produce"><a href="#7-cross-produce" class="headerlink" title="7.cross produce"></a>7.cross produce</h3><script type="math/tex; mode=display">\sin\theta=\frac{\vec{u} \times \vec{v}} {\left||\vec{u}\right||\left||\vec{v}\right||}</script><p>叉乘用于算左右。sin有个特点，取值在0~179°都是&gt;0。用找个特点能判定向量是在自己的左边还是右边。</p>
+<p>$$\left||\vec{v}\right||&#x3D;\sqrt{a^2+b^2}$$</p>
+<h3 id="5-normalized"><a href="#5-normalized" class="headerlink" title="5.normalized"></a>5.normalized</h3><p>归一化需要将向量长度计算出来，然后将向量在各个维度的分量都除以长度。这样就能得到一个单位向量。归一化用一条竖线。</p>
+<p>$$\vec{v}_{norm} &#x3D; \frac{\vec{v}} {\left||\vec{v}\right||}$$</p>
+<p>单位化的向量分量的几何意义</p>
+<p>$$x&#x3D;\cos(\theta)$$</p>
+<p>$$y&#x3D;\sin(\theta)$$</p>
+<p>这个特性将会应用于计算位置。</p>
+<h3 id="6-Dot-Product"><a href="#6-Dot-Product" class="headerlink" title="6. Dot Product"></a>6. Dot Product</h3><p>$$\cos\theta&#x3D;\frac{\vec{u} \cdot \vec{v}} {\left||\vec{u}\right||\left||\vec{v}\right||}$$</p>
+<p>点乘能计算两向量的夹角的cos值。cos有一个特点，在取值±90°的值域都是&gt;0。在游戏中，这种计算能很快判断一个怪物是否在玩家身后。这个函数不能判断左右，但是能判断前后。</p>
+<h3 id="7-cross-produce"><a href="#7-cross-produce" class="headerlink" title="7.cross produce"></a>7.cross produce</h3><p>$$\sin\theta&#x3D;\frac{\vec{u} \times \vec{v}} {\left||\vec{u}\right||\left||\vec{v}\right||}$$</p>
+<p>叉乘用于算左右。sin有个特点，取值在0~179°都是&gt;0。用找个特点能判定向量是在自己的左边还是右边。</p>
 <p>叉乘需要有3个维度才有意义。</p>
-<script type="math/tex; mode=display">\vec{u}\times\vec{v}=\left|\vec{u}\right|\left|\vec{v}\right|\sin(\theta)n</script><p>u叉乘v之后结果是sin*u、v向量的分量。n就是垂直于u、v构成平面的垂直法线向量。</p>
+<p>$$\vec{u}\times\vec{v}&#x3D;\left|\vec{u}\right|\left|\vec{v}\right|\sin(\theta)n$$</p>
+<p>u叉乘v之后结果是sin*u、v向量的分量。n就是垂直于u、v构成平面的垂直法线向量。</p>
 <p>3D向量叉乘</p>
-<script type="math/tex; mode=display">
-\left[\begin{matrix}
-  x_1\\
-  y_1\\
-  z_1
-\end{matrix}\right] \times \left[\begin{matrix}
-  x_2\\
-  y_2\\
-  z_2
-\end{matrix}\right] = \left[\begin{matrix}
-  y_1z_2-z_1y_2\\
-  z_1x_2-x_1z_2\\
-  x_1y_2-y_1x_2
-\end{matrix}\right]</script><p>2D向量叉乘</p>
-<script type="math/tex; mode=display">
-\left[\begin{matrix}
-  x_1\\
-  y_1
-\end{matrix}\right] \times \left[\begin{matrix}
-  x_2\\
-  y_2
-\end{matrix}\right] =  x_1y_2-x_2y_1</script><p>性质：</p>
+<p>$$<br>\left[\begin{matrix}<br>  x_1\<br>  y_1\<br>  z_1<br>\end{matrix}\right] \times \left[\begin{matrix}<br>  x_2\<br>  y_2\<br>  z_2<br>\end{matrix}\right] &#x3D; \left[\begin{matrix}<br>  y_1z_2-z_1y_2\<br>  z_1x_2-x_1z_2\<br>  x_1y_2-y_1x_2<br>\end{matrix}\right]<br>$$</p>
+<p>2D向量叉乘</p>
+<p>$$<br>\left[\begin{matrix}<br>  x_1\<br>  y_1<br>\end{matrix}\right] \times \left[\begin{matrix}<br>  x_2\<br>  y_2<br>\end{matrix}\right] &#x3D;  x_1y_2-x_2y_1<br>$$</p>
+<p>性质：</p>
 <blockquote>
 <p>点乘和叉乘在一起时，有限叉乘。<br>反交换（交换之后数值将会变成负数）</p>
 </blockquote>
 <h3 id="8-获取角度"><a href="#8-获取角度" class="headerlink" title="8.获取角度"></a>8.获取角度</h3><p>将向量转换成弧度，向量无需归一化。<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/atan2/10931300?fr=aladdin">百度百科atan2</a></p>
-<script type="math/tex; mode=display">
-\angle\theta=\arctan(y,x)</script><script type="math/tex; mode=display">\arctan(y,x)=\begin{cases}
-\arctan(\frac{y}{x}), x >0\\
-\arctan(\frac{y}{x}) + \pi, y\geq 0, x\le 0
-\end{cases}</script><h3 id="9-常用函数"><a href="#9-常用函数" class="headerlink" title="9.常用函数"></a>9.常用函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 将弧度转换成角度</span></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">radian2angle</span><span class="params">(<span class="type">float</span> radian)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> radian * (<span class="number">180.0f</span> / mathfu::kPi);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将角度转换成弧度</span></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">angle2radian</span><span class="params">(<span class="type">float</span> angle)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> angle * (mathfu::kPi / <span class="number">180.0f</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将向量转换成角度</span></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">vector2angle</span><span class="params">(mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt; a)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">radian2angle</span>(std::<span class="built_in">atan2</span>(a.y, a.x));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 角度转换成向量</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">angle2vector</span><span class="params">(<span class="type">float</span> angle, mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;&amp; a)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> radian = <span class="built_in">angle2radian</span>(angle);</span><br><span class="line">    a.y = std::<span class="built_in">sin</span>(radian);</span><br><span class="line">    a.x = std::<span class="built_in">cos</span>(radian);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 按照角度，长度，转换一个位置</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">movepos</span><span class="params">(<span class="type">float</span> angle,mathfu::Vector&lt;<span class="type">float</span>,<span class="number">2</span>&gt;&amp; rawPos, <span class="type">float</span> len, mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;&amp; out)</span> </span>&#123;</span><br><span class="line">    mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt; dir;</span><br><span class="line">    <span class="built_in">angle2vector</span>(angle, dir);</span><br><span class="line">    dir.x *= len;</span><br><span class="line">    dir.y *= len;</span><br><span class="line">    out = rawPos + dir;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出一个向量</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">outputvector</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* tag, mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;&amp; a)</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; tag &lt;&lt; <span class="string">&quot; &quot;</span>&lt;&lt; a.x &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; a.y &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>$$<br>\angle\theta&#x3D;\arctan(y,x)$$</p>
+<p>$$\arctan(y,x)&#x3D;\begin{cases}<br>\arctan(\frac{y}{x}), x &gt;0\<br>\arctan(\frac{y}{x}) + \pi, y\geq 0, x\le 0<br>\end{cases}<br>$$</p>
+<h3 id="9-常用函数"><a href="#9-常用函数" class="headerlink" title="9.常用函数"></a>9.常用函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 将弧度转换成角度</span></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">radian2angle</span><span class="params">(<span class="type">float</span> radian)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> radian * (<span class="number">180.0f</span> / mathfu::kPi);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将角度转换成弧度</span></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">angle2radian</span><span class="params">(<span class="type">float</span> angle)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> angle * (mathfu::kPi / <span class="number">180.0f</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将向量转换成角度</span></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">vector2angle</span><span class="params">(mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt; a)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">radian2angle</span>(std::<span class="built_in">atan2</span>(a.y, a.x));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 角度转换成向量</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">angle2vector</span><span class="params">(<span class="type">float</span> angle, mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;&amp; a)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> radian = <span class="built_in">angle2radian</span>(angle);</span><br><span class="line">    a.y = std::<span class="built_in">sin</span>(radian);</span><br><span class="line">    a.x = std::<span class="built_in">cos</span>(radian);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 按照角度，长度，转换一个位置</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">movepos</span><span class="params">(<span class="type">float</span> angle,mathfu::Vector&lt;<span class="type">float</span>,<span class="number">2</span>&gt;&amp; rawPos, <span class="type">float</span> len, mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;&amp; out)</span> </span>&#123;</span><br><span class="line">    mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt; dir;</span><br><span class="line">    <span class="built_in">angle2vector</span>(angle, dir);</span><br><span class="line">    dir.x *= len;</span><br><span class="line">    dir.y *= len;</span><br><span class="line">    out = rawPos + dir;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出一个向量</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">outputvector</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* tag, mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;&amp; a)</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; tag &lt;&lt; <span class="string">&quot; &quot;</span>&lt;&lt; a.x &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; a.y &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="1-计算围绕role的怪物"><a href="#1-计算围绕role的怪物" class="headerlink" title="1.计算围绕role的怪物"></a>1.计算围绕role的怪物</h3><blockquote>
 <p>先检查是否和其他怪物重合<br>按照±小角度开始偏移尝试是否能站</p>
 </blockquote>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">#<span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathfu/vector.h&quot;</span></span></span><br><span class="line">#<span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathfu/constants.h&quot;</span></span></span><br><span class="line">#<span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">radian2angle</span><span class="params">(<span class="type">float</span> radian)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> radian * (<span class="number">180.0f</span> / mathfu::kPi);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">angle2radian</span><span class="params">(<span class="type">float</span> angle)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> angle * (mathfu::kPi / <span class="number">180.0f</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">vector2angle</span><span class="params">(mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt; a)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> std::<span class="built_in">atan2</span>(a.y, a.x)*(<span class="number">180.0f</span> / mathfu::kPi);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">angle2vector</span><span class="params">(<span class="type">float</span> angle, mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;&amp; a)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> radian = <span class="built_in">angle2radian</span>(angle);</span><br><span class="line">    a.y = std::<span class="built_in">sin</span>(radian);</span><br><span class="line">    a.x = std::<span class="built_in">cos</span>(radian);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">outputvector</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* tag, mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;&amp; a)</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; tag &lt;&lt; <span class="string">&quot;=(&quot;</span> &lt;&lt; a.x &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; a.y &lt;&lt; <span class="string">&quot;)\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// rawBattleCircleFix posSelf: linmath.Vector3&#123;X:11424.3, Y:-311.48605, Z:17336.395&#125;, </span></span><br><span class="line"><span class="comment">// posEnemy: linmath.Vector3&#123;X:11330.254, Y:-311.48605, Z:17465.838&#125;,</span></span><br><span class="line"><span class="comment">// newPos: linmath.Vector3&#123;X:11245.467, Y:-311.48605, Z:17601.525&#125;,</span></span><br><span class="line"><span class="comment">// angle: -32, e2sLen: 160.00067</span></span><br><span class="line"><span class="comment">// 测试怪物按照弧形排布在玩家周围</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test_monster_battle_cricle</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">float</span> dst = <span class="number">160.0f</span>; <span class="comment">// 怪物距离</span></span><br><span class="line">    <span class="type">float</span> bodyRadius = <span class="number">80.0f</span>;<span class="comment">// 怪物的宽度</span></span><br><span class="line"></span><br><span class="line">    <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">monsterPos</span><span class="params">(<span class="number">11424.3f</span>, <span class="number">17336.395f</span>)</span></span>;</span><br><span class="line">    <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">rolePos</span><span class="params">(<span class="number">11330.254f</span>, <span class="number">17465.838f</span>)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> dir = monsterPos - rolePos;</span><br><span class="line">    <span class="keyword">auto</span> angle = <span class="built_in">vector2angle</span>(dir) + <span class="number">20.0f</span>;</span><br><span class="line"></span><br><span class="line">    mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt; finalDir;</span><br><span class="line">    <span class="built_in">angle2vector</span>(angle, finalDir);</span><br><span class="line"></span><br><span class="line">    finalDir.x *= dst;</span><br><span class="line">    finalDir.y *= dst;</span><br><span class="line"></span><br><span class="line">    mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt; newPos = rolePos + finalDir;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">outputvector</span>(<span class="string">&quot;monsterPos&quot;</span>, monsterPos);</span><br><span class="line">    <span class="built_in">outputvector</span>(<span class="string">&quot;rolePos&quot;</span>, rolePos);</span><br><span class="line">    <span class="built_in">outputvector</span>(<span class="string">&quot;newPos&quot;</span>,newPos);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>cmake定义文件</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span> (VERSION <span class="number">3.2</span>)</span><br><span class="line"><span class="keyword">project</span>(math_base)</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span> (CMAKE_SYSTEM_NAME <span class="keyword">MATCHES</span> <span class="string">&quot;Windows&quot;</span>)</span><br><span class="line">    <span class="keyword">add_definitions</span>(-DWIN32)</span><br><span class="line">    <span class="keyword">add_definitions</span>(-DWIN32_LEAN_AND_MEAN)</span><br><span class="line">    <span class="keyword">add_definitions</span>(-D_WINSOCK_DEPRECATED_NO_WARNINGS)</span><br><span class="line">    <span class="keyword">add_definitions</span>(-D_CRT_SECURE_NO_WARNINGS)</span><br><span class="line">    <span class="keyword">add_definitions</span>(-D_USE_MATH_DEFINES)</span><br><span class="line"><span class="keyword">ENDIF</span> (CMAKE_SYSTEM_NAME <span class="keyword">MATCHES</span> <span class="string">&quot;Windows&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>( $ENV&#123;MATHFU_PATH&#125;/<span class="keyword">include</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">file</span>(GLOB_RECURSE all_SRC <span class="string">&quot;src/*.cpp&quot;</span> </span><br><span class="line">    <span class="string">&quot;src/*.hpp&quot;</span> <span class="string">&quot;src/*.h&quot;</span> </span><br><span class="line">    <span class="string">&quot;src/*.cc&quot;</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(test_math <span class="variable">$&#123;all_SRC&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(test_math)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>计算的位置，在坐标系上的位置</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/rOkIH0"><img src="https://s3.ax1x.com/2020/12/30/rOkIH0.png" alt="rOkIH0.png"></a></p>
 <h3 id="2-计算园外切线"><a href="#2-计算园外切线" class="headerlink" title="2.计算园外切线"></a>2.计算园外切线</h3><p>利用三角函数来计算点对于圆的切线；</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test_fun_fix_circle</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 圆半径</span></span><br><span class="line">    <span class="type">float</span> radius = <span class="number">8.0f</span>;</span><br><span class="line">    <span class="comment">// 圆心位置</span></span><br><span class="line">    <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">circlePos</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="comment">// 园外一点</span></span><br><span class="line">    <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">checkPos</span><span class="params">(<span class="number">10</span>, <span class="number">12</span>)</span></span>;</span><br><span class="line">    <span class="comment">// 园外点指向圆心向量</span></span><br><span class="line">    mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt; l = circlePos - checkPos;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算距离</span></span><br><span class="line">    <span class="keyword">auto</span> len = l.<span class="built_in">Length</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算出园外点指向圆心向量角度</span></span><br><span class="line">    <span class="type">float</span> cos = radius / len;</span><br><span class="line">    <span class="type">float</span> radian = std::<span class="built_in">acos</span>(cos);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 直角三角形，计算另一角度</span></span><br><span class="line">    <span class="type">float</span> offsetangle = <span class="number">90</span> - <span class="built_in">radian2angle</span>(radian);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将园外点指向圆心向量归一化，将向量转换成角度</span></span><br><span class="line">    <span class="keyword">auto</span> dir = l.<span class="built_in">Normalized</span>();</span><br><span class="line">    <span class="keyword">auto</span> oldAngle = <span class="built_in">vector2angle</span>(l);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将 园外点指向圆心向量角度 + 通过直角三角形方式计算出来的夹角</span></span><br><span class="line">    <span class="comment">// 这个夹角就切线方向</span></span><br><span class="line">    <span class="keyword">auto</span> finalAngle = oldAngle + offsetangle;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将角度换算成为向量</span></span><br><span class="line">    mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt; finalDir;</span><br><span class="line">    <span class="built_in">angle2vector</span>(finalAngle, finalDir);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">outputvector</span>(<span class="string">&quot;finalDir&quot;</span>, finalDir);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算出切线点离 园外点 的距离，将向量长度设置成这个距离</span></span><br><span class="line">    <span class="keyword">auto</span> al = std::<span class="built_in">sqrt</span>(len * len - radius * radius);</span><br><span class="line">    finalDir.x = finalDir.x * al;</span><br><span class="line">    finalDir.y = finalDir.y * al;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用 园外点 + 偏移向量就能得到切线过圆边的点</span></span><br><span class="line">    <span class="keyword">auto</span> finalPos = checkPos + finalDir;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">outputvector</span>(<span class="string">&quot;finalPos&quot;</span>, finalPos);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>效果：</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/si1XZQ"><img src="https://s3.ax1x.com/2021/01/04/si1XZQ.png" alt="si1XZQ.png"></a></p>
 <h3 id="3-计算某个点是否为三角形内"><a href="#3-计算某个点是否为三角形内" class="headerlink" title="3.计算某个点是否为三角形内"></a>3.计算某个点是否为三角形内</h3><p>原理在 b站 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1X7411F744?p=2">GAMES101-现代计算机图形学入门-闫令琪</a> 38分钟处讲解了。</p>
 <p>叉积是用于控制左右。如果获取的值域是正数左边，负数为右边。</p>
 <p>利用的是，三角形三点按照顺时针的向量，以及p点的向量的叉乘永远是相同的象限的。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">cross_vector2</span><span class="params">(mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;&amp; v1, mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;&amp; v2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> v1.x * v2.y - v2.x * v1.y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test_triangle_inner</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">A</span><span class="params">(<span class="number">8.66992</span>, <span class="number">6.79278</span>)</span></span>;</span><br><span class="line">  <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">B</span><span class="params">(<span class="number">4.96974</span>, <span class="number">2.1609</span>)</span></span>;</span><br><span class="line">  <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">C</span><span class="params">(<span class="number">12.31686</span>, <span class="number">1.78822</span>)</span></span>;</span><br><span class="line">  <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">P</span><span class="params">(<span class="number">8.98936</span>, <span class="number">4.07754</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">P2</span><span class="params">(<span class="number">11</span>, <span class="number">5</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> u = B - A;</span><br><span class="line">  <span class="keyword">auto</span> v = C - B;</span><br><span class="line">  <span class="keyword">auto</span> w = A - C;</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;start check P\n&quot;</span>;</span><br><span class="line">  <span class="keyword">auto</span> t = P - A;</span><br><span class="line">  std::cout &lt;&lt; <span class="built_in">cross_vector2</span>(t, u) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  t = P - B;</span><br><span class="line">  std::cout &lt;&lt; <span class="built_in">cross_vector2</span>(t, v) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  t = P - C;</span><br><span class="line">  std::cout &lt;&lt; <span class="built_in">cross_vector2</span>(t, w) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;start check P2\n&quot;</span>;</span><br><span class="line">  t = P2 - A;</span><br><span class="line">  std::cout &lt;&lt; <span class="built_in">cross_vector2</span>(t, u) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  t = P2 - B;</span><br><span class="line">  std::cout &lt;&lt; <span class="built_in">cross_vector2</span>(t, v) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  t = P2 - C;</span><br><span class="line">  std::cout &lt;&lt; <span class="built_in">cross_vector2</span>(t, w) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//output:</span></span><br><span class="line"><span class="comment">//start check P</span></span><br><span class="line"><span class="comment">//11.3947</span></span><br><span class="line"><span class="comment">//28.8183</span></span><br><span class="line"><span class="comment">//23.5922</span></span><br><span class="line"><span class="comment">//start check P2</span></span><br><span class="line"><span class="comment">//- 0.317775</span></span><br><span class="line"><span class="comment">//43.247</span></span><br><span class="line"><span class="comment">//20.8761</span></span><br><span class="line"><span class="comment">// 如果旋转方向相同，这些向量的sin值的符号都是一致的。</span></span><br><span class="line"><span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/snVFIJ"><img src="https://s3.ax1x.com/2021/01/08/snVFIJ.png" alt="snVFIJ.png"></a></p>
-<h3 id="4-计算矩形内的一点"><a href="#4-计算矩形内的一点" class="headerlink" title="4.计算矩形内的一点"></a>4.计算矩形内的一点</h3><script type="math/tex; mode=display">\begin{cases}
-  x'=x\cos(\theta)+y\sin(\theta)\\
-  y'=-x\sin(\theta)+y\cos(\theta)
-\end{cases} \tag{4.1}</script><p>原理和三角形检查一样。</p>
+<h3 id="4-计算矩形内的一点"><a href="#4-计算矩形内的一点" class="headerlink" title="4.计算矩形内的一点"></a>4.计算矩形内的一点</h3><p>$$\begin{cases}<br>  x’&#x3D;x\cos(\theta)+y\sin(\theta)\<br>  y’&#x3D;-x\sin(\theta)+y\cos(\theta)<br>\end{cases} \tag{4.1}$$</p>
+<p>原理和三角形检查一样。</p>
 <p>先将一个矩形做偏移，旋转：</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/s2djk4"><img src="https://s3.ax1x.com/2021/01/19/s2djk4.png" alt="s2djk4.png"></a></p>
 <p>取两个点开始计算：</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/s2wm9A"><img src="https://s3.ax1x.com/2021/01/19/s2wm9A.png" alt="s2wm9A.png"></a></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test_rect_inner</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">r1</span><span class="params">(<span class="number">-4</span>, <span class="number">-5</span>)</span></span>;</span><br><span class="line">    <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">r2</span><span class="params">(<span class="number">-1.401923789</span>, <span class="number">-3.5</span>)</span></span>;</span><br><span class="line">    <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">r3</span><span class="params">(<span class="number">-4.901923789</span>, <span class="number">2.562177826</span>)</span></span>;</span><br><span class="line">    <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">r4</span><span class="params">(<span class="number">-7.5</span>, <span class="number">1.062177826</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">i</span><span class="params">(<span class="number">-4.88</span>, <span class="number">-1.49</span>)</span></span>;</span><br><span class="line">    <span class="function">mathfu::Vector&lt;<span class="type">float</span>, 2&gt; <span class="title">j</span><span class="params">(<span class="number">-8.26</span>, <span class="number">-3.77</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;计算i点\n&quot;</span>;</span><br><span class="line">    <span class="keyword">auto</span> t1 = r2 - r1;</span><br><span class="line">    <span class="keyword">auto</span> t2 = i - r1;</span><br><span class="line">    std::cout &lt;&lt; mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;::<span class="built_in">DotProduct</span>(t1,t2) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    t1 = r3 - r2;</span><br><span class="line">    t2 = i - r2;</span><br><span class="line">    std::cout &lt;&lt; mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;::<span class="built_in">DotProduct</span>(t1, t2) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    t1 = r4 - r3;</span><br><span class="line">    t2 = i - r3;</span><br><span class="line">    std::cout &lt;&lt; mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;::<span class="built_in">DotProduct</span>(t1, t2) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    t1 = r1 - r4;</span><br><span class="line">    t2 = i - r4;</span><br><span class="line">    std::cout &lt;&lt; mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;::<span class="built_in">DotProduct</span>(t1, t2) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;计算j点\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    t1 = r2 - r1;</span><br><span class="line">    t2 = j - r1;</span><br><span class="line">    std::cout &lt;&lt; mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;::<span class="built_in">DotProduct</span>(t1, t2) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    t1 = r3 - r2;</span><br><span class="line">    t2 = j - r2;</span><br><span class="line">    std::cout &lt;&lt; mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;::<span class="built_in">DotProduct</span>(t1, t2) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    t1 = r4 - r3;</span><br><span class="line">    t2 = j - r3;</span><br><span class="line">    std::cout &lt;&lt; mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;::<span class="built_in">DotProduct</span>(t1, t2) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    t1 = r1 - r4;</span><br><span class="line">    t2 = j - r4;</span><br><span class="line">    std::cout &lt;&lt; mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;::<span class="built_in">DotProduct</span>(t1, t2) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/fangsmile/p/9306510.html">判断点是否在矩形里面</a></p>
 <h3 id="5-计算两个角度相差"><a href="#5-计算两个角度相差" class="headerlink" title="5.计算两个角度相差"></a>5.计算两个角度相差</h3><p>这段代码是复制unreal engine4里面的。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt; <span class="keyword">class</span> T &gt;</span></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="keyword">inline</span> T <span class="title">Sign</span><span class="params">(<span class="type">const</span> T A)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (A &gt; (T)<span class="number">0</span>) ? (T)<span class="number">1</span> : ((A &lt; (T)<span class="number">0</span>) ? (T)<span class="number">-1</span> : (T)<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">WindRelativeAnglesDegrees</span><span class="params">(<span class="type">float</span> InAngle0, <span class="type">float</span>&amp; InOutAngle1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">float</span> Diff = InAngle0 - InOutAngle1;</span><br><span class="line">    <span class="type">const</span> <span class="type">float</span> AbsDiff = std::<span class="built_in">abs</span>(Diff);</span><br><span class="line">    <span class="keyword">if</span> (AbsDiff &gt; <span class="number">180.0f</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        InOutAngle1 += <span class="number">360.0f</span> * <span class="built_in">Sign</span>(Diff) * std::<span class="built_in">floor</span>((AbsDiff / <span class="number">360.0f</span>) + <span class="number">0.5f</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test_windRelativeAngle</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">float</span> a0 = <span class="number">10</span>;</span><br><span class="line">    <span class="type">float</span> a1 = <span class="number">-10</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">WindRelativeAnglesDegrees</span>(a0, a1);</span><br><span class="line">    std::cout &lt;&lt; a0 - a1 &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    a0 = <span class="number">10</span>;</span><br><span class="line">    a1 = <span class="number">350</span>;</span><br><span class="line">    <span class="built_in">WindRelativeAnglesDegrees</span>(a0, a1);</span><br><span class="line">    std::cout &lt;&lt; a0 - a1 &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    a0 = <span class="number">370</span>;</span><br><span class="line">    a1 = <span class="number">20</span>;</span><br><span class="line">    <span class="built_in">WindRelativeAnglesDegrees</span>(a0, a1);</span><br><span class="line">    std::cout &lt;&lt; a0 - a1 &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>大意就是将a0,a1两个角度（无论角度是不是±180°区间，这个角度是绝对角度）计算了之后，再次做减法，计算出角度为夹角度数，且夹角会保持在±180°之内。</p>
-<h3 id="6-角度格式化"><a href="#6-角度格式化" class="headerlink" title="6.角度格式化"></a>6.角度格式化</h3><p>// Utility to ensure angle is between +/- 180 degrees by unwinding.</p>
+<h3 id="6-角度格式化"><a href="#6-角度格式化" class="headerlink" title="6.角度格式化"></a>6.角度格式化</h3><p>&#x2F;&#x2F; Utility to ensure angle is between +&#x2F;- 180 degrees by unwinding.</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将度数限制在±180°</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">UnwindDegrees</span><span class="params">(A <span class="type">float64</span>)</span></span> (R <span class="type">float64</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> A &gt; <span class="number">180.0</span> &#123;</span><br><span class="line">        A -= <span class="number">360.0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> A &lt; <span class="number">-180.0</span> &#123;</span><br><span class="line">        A += <span class="number">360.0</span></span><br><span class="line">    &#125;</span><br><span class="line">    R = A</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="7-计算线段与圆相交"><a href="#7-计算线段与圆相交" class="headerlink" title="7. 计算线段与圆相交"></a>7. 计算线段与圆相交</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hont/p/8991751.html">参考文献</a></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mathfu/vector.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> Vector2 = mathfu::Vector&lt;<span class="type">float</span>, <span class="number">2</span>&gt;;</span><br><span class="line"></span><br><span class="line">Vector2 zero = <span class="built_in">Vector2</span>(<span class="number">0.0f</span>,<span class="number">0.0f</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">BetweenLineAndCircle</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  Vector2 circleCenter, <span class="type">float</span> circleRadius,</span></span></span><br><span class="line"><span class="params"><span class="function">  Vector2 point1, Vector2 point2,</span></span></span><br><span class="line"><span class="params"><span class="function">  Vector2 &amp;intersection1, Vector2 &amp;intersection2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">float</span> t;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> dx = point2.x - point1.x;</span><br><span class="line">  <span class="keyword">auto</span> dy = point2.y - point1.y;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> a = dx * dx + dy * dy;</span><br><span class="line">  <span class="keyword">auto</span> b = <span class="number">2</span> * (dx * (point1.x - circleCenter.x) + dy * (point1.y - circleCenter.y));</span><br><span class="line">  <span class="keyword">auto</span> c = (point1.x - circleCenter.x) * (point1.x - circleCenter.x) + (point1.y - circleCenter.y) * (point1.y - circleCenter.y) - circleRadius * circleRadius;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> determinate = b * b - <span class="number">4</span> * a * c;</span><br><span class="line">  <span class="keyword">if</span> ((a &lt;= <span class="number">0.0000001</span>) || (determinate &lt; <span class="number">-0.0000001</span>))</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// No real solutions.</span></span><br><span class="line">    intersection1 = zero;</span><br><span class="line">    intersection2 = zero;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (determinate &lt; <span class="number">0.0000001</span> &amp;&amp; determinate &gt; <span class="number">-0.0000001</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// One solution.</span></span><br><span class="line">    t = -b / (<span class="number">2</span> * a);</span><br><span class="line">    intersection1 = <span class="built_in">Vector2</span>(point1.x + t * dx, point1.y + t * dy);</span><br><span class="line">    intersection2 = zero;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Two solutions.</span></span><br><span class="line">  t = (<span class="type">float</span>)((-b + std::<span class="built_in">sqrt</span>(determinate)) / (<span class="number">2</span> * a));</span><br><span class="line">  intersection1 = <span class="built_in">Vector2</span>(point1.x + t * dx, point1.y + t * dy);</span><br><span class="line">  t = (<span class="type">float</span>)((-b - std::<span class="built_in">sqrt</span>(determinate)) / (<span class="number">2</span> * a));</span><br><span class="line">  intersection2 = <span class="built_in">Vector2</span>(point1.x + t * dx, point1.y + t * dy);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argn, <span class="type">char</span>* argc[])</span> </span>&#123;</span><br><span class="line">  <span class="function">Vector2 <span class="title">circleCenter</span><span class="params">(<span class="number">-2.84f</span>,<span class="number">2.82f</span>)</span></span>;</span><br><span class="line">  <span class="type">float</span> circleRadius = <span class="number">3.5f</span>;</span><br><span class="line">  <span class="function">Vector2 <span class="title">point1</span><span class="params">(<span class="number">-5.48f</span>,<span class="number">5.12f</span>)</span></span>;</span><br><span class="line">  <span class="function">Vector2 <span class="title">point2</span><span class="params">(<span class="number">-0.55f</span>,<span class="number">5.47</span>)</span></span>;</span><br><span class="line">  Vector2 intersection1;</span><br><span class="line">  Vector2 intersection2;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> pointCount = <span class="built_in">BetweenLineAndCircle</span>(circleCenter, circleRadius, point1, point2, intersection1, intersection2);</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;pointCount: &quot;</span> &lt;&lt; pointCount;  </span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="8-点的旋转"><a href="#8-点的旋转" class="headerlink" title="8.点的旋转"></a>8.点的旋转</h3><h2 id="4-矩阵"><a href="#4-矩阵" class="headerlink" title="4.矩阵"></a>4.矩阵</h2><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h3><script type="math/tex; mode=display">
-  \left|\begin{matrix}
-   1 & 2 & 3 \\
-   4 & 5 & 6 \\
-   7 & 8 & 9
-  \end{matrix}\right| \tag{A}</script><p>矩阵是按照行列方式排列的数字。是线性代数里面中重要的数学概念。</p>
+
+<h3 id="8-点的旋转"><a href="#8-点的旋转" class="headerlink" title="8.点的旋转"></a>8.点的旋转</h3><h2 id="4-矩阵"><a href="#4-矩阵" class="headerlink" title="4.矩阵"></a>4.矩阵</h2><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h3><p>$$<br>  \left|\begin{matrix}<br>   1 &amp; 2 &amp; 3 \<br>   4 &amp; 5 &amp; 6 \<br>   7 &amp; 8 &amp; 9<br>  \end{matrix}\right| \tag{A}<br>$$</p>
+<p>矩阵是按照行列方式排列的数字。是线性代数里面中重要的数学概念。</p>
 <p>描述矩阵一般都是说</p>
-<script type="math/tex; mode=display">r \times c</script><p>的矩阵。r是rows行（横着的条目算1个），c是column（竖着的条目算1个）</p>
+<p>$$r \times c$$</p>
+<p>的矩阵。r是rows行（横着的条目算1个），c是column（竖着的条目算1个）</p>
 <p><strong>方阵</strong>就是行和列数目都是相同的。在3d运算中经常使用这种方阵</p>
 <p><strong>单位矩阵</strong>，对角线都是1，其余都是0。</p>
-<script type="math/tex; mode=display">
-  \left|\begin{matrix}
-   1 & 0 & 0 \\
-   0 & 1 & 0 \\
-   0 & 0 & 1
-  \end{matrix}\right| \tag{M}</script><p>书写的时候，矩阵都是写成大写。M，A，R。手写的时候，矩阵的括号其实要写成圆括号()，印刷体中都是[]表示。</p>
+<p>$$<br>  \left|\begin{matrix}<br>   1 &amp; 0 &amp; 0 \<br>   0 &amp; 1 &amp; 0 \<br>   0 &amp; 0 &amp; 1<br>  \end{matrix}\right| \tag{M}<br>$$</p>
+<p>书写的时候，矩阵都是写成大写。M，A，R。手写的时候，矩阵的括号其实要写成圆括号()，印刷体中都是[]表示。</p>
 <p>向量转换成矩阵可以成为 行矩阵、列矩阵。</p>
 <h3 id="2-矩阵运算"><a href="#2-矩阵运算" class="headerlink" title="2.矩阵运算"></a>2.矩阵运算</h3><ul>
 <li>单位矩阵</li>
 </ul>
 <p>主对角线数字都为1，其他位置都为0。</p>
-<h4 id="1-转置"><a href="#1-转置" class="headerlink" title="1.转置"></a>1.转置</h4><script type="math/tex; mode=display">
-\left|
-  \begin{matrix}
-   1 \\
-   2 \\
-   3  
-  \end{matrix}\right|\tag{M}</script><script type="math/tex; mode=display">
-\left|
-  \begin{matrix}
-   1 & 2 & 3\\
-  \end{matrix} \tag{A}\right|</script><p>记作：</p>
-<script type="math/tex; mode=display">M^t=A</script><h4 id="2-矩阵与标量乘"><a href="#2-矩阵与标量乘" class="headerlink" title="2.矩阵与标量乘"></a>2.矩阵与标量乘</h4><script type="math/tex; mode=display">
-M*k= k *\left|
-  \begin{matrix}
-   m11 & m12 & m13\\
-   m21 & m22 & m23\\
-   m31 & m32 & m33\\
-  \end{matrix} \right| = k \left|
-  \begin{matrix}
-   k*m11 & k*m12 & k*m13\\
-   k*m21 & k*m22 & k*m23\\
-   k*m31 & k*m32 & k*m33\\
-  \end{matrix} \right|</script><h4 id="3-矩阵乘法"><a href="#3-矩阵乘法" class="headerlink" title="3.矩阵乘法"></a>3.矩阵乘法</h4><p>公式定义：</p>
-<script type="math/tex; mode=display">(AB)_{ij}=\sum_{k=1}^p a_{i1}b_{1j}+a_{i2}b_{2j}+...+a_{ip}b_{pj}</script><p>公式分解：</p>
-<script type="math/tex; mode=display">
-A*B= \left|
-  \begin{matrix}
-   a11 & a12 & a13\\
-   a21 & a22 & a23\\
-  \end{matrix} \right| * \left|
-  \begin{matrix}
-   b11 & b12 \\
-   b21 & b22 \\
-   b31 & b32 \\
-  \end{matrix} \right|=\left|
-  \begin{matrix}
-   a11b11+a12b21+a13b31 & a11b21+ a12b22+a13b23\\
-   a21b11+a22+b21+a23b31 & a21b12+a22b22+a23b32\\
-  \end{matrix} \right|</script><script type="math/tex; mode=display">A*B=C</script><p>1、当矩阵A的列数（column）等于矩阵B的行数（row）时，A与B可以相乘。</p>
+<h4 id="1-转置"><a href="#1-转置" class="headerlink" title="1.转置"></a>1.转置</h4><p>$$<br>\left|<br>  \begin{matrix}<br>   1 \<br>   2 \<br>   3<br>  \end{matrix}\right|\tag{M}<br>$$</p>
+<p>$$<br>\left|<br>  \begin{matrix}<br>   1 &amp; 2 &amp; 3\<br>  \end{matrix} \tag{A}\right|<br>$$</p>
+<p>记作：</p>
+<p>$$M^t&#x3D;A$$</p>
+<h4 id="2-矩阵与标量乘"><a href="#2-矩阵与标量乘" class="headerlink" title="2.矩阵与标量乘"></a>2.矩阵与标量乘</h4><p>$$<br>M<em>k&#x3D; k <em>\left|<br>  \begin{matrix}<br>   m11 &amp; m12 &amp; m13\<br>   m21 &amp; m22 &amp; m23\<br>   m31 &amp; m32 &amp; m33\<br>  \end{matrix} \right| &#x3D; k \left|<br>  \begin{matrix}<br>   k</em>m11 &amp; k</em>m12 &amp; k<em>m13\<br>   k</em>m21 &amp; k<em>m22 &amp; k</em>m23\<br>   k<em>m31 &amp; k</em>m32 &amp; k*m33\<br>  \end{matrix} \right|<br>$$</p>
+<h4 id="3-矩阵乘法"><a href="#3-矩阵乘法" class="headerlink" title="3.矩阵乘法"></a>3.矩阵乘法</h4><p>公式定义：</p>
+<p>$$(AB)<em>{ij}&#x3D;\sum</em>{k&#x3D;1}^p a_{i1}b_{1j}+a_{i2}b_{2j}+…+a_{ip}b_{pj}$$</p>
+<p>公式分解：</p>
+<p>$$<br>A*B&#x3D; \left|<br>  \begin{matrix}<br>   a11 &amp; a12 &amp; a13\<br>   a21 &amp; a22 &amp; a23\<br>  \end{matrix} \right| * \left|<br>  \begin{matrix}<br>   b11 &amp; b12 \<br>   b21 &amp; b22 \<br>   b31 &amp; b32 \<br>  \end{matrix} \right|&#x3D;\left|<br>  \begin{matrix}<br>   a11b11+a12b21+a13b31 &amp; a11b21+ a12b22+a13b23\<br>   a21b11+a22+b21+a23b31 &amp; a21b12+a22b22+a23b32\<br>  \end{matrix} \right|<br>$$</p>
+<p>$$A*B&#x3D;C$$</p>
+<p>1、当矩阵A的列数（column）等于矩阵B的行数（row）时，A与B可以相乘。</p>
 <p>2、矩阵C的行数等于矩阵A的行数，C的列数等于B的列数。</p>
 <p>3、乘积C的第m行第n列的元素等于矩阵A的第m行的元素与矩阵B的第n列对应元素乘积之和。</p>
 <p>在线性代数课程中，宋老师的7字口诀：</p>
 <p>宋老师七字口诀：</p>
-<script type="math/tex; mode=display">A_{3 \times 4} B_{4 \times 5}</script><p>中间相等，取两头。</p>
+<p>$$A_{3 \times 4} B_{4 \times 5} $$</p>
+<p>中间相等，取两头。</p>
 <p>其实就是罗列矩阵的下标数字：</p>
 <p>3,4,4,5</p>
 <p>中间数字： 4,4相等，就能乘；</p>
@@ -478,24 +439,8 @@ A*B= \left|
 <p>坐标系上的位置：</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/sBoz8g"><img src="https://s3.ax1x.com/2021/01/16/sBoz8g.png" alt="sBoz8g.png"></a></p>
 <h4 id="4-克罗内克积（Kronecker-Product）"><a href="#4-克罗内克积（Kronecker-Product）" class="headerlink" title="4.克罗内克积（Kronecker Product）"></a>4.克罗内克积（Kronecker Product）</h4><p>克罗内克积是两个任意大小的矩阵间的运算，符号记作 。克罗内克积也被称为直积或张量积.以德国数学家利奥波德·克罗内克命名。</p>
-<script type="math/tex; mode=display">
-\left|
-  \begin{matrix}
-   a11 & a12 \\
-   a21 & a22 \\
-  \end{matrix} \right| \bigotimes
-\left|
-  \begin{matrix}
-   b11 & b12 \\
-   b12 & b22 \\
-  \end{matrix} \right|
-  = \left|
-  \begin{matrix}
-   a11b11 & a11b12 & a12b11 & a12b12 \\
-   a11b21 & a11b22 & a12b21 & a12b22 \\
-   a21b11 & a11b12 & a22b21 & a22b22 \\
-   a21b21 & a21b22 & a22b21 & a22b22 \\
-  \end{matrix} \right|</script><h2 id="6-欧拉角"><a href="#6-欧拉角" class="headerlink" title="6.欧拉角"></a>6.欧拉角</h2><p>先使用左手坐标系。</p>
+<p>$$<br>\left|<br>  \begin{matrix}<br>   a11 &amp; a12 \<br>   a21 &amp; a22 \<br>  \end{matrix} \right| \bigotimes<br>\left|<br>  \begin{matrix}<br>   b11 &amp; b12 \<br>   b12 &amp; b22 \<br>  \end{matrix} \right|<br>  &#x3D; \left|<br>  \begin{matrix}<br>   a11b11 &amp; a11b12 &amp; a12b11 &amp; a12b12 \<br>   a11b21 &amp; a11b22 &amp; a12b21 &amp; a12b22 \<br>   a21b11 &amp; a11b12 &amp; a22b21 &amp; a22b22 \<br>   a21b21 &amp; a21b22 &amp; a22b21 &amp; a22b22 \<br>  \end{matrix} \right|<br>$$</p>
+<h2 id="6-欧拉角"><a href="#6-欧拉角" class="headerlink" title="6.欧拉角"></a>6.欧拉角</h2><p>先使用左手坐标系。</p>
 <p>摆上一个飞机，y轴指天，x轴右，z轴向前。</p>
 <ol>
 <li>飞机围绕着y轴旋转，叫做偏离航向（heading），偏航角（Yaw），航向角（Heading Angle）；</li>
@@ -507,12 +452,16 @@ A*B= \left|
 <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av883112934/">欧拉角、四元数插值差异</a></p>
 <p>插值的时候，四元数可以使用球形插值SLerp，在空间上转换的时候，会在球面上画弧线。欧拉角是按照轴来做的。</p>
 <h3 id="2-欧拉恒等式"><a href="#2-欧拉恒等式" class="headerlink" title="2.欧拉恒等式"></a>2.欧拉恒等式</h3><p>我还没有理解到这个意义。</p>
-<script type="math/tex; mode=display">\cos\varphi+i\sin\varphi=e^{i\varphi}</script><p>当</p>
-<script type="math/tex; mode=display">\varphi=\pi</script><p>推导</p>
-<script type="math/tex; mode=display">e^{i\pi}+1=0</script><h2 id="5-四元数"><a href="#5-四元数" class="headerlink" title="5.四元数"></a>5.四元数</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>四元数是1843年发明的。爱尔兰数学家哈密顿(William Rowan Hamilton,1805-1865）。</p>
+<p>$$\cos\varphi+i\sin\varphi&#x3D;e^{i\varphi}$$</p>
+<p>当</p>
+<p>$$\varphi&#x3D;\pi$$</p>
+<p>推导</p>
+<p>$$e^{i\pi}+1&#x3D;0$$</p>
+<h2 id="5-四元数"><a href="#5-四元数" class="headerlink" title="5.四元数"></a>5.四元数</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>四元数是1843年发明的。爱尔兰数学家哈密顿(William Rowan Hamilton,1805-1865）。</p>
 <p>四元数运算在电动力学与广义相对论中有广泛的应用。四元数可以用来取代张量表示。有时候采用带有复数元素之四元数会比较容易，导得结果不为除法代数之形式。然而亦可结合共轭运算以达到相同的运算结果。</p>
 <p>从概念上来看，就是在数学里面定义对于-1开方最后获取的值。</p>
-<script type="math/tex; mode=display">i=\sqrt{-1}</script><p>复数是对实数集合的一种扩展。</p>
+<p>$$i&#x3D;\sqrt{-1}$$</p>
+<p>复数是对实数集合的一种扩展。</p>
 <p>在游戏开发应用里面，四元数用于做旋转计算。所以最好先将矩阵搞清楚。复数已经是一种数学工具了，在实际世界里面不能表示什么意义。</p>
 <p>四元数不是专门给3D图形学设计的，但是能用在3D图形学里面：</p>
 <ul>
@@ -521,18 +470,32 @@ A*B= \left|
 <li>平滑3D插值</li>
 </ul>
 <p><strong>复数</strong>定义</p>
-<script type="math/tex; mode=display">z=a+b*i</script><p>a是实部，b是虚部；</p>
+<p>$$z&#x3D;a+b*i$$</p>
+<p>a是实部，b是虚部；</p>
 <p><strong>复数</strong>与标量相乘、相除</p>
-<script type="math/tex; mode=display">k*Z_{1}=k*(a+bi)=k*a+(k*b)*i</script><p><strong>复数</strong>加减</p>
-<script type="math/tex; mode=display">Z_{1}=(a+b*i)</script><script type="math/tex; mode=display">Z_{2}=(c+d*i)</script><script type="math/tex; mode=display">Z_{1}+Z_{2}=(a+b*i)+(c+d*i)=((a+c)+(b+d)*i)</script><script type="math/tex; mode=display">Z_{1}-Z_{2}=(a+bi)-(c+di)=(a-c)+(b-d)i</script><p><strong>复数</strong>加法恒等元</p>
+<p>$$k<em>Z_{1}&#x3D;k</em>(a+bi)&#x3D;k<em>a+(k</em>b)*i$$</p>
+<p><strong>复数</strong>加减</p>
+<p>$$Z_{1}&#x3D;(a+b*i)$$</p>
+<p>$$Z_{2}&#x3D;(c+d*i)$$</p>
+<p>$$Z_{1}+Z_{2}&#x3D;(a+b<em>i)+(c+d</em>i)&#x3D;((a+c)+(b+d)*i)$$</p>
+<p>$$Z_{1}-Z_{2}&#x3D;(a+bi)-(c+di)&#x3D;(a-c)+(b-d)i$$</p>
+<p><strong>复数</strong>加法恒等元</p>
 <p>复数恒等元</p>
-<script type="math/tex; mode=display">(0+0*i)</script><p><strong>复数</strong>除法</p>
-<script type="math/tex; mode=display">Z_{1}/Z_{2}=\frac{(a+b*i)}{(c+d*i)}</script><p>推算的时候，需要分子和分母都乘上分母的共轭复数。</p>
+<p>$$(0+0*i)$$</p>
+<p><strong>复数</strong>除法</p>
+<p>$$Z_{1}&#x2F;Z_{2}&#x3D;\frac{(a+b<em>i)}{(c+d</em>i)}$$</p>
+<p>推算的时候，需要分子和分母都乘上分母的共轭复数。</p>
 <p><strong>共轭</strong>(Conjugate)</p>
 <p>两个实部相等，虚部互为相反数的复数互为共轭复数(conjugate complex number)。（当虚部不等于0时也叫共轭虚数）复数z的共轭复数记作 （z上加一横，英文中可读作Conjugate z,z conjugate or z bar），有时也可表示为</p>
-<script type="math/tex; mode=display">Z^*=\overline{Z}</script><script type="math/tex; mode=display">Z=(a+bi)</script><script type="math/tex; mode=display">\overline{Z}=(a-bi)</script><p>计算负数的模</p>
-<script type="math/tex; mode=display">\left||p\right||=\sqrt{p\overline{p}}</script><p><del>中划线</del></p>
-<script type="math/tex; mode=display">\underline{\text{下划线}}</script><script type="math/tex; mode=display">\overline{\text{上划线}}</script><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<p>$$Z^*&#x3D;\overline{Z}$$</p>
+<p>$$Z&#x3D;(a+bi)$$</p>
+<p>$$\overline{Z}&#x3D;(a-bi)$$</p>
+<p>计算负数的模</p>
+<p>$$\left||p\right||&#x3D;\sqrt{p\overline{p}}$$</p>
+<p><del>中划线</del></p>
+<p>$$\underline{\text{下划线}}$$</p>
+<p>$$\overline{\text{上划线}}$$</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://blog.csdn.net/u013914471/article/details/82973812">markdown公式</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/2c8c281d17d3f94109252a1c.html">windows10输入公式</a></li>
 <li>[3] <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0/1652457?fr=aladdin">三角函数</a></li>
@@ -542,18 +505,18 @@ A*B= \left|
 <li>[7] <a target="_blank" rel="noopener" href="https://github.com/google/mathfu">Google-mathfun库</a></li>
 <li>[8] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1X7411F744?p=2">GAMES101-现代计算机图形学入门-闫令琪</a></li>
 <li>[9] <a target="_blank" rel="noopener" href="https://www.runoob.com/numpy/numpy-tutorial.html">NumPy教程</a></li>
-<li>[10] <a target="_blank" rel="noopener" href="https://pypi.org/project/euclid/">2d/3dPython库</a></li>
+<li>[10] <a target="_blank" rel="noopener" href="https://pypi.org/project/euclid/">2d&#x2F;3dPython库</a></li>
 <li>[11] <a target="_blank" rel="noopener" href="https://blog.csdn.net/nuoyanli/article/details/96179976">markdown公式2</a></li>
-<li>[12] <a target="_blank" rel="noopener" href="https://muzhan.blog.csdn.net/article/details/81385790?utm_medium=distribute.pc_relevant.none-task-blog-searchFromBaidu-3.control&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-searchFromBaidu-3.control">markdown公式3</a></li>
+<li>[12] <a target="_blank" rel="noopener" href="https://muzhan.blog.csdn.net/article/details/81385790?utm_medium=distribute.pc_relevant.none-task-blog-searchFromBaidu-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-searchFromBaidu-3.control">markdown公式3</a></li>
 <li>[13] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1xJ411M7Rz?p=10">B站矩阵</a></li>
 <li>[14] <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%9E%81%E5%9D%90%E6%A0%87%E7%B3%BB/2381612?fr=aladdin">极坐标</a></li>
-<li>[15] <a target="_blank" rel="noopener" href="https://blog.csdn.net/u012909508/article/details/81910770?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control">3d数学笔记</a></li>
-<li>[16] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ns411J7Qs?from=search&amp;seid=9841395523045088295">妈咪说-复数</a></li>
+<li>[15] <a target="_blank" rel="noopener" href="https://blog.csdn.net/u012909508/article/details/81910770?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control">3d数学笔记</a></li>
+<li>[16] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ns411J7Qs?from=search&seid=9841395523045088295">妈咪说-复数</a></li>
 <li>[17] <a target="_blank" rel="noopener" href="https://download.geogebra.org/installers/6.0/GeoGebra-Windows-Installer-6-0-620-0.exe">GeoGebra-Classic-Win版本</a></li>
 <li>[18] <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%A4%8D%E6%95%B0%E8%BF%90%E7%AE%97%E6%B3%95%E5%88%99/2568041?fr=aladdin">复数运算规则</a></li>
 <li>[19] <a target="_blank" rel="noopener" href="https://blog.csdn.net/wwlcsdn000/article/details/79421612">欧拉角和四元数的理解</a></li>
 <li>[20] <a target="_blank" rel="noopener" href="https://blog.csdn.net/andrewfan/article/details/60981437">欧拉角和万向节死锁</a></li>
-<li>[21] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Bt4y1v7R1?from=search&amp;seid=14532893400995846237">万向节死锁实例</a></li>
+<li>[21] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Bt4y1v7R1?from=search&seid=14532893400995846237">万向节死锁实例</a></li>
 <li>[22] <a target="_blank" rel="noopener" href="https://latex.91maths.com/">在线LaTex工具</a></li>
 <li>[23] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av58055882/">3D数学基础图形与游戏开发-视频</a></li>
 </ul>
@@ -788,19 +751,6 @@ A*B= \left|
 
 
 
-<script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'forest',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    });
-  }, window.mermaid);
-}
-</script>
 
 
   
@@ -880,7 +830,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

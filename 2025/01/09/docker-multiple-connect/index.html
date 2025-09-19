@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.2">
@@ -75,12 +75,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -263,8 +263,7 @@
 </ul>
 </li>
 <li><strong>在1号docker中发起http请求</strong><ul>
-<li>根据<code>1号docker</code>中的编程语言，使用合适的<code>http</code>客户端库来发起回调请求。以<code>Python</code>为例，如果使用<code>requests</code>库，代码可能如下：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="comment"># 假设2号docker的容器名称是service2，http服务监听在8080端口</span></span><br><span class="line">response = requests.get(<span class="string">&#x27;http://service2:8080/api/callback&#x27;</span>)</span><br></pre></td></tr></table></figure>
-</li>
+<li>根据<code>1号docker</code>中的编程语言，使用合适的<code>http</code>客户端库来发起回调请求。以<code>Python</code>为例，如果使用<code>requests</code>库，代码可能如下：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="comment"># 假设2号docker的容器名称是service2，http服务监听在8080端口</span></span><br><span class="line">response = requests.get(<span class="string">&#x27;http://service2:8080/api/callback&#x27;</span>)</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
 </ol>
@@ -498,19 +497,6 @@
 
 
 
-<script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'forest',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    });
-  }, window.mermaid);
-}
-</script>
 
 
   
@@ -537,7 +523,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

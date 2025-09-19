@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.2">
@@ -77,12 +77,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -230,9 +230,9 @@
       
         <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>记录一下stackoverflow关于 <code>SO_REUSEPORT</code> <code>SO_REUSEADDR</code> 两个选项的解释。</p>
 <span id="more"></span>
+
 <h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><h3 id="SO-REUSEADDR"><a href="#SO-REUSEADDR" class="headerlink" title="SO_REUSEADDR"></a>SO_REUSEADDR</h3><p>如果在绑定套接字之前在套接字上启用了<code>SO_REUSEADDR</code>，则可以成功绑定该套接字，除非与绑定到完全相同的源地址和端口组合的另一个套接字发生冲突。现在你可能想知道这和以前有什么不同？关键词是“完全正确”。因此，REUSEADDR主要改变了在搜索冲突时处理通配符地址（“任何IP地址”）的方式。</p>
 <p>测试结果：</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -242,27 +242,26 @@
 <th>Result</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>ON/OFF</td>
+<tbody><tr>
+<td>ON&#x2F;OFF</td>
 <td>192.168.0.1:21</td>
 <td>192.168.0.1:21</td>
 <td>Error (EADDRINUSE)</td>
 </tr>
 <tr>
-<td>ON/OFF</td>
+<td>ON&#x2F;OFF</td>
 <td>192.168.0.1:21</td>
 <td>10.0.0.1:21</td>
 <td>OK</td>
 </tr>
 <tr>
-<td>ON/OFF</td>
+<td>ON&#x2F;OFF</td>
 <td>10.0.0.1:21</td>
 <td>192.168.0.1:21</td>
 <td>OK</td>
 </tr>
 <tr>
-<td>ON/OFF</td>
+<td>ON&#x2F;OFF</td>
 <td>0.0.0.0:21</td>
 <td>0.0.0.0:21</td>
 <td>Error (EADDRINUSE)</td>
@@ -291,9 +290,7 @@
 <td>0.0.0.0:21</td>
 <td>OK</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>套接字有一个发送缓冲区，如果对<code>send()</code>函数的调用成功，并不意味着请求的数据实际上已经发送出去，它只意味着数据已经添加到发送缓冲区。对于UDP套接字，数据通常会很快发送，如果不是立即发送，但是对于TCP套接字，在向发送缓冲区添加数据和让TCP实现真正发送数据之间可能会有相对较长的延迟。因此，当您关闭TCP套接字时，发送缓冲区中可能仍有挂起的数据，该数据尚未发送，但您的代码认为它已发送，因为<code>send()</code>调用已成功。如果TCP实现在您请求时立即关闭套接字，那么所有这些数据都将丢失，您的代码甚至不知道这一点。TCP被认为是一种可靠的协议，像这样丢失数据不是很可靠。这就是为什么当你关闭一个仍然有数据要发送的套接字时，它会进入一种称为TIME_WAIT的状态。在该状态下，<em>它将等待所有挂起的数据成功发送，或者等待超时，在这种情况下，套接字将强制关闭。</em></p>
 <p>内核在关闭套接字之前等待的时间量，不管它是否仍有数据在传输中，都称为延迟时间。在大多数系统上，延迟时间是全局可配置的，默认情况下相当长（在许多系统上，两分钟是一个常见值）。它还可以使用socket选项为每个socket配置，因此可以使用socket选项使超时更短或更长，甚至完全禁用超时。但是，完全禁用它是一个非常糟糕的主意，因为优雅地关闭TCP套接字是一个稍微复杂的过程，需要来回发送两个数据包（以及在数据包丢失时重新发送这些数据包），而整个关闭过程也受到延迟时间的限制。如果禁用“延迟”，套接字可能不仅会在传输过程中丢失数据，而且总是强制关闭而不是优雅地关闭，这通常是不推荐的。有关如何优雅地关闭TCP连接的详细信息超出了本回答的范围，如果您想了解更多信息，建议您查看本页。即使您禁用了延迟<code>SO_LINGER</code>，如果您的进程在没有明确关闭套接字的情况下死亡，BSD（可能还有其他系统）<em>仍然会延迟，忽略您配置的内容</em>。例如，如果您的代码只调用exit()（对于小型、简单的服务器程序来说非常常见），或者进程被信号终止（这包括它可能只是因为非法内存访问而崩溃）。因此，您无法确保套接字在任何情况下都不会出现。</p>
 <p>问题是，系统如何处理状态为<code>TIME_WAIT</code>的套接字？如果未设置<code>SO_REUSEADDR</code>，则状态为<code>TIME_WAIT</code>的套接字仍被视为绑定到源地址和端口，任何将新套接字绑定到相同地址和端口的尝试都将失败，直到套接字真正关闭为止，这可能需要与配置的延迟时间一样长的时间。因此，不要期望在关闭套接字后可以立即重新绑定它的源地址。在大多数情况下，这将失败。但是，如果为您尝试绑定的套接字设置了SO_REUSEADDR，那么在TIME_WAIT状态下绑定到相同地址和端口的另一个套接字将被忽略，毕竟它已经“半死不活”，并且您的套接字可以绑定到完全相同的地址而不会出现任何问题。在这种情况下，另一个套接字可能具有完全相同的地址和端口并不起作用。请注意，如果另一个套接字仍在“工作”，则将套接字绑定到时间等待状态下与死亡套接字完全相同的地址和端口可能会产生意外的、通常是不希望的副作用，但这超出了本答案的范围，幸运的是，这些副作用在实践中相当罕见。</p>
@@ -302,10 +299,12 @@
 <h3 id="SO-REUSEPORT"><a href="#SO-REUSEPORT" class="headerlink" title="SO_REUSEPORT"></a>SO_REUSEPORT</h3><p>所以，大多数人都会期望它会是这样。基本上，<code>SO_REUSEPORT</code>允许您将任意数量的套接字绑定到完全相同的源地址和端口，只要之前绑定的所有套接字在绑定之前也设置了<code>SO_REUSEPORT</code>。如果绑定到地址和端口的第一个套接字未设置<code>SO_REUSEPORT</code>，则在第一个套接字再次释放其绑定之前，任何其他套接字都不能绑定到完全相同的地址和端口，无论该其他套接字是否设置了<code>SO_REUSEPORT</code>。与<code>SO_REUSEADDR</code>的情况不同，处理<code>SO_REUSEPORT</code>的代码不仅会验证当前绑定的套接字是否设置了<code>SO_REUSEPORT</code>，而且还会验证具有冲突地址和端口的套接字在绑定时是否设置了<code>SO_REUSEPORT</code>。</p>
 <p><code>SO_REUSEPORT</code>并不意味着<code>SO_REUSEADDR</code>。这意味着，如果一个套接字在绑定时没有设置<code>SO_REUSEPORT</code>，而另一个套接字在绑定到完全相同的地址和端口时设置了<code>SO_REUSEPORT</code>，则绑定会失败，这是预期的，但如果另一个套接字已经死亡并且处于TIME_WAIT状态，则绑定也会失败。为了能够在时间等待状态下将套接字绑定到与另一个套接字相同的地址和端口，需要在该套接字上设置<code>SO_REUSEADDR</code>，或者在绑定之前必须在两个套接字上都设置<code>SO_REUSEPORT</code>。当然，允许在套接字上同时设置<code>SO_REUSEPORT</code>和<code>SO_REUSEADDR</code>。</p>
 <p>关于SO_REUSEPORT，除了它是在<code>SO_REUSEADDR</code>之后添加的之外，没有更多的内容可以说，这就是为什么在其他系统的许多套接字实现中找不到它，在添加此选项之前，它“分叉”了BSD代码，在此选项之前，无法将两个套接字绑定到BSD中完全相同的套接字地址。</p>
-<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="如何查看系统的版本"><a href="#如何查看系统的版本" class="headerlink" title="如何查看系统的版本"></a>如何查看系统的版本</h3><p>[root@test-qingzhou-01 ~]# hostnamectl<br>   Static hostname: test-qingzhou-01<br>         Icon name: computer-vm<br>           Chassis: vm<br>        Machine ID: 20190711105006363114529432776998<br>           Boot ID: 2abf6a175d9e4dc4a16c0b28d262818b<br>    Virtualization: kvm<br>  Operating System: CentOS Linux 7 (Core)<br>       CPE OS Name: cpe:/o:centos:centos:7<br>            Kernel: Linux 3.10.0-957.21.3.el7.x86_64<br>      Architecture: x86-64</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="如何查看系统的版本"><a href="#如何查看系统的版本" class="headerlink" title="如何查看系统的版本"></a>如何查看系统的版本</h3><p>[root@test-qingzhou-01 ~]# hostnamectl<br>   Static hostname: test-qingzhou-01<br>         Icon name: computer-vm<br>           Chassis: vm<br>        Machine ID: 20190711105006363114529432776998<br>           Boot ID: 2abf6a175d9e4dc4a16c0b28d262818b<br>    Virtualization: kvm<br>  Operating System: CentOS Linux 7 (Core)<br>       CPE OS Name: cpe:&#x2F;o:centos:centos:7<br>            Kernel: Linux 3.10.0-957.21.3.el7.x86_64<br>      Architecture: x86-64</p>
 <h3 id="相关代码"><a href="#相关代码" class="headerlink" title="相关代码"></a>相关代码</h3><p>golang的代码</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">syscall.SetsockoptInt(s, syscall.IPPROTO_IPV6, syscall.IPV6_V6ONLY, boolint(ipv6only))</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setsockopt</span><br></pre></td></tr></table></figure>
+
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/14388706/how-do-so-reuseaddr-and-so-reuseport-differ">StackOverflow-SO_REUSEPORT-SO_REUSEADDR</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/141aa1c41f15">SO_REUSEADDR和SO_REUSEPORT作用</a></li>
@@ -542,19 +541,6 @@
 
 
 
-<script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'forest',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    });
-  }, window.mermaid);
-}
-</script>
 
 
   
@@ -581,7 +567,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

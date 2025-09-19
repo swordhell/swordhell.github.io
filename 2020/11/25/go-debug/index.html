@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.2">
@@ -75,12 +75,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -226,15 +226,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在Linux里面使用gdb/delve工具来调试程序。</p>
+        <p>在Linux里面使用gdb&#x2F;delve工具来调试程序。</p>
 <span id="more"></span>
+
 <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/go-delve/delve/cmd/dlv</span><br></pre></td></tr></table></figure>
+
 <p>vscode中的-workspace中配置一份调试选项：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line"> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Attach to Process&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;go&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;attach&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;local&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="comment">// &quot;remotePath&quot;: &quot;$&#123;workspaceFolder:bin&#125;\\Lobby.exe&quot;,</span></span><br><span class="line">  <span class="attr">&quot;presentation&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;hidden&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;group&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="number">2</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;processId&quot;</span><span class="punctuation">:</span> <span class="number">2956</span></span><br><span class="line"> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+
 <p>使用vscode，安装连接到远程，工具栏里面选择“运行”-“安装附加调试器”</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Could not attach to pid 2956: this could be caused by a kernel security setting, try writing <span class="string">&quot;0&quot;</span> to /proc/sys/kernel/yama/ptrace_scope</span><br></pre></td></tr></table></figure>
+
 <h2 id="远程调试"><a href="#远程调试" class="headerlink" title="远程调试"></a>远程调试</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go install github.com/go-delve/delve/cmd/dlv@latest</span><br><span class="line">go build -gcflags <span class="string">&quot;all=-N -l&quot;</span> -o your_program</span><br><span class="line">ps aux | grep your_binary_name</span><br><span class="line">dlv attach 12345 --headless --listen=:2345 --<span class="built_in">log</span> --api-version=2 --accept-multiclient</span><br></pre></td></tr></table></figure>
-<p>{<br>  “name”: “Attach to Remote”,<br>  “type”: “go”,<br>  “request”: “attach”,<br>  “mode”: “remote”,<br>  “remotePath”: “/home/youruser/your_project”, // 改成你远程项目路径<br>  “port”: 2345,<br>  “host”: “127.0.0.1”,<br>  “apiVersion”: 2,<br>  “showLog”: true,<br>  “cwd”: “${workspaceFolder}”<br>}</p>
+
+<p>{<br>  “name”: “Attach to Remote”,<br>  “type”: “go”,<br>  “request”: “attach”,<br>  “mode”: “remote”,<br>  “remotePath”: “&#x2F;home&#x2F;youruser&#x2F;your_project”, &#x2F;&#x2F; 改成你远程项目路径<br>  “port”: 2345,<br>  “host”: “127.0.0.1”,<br>  “apiVersion”: 2,<br>  “showLog”: true,<br>  “cwd”: “${workspaceFolder}”<br>}</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://github.com/derekparker/delve">github-delv</a></li>
 </ul>
@@ -468,19 +473,6 @@
 
 
 
-<script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'forest',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    });
-  }, window.mermaid);
-}
-</script>
 
 
   
@@ -507,7 +499,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

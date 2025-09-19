@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.2">
@@ -76,12 +76,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -229,10 +229,11 @@
       
         <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>在制作游戏里面，除了使用FSM，还有一种实现模式：行为树。编写本文用于梳理行为树中的概念，知识点。里面使用到了三方库来编辑行为树(behavior3.com)。行为树主要用于做系统控制的，能通过简单的节点组合，编辑出复杂的逻辑。</p>
 <span id="more"></span>
+
 <h2 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h2><h3 id="1-composite"><a href="#1-composite" class="headerlink" title="1. composite"></a>1. composite</h3><p>组合节点，可以连接多个子节点，用于决策行为树走向。</p>
-<h3 id="1-1-Sequence-amp"><a href="#1-1-Sequence-amp" class="headerlink" title="1.1. Sequence &amp;"></a>1.1. Sequence &amp;</h3><p>Sequence 节点 顺序执行子节点，当子节点返回b3.SUCCESS直接访问下一个子节点，直到所有子节点都返回b3.SUCCESS，才从当前节点返回b3.SUCCESS，当子节点返回b3.FAILURE，则直接从当前节点返回b3.FAILURE 类似于逻辑与&amp;的概念。</p>
+<h3 id="1-1-Sequence"><a href="#1-1-Sequence" class="headerlink" title="1.1. Sequence &amp;"></a>1.1. Sequence &amp;</h3><p>Sequence 节点 顺序执行子节点，当子节点返回b3.SUCCESS直接访问下一个子节点，直到所有子节点都返回b3.SUCCESS，才从当前节点返回b3.SUCCESS，当子节点返回b3.FAILURE，则直接从当前节点返回b3.FAILURE 类似于逻辑与&amp;的概念。</p>
 <h3 id="1-2-Priority"><a href="#1-2-Priority" class="headerlink" title="1.2. Priority |"></a>1.2. Priority |</h3><p>Priority 节点 选择执行子节点，当子节点返回b3.FAILURE直接访问下一个子节点，直到所有子节点都返回b3.FAILURE，才从当前节点返回b3.FAILURE，当子节点返回b3.SUCCESS，则直接从当前节点返回b3.SUCCESS 类似于逻辑或|的概念。</p>
-<h3 id="1-3-MemSequence-amp"><a href="#1-3-MemSequence-amp" class="headerlink" title="1.3. MemSequence &amp;"></a>1.3. MemSequence &amp;</h3><p>MemSequence 节点 逻辑和Sequence一样，但是这里涉及到一个b3.RUNNING的返回值，就是子节点并不知道执行结果是成功还是失败，需要等后续才知道是否成功。其实就是异步的节点。</p>
+<h3 id="1-3-MemSequence"><a href="#1-3-MemSequence" class="headerlink" title="1.3. MemSequence &amp;"></a>1.3. MemSequence &amp;</h3><p>MemSequence 节点 逻辑和Sequence一样，但是这里涉及到一个b3.RUNNING的返回值，就是子节点并不知道执行结果是成功还是失败，需要等后续才知道是否成功。其实就是异步的节点。</p>
 <p>对于Sequence节点，当它再次遍历子节点的时候，还是从第一个子节点开始遍历，但是MemSequence却会记住之前在Running的子节点,然后下次遍历的时候，直接从Running的那个子节点开始，这可以很方便的继续之前中断的逻辑决策。</p>
 <p>比如一个怪物，它的技能有3段，就可以通过这样的节点来组织。</p>
 <h3 id="1-4-MemPriority"><a href="#1-4-MemPriority" class="headerlink" title="1.4. MemPriority |"></a>1.4. MemPriority |</h3><p>可以类似于Priority，加上了Mem前缀的意义，已经在1.3. 章节论述过了。</p>
@@ -259,7 +260,7 @@
 </ol>
 <p>怪物在走的时候，需要增加一些细节表现，防止太生硬。比如，待机的时候，会看一看玩家。而不是那种只会走路的那种。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li>[1] <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control">Wiki行为树</a>)</li>
+<li>[1] <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control)">Wiki行为树</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%A1%8C%E4%B8%BA%E6%A0%91/22735785?fr=aladdin">百度百科行为树</a></li>
 <li>[3] <a target="_blank" rel="noopener" href="https://github.com/behavior3/behavior3editor">behavior3editor_github</a></li>
 </ul>
@@ -348,7 +349,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-composite"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. composite</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Sequence-amp"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1. Sequence &amp;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Priority"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.2. Priority |</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-MemSequence-amp"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.3. MemSequence &amp;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-MemPriority"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.4. MemPriority |</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-decorators"><span class="nav-number">1.2.</span> <span class="nav-text">2. decorators</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Repeator"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1. Repeator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-RepeatUntilFailure"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2. RepeatUntilFailure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-RepeatUntilSuccess"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3. RepeatUntilSuccess</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-condition"><span class="nav-number">1.3.</span> <span class="nav-text">3. condition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-action"><span class="nav-number">1.4.</span> <span class="nav-text">4. action</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%BA%94%E7%94%A8"><span class="nav-number">1.5.</span> <span class="nav-text">行为树应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.6.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-composite"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. composite</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Sequence"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1. Sequence &amp;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Priority"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.2. Priority |</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-MemSequence"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.3. MemSequence &amp;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-MemPriority"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.4. MemPriority |</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-decorators"><span class="nav-number">1.2.</span> <span class="nav-text">2. decorators</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Repeator"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1. Repeator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-RepeatUntilFailure"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2. RepeatUntilFailure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-RepeatUntilSuccess"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3. RepeatUntilSuccess</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-condition"><span class="nav-number">1.3.</span> <span class="nav-text">3. condition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-action"><span class="nav-number">1.4.</span> <span class="nav-text">4. action</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%BA%94%E7%94%A8"><span class="nav-number">1.5.</span> <span class="nav-text">行为树应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.6.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -494,19 +495,6 @@
 
 
 
-<script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'forest',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    });
-  }, window.mermaid);
-}
-</script>
 
 
   
@@ -533,7 +521,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

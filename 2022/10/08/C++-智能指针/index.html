@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.2">
@@ -75,12 +75,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -228,6 +228,7 @@
       
         <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>智能指针在C++中其实是非常推荐使用的。从《Effective C++》、《现代C++白皮书》和《Modern Effective C++》里面也提到了带来的好处。减少内存泄漏的问题。在遇到了异常的时候，也能很好的防止内存泄漏的发生。很早之前STL中就推出了auto_ptr（1998年发明），在C++11废弃（deprecated）被unique_ptr取代在使用过程中还需要使用转移语法。C++11提供了shared_ptr，unique_ptr，weak_ptr三种智能指针。</p>
 <span id="more"></span>
+
 <h3 id="Item-18-独占资源使用std-unique-ptr"><a href="#Item-18-独占资源使用std-unique-ptr" class="headerlink" title="Item 18 独占资源使用std::unique_ptr"></a>Item 18 独占资源使用std::unique_ptr</h3><p>前提是指针是独占方式的话，可以当成内存指针来使用。速度和空间都不会有太多的损失。</p>
 <p>它是有专属性，通过std::move转换所有权。不允许拷贝，如果使用了拷贝，其实两个<code>unique_ptr</code>指向同一个对象指针，销毁的时候将会调用两次析构函数。</p>
 <p>最常用的情况就是通过工厂类产出的一个指针。</p>
@@ -465,19 +466,6 @@
 
 
 
-<script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'forest',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    });
-  }, window.mermaid);
-}
-</script>
 
 
   
@@ -504,7 +492,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.2">
@@ -75,12 +75,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -230,12 +230,13 @@
 <p>元编程（template meta-programming），在许多现代C++和Boost程序组件里面使用了。如果不能理解这块的东西，将无法读懂很多代码。可以通过它操作产生程序的程序。元编程是工作在编译器级别的一种程序。和普通编程不相同，普通编程是在执行的时候，对变量计算、判断和赋值；元编程是泛型编程的子集。</p>
 <p>元编程的基本 演算规则 (calculus rule) 有两种：编译时测试 (compile-time test) 和 编译时迭代 (compile-time iteration) [1]，分别实现了 控制结构 (control structure) 中的 选择 (selection) 和 迭代 (iteration)。基于这两种基本的演算方法，可以完成更复杂的演算。</p>
 <span id="more"></span>
+
 <blockquote>
 <p>C++ 11 的 别名模板 提供了对模板中的类型的简记方法；<br>C++ 14 的 变量模板 提供了对模板中常量的简记方法；<br>C++ 17 的 constexpr-if 提供了 编译时测试 的新写法；<br>C++ 17 的 折叠表达式 降低了 编译时迭代 的编写难度。</p>
 </blockquote>
 <h2 id="通过实例来学习"><a href="#通过实例来学习" class="headerlink" title="通过实例来学习"></a>通过实例来学习</h2><h2 id="c"><a href="#c" class="headerlink" title="c++"></a>c++</h2><h2 id="语法元素"><a href="#语法元素" class="headerlink" title="语法元素"></a>语法元素</h2><h2 id="元数据（meta-data）"><a href="#元数据（meta-data）" class="headerlink" title="元数据（meta data）"></a>元数据（meta data）</h2><h2 id="元函数（meta-function）"><a href="#元函数（meta-function）" class="headerlink" title="元函数（meta function）"></a>元函数（meta function）</h2><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://bot-man-jl.github.io/articles/?post=2017/Cpp-Metaprogramming">浅谈 C++ 元编程</a></li>
-<li>[2] <a target="_blank" rel="noopener" href="https://github.com/boostorg/hana">Boost. Your standard library for metaprogramming EB/OL</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://github.com/boostorg/hana">Boost. Your standard library for metaprogramming EB&#x2F;OL</a></li>
 </ul>
 
     </div>
@@ -467,19 +468,6 @@
 
 
 
-<script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'forest',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    });
-  }, window.mermaid);
-}
-</script>
 
 
   
@@ -506,7 +494,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.2">
@@ -75,12 +75,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -228,6 +228,7 @@
       
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>c++基础书，回顾。做一做笔记。这本书被侯杰推荐，第三版版编写于2005年。类似的还有More Effective C++，Scott Meyers，1996年编写，Exceptional C++，Herb Sutter，1999年编写。</p>
 <span id="more"></span>
+
 <h3 id="1-让自己习惯C"><a href="#1-让自己习惯C" class="headerlink" title="1.让自己习惯C++"></a>1.让自己习惯C++</h3><h4 id="条款1-视C-为一个语言联邦"><a href="#条款1-视C-为一个语言联邦" class="headerlink" title="条款1 视C++为一个语言联邦"></a>条款1 视C++为一个语言联邦</h4><ol>
 <li>c++先是继承了c语言；</li>
 <li>增加了面向对象的内容；</li>
@@ -239,6 +240,7 @@
 <p>使用模板函数、inline函数替换掉define的函数，避免传值时如果有累加操作造成问题。</p>
 <p>Const用于变量</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Char greeting[]=”hello”;</span><br><span class="line">Char*p = greeting;</span><br><span class="line">Const <span class="type">char</span>*p = greeting;<span class="comment">// 修饰内存块不可修改</span></span><br><span class="line">Char*<span class="type">const</span> p = greeting;<span class="comment">// 修饰指针不可修改</span></span><br><span class="line">Const <span class="type">char</span>* <span class="type">const</span> p = greeting;<span class="comment">// 两者都不能修改</span></span><br></pre></td></tr></table></figure>
+
 <p>在class里面的this指针就是个<code>T*const this</code>;</p>
 <p>Const 成员函数，为了确定该成员函数可当作const T* 指针调用。1.表面此函数不会修改任何成员；2.提供const 对象调用函数。我们在编写operator函数的时候，实现是否含有const分别实现操作函数。</p>
 <p>const成员函数行为流派有两种。</p>
@@ -246,25 +248,26 @@
 <p>Logic constness：const成员函数里面，需要修改部分成员变量。需要使用mutable修饰释放掉non-static成员变量的bitwise constness束缚。</p>
 <p>编写const函数的实现，使用const_cast包装成非const，使用static_cast将自己修改成const，这样就能避免代码重新编写。避免代码重复。</p>
 <h4 id="条款4-去顶对象被使用前已先被初始化"><a href="#条款4-去顶对象被使用前已先被初始化" class="headerlink" title="条款4 去顶对象被使用前已先被初始化"></a>条款4 去顶对象被使用前已先被初始化</h4><p>对象的变量在使用的时候，一定做过一次赋值，防止半随机造成不可知的问题。</p>
-<h3 id="2-构造-析构-赋值运算"><a href="#2-构造-析构-赋值运算" class="headerlink" title="2.构造/析构/赋值运算"></a>2.构造/析构/赋值运算</h3><h4 id="条款5-了解C-默默编写并调用哪些函数"><a href="#条款5-了解C-默默编写并调用哪些函数" class="headerlink" title="条款5 了解C++默默编写并调用哪些函数"></a>条款5 了解C++默默编写并调用哪些函数</h4><p>需要搞清楚构造函数、复制构造函数的运行逻辑。</p>
+<h3 id="2-构造-析构-赋值运算"><a href="#2-构造-析构-赋值运算" class="headerlink" title="2.构造&#x2F;析构&#x2F;赋值运算"></a>2.构造&#x2F;析构&#x2F;赋值运算</h3><h4 id="条款5-了解C-默默编写并调用哪些函数"><a href="#条款5-了解C-默默编写并调用哪些函数" class="headerlink" title="条款5 了解C++默默编写并调用哪些函数"></a>条款5 了解C++默默编写并调用哪些函数</h4><p>需要搞清楚构造函数、复制构造函数的运行逻辑。</p>
 <h4 id="条款6-若不想使用编译期自动生成的函数，就该明确拒绝"><a href="#条款6-若不想使用编译期自动生成的函数，就该明确拒绝" class="headerlink" title="条款6 若不想使用编译期自动生成的函数，就该明确拒绝"></a>条款6 若不想使用编译期自动生成的函数，就该明确拒绝</h4><p>如果不需要使用默认的构造、析构、赋值函数，那就需要明确的将其设置成private，或者是私有成员函数。在新版本里面可以直接使用delete来将函数置空。</p>
 <h4 id="条款7-为多态基类声明virtual析构函数"><a href="#条款7-为多态基类声明virtual析构函数" class="headerlink" title="条款7 为多态基类声明virtual析构函数"></a>条款7 为多态基类声明virtual析构函数</h4><p>std::string作为基类是错误的，由于std::string的析构函数不是个virtual方式的。</p>
 <p>需要学会如何计算一个class的size。</p>
 <p>如果存在继承的情况，在构造、析构函数里面不要调用虚方法。还未生成其调用关系，这样就会造成问题。</p>
 <h4 id="条款8-别让异常逃离析构函数"><a href="#条款8-别让异常逃离析构函数" class="headerlink" title="条款8 别让异常逃离析构函数"></a>条款8 别让异常逃离析构函数</h4><p>析构函数不要出现异常，否则会存在内存泄漏。</p>
 <h4 id="条款9-绝不再构造和析构过程中调用virtual函数"><a href="#条款9-绝不再构造和析构过程中调用virtual函数" class="headerlink" title="条款9 绝不再构造和析构过程中调用virtual函数"></a>条款9 绝不再构造和析构过程中调用virtual函数</h4><p>因为这样调用的时候，从不会下降至derived class。</p>
-<h4 id="条款10-令operator-返回一个reference-to-this"><a href="#条款10-令operator-返回一个reference-to-this" class="headerlink" title="条款10 令operator=返回一个reference to *this"></a>条款10 令operator=返回一个reference to *this</h4><p>这种主要是为了在赋值连锁形式的时候，可以直接获取一个引用。此规则约定俗成。为了减少连锁操作的时候，重复分配。</p>
-<h4 id="条款11-在operator-中处理“自我赋值”"><a href="#条款11-在operator-中处理“自我赋值”" class="headerlink" title="条款11 在operator=中处理“自我赋值”"></a>条款11 在operator=中处理“自我赋值”</h4><p>Opertator=操作符，一定要判断是否在自己赋值自己，而且需要返回*this，因为有可能赋值给你的那个值在做完操作之后马上就销毁了。</p>
+<h4 id="条款10-令operator-返回一个reference-to-this"><a href="#条款10-令operator-返回一个reference-to-this" class="headerlink" title="条款10 令operator&#x3D;返回一个reference to *this"></a>条款10 令operator&#x3D;返回一个reference to *this</h4><p>这种主要是为了在赋值连锁形式的时候，可以直接获取一个引用。此规则约定俗成。为了减少连锁操作的时候，重复分配。</p>
+<h4 id="条款11-在operator-中处理“自我赋值”"><a href="#条款11-在operator-中处理“自我赋值”" class="headerlink" title="条款11 在operator&#x3D;中处理“自我赋值”"></a>条款11 在operator&#x3D;中处理“自我赋值”</h4><p>Opertator&#x3D;操作符，一定要判断是否在自己赋值自己，而且需要返回*this，因为有可能赋值给你的那个值在做完操作之后马上就销毁了。</p>
 <p>复制对象的时候，一定要将每个成员变量都复制了,包括它的基类的数据结构也需要考虑。</p>
 <h4 id="条款12-复制对象时勿忘其每个成分"><a href="#条款12-复制对象时勿忘其每个成分" class="headerlink" title="条款12 复制对象时勿忘其每个成分"></a>条款12 复制对象时勿忘其每个成分</h4><p>复制对象相关函数一共两个：复制构造函数，赋值操作符函数。</p>
 <p>当子类在实现复制工作都时候，可能父类的成员无法访问，这样也得驱动父类的复制流程。</p>
 <h3 id="3-资源管理"><a href="#3-资源管理" class="headerlink" title="3.资源管理"></a>3.资源管理</h3><h4 id="条款13-用对象管理资源"><a href="#条款13-用对象管理资源" class="headerlink" title="条款13 用对象管理资源"></a>条款13 用对象管理资源</h4><p>可以考虑使用std::auto_ptr只能指针来控制内存释放。利用RAII管理内存。</p>
 <h4 id="条款14-在资源管理类中小心coping行为"><a href="#条款14-在资源管理类中小心coping行为" class="headerlink" title="条款14 在资源管理类中小心coping行为"></a>条款14 在资源管理类中小心coping行为</h4><p>RAII(Resource Acquisition Is Initialization)，资源取得时机便是初始化时机。</p>
 <p>使用了Lock类构造，析构函数来控制临界区。如果定义了两个并且将已经生成的Lock赋值给另外一个Lock，当第二个Lock构造的时候，将会重新进入临界区，造成问题。</p>
-<h4 id="条款15-在资源管理类中提供访问原始数据结构的接口"><a href="#条款15-在资源管理类中提供访问原始数据结构的接口" class="headerlink" title="条款15 在资源管理类中提供访问原始数据结构的接口"></a>条款15 在资源管理类中提供访问原始数据结构的接口</h4><p>在new/delete应该要匹配方式来调用。New [],delete []。</p>
+<h4 id="条款15-在资源管理类中提供访问原始数据结构的接口"><a href="#条款15-在资源管理类中提供访问原始数据结构的接口" class="headerlink" title="条款15 在资源管理类中提供访问原始数据结构的接口"></a>条款15 在资源管理类中提供访问原始数据结构的接口</h4><p>在new&#x2F;delete应该要匹配方式来调用。New [],delete []。</p>
 <p>将new语句和产生std::auto_ptr写到一块，这样可以防止异常造成内存泄漏。老的写法，新的写法是直接调用std::make_shared_ptr，其实意图也一样。</p>
 <h4 id="条款16-成对使用new和delete时要采取相同形式"><a href="#条款16-成对使用new和delete时要采取相同形式" class="headerlink" title="条款16 成对使用new和delete时要采取相同形式"></a>条款16 成对使用new和delete时要采取相同形式</h4><p><code>new</code>对应<code>delete</code>；<code>new[]</code>对应<code>delete[]</code>。</p>
 <h4 id="条款17-以独立语句将newed对象置入智能指针"><a href="#条款17-以独立语句将newed对象置入智能指针" class="headerlink" title="条款17 以独立语句将newed对象置入智能指针"></a>条款17 以独立语句将newed对象置入智能指针</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用非常干脆的方式将内存分配和构造智能指针操作绑定一块</span></span><br><span class="line"><span class="comment">// 防止在这期间出现了任何的异常，造成内存丢失；</span></span><br><span class="line"><span class="function">std::shared_ptr&lt;Widget&gt; <span class="title">pw</span><span class="params">(<span class="keyword">new</span> Widget)</span></span>;</span><br></pre></td></tr></table></figure>
+
 <h3 id="4-设计与声明"><a href="#4-设计与声明" class="headerlink" title="4.设计与声明"></a>4.设计与声明</h3><h4 id="条款18-让接口容易被正确使用，不易被误用"><a href="#条款18-让接口容易被正确使用，不易被误用" class="headerlink" title="条款18 让接口容易被正确使用，不易被误用"></a>条款18 让接口容易被正确使用，不易被误用</h4><p>设计接口的时候应该要定义明确，防止调用者造成一些误会。</p>
 <h4 id="条款19-设计class犹如设计type"><a href="#条款19-设计class犹如设计type" class="headerlink" title="条款19 设计class犹如设计type"></a>条款19 设计class犹如设计type</h4><p>设计类的时候，需要考虑的事情：</p>
 <ul>
@@ -275,9 +278,9 @@
 <li>你的新type需要配合某个继承图系（inheritance graph）吗？</li>
 <li>你的新type需要什么样的转换？</li>
 <li>什么样的操作符和函数对此新type而言是合理的？</li>
-<li>什么样的标准函数应该驳回？<a href="#条款6-若不想使用编译期自动生成的函数，就该明确拒绝">条款6-若不想使用编译期自动生成的函数，就该明确拒绝</a></li>
+<li>什么样的标准函数应该驳回？<a href="#%E6%9D%A1%E6%AC%BE6-%E8%8B%A5%E4%B8%8D%E6%83%B3%E4%BD%BF%E7%94%A8%E7%BC%96%E8%AF%91%E6%9C%9F%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%9A%84%E5%87%BD%E6%95%B0%EF%BC%8C%E5%B0%B1%E8%AF%A5%E6%98%8E%E7%A1%AE%E6%8B%92%E7%BB%9D">条款6-若不想使用编译期自动生成的函数，就该明确拒绝</a></li>
 <li>谁该取用新type的成员？</li>
-<li>什么是新type的“未申明接口”（undeclared interface）？<a href="###条款29">条款29</a></li>
+<li>什么是新type的“未申明接口”（undeclared interface）？<a href="###%E6%9D%A1%E6%AC%BE29">条款29</a></li>
 <li>你的新type有多么一般化？有可能可以使用template来实现一类的type。</li>
 <li>你真的需要一个新type吗？</li>
 </ul>
@@ -303,6 +306,7 @@
 <p>二者基本上无区别。</p>
 <p>现在新的方式有下列种类：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Const_cast</span>&lt;T&gt;(v)消除<span class="type">const</span>特性；</span><br><span class="line"><span class="built_in">Dynamic_cast</span>&lt;T&gt;(v)从基类转向派生类的转换，唯一有消耗的一种cast。</span><br><span class="line"><span class="built_in">Reinterpret_cast</span>&lt;T&gt;(v)尝试做一次低级转换，和编译器有关系。</span><br><span class="line"><span class="built_in">Static_cast</span>&lt;T&gt;(v)强制隐形转换，能做上面除了<span class="keyword">const_cast</span>之外的全部操作。</span><br></pre></td></tr></table></figure>
+
 <p>好处：</p>
 <ol>
 <li>使用新的写法，更加能让代码使用grep找出来。</li>
@@ -311,7 +315,7 @@
 <p>优良的代码很少使用cast语句的，这个功能又是不可或缺的。</p>
 <h4 id="条款28-避免返回handles指向对象内部成分"><a href="#条款28-避免返回handles指向对象内部成分" class="headerlink" title="条款28 避免返回handles指向对象内部成分"></a>条款28 避免返回handles指向对象内部成分</h4><p>类里面的handler返回尽量使用const T&amp;方法返回出去，这样能维护其封装性。</p>
 <h4 id="条款29-为“异常安全”而努力是值得的"><a href="#条款29-为“异常安全”而努力是值得的" class="headerlink" title="条款29 为“异常安全”而努力是值得的"></a>条款29 为“异常安全”而努力是值得的</h4><p>Strive for exception-safe code</p>
-<p>讲述了一个例子，使用c风格的lock,unlock，中间有一次delete一次计数器累加，还有一次内存分配。这种代码存在的一些不好的点是可能在new的时候发生异常，如何防范呢？直接使用shared_ptr来管理内存分配，使用RAII方式来控制lock,unlock操作，将delete/new操作直接使用shared_ptr的reset方式来制作，将累加代码移到最后一行，这样能减少大部分问题。</p>
+<p>讲述了一个例子，使用c风格的lock,unlock，中间有一次delete一次计数器累加，还有一次内存分配。这种代码存在的一些不好的点是可能在new的时候发生异常，如何防范呢？直接使用shared_ptr来管理内存分配，使用RAII方式来控制lock,unlock操作，将delete&#x2F;new操作直接使用shared_ptr的reset方式来制作，将累加代码移到最后一行，这样能减少大部分问题。</p>
 <p>强烈安全级别的时候，使用copy-and-swap，将需要修改的对象拷贝一份出来，当新的一份内存的操作完全执行成功了，再去做一次swap。</p>
 <p>在新的标准里面存在noexcept的语法。但是在std里面会存在std::bad_alloc的异常放出来。</p>
 <h4 id="条款30-透彻了解inline的里里外外"><a href="#条款30-透彻了解inline的里里外外" class="headerlink" title="条款30 透彻了解inline的里里外外"></a>条款30 透彻了解inline的里里外外</h4><p>inline函数其实就是将这些代码直接嵌入到调用者部分，“不含函数调用”的代码。</p>
@@ -321,7 +325,7 @@
 <h4 id="条款31-将文件间的编译依赖关系降至最低"><a href="#条款31-将文件间的编译依赖关系降至最低" class="headerlink" title="条款31 将文件间的编译依赖关系降至最低"></a>条款31 将文件间的编译依赖关系降至最低</h4><p>使用接口来依赖。</p>
 <p>能用object references,object pointers就不要使用object。</p>
 <p>多使用class声明、而非定义。为声明和定义分离两个文件出来。</p>
-<h3 id="6-继承与面向对象设计"><a href="#6-继承与面向对象设计" class="headerlink" title="6.继承与面向对象设计"></a>6.继承与面向对象设计</h3><p>c++继承有三种：public/protected/private。</p>
+<h3 id="6-继承与面向对象设计"><a href="#6-继承与面向对象设计" class="headerlink" title="6.继承与面向对象设计"></a>6.继承与面向对象设计</h3><p>c++继承有三种：public&#x2F;protected&#x2F;private。</p>
 <h4 id="条款32-确定你的public继承塑模出is-a关系"><a href="#条款32-确定你的public继承塑模出is-a关系" class="headerlink" title="条款32 确定你的public继承塑模出is-a关系"></a>条款32 确定你的public继承塑模出is-a关系</h4><p>public继承是is-a方式的，每个特性都需要在子类里面使用。</p>
 <h4 id="条款33-避免遮挡继承而来的名称"><a href="#条款33-避免遮挡继承而来的名称" class="headerlink" title="条款33 避免遮挡继承而来的名称"></a>条款33 避免遮挡继承而来的名称</h4><p>如果遮挡了，那就要使用forward方式取驱动调用。</p>
 <h4 id="条款34-区分接口继承和继承实现"><a href="#条款34-区分接口继承和继承实现" class="headerlink" title="条款34 区分接口继承和继承实现"></a>条款34 区分接口继承和继承实现</h4><p>Pure virtual：一定要子类实现；<br>virtual：基类提供缺省实现；<br>No-virtual：直接使用基类的实现，最好不要自己实现，可以声明成protected方式。</p>
@@ -329,19 +333,20 @@
 <h4 id="条款36-绝不重新定义继承而来的no-virtual函数"><a href="#条款36-绝不重新定义继承而来的no-virtual函数" class="headerlink" title="条款36 绝不重新定义继承而来的no-virtual函数"></a>条款36 绝不重新定义继承而来的no-virtual函数</h4><p>这样的函数是静态绑定，当调用的时候，很容易就变得混乱。</p>
 <h4 id="条款37-绝不重新定义继承而来的缺省参数值"><a href="#条款37-绝不重新定义继承而来的缺省参数值" class="headerlink" title="条款37 绝不重新定义继承而来的缺省参数值"></a>条款37 绝不重新定义继承而来的缺省参数值</h4><p>在基类pure virtual函数中定义过了函数的默认参数，子类函数里面不能再去定义默认参数，可能会存在混乱的情况。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">enum</span> <span class="title class_">ShapeColor</span> &#123;Red, Green,Blue&#125;;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">draw</span><span class="params">(ShapeColor color=Red)</span> <span class="type">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Rectangle</span> : <span class="keyword">public</span> Shape &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">draw</span><span class="params">(ShapeColor color=Green)</span> <span class="type">const</span></span>; <span class="comment">// * 这个就是问题</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Shape* pr = <span class="keyword">new</span> <span class="built_in">Rectangle</span>();</span><br><span class="line">pr-&gt;<span class="built_in">draw</span>(); <span class="comment">// 将会是Red方式。</span></span><br></pre></td></tr></table></figure>
+
 <h4 id="条款38-通过复合塑模出has-a或者“根据某物实现出”"><a href="#条款38-通过复合塑模出has-a或者“根据某物实现出”" class="headerlink" title="条款38 通过复合塑模出has-a或者“根据某物实现出”"></a>条款38 通过复合塑模出has-a或者“根据某物实现出”</h4><p>Is-implemented-in-terms-of。</p>
-<h4 id="条款39-明智的使用private继承方式"><a href="#条款39-明智的使用private继承方式" class="headerlink" title="条款39 明智的使用private继承方式"></a>条款39 明智的使用private继承方式</h4><p>private继承了之后，基类的protected/public的接口都会成为private。</p>
+<h4 id="条款39-明智的使用private继承方式"><a href="#条款39-明智的使用private继承方式" class="headerlink" title="条款39 明智的使用private继承方式"></a>条款39 明智的使用private继承方式</h4><p>private继承了之后，基类的protected&#x2F;public的接口都会成为private。</p>
 <h4 id="条款40-明智的谨慎的使用多重继承"><a href="#条款40-明智的谨慎的使用多重继承" class="headerlink" title="条款40 明智的谨慎的使用多重继承"></a>条款40 明智的谨慎的使用多重继承</h4><p>多重继承空间会消耗的大，但是也有存在的必要，最常见的就是iostream的实现，由于读写的fd需要独立。</p>
 <h3 id="7-模板"><a href="#7-模板" class="headerlink" title="7.模板"></a>7.模板</h3><p>通用性代码编写需要使用到模板，看完这章也不会让你成为模板专家。</p>
 <h4 id="条款41-了解隐式接口和编译期多态"><a href="#条款41-了解隐式接口和编译期多态" class="headerlink" title="条款41 了解隐式接口和编译期多态"></a>条款41 了解隐式接口和编译期多态</h4><p>面向对象世界里面，显式接口-explicit interface，运行期多态-runtime polymorphism 解决问题。</p>
 <p>在模板世界里面，上述的显式接口，运行时多态都还存在，隐式接口-implicit interface，编译器多态-compile-time polymorphism 也将会被重视起来。</p>
-<h4 id="条款42-了解typename的双重意义"><a href="#条款42-了解typename的双重意义" class="headerlink" title="条款42 了解typename的双重意义"></a>条款42 了解typename的双重意义</h4><p>Template里面有两种class/typename。其实没有不同。</p>
+<h4 id="条款42-了解typename的双重意义"><a href="#条款42-了解typename的双重意义" class="headerlink" title="条款42 了解typename的双重意义"></a>条款42 了解typename的双重意义</h4><p>Template里面有两种class&#x2F;typename。其实没有不同。</p>
 <p>当我们在template内部使用一个类型的时候需要增加一个typename C::const_iterator。这样能避免有个静态成员变量时这个名字。Nested dependent name。</p>
 <h4 id="条款43-学习处理模板化基类内的名称"><a href="#条款43-学习处理模板化基类内的名称" class="headerlink" title="条款43 学习处理模板化基类内的名称"></a>条款43 学习处理模板化基类内的名称</h4><p>模板函数里面直接调用导入来的类的一个方法，如果出现了某个类需要特例化的时候，就需要自己去指定实现一份。从template继承下来的类，调用的时候需要this-&gt;方式，或者明白写上base class资格修饰符来完成。</p>
 <h4 id="条款44-将于参数无关的代码抽离templates"><a href="#条款44-将于参数无关的代码抽离templates" class="headerlink" title="条款44 将于参数无关的代码抽离templates"></a>条款44 将于参数无关的代码抽离templates</h4><p>模板将会造成代码膨胀code bloat。二进制带着重复的代码、数据。</p>
-<h4 id="条款45-运用成员函数模板接受所有兼容类型"><a href="#条款45-运用成员函数模板接受所有兼容类型" class="headerlink" title="条款45 运用成员函数模板接受所有兼容类型"></a>条款45 运用成员函数模板接受所有兼容类型</h4><p>其实就是在class上定义过一个template<class t>，在构造/成员函数上也可以增加template<class u>来做修饰。这样的好处是成员函数能自由的生成更多的适配的函数出来给目标代码调用。</class></class></p>
+<h4 id="条款45-运用成员函数模板接受所有兼容类型"><a href="#条款45-运用成员函数模板接受所有兼容类型" class="headerlink" title="条款45 运用成员函数模板接受所有兼容类型"></a>条款45 运用成员函数模板接受所有兼容类型</h4><p>其实就是在class上定义过一个template<class t>，在构造&#x2F;成员函数上也可以增加template<class u>来做修饰。这样的好处是成员函数能自由的生成更多的适配的函数出来给目标代码调用。</class></class></p>
 <h4 id="条款46-需要类型转换时请为模板定义非成员函数"><a href="#条款46-需要类型转换时请为模板定义非成员函数" class="headerlink" title="条款46 需要类型转换时请为模板定义非成员函数"></a>条款46 需要类型转换时请为模板定义非成员函数</h4><p>这个思路其实类似条款24，当一个class需要兼容其他类型对其做操作符运算，最好从类里面分离出来。可以直接在template里面写一个friend const Rational operator*(const Rational&amp; lhs, const Rational&amp; rhs)函数出来。条款30里面提到的在头文件里面的函数都会成为inline。为了让这个函数消耗更加小，其实应该将这个函数做出一个doMultiply的函数，让inline函数调用。</p>
-<h4 id="条款47-请使用traits-classes表现类型信息"><a href="#条款47-请使用traits-classes表现类型信息" class="headerlink" title="条款47 请使用traits classes表现类型信息"></a>条款47 请使用traits classes表现类型信息</h4><p>这一章节需要理解了条款42，里面将会使用到typedef typename IterT::iterator_category。Z最终达成使用了if (typeid(typename std::iterator_traits<IterT>::iterator_category) == xxxx)的语句的编写，其实是在编译期间去确定代码的流程。<br>如果我们需要对这个固定式的函数做一些特例化，就需要使用重载了，其实就是将模板中定制好类型这样来调用。Traits广泛用于标准程序库中，可以在阅读stl源码相关代码的时候获取知识。<br>总结traits classes使得 typeid 在编译期可用。可以使用template，特例化完成实现。<br>重载技术，能在编译期对类型执行if…else测试。</IterT></p>
+<h4 id="条款47-请使用traits-classes表现类型信息"><a href="#条款47-请使用traits-classes表现类型信息" class="headerlink" title="条款47 请使用traits classes表现类型信息"></a>条款47 请使用traits classes表现类型信息</h4><p>这一章节需要理解了条款42，里面将会使用到typedef typename IterT::iterator_category。Z最终达成使用了if (typeid(typename std::iterator_traits<IterT>::iterator_category) &#x3D;&#x3D; xxxx)的语句的编写，其实是在编译期间去确定代码的流程。<br>如果我们需要对这个固定式的函数做一些特例化，就需要使用重载了，其实就是将模板中定制好类型这样来调用。Traits广泛用于标准程序库中，可以在阅读stl源码相关代码的时候获取知识。<br>总结traits classes使得 typeid 在编译期可用。可以使用template，特例化完成实现。<br>重载技术，能在编译期对类型执行if…else测试。</IterT></p>
 <h4 id="条款48-认识template元编程"><a href="#条款48-认识template元编程" class="headerlink" title="条款48 认识template元编程"></a>条款48 认识template元编程</h4><p>Template metaprogram其实就是c++写成，执行于C++编译器内的程序。它的输出就是若干的c++源码。TMP源于1990s。而且这个功能是非常有用的。如果没有啥映像，说明你一定没有足够认真地思考它。</p>
 <p>两个伟大的效力：</p>
 <ol>
@@ -358,7 +363,7 @@
 </ol>
 <p>TMP不是主流，程序库开发员会是它的重要用户。</p>
 <p>可能在其他的书籍里面能看到更多的信息。</p>
-<h3 id="8-定制new与delete"><a href="#8-定制new与delete" class="headerlink" title="8.定制new与delete"></a>8.定制new与delete</h3><h4 id="条款49-了解new-handler的行为"><a href="#条款49-了解new-handler的行为" class="headerlink" title="条款49 了解new-handler的行为"></a>条款49 了解new-handler的行为</h4><p>new操作的时候，如果内存不足将会抛异常。之前是返回null。<a href="#条款51-编写new和delete时需固守常规">条款51编写new和delete时需固守常规</a></p>
+<h3 id="8-定制new与delete"><a href="#8-定制new与delete" class="headerlink" title="8.定制new与delete"></a>8.定制new与delete</h3><h4 id="条款49-了解new-handler的行为"><a href="#条款49-了解new-handler的行为" class="headerlink" title="条款49 了解new-handler的行为"></a>条款49 了解new-handler的行为</h4><p>new操作的时候，如果内存不足将会抛异常。之前是返回null。<a href="#%E6%9D%A1%E6%AC%BE51-%E7%BC%96%E5%86%99new%E5%92%8Cdelete%E6%97%B6%E9%9C%80%E5%9B%BA%E5%AE%88%E5%B8%B8%E8%A7%84">条款51编写new和delete时需固守常规</a></p>
 <p>设计良好的new-handler函数必须做到下面的事情：</p>
 <ul>
 <li>让更多内存可被使用。启动分配大块内存，new-handler的时将释还给程序使用。</li>
@@ -369,20 +374,30 @@
 </ul>
 <p>1993年，C++要求operator new必须在无法分配内存时返回null，新一代operator new应该抛出bad_alloc异常，为了兼容提供了“分配失败便返回null”行为。这个形式成为“nothrow”形式。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Widget* pw2 = <span class="built_in">new</span> (std::nothrow) Widget;</span><br></pre></td></tr></table></figure>
+
 <h4 id="条款50-了解new和delete的合理替换时机"><a href="#条款50-了解new和delete的合理替换时机" class="headerlink" title="条款50 了解new和delete的合理替换时机"></a>条款50 了解new和delete的合理替换时机</h4><ul>
-<li>用来检查运用上的错误。</li>
-<li>为了强化效能。</li>
+<li><p>用来检查运用上的错误。</p>
+</li>
+<li><p>为了强化效能。</p>
+</li>
 <li><p>为了收集使用上的统计数据。</p>
 </li>
 <li><p>为了检测运用错误。</p>
 </li>
-<li>为了收集动态内存值使用统计信息。</li>
-<li>为了增加分配和归还的速度。</li>
-<li>为了降低缺省管理器带来的空间额外开销。</li>
-<li>为了弥补缺省分配其中的非最佳齐位</li>
-<li>为了将相关对象成簇集中。</li>
-<li>为了获取非传统的行为。</li>
-<li>有许多里有需要写一个自定义的new和delete，包括改善效能、对heap运行错误进行调试、收集heap使用信息。</li>
+<li><p>为了收集动态内存值使用统计信息。</p>
+</li>
+<li><p>为了增加分配和归还的速度。</p>
+</li>
+<li><p>为了降低缺省管理器带来的空间额外开销。</p>
+</li>
+<li><p>为了弥补缺省分配其中的非最佳齐位</p>
+</li>
+<li><p>为了将相关对象成簇集中。</p>
+</li>
+<li><p>为了获取非传统的行为。</p>
+</li>
+<li><p>有许多里有需要写一个自定义的new和delete，包括改善效能、对heap运行错误进行调试、收集heap使用信息。</p>
+</li>
 </ul>
 <h4 id="条款51-编写new和delete时需固守常规"><a href="#条款51-编写new和delete时需固守常规" class="headerlink" title="条款51 编写new和delete时需固守常规"></a>条款51 编写new和delete时需固守常规</h4><ul>
 <li>需要检查是否在分配0byte的内存。</li>
@@ -660,19 +675,6 @@
 
 
 
-<script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'forest',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    });
-  }, window.mermaid);
-}
-</script>
 
 
   
@@ -752,7 +754,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>
