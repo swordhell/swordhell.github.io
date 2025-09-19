@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="简介在使用多服务器操作redis的时候，需要考虑到数据同步的问题；本文来记录一下redis里面事务的用法。">
@@ -124,14 +124,14 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
   </ul>
@@ -228,37 +228,39 @@
       
         <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在使用多服务器操作redis的时候，需要考虑到数据同步的问题；本文来记录一下redis里面事务的用法。</p>
 <span id="more"></span>
-
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>乐观锁每次操作的时候，都认为自己能拿到锁资源。所以吞吐量比较好。</p>
 <p>策略：提交版本必须大于记录当前版本才能执行更新。</p>
 <p>悲观锁是认为每次都需要拿数据时候，都会发生争抢。</p>
 <p>策略为每次都会阻塞方式拿到资源才开始做自己操作。</p>
 <p>乐观锁不会有阻塞，吞吐量比较大，编写难度也会简单。</p>
-<h2 id="Redis指令和实验"><a href="#Redis指令和实验" class="headerlink" title="Redis指令和实验"></a>Redis指令和实验</h2><table>
+<h2 id="Redis指令和实验"><a href="#Redis指令和实验" class="headerlink" title="Redis指令和实验"></a>Redis指令和实验</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="left">命令</th>
-<th align="left">意义</th>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">意义</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">WATCH key [key …]</td>
-<td align="left">监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。</td>
+<tbody>
+<tr>
+<td style="text-align:left">WATCH key [key …]</td>
+<td style="text-align:left">监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。</td>
 </tr>
 <tr>
-<td align="left">MULTI</td>
-<td align="left">标记一个事务块的开始。事务块内的多条命令会按照先后顺序被放进一个队列当中，最后由 EXEC 命令原子性(atomic)地执行。</td>
+<td style="text-align:left">MULTI</td>
+<td style="text-align:left">标记一个事务块的开始。事务块内的多条命令会按照先后顺序被放进一个队列当中，最后由 EXEC 命令原子性(atomic)地执行。</td>
 </tr>
 <tr>
-<td align="left">EXEC</td>
-<td align="left">执行所有事务块内的命令。</td>
+<td style="text-align:left">EXEC</td>
+<td style="text-align:left">执行所有事务块内的命令。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>通过指令来描述一次事务的操作：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 监视 key ，且事务成功执行</span></span><br><span class="line"></span><br><span class="line">redis&gt; WATCH lock lock_times</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis&gt; SET lock <span class="string">&quot;huangz&quot;</span></span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; INCR lock_times</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; EXEC</span><br><span class="line">1) OK</span><br><span class="line">2) (<span class="built_in">integer</span>) 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 监视 key ，且事务被打断</span></span><br><span class="line"></span><br><span class="line">redis&gt; WATCH lock lock_times</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis&gt; SET lock <span class="string">&quot;joe&quot;</span>        <span class="comment"># 就在这时，另一个客户端修改了 lock_times 的值</span></span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; INCR lock_times</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; EXEC                  <span class="comment"># 因为 lock_times 被修改， joe 的事务执行失败</span></span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
-
 <p>上述例子是实现了，lock_times和操作lock中的内容时候，事务冲突之后，被打断的情况。</p>
-<h2 id="go语言测试"><a href="#go语言测试" class="headerlink" title="go语言测试"></a>go语言测试</h2><h2 id="redis的时间函数"><a href="#redis的时间函数" class="headerlink" title="redis的时间函数"></a>redis的时间函数</h2><p>local t &#x3D; redis.call(‘TIME’)</p>
+<h2 id="go语言测试"><a href="#go语言测试" class="headerlink" title="go语言测试"></a>go语言测试</h2><h2 id="redis的时间函数"><a href="#redis的时间函数" class="headerlink" title="redis的时间函数"></a>redis的时间函数</h2><p>local t = redis.call(‘TIME’)</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>[1] <a target="_blank" rel="noopener" href="http://doc.redisfans.com/">Redis 命令参考</a><br>[2] <a target="_blank" rel="noopener" href="https://github.com/gomodule/redigo">Golang Redis库</a><br>[3] <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/62f0b9ce7584">Go语言如何使用redis</a></p>
 
     </div>
@@ -366,7 +368,6 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
@@ -490,6 +491,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

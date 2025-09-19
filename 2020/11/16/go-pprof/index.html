@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="简介编写好了golang服务之后，接着要开始关注服务的CPU，内存使用情况。golang提供了性能剖析工具，记录一些自己搜集到的信息，写下一些实践的情况。在golang中内置了pprof工具，专门来做golang语言的优化。">
@@ -128,14 +128,14 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
   </ul>
@@ -232,7 +232,6 @@
       
         <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>编写好了golang服务之后，接着要开始关注服务的CPU，内存使用情况。golang提供了性能剖析工具，记录一些自己搜集到的信息，写下一些实践的情况。在golang中内置了pprof工具，专门来做golang语言的优化。</p>
 <span id="more"></span>
-
 <h2 id="1-安装环境"><a href="#1-安装环境" class="headerlink" title="1.安装环境"></a>1.安装环境</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/google/pprof</span><br><span class="line"> <span class="comment"># centos里面需要安装这个库</span></span><br><span class="line">yum install graphviz -y</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install graphviz</span><br></pre></td></tr></table></figure>
 <p>在Ubuntu系统中安装Graphviz，可以按照以下步骤进行：</p>
 <ol>
@@ -261,7 +260,6 @@
 <p><a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=joaompinto.vscode-graphviz">vscode-graphviz语法</a></p>
 <h2 id="2-性能监控代码"><a href="#2-性能监控代码" class="headerlink" title="2.性能监控代码"></a>2.性能监控代码</h2><p>这段代码将会开启一个http的网站，对外提供监控访问的地址。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;net/http&quot;</span></span><br><span class="line">    _ <span class="string">&quot;net/http/pprof&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    http.ListenAndServe(<span class="string">&quot;:10003&quot;</span>, <span class="literal">nil</span>)</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
-
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/rL0XUx"><img src="https://s3.ax1x.com/2020/12/30/rL0XUx.png" alt="rL0XUx.png"></a></p>
 <p>能通过这个网址检查程序的内存分配，CPU占用，mutex，gorouine之类的信息。可以直接通过浏览器访问获取信息。</p>
 <ul>
@@ -272,56 +270,54 @@
 </ul>
 <h2 id="3-CPU性能查看"><a href="#3-CPU性能查看" class="headerlink" title="3.CPU性能查看"></a>3.CPU性能查看</h2><p>打开一个命令行输入：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> D:\work\trunk\doc&gt; go tool pprof <span class="literal">-http</span>=<span class="string">&quot;192.168.125.224:8081&quot;</span> http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">10006</span>/debug/pprof/profile?seconds=<span class="number">200</span></span><br><span class="line">Fetching profile over HTTP from http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">10006</span>/debug/pprof/profile?seconds=<span class="number">200</span></span><br><span class="line">Saved profile <span class="keyword">in</span> C:\Users\xxxxxxxxx\pprof\pprof.samples.cpu.<span class="number">003</span>.pb.gz</span><br><span class="line">Serving web UI on http://localhost:<span class="number">8081</span></span><br></pre></td></tr></table></figure>
-
-<p>在本地将会开启 <strong>-http&#x3D;”:8081”</strong> 表示在8081网站，将会呈现最后结果。这次监控将会抓取 <a target="_blank" rel="noopener" href="http://127.0.0.1:10006/debug/pprof/profile">http://127.0.0.1:10006/debug/pprof/profile</a> 提供的性能信息。<strong>?seconds&#x3D;200</strong> 表示持续抓取200sec。到时间之后它们将会存储到本地的一个文件中： Saved profile in C:\Users\xxxxxxxxx\pprof\pprof.samples.cpu.003.pb.gz 。</p>
+<p>在本地将会开启 <strong>-http=”:8081”</strong> 表示在8081网站，将会呈现最后结果。这次监控将会抓取 <a target="_blank" rel="noopener" href="http://127.0.0.1:10006/debug/pprof/profile">http://127.0.0.1:10006/debug/pprof/profile</a> 提供的性能信息。<strong>?seconds=200</strong> 表示持续抓取200sec。到时间之后它们将会存储到本地的一个文件中： Saved profile in C:\Users\xxxxxxxxx\pprof\pprof.samples.cpu.003.pb.gz 。</p>
 <p>想知道这个处理的细节，可以直接阅读golang的源码：</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// C:\Go\src\net\http\pprof\pprof.go</span></span><br><span class="line"><span class="comment">// Profile responds with the pprof-formatted cpu profile.</span></span><br><span class="line"><span class="comment">// Profiling lasts for duration specified in seconds GET parameter, or for 30 seconds if not specified.</span></span><br><span class="line"><span class="comment">// The package initialization registers it as /debug/pprof/profile.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Profile</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    w.Header().Set(<span class="string">&quot;X-Content-Type-Options&quot;</span>, <span class="string">&quot;nosniff&quot;</span>)</span><br><span class="line">    sec, err := strconv.ParseInt(r.FormValue(<span class="string">&quot;seconds&quot;</span>), <span class="number">10</span>, <span class="number">64</span>)</span><br><span class="line">    <span class="keyword">if</span> sec &lt;= <span class="number">0</span> || err != <span class="literal">nil</span> &#123;</span><br><span class="line">        sec = <span class="number">30</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>它的接口有两个能支持输入seconds</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;trace&quot;:        &quot;A trace of execution of the current program. You can specify the duration in the seconds GET parameter. After you get the trace file, use the go tool trace command to investigate the trace.&quot;,</span><br><span class="line">&quot;profile&quot;:      &quot;CPU profile. You can specify the duration in the seconds GET parameter. After you get the profile file, use the go tool pprof command to investigate the profile.&quot;,</span><br></pre></td></tr></table></figure>
-
 <p>通过加载文件来调出分析网站：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> D:\work\trunk\doc&gt; go tool pprof <span class="literal">-http</span>=<span class="string">&quot;192.168.125.224:8989&quot;</span> C:\Users\xxxxxxxxx\pprof\pprof.samples.cpu.<span class="number">003</span>.pb.gz</span><br><span class="line">Serving web UI on http://localhost:<span class="number">8989</span></span><br></pre></td></tr></table></figure>
-
 <p>也能通过这个命令直接加载之前监控的剖析文件。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">列名</th>
-<th align="left">含义</th>
+<th style="text-align:left">列名</th>
+<th style="text-align:left">含义</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">flat</td>
-<td align="left">函数时间（不包括子函数）。这里不包括函数等待子函数返回。</td>
+<tbody>
+<tr>
+<td style="text-align:left">flat</td>
+<td style="text-align:left">函数时间（不包括子函数）。这里不包括函数等待子函数返回。</td>
 </tr>
 <tr>
-<td align="left">flat%</td>
-<td align="left">flat &#x2F; 总采样时间值</td>
+<td style="text-align:left">flat%</td>
+<td style="text-align:left">flat / 总采样时间值</td>
 </tr>
 <tr>
-<td align="left">sum%</td>
-<td align="left">前面每一行的flat占比总和</td>
+<td style="text-align:left">sum%</td>
+<td style="text-align:left">前面每一行的flat占比总和</td>
 </tr>
 <tr>
-<td align="left">cum</td>
-<td align="left">函数总时间（包括子函数）。因此 flat &lt;&#x3D; cum</td>
+<td style="text-align:left">cum</td>
+<td style="text-align:left">函数总时间（包括子函数）。因此 flat &lt;= cum</td>
 </tr>
 <tr>
-<td align="left">cum%</td>
-<td align="left">cum占用总时间的比例</td>
+<td style="text-align:left">cum%</td>
+<td style="text-align:left">cum占用总时间的比例</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>火焰图方式</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/rLfQUg"><img src="https://s3.ax1x.com/2020/12/30/rLfQUg.png" alt="rLfQUg.png"></a></p>
 <p>调用关系图</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/rL0OV1"><img src="https://s3.ax1x.com/2020/12/30/rL0OV1.png" alt="rL0OV1.png"></a></p>
 <p>图片说明：</p>
 <h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成一次heap的占用</span></span><br><span class="line">curl -o heap_start.prof http://localhost:10003/debug/pprof/heap</span><br><span class="line">curl -o heap_end.prof http://localhost:10003/debug/pprof/heap</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前时间戳</span></span><br><span class="line">timestamp=$(<span class="built_in">date</span> +%Y%m%d%H%M%S)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行 curl 命令并将输出文件命名为带时间戳的文件名</span></span><br><span class="line">curl -s -o <span class="string">&quot;heap_end_<span class="variable">$&#123;timestamp&#125;</span>.prof&quot;</span> http://localhost:10003/debug/pprof/heap</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出提示信息</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;成功获取堆分析文件，文件名: heap_end_<span class="variable">$&#123;timestamp&#125;</span>.prof&quot;</span></span><br><span class="line">    </span><br><span class="line">go tool pprof -http=:7060 -diff_base heap_start.prof heap_end.prof</span><br><span class="line"></span><br><span class="line">    -diff_base <span class="built_in">source</span>     Source of base profile <span class="keyword">for</span> comparison</span><br><span class="line">    -base <span class="built_in">source</span>          Source of base profile <span class="keyword">for</span> profile subtraction</span><br><span class="line"></span><br><span class="line"><span class="comment"># 分析groutine相关</span></span><br><span class="line">curl -o goroutine.prof http://localhost:10003/debug/pprof/goroutine</span><br><span class="line">go tool pprof -http=:8080 goroutine.prof</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>2021-11-03</code>我们发现过一次内存泄露，是由于goroutine虽然被关闭了，但是没有将其及时释放掉（释放会每10分钟发起释放，每次释放100。修改之后的版本，将会10秒发起一次，每次将会释放5000个goroutine。），造成的内存激增。我们可以打开pprof&#x2F;heap页面。观察网页最后结束的信息。</p>
+<p><code>2021-11-03</code>我们发现过一次内存泄露，是由于goroutine虽然被关闭了，但是没有将其及时释放掉（释放会每10分钟发起释放，每次释放100。修改之后的版本，将会10秒发起一次，每次将会释放5000个goroutine。），造成的内存激增。我们可以打开pprof/heap页面。观察网页最后结束的信息。</p>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># runtime.MemStats</span><br><span class="line"># Alloc = 3128168</span><br><span class="line"># TotalAlloc = 29726512</span><br><span class="line"># Sys = 20268040</span><br><span class="line"># Lookups = 0</span><br><span class="line"># Mallocs = 402533</span><br><span class="line"># Frees = 383462</span><br><span class="line"># HeapAlloc = 3128168</span><br><span class="line"># HeapSys = 11632640</span><br><span class="line"># HeapIdle = 6496256</span><br><span class="line"># HeapInuse = 5136384</span><br><span class="line"># HeapReleased = 5349376</span><br><span class="line"># HeapObjects = 19071</span><br><span class="line"># Stack = 950272 / 950272</span><br><span class="line"># MSpan = 97784 / 114688</span><br><span class="line"># MCache = 4800 / 16384</span><br><span class="line"># BuckHashSys = 1454564</span><br><span class="line"># GCSys = 5244320</span><br><span class="line"># OtherSys = 855172</span><br><span class="line"># NextGC = 5806464</span><br><span class="line"># LastGC = 1635992057313382826</span><br><span class="line"># PauseNs = [338399 xxx]</span><br><span class="line"># PauseEnd = [1635991943337910140 xxxx]</span><br><span class="line"># NumGC = 15</span><br><span class="line"># NumForcedGC = 0</span><br><span class="line"># GCCPUFraction = 4.214879737884772e-05</span><br><span class="line"># DebugGC = false</span><br><span class="line"># MaxRSS = 22323200</span><br></pre></td></tr></table></figure>
-
 <p>通过观察，可以发现<code>HeapAlloc</code>分配的内存，能从heap的剖析看的出来。但是<code>HeapSys</code>、<code>HeapIdle</code>内存过大的时候，无法从统计图里面看出来。内存申请的流程大概是这个过程：</p>
 <ol>
 <li><code>HeapAlloc</code>是当前在使用的内存，如果需要增加的时候，将会去<code>HeapIdle</code>中申请。如果<code>HeapIdle</code>里面内存都用光了，将会发起对系统的内存申请。</li>
@@ -449,7 +445,6 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
@@ -573,6 +568,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

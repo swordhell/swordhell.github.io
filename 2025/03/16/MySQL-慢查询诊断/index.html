@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="在 MySQL 中，你可以使用以下方法来诊断某个慢 SQL 的执行速度以及它命中的索引。">
@@ -124,14 +124,14 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
   </ul>
@@ -222,58 +222,59 @@
       
         <p>在 MySQL 中，你可以使用以下方法来诊断某个慢 SQL 的执行速度以及它命中的索引。</p>
 <span id="more"></span>
-
 <p>⸻</p>
 <ol>
 <li>使用 EXPLAIN 分析 SQL 执行计划</li>
 </ol>
-<p>MySQL 提供了 EXPLAIN 关键字，它可以告诉你：<br>	•	查询的执行方式<br>	•	是否使用索引<br>	•	索引的选择情况<br>	•	是否存在全表扫描</p>
+<p>MySQL 提供了 EXPLAIN 关键字，它可以告诉你：<br>    •    查询的执行方式<br>    •    是否使用索引<br>    •    索引的选择情况<br>    •    是否存在全表扫描</p>
 <p>🔹 语法</p>
-<p>EXPLAIN SELECT * FROM tb_person_data WHERE symbol &#x3D; ‘CNY’ AND kline_type &#x3D; ‘1m’ ORDER BY open_time DESC LIMIT 1;</p>
+<p>EXPLAIN SELECT * FROM tb_person_data WHERE symbol = ‘CNY’ AND kline_type = ‘1m’ ORDER BY open_time DESC LIMIT 1;</p>
 <p>🔹 结果示例</p>
-<p>id	select_type	table	type	possible_keys	key	key_len	ref	rows	Extra<br>1	SIMPLE	tb_person_data	index	idx_symbol_time	idx_symbol_time	12	NULL	100	Using where; Using index</p>
-<p>字段解析<br>	•	type：索引使用类型（ALL&#x3D;全表扫描，index&#x3D;索引扫描，range&#x3D;范围扫描，ref&#x3D;索引查找）<br>	•	possible_keys：查询可能使用的索引<br>	•	key：实际使用的索引<br>	•	key_len：索引的字节长度<br>	•	rows：MySQL 估算的扫描行数<br>	•	Extra：<br>	•	Using index：查询只使用索引，不需要回表，速度最快<br>	•	Using where：需要额外的 WHERE 过滤<br>	•	Using temporary; Using filesort：可能存在排序或临时表，性能较差</p>
-<p>➡️ 重点关注：<br>	1.	key 是否为空？如果为空，说明没有命中索引。<br>	2.	rows 数量是否过大？如果扫描行数过多，说明索引可能没起作用。</p>
-<p>⸻</p>
-<ol start="2">
+<p>id    select_type    table    type    possible_keys    key    key_len    ref    rows    Extra<br>1    SIMPLE    tb_person_data    index    idx_symbol_time    idx_symbol_time    12    NULL    100    Using where; Using index</p>
+<p>字段解析<br>    •    type：索引使用类型（ALL=全表扫描，index=索引扫描，range=范围扫描，ref=索引查找）<br>    •    possible_keys：查询可能使用的索引<br>    •    key：实际使用的索引<br>    •    key_len：索引的字节长度<br>    •    rows：MySQL 估算的扫描行数<br>    •    Extra：<br>    •    Using index：查询只使用索引，不需要回表，速度最快<br>    •    Using where：需要额外的 WHERE 过滤<br>    •    Using temporary; Using filesort：可能存在排序或临时表，性能较差</p>
+<p>➡️ 重点关注：</p>
+<pre><code>1.    key 是否为空？如果为空，说明没有命中索引。
+2.    rows 数量是否过大？如果扫描行数过多，说明索引可能没起作用。
+</code></pre><p>⸻</p>
+<ol>
 <li>使用 SHOW INDEX FROM table 查看索引</li>
 </ol>
 <p>如果 EXPLAIN 发现索引未被使用，你可以查看表的索引结构：</p>
 <p>SHOW INDEX FROM tb_person_data;</p>
 <p>结果示例</p>
-<p>Table	Non_unique	Key_name	Seq_in_index	Column_name	Collation	Cardinality	Index_type<br>tb_person_data	0	PRIMARY	1	id	A	100000	BTREE<br>tb_person_data	1	idx_symbol_time	1	symbol	A	10000	BTREE<br>tb_person_data	1	idx_symbol_time	2	open_time	A	5000	BTREE</p>
-<p>关键点<br>	•	Key_name 是索引的名称。<br>	•	Column_name 是索引包含的列。<br>	•	Cardinality 代表索引的唯一性，值越大越好。<br>	•	Index_type 通常是 BTREE（默认索引类型）。</p>
+<p>Table    Non_unique    Key_name    Seq_in_index    Column_name    Collation    Cardinality    Index_type<br>tb_person_data    0    PRIMARY    1    id    A    100000    BTREE<br>tb_person_data    1    idx_symbol_time    1    symbol    A    10000    BTREE<br>tb_person_data    1    idx_symbol_time    2    open_time    A    5000    BTREE</p>
+<p>关键点<br>    •    Key_name 是索引的名称。<br>    •    Column_name 是索引包含的列。<br>    •    Cardinality 代表索引的唯一性，值越大越好。<br>    •    Index_type 通常是 BTREE（默认索引类型）。</p>
 <p>⸻</p>
-<ol start="3">
+<ol>
 <li>使用 SHOW PROFILE 诊断 SQL 执行步骤</li>
 </ol>
 <p>你可以开启 SQL 性能分析：</p>
-<p>SET profiling &#x3D; 1;</p>
+<p>SET profiling = 1;</p>
 <p>然后运行你的 SQL：</p>
-<p>SELECT * FROM tb_person_data WHERE symbol &#x3D; ‘CNY’ AND kline_type &#x3D; ‘1m’ ORDER BY open_time DESC LIMIT 1;</p>
+<p>SELECT * FROM tb_person_data WHERE symbol = ‘CNY’ AND kline_type = ‘1m’ ORDER BY open_time DESC LIMIT 1;</p>
 <p>再查看 SQL 详细执行情况：</p>
 <p>SHOW PROFILES;</p>
 <p>选取 Query_ID 后再执行：</p>
 <p>SHOW PROFILE FOR QUERY 1;</p>
-<p>可以看到 CPU 时间、I&#x2F;O 操作、排序、锁等待等 详细信息。</p>
+<p>可以看到 CPU 时间、I/O 操作、排序、锁等待等 详细信息。</p>
 <p>⸻</p>
-<ol start="4">
+<ol>
 <li>使用 SHOW STATUS LIKE ‘Handler%’ 观察索引命中</li>
 </ol>
 <p>执行 SQL 后运行：</p>
 <p>SHOW STATUS LIKE ‘Handler%’;</p>
 <p>你会看到类似结果：</p>
-<p>变量名	值<br>Handler_read_rnd_next	120000<br>Handler_read_key	100<br>Handler_read_first	1</p>
-<p>如何分析<br>	•	Handler_read_rnd_next 值过大，说明存在全表扫描（索引未生效）。<br>	•	Handler_read_key 值较高，说明查询通过索引查找数据，性能较优。</p>
+<p>变量名    值<br>Handler_read_rnd_next    120000<br>Handler_read_key    100<br>Handler_read_first    1</p>
+<p>如何分析<br>    •    Handler_read_rnd_next 值过大，说明存在全表扫描（索引未生效）。<br>    •    Handler_read_key 值较高，说明查询通过索引查找数据，性能较优。</p>
 <p>⸻</p>
-<ol start="5">
+<ol>
 <li>使用 ANALYZE TABLE 更新索引统计信息</li>
 </ol>
 <p>有时，索引统计信息过时会导致查询优化器选择错误的索引。可以执行：</p>
 <p>ANALYZE TABLE tb_person_data;</p>
 <p>这可以让 MySQL 重新计算索引统计信息，可能会改善查询性能。</p>
 <p>⸻</p>
-<ol start="6">
+<ol>
 <li>可能的优化方法</li>
 </ol>
 <p>如果 EXPLAIN 发现索引未命中，可以尝试以下优化：</p>
@@ -284,20 +285,20 @@
 <p>⸻</p>
 <p>✅ 避免 WHERE 条件中的计算</p>
 <p>MySQL 无法使用索引：</p>
-<p>WHERE DATE(open_time) &#x3D; ‘2024-01-01’</p>
+<p>WHERE DATE(open_time) = ‘2024-01-01’</p>
 <p>优化后：</p>
-<p>WHERE open_time &gt;&#x3D; ‘2024-01-01 00:00:00’ AND open_time &lt; ‘2024-01-02 00:00:00’</p>
+<p>WHERE open_time &gt;= ‘2024-01-01 00:00:00’ AND open_time &lt; ‘2024-01-02 00:00:00’</p>
 <p>⸻</p>
 <p>✅ 避免 SELECT *，只查询需要的字段</p>
-<p>SELECT id, open_time FROM tb_person_data WHERE symbol &#x3D; ‘CNY’ AND kline_type &#x3D; ‘1m’ ORDER BY open_time DESC LIMIT 1;</p>
-<p>这样可以减少 I&#x2F;O 负担，加速查询。</p>
+<p>SELECT id, open_time FROM tb_person_data WHERE symbol = ‘CNY’ AND kline_type = ‘1m’ ORDER BY open_time DESC LIMIT 1;</p>
+<p>这样可以减少 I/O 负担，加速查询。</p>
 <p>⸻</p>
 <p>✅ 分区表优化</p>
 <p>如果 tb_person_data 是一个大表，并且 open_time 是查询的主要条件，可以使用分区表：</p>
 <p>ALTER TABLE tb_person_data PARTITION BY RANGE (UNIX_TIMESTAMP(open_time)) (<br>    PARTITION p202401 VALUES LESS THAN (UNIX_TIMESTAMP(‘2024-02-01’)),<br>    PARTITION p202402 VALUES LESS THAN (UNIX_TIMESTAMP(‘2024-03-01’))<br>);</p>
 <p>这样 WHERE open_time &lt; ‘2024-02-01’ 只会扫描对应分区，而不是整个表，提高查询效率。</p>
 <p>⸻</p>
-<p>总结<br>	•	使用 EXPLAIN 确定索引是否生效<br>	•	用 SHOW INDEX FROM 检查索引结构<br>	•	使用 SHOW PROFILE 诊断执行瓶颈<br>	•	观察 Handler_read_rnd_next 来判断是否是全表扫描<br>	•	用 ANALYZE TABLE 更新索引统计<br>	•	优化索引结构，避免 WHERE 计算，减少 SELECT *</p>
+<p>总结<br>    •    使用 EXPLAIN 确定索引是否生效<br>    •    用 SHOW INDEX FROM 检查索引结构<br>    •    使用 SHOW PROFILE 诊断执行瓶颈<br>    •    观察 Handler_read_rnd_next 来判断是否是全表扫描<br>    •    用 ANALYZE TABLE 更新索引统计<br>    •    优化索引结构，避免 WHERE 计算，减少 SELECT *</p>
 <p>这样，你可以准确分析 SQL 速度慢的原因，并优化查询效率！ 🚀</p>
 
     </div>
@@ -404,7 +405,6 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
@@ -528,6 +528,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="前言golang可以通过cgo直接来调用c&#x2F;c++的函数代码。这里是参考《Go语言高级编程》书，做一些笔记。结构按照书的章节来。">
@@ -124,14 +124,14 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
   </ul>
@@ -226,99 +226,98 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>golang可以通过cgo直接来调用c&#x2F;c++的函数代码。这里是参考《Go语言高级编程》书，做一些笔记。结构按照书的章节来。</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>golang可以通过cgo直接来调用c/c++的函数代码。这里是参考《Go语言高级编程》书，做一些笔记。结构按照书的章节来。</p>
 <span id="more"></span>
-
 <h2 id="1-快速入手"><a href="#1-快速入手" class="headerlink" title="1.快速入手"></a>1.快速入手</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hello.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;C&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="built_in">println</span>(<span class="string">&quot;hello cgo&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-CGO基础"><a href="#2-CGO基础" class="headerlink" title="2.CGO基础"></a>2.CGO基础</h2><p>需要安装C&#x2F;C++构建工具链，在macOS和Linux下是要安装GCC，在windows下是需要安装MinGW工具。同时需要保证环境变量CGO_ENABLED被设置为1，这表示CGO是被启用的状态。</p>
+<h2 id="2-CGO基础"><a href="#2-CGO基础" class="headerlink" title="2.CGO基础"></a>2.CGO基础</h2><p>需要安装C/C++构建工具链，在macOS和Linux下是要安装GCC，在windows下是需要安装MinGW工具。同时需要保证环境变量CGO_ENABLED被设置为1，这表示CGO是被启用的状态。</p>
 <p>Windows里面使用的MinGW工具</p>
 <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mingw64\mingw64\bin&gt;.\g++.exe --version</span><br><span class="line">g++.exe (x86_64-win32-seh-rev0, Built by MinGW-W64 project) <span class="number">8</span>.<span class="number">1</span>.<span class="number">0</span></span><br><span class="line">Copyright (C) <span class="number">2018</span> Free Software Foundation, Inc.</span><br><span class="line">This is free software; see the source <span class="keyword">for</span> copying conditions.  There is NO</span><br><span class="line">warranty; <span class="keyword">not</span> even <span class="keyword">for</span> MERCHANTABILITY or FITNESS <span class="keyword">FOR</span> A PARTICULAR PURPOSE.</span><br><span class="line"></span><br><span class="line">// 在 strawberryperl 也有一个版本。</span><br><span class="line">PS D:\work\trunk\doc&gt; gcc --version</span><br><span class="line">gcc.exe (x86_64-posix-seh, Built by strawberryperl.com project) <span class="number">8</span>.<span class="number">3</span>.<span class="number">0</span></span><br><span class="line">Copyright (C) <span class="number">2018</span> Free Software Foundation, Inc.</span><br><span class="line">This is free software; see the source <span class="keyword">for</span> copying conditions.  There is NO</span><br><span class="line">warranty; <span class="keyword">not</span> even <span class="keyword">for</span> MERCHANTABILITY or FITNESS <span class="keyword">FOR</span> A PARTICULAR PURPOSE.</span><br><span class="line"></span><br><span class="line">It includes perl binaries, compiler (gcc) + related tools, all the external libraries (crypto, math, graphics, xml…), all the bundled database clients and all you expect from Strawberry Perl.</span><br></pre></td></tr></table></figure>
-
-<p><a href="#%E5%8F%82%E8%80%83">gcc编译器对标准支持情况</a> gcc 8.x 版本的编译器已经能编译大部分c++17标准的东西了。</p>
+<p><a href="#参考">gcc编译器对标准支持情况</a> gcc 8.x 版本的编译器已经能编译大部分c++17标准的东西了。</p>
 <h3 id="2-1-操作系统区分"><a href="#2-1-操作系统区分" class="headerlink" title="2.1.操作系统区分"></a>2.1.操作系统区分</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##cgo windows CFLAGS: -DCGO_OS_WINDOWS=1</span></span><br><span class="line"><span class="comment">##cgo darwin CFLAGS: -DCGO_OS_DARWIN=1</span></span><br><span class="line"><span class="comment">##cgo linux CFLAGS: -DCGO_OS_LINUX=1</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="3-类型转换"><a href="#3-类型转换" class="headerlink" title="3.类型转换"></a>3.类型转换</h2><table>
+<h2 id="3-类型转换"><a href="#3-类型转换" class="headerlink" title="3.类型转换"></a>3.类型转换</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="left">C语言类型</th>
-<th align="left">CGO类型</th>
-<th align="left">Go语言类型</th>
+<th style="text-align:left">C语言类型</th>
+<th style="text-align:left">CGO类型</th>
+<th style="text-align:left">Go语言类型</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">char</td>
-<td align="left">C.char</td>
-<td align="left">byte</td>
+<tbody>
+<tr>
+<td style="text-align:left">char</td>
+<td style="text-align:left">C.char</td>
+<td style="text-align:left">byte</td>
 </tr>
 <tr>
-<td align="left">singed char</td>
-<td align="left">C.schar</td>
-<td align="left">int8</td>
+<td style="text-align:left">singed char</td>
+<td style="text-align:left">C.schar</td>
+<td style="text-align:left">int8</td>
 </tr>
 <tr>
-<td align="left">unsigned char</td>
-<td align="left">C.uchar</td>
-<td align="left">uint8</td>
+<td style="text-align:left">unsigned char</td>
+<td style="text-align:left">C.uchar</td>
+<td style="text-align:left">uint8</td>
 </tr>
 <tr>
-<td align="left">short</td>
-<td align="left">C.short</td>
-<td align="left">int16</td>
+<td style="text-align:left">short</td>
+<td style="text-align:left">C.short</td>
+<td style="text-align:left">int16</td>
 </tr>
 <tr>
-<td align="left">unsigned short</td>
-<td align="left">C.ushort</td>
-<td align="left">uint16</td>
+<td style="text-align:left">unsigned short</td>
+<td style="text-align:left">C.ushort</td>
+<td style="text-align:left">uint16</td>
 </tr>
 <tr>
-<td align="left">int</td>
-<td align="left">C.int</td>
-<td align="left">int32</td>
+<td style="text-align:left">int</td>
+<td style="text-align:left">C.int</td>
+<td style="text-align:left">int32</td>
 </tr>
 <tr>
-<td align="left">unsigned int</td>
-<td align="left">C.uint</td>
-<td align="left">uint32</td>
+<td style="text-align:left">unsigned int</td>
+<td style="text-align:left">C.uint</td>
+<td style="text-align:left">uint32</td>
 </tr>
 <tr>
-<td align="left">long</td>
-<td align="left">C.long</td>
-<td align="left">int32</td>
+<td style="text-align:left">long</td>
+<td style="text-align:left">C.long</td>
+<td style="text-align:left">int32</td>
 </tr>
 <tr>
-<td align="left">unsigned long</td>
-<td align="left">C.ulong</td>
-<td align="left">uint32</td>
+<td style="text-align:left">unsigned long</td>
+<td style="text-align:left">C.ulong</td>
+<td style="text-align:left">uint32</td>
 </tr>
 <tr>
-<td align="left">long long int</td>
-<td align="left">C.longlong</td>
-<td align="left">int64</td>
+<td style="text-align:left">long long int</td>
+<td style="text-align:left">C.longlong</td>
+<td style="text-align:left">int64</td>
 </tr>
 <tr>
-<td align="left">unsigned long long int</td>
-<td align="left">C.ulonglong</td>
-<td align="left">uint64</td>
+<td style="text-align:left">unsigned long long int</td>
+<td style="text-align:left">C.ulonglong</td>
+<td style="text-align:left">uint64</td>
 </tr>
 <tr>
-<td align="left">float</td>
-<td align="left">C.float</td>
-<td align="left">float32</td>
+<td style="text-align:left">float</td>
+<td style="text-align:left">C.float</td>
+<td style="text-align:left">float32</td>
 </tr>
 <tr>
-<td align="left">double</td>
-<td align="left">C.double</td>
-<td align="left">float64</td>
+<td style="text-align:left">double</td>
+<td style="text-align:left">C.double</td>
+<td style="text-align:left">float64</td>
 </tr>
 <tr>
-<td align="left">size_t</td>
-<td align="left">C.size_t</td>
-<td align="left">uint</td>
+<td style="text-align:left">size_t</td>
+<td style="text-align:left">C.size_t</td>
+<td style="text-align:left">uint</td>
 </tr>
-</tbody></table>
-<h2 id="4-函数调用"><a href="#4-函数调用" class="headerlink" title="4.函数调用"></a>4.函数调用</h2><h2 id="6-实例"><a href="#6-实例" class="headerlink" title="6.实例"></a>6.实例</h2><h2 id="10-编译-链接参数"><a href="#10-编译-链接参数" class="headerlink" title="10.编译&#x2F;链接参数"></a>10.编译&#x2F;链接参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">因此CGO提供了CFLAGS/CPPFLAGS/CXXFLAGS三种参数，</span><br><span class="line">其中CFLAGS对应C语言编译参数(以.c后缀名)、</span><br><span class="line">CPPFLAGS对应C/C++ 代码编译参数(.c,.cc,.cpp,.cxx)、</span><br><span class="line">CXXFLAGS对应纯C++编译参数(.cc,.cpp,*.cxx)。</span><br></pre></td></tr></table></figure>
-
+</tbody>
+</table>
+</div>
+<h2 id="4-函数调用"><a href="#4-函数调用" class="headerlink" title="4.函数调用"></a>4.函数调用</h2><h2 id="6-实例"><a href="#6-实例" class="headerlink" title="6.实例"></a>6.实例</h2><h2 id="10-编译-链接参数"><a href="#10-编译-链接参数" class="headerlink" title="10.编译/链接参数"></a>10.编译/链接参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">因此CGO提供了CFLAGS/CPPFLAGS/CXXFLAGS三种参数，</span><br><span class="line">其中CFLAGS对应C语言编译参数(以.c后缀名)、</span><br><span class="line">CPPFLAGS对应C/C++ 代码编译参数(.c,.cc,.cpp,.cxx)、</span><br><span class="line">CXXFLAGS对应纯C++编译参数(.cc,.cpp,*.cxx)。</span><br></pre></td></tr></table></figure>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://books.studygolang.com/advanced-go-programming-book/ch2-cgo/readme.html">Go语言高级编程</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://github.com/golang-china/gopl-zh">Go语言圣经</a></li>
@@ -431,7 +430,6 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
@@ -555,6 +553,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

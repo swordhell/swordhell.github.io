@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="简介大数计算相关知识点；">
@@ -124,14 +124,14 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
   </ul>
@@ -222,8 +222,6 @@
       
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>大数计算相关知识点；</p>
 <span id="more"></span>
-
-
 <p>在 C++ 中，标准库并没有直接提供类似 Java BigDecimal 的类型来处理任意精度的小数运算。然而，社区和开源生态中有许多优秀的库可以实现类似的功能，以下是一些常用的 C++ 库：</p>
 <ol>
 <li>Boost.Multiprecision</li>
@@ -231,17 +229,15 @@
 <p>Boost.Multiprecision Documentation</p>
 <p>Boost 提供了一个非常强大的多精度计算库，可以处理任意精度的小数、整数，甚至是复数。它是 C++ 中使用最广泛的解决方案之一。</p>
 <p>特点：</p>
-<pre><code>•	支持任意精度的小数 (cpp_dec_float) 和整数 (cpp_int)。
-•	易于集成，与其他 Boost 库无缝协作。
-•	提供高效的计算性能。
-</code></pre>
-<p>安装：</p>
+<pre><code>•    支持任意精度的小数 (cpp_dec_float) 和整数 (cpp_int)。
+•    易于集成，与其他 Boost 库无缝协作。
+•    提供高效的计算性能。
+</code></pre><p>安装：</p>
 <p>Boost 通常可以通过包管理工具安装。例如，在 Ubuntu 上：</p>
 <p>sudo apt-get install libboost-all-dev</p>
 <p>示例代码：</p>
-<p>#include &lt;boost&#x2F;multiprecision&#x2F;cpp_dec_float.hpp&gt;<br>#include <iostream></iostream></p>
-<p>using namespace boost::multiprecision;</p>
-<p>int main() {<br>    &#x2F;&#x2F; 定义任意精度浮点数类型<br>    cpp_dec_float_50 a(“123.456789012345678901234567890”);<br>    cpp_dec_float_50 b(“0.00000000000000012345678901234567890”);</p>
+<h1 id="include"><a href="#include" class="headerlink" title="include "></a>include <boost multiprecision cpp_dec_float.hpp></boost></h1><h1 id="include-1"><a href="#include-1" class="headerlink" title="include "></a>include <iostream></iostream></h1><p>using namespace boost::multiprecision;</p>
+<p>int main() {<br>    // 定义任意精度浮点数类型<br>    cpp_dec_float_50 a(“123.456789012345678901234567890”);<br>    cpp_dec_float_50 b(“0.00000000000000012345678901234567890”);</p>
 <pre><code>// 加法
 cpp_dec_float_50 sum = a + b;
 std::cout &lt;&lt; &quot;Sum: &quot; &lt;&lt; sum &lt;&lt; std::endl;
@@ -255,24 +251,21 @@ cpp_dec_float_50 rounded = round(sum * 100) / 100;
 std::cout &lt;&lt; &quot;Rounded: &quot; &lt;&lt; rounded &lt;&lt; std::endl;
 
 return 0;
-</code></pre>
-<p>}</p>
-<ol start="2">
+</code></pre><p>}</p>
+<ol>
 <li>MPFR (Multiple Precision Floating-Point Reliable)</li>
 </ol>
 <p>MPFR Library</p>
 <p>MPFR 是一个专为高精度浮点运算设计的 C 库，支持精确的舍入和数学操作。可以通过 GMP（GNU Multiple Precision Arithmetic Library）扩展。</p>
 <p>特点：</p>
-<pre><code>•	高效实现任意精度运算。
-•	支持数学函数（如三角函数、指数函数）。
-•	提供多种舍入模式，适合科学计算。
-</code></pre>
-<p>安装：</p>
+<pre><code>•    高效实现任意精度运算。
+•    支持数学函数（如三角函数、指数函数）。
+•    提供多种舍入模式，适合科学计算。
+</code></pre><p>安装：</p>
 <p>在 Ubuntu 上：</p>
 <p>sudo apt-get install libmpfr-dev libgmp-dev</p>
 <p>示例代码：</p>
-<p>#include &lt;mpfr.h&gt;<br>#include <iostream></iostream></p>
-<p>int main() {<br>    mpfr_t a, b, sum, product;</p>
+<h1 id="include-2"><a href="#include-2" class="headerlink" title="include "></a>include <mpfr.h></mpfr.h></h1><h1 id="include-3"><a href="#include-3" class="headerlink" title="include "></a>include <iostream></iostream></h1><p>int main() {<br>    mpfr_t a, b, sum, product;</p>
 <pre><code>// 初始化任意精度浮点数
 mpfr_init2(a, 128); // 128 位精度
 mpfr_init2(b, 128);
@@ -298,36 +291,32 @@ mpfr_clear(sum);
 mpfr_clear(product);
 
 return 0;
-</code></pre>
-<p>}</p>
-<ol start="3">
+</code></pre><p>}</p>
+<ol>
 <li>Arbitrary Precision Arithmetic (Apfloat)</li>
 </ol>
 <p>Apfloat C++ Library</p>
 <p>Apfloat 是专门为高精度计算设计的轻量级库。适合需要高性能的应用场景。</p>
 <p>特点：</p>
-<pre><code>•	支持高效的任意精度浮点运算。
-•	提供丰富的数学函数支持。
-•	易于扩展和集成。
-</code></pre>
-<ol start="4">
+<pre><code>•    支持高效的任意精度浮点运算。
+•    提供丰富的数学函数支持。
+•    易于扩展和集成。
+</code></pre><ol>
 <li>GMP (GNU Multiple Precision Arithmetic Library)</li>
 </ol>
 <p>GMP Official Site</p>
 <p>GMP 是一个通用的任意精度数学库，支持高精度整数、浮点数和有理数运算。它通常与 MPFR 一起使用，用于浮点运算。</p>
 <p>特点：</p>
-<pre><code>•	高性能，适合计算密集型任务。
-•	易于与其他 C++ 库集成。
-</code></pre>
-<p>安装：</p>
+<pre><code>•    高性能，适合计算密集型任务。
+•    易于与其他 C++ 库集成。
+</code></pre><p>安装：</p>
 <p>在 Ubuntu 上：</p>
 <p>sudo apt-get install libgmp-dev</p>
 <p>推荐选择</p>
-<pre><code>•	如果你需要简单易用的解决方案，推荐 Boost.Multiprecision。
-•	如果你需要更高精度和复杂数学功能，推荐 MPFR。
-•	如果性能是主要诉求，可以选择 GMP 或 Apfloat。
-</code></pre>
-<p>根据你的需求和场景，选择最合适的库即可。</p>
+<pre><code>•    如果你需要简单易用的解决方案，推荐 Boost.Multiprecision。
+•    如果你需要更高精度和复杂数学功能，推荐 MPFR。
+•    如果性能是主要诉求，可以选择 GMP 或 Apfloat。
+</code></pre><p>根据你的需求和场景，选择最合适的库即可。</p>
 
     </div>
 
@@ -412,7 +401,7 @@ return 0;
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#include"><span class="nav-number"></span> <span class="nav-text">include </span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#include-1"><span class="nav-number"></span> <span class="nav-text">include </span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#include-2"><span class="nav-number"></span> <span class="nav-text">include </span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#include-3"><span class="nav-number"></span> <span class="nav-text">include </span></a></div>
       </div>
       <!--/noindex-->
 
@@ -434,7 +423,6 @@ return 0;
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
@@ -558,6 +546,19 @@ return 0;
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

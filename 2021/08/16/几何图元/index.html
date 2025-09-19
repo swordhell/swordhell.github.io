@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="简介 讨论与表示几何图元有关的一些一般性原则。讨论特定的几何图元，讨论图元的方法和属性。">
@@ -125,14 +125,14 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
   </ul>
@@ -231,21 +231,22 @@
 <p>讨论与表示几何图元有关的一些一般性原则。<br>讨论特定的几何图元，讨论图元的方法和属性。</p>
 </blockquote>
 <span id="more"></span>
-
-<h2 id="表示方法"><a href="#表示方法" class="headerlink" title="表示方法"></a>表示方法</h2><h3 id="隐式表示"><a href="#隐式表示" class="headerlink" title="隐式表示"></a>隐式表示</h3><p>f(x,y,z)描述对象。比如球的公式：$x^2+y^2+z^2&#x3D;1$。园的公式$x^2+y^2&#x3D;1$</p>
+<h2 id="表示方法"><a href="#表示方法" class="headerlink" title="表示方法"></a>表示方法</h2><h3 id="隐式表示"><a href="#隐式表示" class="headerlink" title="隐式表示"></a>隐式表示</h3><p>f(x,y,z)描述对象。比如球的公式：$x^2+y^2+z^2=1$。园的公式$x^2+y^2=1$</p>
 <h3 id="参数式表示"><a href="#参数式表示" class="headerlink" title="参数式表示"></a>参数式表示</h3><p>描述园函数。</p>
-<p>$$\begin{cases}<br>x(t)&#x3D;\cos{2\pi}t\<br>y(t)&#x3D;\sin{2\pi}t<br>\end{cases}\tag{1}$$</p>
-<p>t的取值范围从[0,1]。</p>
-<h2 id="直线和光线"><a href="#直线和光线" class="headerlink" title="直线和光线"></a>直线和光线</h2><h3 id="两点表达式"><a href="#两点表达式" class="headerlink" title="两点表达式"></a>两点表达式</h3><p>直接使用启动重点来表示$P_{org}$终点$P_{end}$。</p>
-<h3 id="射线的参数形式"><a href="#射线的参数形式" class="headerlink" title="射线的参数形式"></a>射线的参数形式</h3><p>$$x(t)&#x3D;x_0+t\Delta x\<br>y(t)&#x3D;y_0+t\Delta y$$</p>
-<h3 id="特殊2D直线表示法"><a href="#特殊2D直线表示法" class="headerlink" title="特殊2D直线表示法"></a>特殊2D直线表示法</h3><p>隐式直线定义：$ax+by+d$</p>
+<script type="math/tex; mode=display">\begin{cases}
+x(t)=\cos{2\pi}t\\
+y(t)=\sin{2\pi}t
+\end{cases}\tag{1}</script><p>t的取值范围从[0,1]。</p>
+<h2 id="直线和光线"><a href="#直线和光线" class="headerlink" title="直线和光线"></a>直线和光线</h2><h3 id="两点表达式"><a href="#两点表达式" class="headerlink" title="两点表达式"></a>两点表达式</h3><p>直接使用启动重点来表示$P<em>{org}$终点$P</em>{end}$。</p>
+<h3 id="射线的参数形式"><a href="#射线的参数形式" class="headerlink" title="射线的参数形式"></a>射线的参数形式</h3><script type="math/tex; mode=display">x(t)=x_0+t\Delta x\\
+y(t)=y_0+t\Delta y</script><h3 id="特殊2D直线表示法"><a href="#特殊2D直线表示法" class="headerlink" title="特殊2D直线表示法"></a>特殊2D直线表示法</h3><p>隐式直线定义：$ax+by+d$</p>
 <p>直线的斜率和y截距，m为截距，rise是y轴，run是x轴。垂直的直线由于斜率无穷大，所以不能使用这种方式来表示。</p>
-<p>$$\begin{cases}y&#x3D;mx+b\<br>m&#x3D;rise&#x2F;run\end{cases}\tag{2}$$</p>
-<p>使用垂直向量+原点</p>
+<script type="math/tex; mode=display">\begin{cases}y=mx+b\\
+m=rise/run\end{cases}\tag{2}</script><p>使用垂直向量+原点</p>
 <p>n是垂直于直线的一个单位向量，d为直线离原点的有符号的距离，d为正数表示直线和单位向量在原点的同一侧。</p>
 <p>使用垂直向量+任意一个线上的点</p>
 <p>使用垂直平分线的两个点(q,r)，这个是最早定义直线的方法。q，r在垂直直线，并且分别到直线的距离相同。</p>
-<p>$distance(p,q)&#x3D;distance(p,r)$</p>
+<p>$distance(p,q)=distance(p,r)$</p>
 <h3 id="不同表示方法之间的转换"><a href="#不同表示方法之间的转换" class="headerlink" title="不同表示方法之间的转换"></a>不同表示方法之间的转换</h3>
     </div>
 
@@ -353,7 +354,6 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
@@ -477,6 +477,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

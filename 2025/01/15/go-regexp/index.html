@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="概述Golang 提供了一个强大且高效的正则表达式库，regexp，它实现了基于正则表达式模式匹配的功能。regexp 库支持编译正则表达式、匹配字符串、查找和替换等操作。">
@@ -124,14 +124,14 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
   </ul>
@@ -226,22 +226,22 @@
 <li>regexp 的基础知识</li>
 </ol>
 <p>regexp 包中的核心类型是 *regexp.Regexp，它表示一个编译后的正则表达式，使用该类型可以进行各种正则操作。主要方法包括：</p>
-<p>编译正则表达式<br>	•	regexp.Compile(pattern string) (*Regexp, error): 编译正则表达式，返回一个正则对象。<br>	•	regexp.MustCompile(pattern string) *Regexp: 类似于 Compile，但遇到错误会直接 panic。</p>
-<p>匹配操作<br>	•	MatchString(s string) bool: 检查字符串是否与正则表达式匹配。<br>	•	FindString(s string) string: 返回匹配的第一个子串。<br>	•	FindAllString(s string, n int) []string: 返回所有匹配的子串，n 指定最多返回的数量（-1 表示全部）。</p>
-<p>分组与子匹配<br>	•	FindStringSubmatch(s string) []string: 返回匹配的子串及分组内容。<br>	•	FindAllStringSubmatch(s string, n int) [][]string: 返回所有匹配的子串及分组内容。</p>
-<p>替换操作<br>	•	ReplaceAllString(src, repl string) string: 替换所有匹配的子串为指定字符串。<br>	•	ReplaceAllStringFunc(src string, repl func(string) string) string: 使用函数动态替换匹配的子串。</p>
-<p>其他方法<br>	•	Split(s string, n int) []string: 根据正则表达式拆分字符串。<br>	•	Match(data []byte) bool: 支持字节切片的匹配。</p>
-<ol start="2">
+<p>编译正则表达式<br>    •    regexp.Compile(pattern string) (<em>Regexp, error): 编译正则表达式，返回一个正则对象。<br>    •    regexp.MustCompile(pattern string) </em>Regexp: 类似于 Compile，但遇到错误会直接 panic。</p>
+<p>匹配操作<br>    •    MatchString(s string) bool: 检查字符串是否与正则表达式匹配。<br>    •    FindString(s string) string: 返回匹配的第一个子串。<br>    •    FindAllString(s string, n int) []string: 返回所有匹配的子串，n 指定最多返回的数量（-1 表示全部）。</p>
+<p>分组与子匹配<br>    •    FindStringSubmatch(s string) []string: 返回匹配的子串及分组内容。<br>    •    FindAllStringSubmatch(s string, n int) [][]string: 返回所有匹配的子串及分组内容。</p>
+<p>替换操作<br>    •    ReplaceAllString(src, repl string) string: 替换所有匹配的子串为指定字符串。<br>    •    ReplaceAllStringFunc(src string, repl func(string) string) string: 使用函数动态替换匹配的子串。</p>
+<p>其他方法<br>    •    Split(s string, n int) []string: 根据正则表达式拆分字符串。<br>    •    Match(data []byte) bool: 支持字节切片的匹配。</p>
+<ol>
 <li>常见正则表达式语法</li>
 </ol>
-<p>Golang 的 regexp 库遵循 RE2 语法，常见正则语法包括：<br>	•	.: 匹配任意单个字符。<br>	•	*: 匹配前面的元素 0 次或多次。<br>	•	+: 匹配前面的元素 1 次或多次。<br>	•	?: 匹配前面的元素 0 次或 1 次。<br>	•	[abc]: 匹配字符集合中的任意一个字符。<br>	•	^: 匹配字符串的开头。<br>	•	$: 匹配字符串的结尾。<br>	•	|: 或运算符，表示匹配左右任意一个。</p>
-<ol start="3">
+<p>Golang 的 regexp 库遵循 RE2 语法，常见正则语法包括：<br>    •    .: 匹配任意单个字符。<br>    •    *: 匹配前面的元素 0 次或多次。<br>    •    +: 匹配前面的元素 1 次或多次。<br>    •    ?: 匹配前面的元素 0 次或 1 次。<br>    •    [abc]: 匹配字符集合中的任意一个字符。<br>    •    ^: 匹配字符串的开头。<br>    •    $: 匹配字符串的结尾。<br>    •    |: 或运算符，表示匹配左右任意一个。</p>
+<ol>
 <li>实例代码</li>
 </ol>
 <p>以下是一个简单的 Golang 程序，涵盖了常见的 regexp 操作：</p>
 <p>package main</p>
-<p>import (<br>	“fmt”<br>	“regexp”<br>)</p>
-<p>func main() {<br>	&#x2F;&#x2F; 定义一个正则表达式<br>	pattern :&#x3D; <code>(\w+)@(\w+)\.(\w+)</code><br>	reg, err :&#x3D; regexp.Compile(pattern)<br>	if err !&#x3D; nil {<br>		fmt.Println(“Error compiling regex:”, err)<br>		return<br>	}</p>
+<p>import (<br>    “fmt”<br>    “regexp”<br>)</p>
+<p>func main() {<br>    // 定义一个正则表达式<br>    pattern := <code>(\w+)@(\w+)\.(\w+)</code><br>    reg, err := regexp.Compile(pattern)<br>    if err != nil {<br>        fmt.Println(“Error compiling regex:”, err)<br>        return<br>    }</p>
 <pre><code>// 测试字符串
 text := &quot;Contact us at support@example.com or sales@example.org&quot;
 
@@ -261,7 +261,7 @@ fmt.Println(&quot;All matches:&quot;, allMatches)
 submatches := reg.FindStringSubmatch(firstMatch)
 fmt.Println(&quot;Submatches:&quot;)
 for i, submatch := range submatches &#123;
-	fmt.Printf(&quot;Group %d: %s\n&quot;, i, submatch)
+    fmt.Printf(&quot;Group %d: %s\n&quot;, i, submatch)
 &#125;
 
 // 5. 替换操作
@@ -270,18 +270,17 @@ fmt.Println(&quot;Text after replacement:&quot;, replacedText)
 
 // 6. 动态替换
 dynamicReplace := reg.ReplaceAllStringFunc(text, func(match string) string &#123;
-	return fmt.Sprintf(&quot;[hidden:%s]&quot;, match)
+    return fmt.Sprintf(&quot;[hidden:%s]&quot;, match)
 &#125;)
 fmt.Println(&quot;Text after dynamic replacement:&quot;, dynamicReplace)
 
 // 7. 分割字符串
 splitText := reg.Split(text, -1)
 fmt.Println(&quot;Split text:&quot;, splitText)
-</code></pre>
-<p>}</p>
+</code></pre><p>}</p>
 <p>输出结果</p>
-<p>Does the text contain an email address? true<br>First match: <a href="mailto:&#115;&#x75;&#112;&#112;&#x6f;&#x72;&#x74;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#x65;&#46;&#99;&#x6f;&#x6d;">support@example.com</a><br>All matches: [<a href="mailto:&#x73;&#x75;&#112;&#x70;&#x6f;&#114;&#x74;&#64;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#111;&#x6d;">support@example.com</a> <a href="mailto:&#x73;&#97;&#x6c;&#x65;&#115;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#111;&#x72;&#x67;">sales@example.org</a>]<br>Submatches:<br>Group 0: <a href="mailto:&#x73;&#117;&#x70;&#112;&#x6f;&#114;&#x74;&#x40;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">support@example.com</a><br>Group 1: support<br>Group 2: example<br>Group 3: com<br>Text after replacement: Contact us at [REDACTED] or [REDACTED]<br>Text after dynamic replacement: Contact us at [hidden:<a href="mailto:&#x73;&#117;&#x70;&#112;&#x6f;&#x72;&#116;&#x40;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#109;">support@example.com</a>] or [hidden:<a href="mailto:&#x73;&#x61;&#x6c;&#101;&#115;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x6f;&#x72;&#103;">sales@example.org</a>]<br>Split text: [Contact us at  or  or ]</p>
-<ol start="4">
+<p>Does the text contain an email address? true<br>First match: support@example.com<br>All matches: [support@example.com sales@example.org]<br>Submatches:<br>Group 0: support@example.com<br>Group 1: support<br>Group 2: example<br>Group 3: com<br>Text after replacement: Contact us at [REDACTED] or [REDACTED]<br>Text after dynamic replacement: Contact us at [hidden:support@example.com] or [hidden:sales@example.org]<br>Split text: [Contact us at  or  or ]</p>
+<ol>
 <li>总结</li>
 </ol>
 <p>Golang 的 regexp 是一个功能强大的正则表达式库，既支持简单的匹配，也支持复杂的分组、替换和动态操作。通过结合正则表达式语法和 regexp 提供的 API，可以高效地实现各种文本处理任务。</p>
@@ -391,7 +390,6 @@ fmt.Println(&quot;Split text:&quot;, splitText)
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
@@ -515,6 +513,19 @@ fmt.Println(&quot;Split text:&quot;, splitText)
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   
