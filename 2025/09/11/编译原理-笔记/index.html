@@ -28,7 +28,7 @@
 <meta property="og:description" content="概述阅读一下龙书🐲。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-19T01:57:06.847Z">
+<meta property="article:modified_time" content="2025-09-22T09:42:45.648Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="Compute">
 <meta name="twitter:card" content="summary">
@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-19 09:57:06" itemprop="dateModified" datetime="2025-09-19T09:57:06+08:00">2025-09-19</time>
+                <time title="修改时间：2025-09-22 17:42:45" itemprop="dateModified" datetime="2025-09-22T17:42:45+08:00">2025-09-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,8 +228,10 @@
       
         <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>阅读一下龙书🐲。</p>
 <span id="more"></span>
+
 <p>罗马数字的 BNF 语法：</p>
 <figure class="highlight bnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">&lt;roman&gt;</span> ::= &lt;thousands&gt; &lt;hundreds&gt; &lt;tens&gt; &lt;ones&gt;</span><br><span class="line"><span class="attribute">&lt;thousands&gt;</span> ::= <span class="string">&quot;&quot;</span> | <span class="string">&quot;M&quot;</span> | <span class="string">&quot;MM&quot;</span> | <span class="string">&quot;MMM&quot;</span></span><br><span class="line"><span class="attribute">&lt;hundreds&gt;</span> ::= <span class="string">&quot;&quot;</span> | <span class="string">&quot;C&quot;</span> | <span class="string">&quot;CC&quot;</span> | <span class="string">&quot;CCC&quot;</span> | <span class="string">&quot;CD&quot;</span> | <span class="string">&quot;D&quot;</span> | <span class="string">&quot;DC&quot;</span> | <span class="string">&quot;DCC&quot;</span> | <span class="string">&quot;DCCC&quot;</span> | <span class="string">&quot;CM&quot;</span></span><br><span class="line"><span class="attribute">&lt;tens&gt;</span> ::= <span class="string">&quot;&quot;</span> | <span class="string">&quot;X&quot;</span> | <span class="string">&quot;XX&quot;</span> | <span class="string">&quot;XXX&quot;</span> | <span class="string">&quot;XL&quot;</span> | <span class="string">&quot;L&quot;</span> | <span class="string">&quot;LX&quot;</span> | <span class="string">&quot;LXX&quot;</span> | <span class="string">&quot;LXXX&quot;</span> | <span class="string">&quot;XC&quot;</span></span><br><span class="line"><span class="attribute">&lt;ones&gt;</span> ::= <span class="string">&quot;&quot;</span> | <span class="string">&quot;I&quot;</span> | <span class="string">&quot;II&quot;</span> | <span class="string">&quot;III&quot;</span> | <span class="string">&quot;IV&quot;</span> | <span class="string">&quot;V&quot;</span> | <span class="string">&quot;VI&quot;</span> | <span class="string">&quot;VII&quot;</span> | <span class="string">&quot;VIII&quot;</span> | <span class="string">&quot;IX&quot;</span></span><br><span class="line"><span class="attribute">&lt;ones&gt;</span> ::= &lt;one_to_three&gt; | &lt;four&gt; | &lt;five_to_eight&gt; | &lt;nine&gt;</span><br><span class="line"><span class="attribute">&lt;one_to_three&gt;</span> ::= <span class="string">&quot;I&quot;</span> | <span class="string">&quot;II&quot;</span> | <span class="string">&quot;III&quot;</span></span><br><span class="line"><span class="attribute">&lt;four&gt;</span> ::= <span class="string">&quot;IV&quot;</span></span><br><span class="line"><span class="attribute">&lt;five_to_eight&gt;</span> ::= <span class="string">&quot;V&quot;</span> | <span class="string">&quot;VI&quot;</span> | <span class="string">&quot;VII&quot;</span> | <span class="string">&quot;VIII&quot;</span></span><br><span class="line"><span class="attribute">&lt;nine&gt;</span> ::= <span class="string">&quot;IX&quot;</span></span><br></pre></td></tr></table></figure>
+
 <pre class="mermaid">flowchart TD
     A[RomanDigit] --> B{基本符号?}
     B --> C[I=1]
@@ -239,7 +241,7 @@
     B --> G[C=100]
     B --> H[D=500]
     B --> I[M=1000]
-
+    
     A --> J{减法组合?}
     J --> K[IV=4]
     J --> L[IX=9]
@@ -247,11 +249,11 @@
     J --> N[XC=90]
     J --> O[CD=400]
     J --> P[CM=900]
-
+    
     A --> Q{加法重复?}
     Q --> R[II/XX/CC/MM]
     Q --> S[III/XXX/CCC/MMM]
-
+    
     K --> T[组合]
     L --> T
     M --> T
@@ -267,20 +269,34 @@
     G --> T
     H --> T
     I --> T
-
+    
     T --> U[有效罗马数字<br>例:MCMXCIV=1994]
-
+    
     classDef basic fill:#e3f2fd
     classDef subtract fill:#ffebee
     classDef add fill:#e8f5e8
     classDef result fill:#f1f8e9
-
+    
     class C,D,E,F,G,H,I basic
     class K,L,M,N,O,P subtract
     class R,S add
     class U result</pre>
 
-
+<pre class="mermaid">flowchart TD
+    A[客户发起购买USDT请求] --> B[wallet_service 创建订单]
+    B --> C[订单存入数据库]
+    C --> D[crontab_service 定时读取订单]
+    D --> E[crontab_service 处理订单]
+    E --> F[发送订单到 dpay_node]
+    F --> G[dpay_node 发起购买操作]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#f3e5f5
+    style D fill:#fff3e0
+    style E fill:#fff3e0
+    style F fill:#fff3e0
+    style G fill:#e8f5e8</pre>
     </div>
 
     
