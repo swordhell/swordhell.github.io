@@ -230,63 +230,63 @@
       
         <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><code>grpc</code> 是个比较好的工具，能用于服务器之间的通讯。可以实现跨语言。</p>
 <span id="more"></span>
+
 <h2 id="c-实现"><a href="#c-实现" class="headerlink" title="c++实现"></a>c++实现</h2><p>下面是一个用 Go 编写的最简单的 gRPC 服务和客户端的例子，包括服务器端和客户端的代码。</p>
 <ol>
 <li>安装必要的依赖</li>
 </ol>
-<p>在开始之前，请确保安装了以下工具和包：</p>
-<pre><code>1.    gRPC 和 Protocol Buffers 编译器（protoc）。
-2.    Go 的 gRPC 相关包：
-</code></pre><p>go install google.golang.org/protobuf/cmd/protoc-gen-go@latest<br>go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest</p>
-<p>确保 $GOPATH/bin 已经添加到环境变量中。</p>
-<ol>
+<p>在开始之前，请确保安装了以下工具和包：<br>	1.	gRPC 和 Protocol Buffers 编译器（protoc）。<br>	2.	Go 的 gRPC 相关包：</p>
+<p>go install google.golang.org&#x2F;protobuf&#x2F;cmd&#x2F;protoc-gen-go@latest<br>go install google.golang.org&#x2F;grpc&#x2F;cmd&#x2F;protoc-gen-go-grpc@latest</p>
+<p>确保 $GOPATH&#x2F;bin 已经添加到环境变量中。</p>
+<ol start="2">
 <li>定义 .proto 文件</li>
 </ol>
 <p>创建一个文件 example.proto，内容如下：</p>
-<p>syntax = “proto3”;</p>
+<p>syntax &#x3D; “proto3”;</p>
 <p>package example;</p>
-<p>// 服务定义<br>service Greeter {<br>  rpc SayHello (HelloRequest) returns (HelloReply);<br>}</p>
-<p>// 请求消息<br>message HelloRequest {<br>  string name = 1;<br>}</p>
-<p>// 响应消息<br>message HelloReply {<br>  string message = 1;<br>}</p>
-<ol>
+<p>&#x2F;&#x2F; 服务定义<br>service Greeter {<br>  rpc SayHello (HelloRequest) returns (HelloReply);<br>}</p>
+<p>&#x2F;&#x2F; 请求消息<br>message HelloRequest {<br>  string name &#x3D; 1;<br>}</p>
+<p>&#x2F;&#x2F; 响应消息<br>message HelloReply {<br>  string message &#x3D; 1;<br>}</p>
+<ol start="3">
 <li>生成 Go 文件</li>
 </ol>
 <p>运行以下命令生成 Go 文件：</p>
-<p>protoc —go_out=. —go-grpc_out=. example.proto</p>
-<p>生成的文件会有两个：</p>
-<pre><code>1.    example.pb.go：包含消息的定义。
-2.    example_grpc.pb.go：包含服务的接口定义。
-</code></pre><ol>
+<p>protoc –go_out&#x3D;. –go-grpc_out&#x3D;. example.proto</p>
+<p>生成的文件会有两个：<br>	1.	example.pb.go：包含消息的定义。<br>	2.	example_grpc.pb.go：包含服务的接口定义。</p>
+<ol start="4">
 <li>实现服务端</li>
 </ol>
 <p>创建一个文件 server.go：</p>
 <p>package main</p>
-<p>import (<br>    “context”<br>    “log”<br>    “net”</p>
+<p>import (<br>	“context”<br>	“log”<br>	“net”</p>
 <pre><code>pb &quot;path/to/your/generated/files&quot; // 修改为生成的文件所在的实际路径
 &quot;google.golang.org/grpc&quot;
-</code></pre><p>)</p>
-<p>// 定义服务<br>type greeterServer struct {<br>    pb.UnimplementedGreeterServer<br>}</p>
-<p>// 实现 SayHello 方法<br>func (s <em>greeterServer) SayHello(ctx context.Context, req </em>pb.HelloRequest) (*pb.HelloReply, error) {<br>    log.Printf(“Received: %s”, req.GetName())<br>    return &amp;pb.HelloReply{Message: “Hello “ + req.GetName()}, nil<br>}</p>
-<p>func main() {<br>    listener, err := net.Listen(“tcp”, “:50051”) // 启动监听<br>    if err != nil {<br>        log.Fatalf(“Failed to listen: %v”, err)<br>    }</p>
+</code></pre>
+<p>)</p>
+<p>&#x2F;&#x2F; 定义服务<br>type greeterServer struct {<br>	pb.UnimplementedGreeterServer<br>}</p>
+<p>&#x2F;&#x2F; 实现 SayHello 方法<br>func (s *greeterServer) SayHello(ctx context.Context, req *pb.HelloRequest) (*pb.HelloReply, error) {<br>	log.Printf(“Received: %s”, req.GetName())<br>	return &amp;pb.HelloReply{Message: “Hello “ + req.GetName()}, nil<br>}</p>
+<p>func main() {<br>	listener, err :&#x3D; net.Listen(“tcp”, “:50051”) &#x2F;&#x2F; 启动监听<br>	if err !&#x3D; nil {<br>		log.Fatalf(“Failed to listen: %v”, err)<br>	}</p>
 <pre><code>grpcServer := grpc.NewServer()              // 创建 gRPC 服务器
 pb.RegisterGreeterServer(grpcServer, &amp;greeterServer&#123;&#125;) // 注册服务
 
 log.Println(&quot;gRPC server is running on port 50051...&quot;)
 if err := grpcServer.Serve(listener); err != nil &#123;
-    log.Fatalf(&quot;Failed to serve: %v&quot;, err)
+	log.Fatalf(&quot;Failed to serve: %v&quot;, err)
 &#125;
-</code></pre><p>}</p>
+</code></pre>
+<p>}</p>
 <p>运行此文件将启动 gRPC 服务器。</p>
-<ol>
+<ol start="5">
 <li>实现客户端</li>
 </ol>
 <p>创建一个文件 client.go：</p>
 <p>package main</p>
-<p>import (<br>    “context”<br>    “log”<br>    “time”</p>
+<p>import (<br>	“context”<br>	“log”<br>	“time”</p>
 <pre><code>pb &quot;path/to/your/generated/files&quot; // 修改为生成的文件所在的实际路径
 &quot;google.golang.org/grpc&quot;
-</code></pre><p>)</p>
-<p>func main() {<br>    // 连接 gRPC 服务器<br>    conn, err := grpc.Dial(“localhost:50051”, grpc.WithInsecure())<br>    if err != nil {<br>        log.Fatalf(“Failed to connect: %v”, err)<br>    }<br>    defer conn.Close()</p>
+</code></pre>
+<p>)</p>
+<p>func main() {<br>	&#x2F;&#x2F; 连接 gRPC 服务器<br>	conn, err :&#x3D; grpc.Dial(“localhost:50051”, grpc.WithInsecure())<br>	if err !&#x3D; nil {<br>		log.Fatalf(“Failed to connect: %v”, err)<br>	}<br>	defer conn.Close()</p>
 <pre><code>client := pb.NewGreeterClient(conn) // 创建客户端
 
 // 调用 SayHello 方法
@@ -295,19 +295,21 @@ defer cancel()
 
 resp, err := client.SayHello(ctx, &amp;pb.HelloRequest&#123;Name: &quot;World&quot;&#125;)
 if err != nil &#123;
-    log.Fatalf(&quot;Failed to greet: %v&quot;, err)
+	log.Fatalf(&quot;Failed to greet: %v&quot;, err)
 &#125;
 log.Printf(&quot;Greeting: %s&quot;, resp.GetMessage())
-</code></pre><p>}</p>
-<ol>
+</code></pre>
+<p>}</p>
+<ol start="6">
 <li>运行代码<ol>
 <li>启动服务端：</li>
 </ol>
 </li>
 </ol>
 <p>go run server.go</p>
-<pre><code>2.    启动客户端：
-</code></pre><p>go run client.go</p>
+<pre><code>2.	启动客户端：
+</code></pre>
+<p>go run client.go</p>
 <p>客户端会输出类似以下内容：</p>
 <p>Greeting: Hello World</p>
 <p>总结</p>
@@ -316,90 +318,73 @@ log.Printf(&quot;Greeting: %s&quot;, resp.GetMessage())
 <ol>
 <li>gRPC 客户端连接是否会断开？</li>
 </ol>
-<p>常见断开情况：</p>
-<pre><code>1.    网络问题：
-</code></pre><p>网络中断或不稳定可能导致客户端无法连接到服务器。</p>
-<pre><code>2.    服务器问题：
-</code></pre><p>服务器重启或故障可能导致连接断开。</p>
-<pre><code>3.    连接超时：
-</code></pre><p>如果客户端未能在一定时间内发送请求，可能导致连接断开。</p>
-<pre><code>4.    负载均衡：
-</code></pre><p>使用负载均衡器可能导致连接被切换到其他服务器。</p>
-<ol>
+<p>常见断开情况：<br>	1.	网络问题：<br>网络中断或不稳定可能导致客户端无法连接到服务器。<br>	2.	服务器问题：<br>服务器重启或故障可能导致连接断开。<br>	3.	连接超时：<br>如果客户端未能在一定时间内发送请求，可能导致连接断开。<br>	4.	负载均衡：<br>使用负载均衡器可能导致连接被切换到其他服务器。</p>
+<ol start="2">
 <li>如何检查 gRPC 客户端的连接状态？</li>
 </ol>
 <p>在 gRPC 中，你可以通过检查 grpc.ClientConn 的状态来判断连接状态。</p>
 <p>ClientConn.GetState() 方法</p>
 <p>grpc.ClientConn 提供了 GetState() 方法，可以用来检查连接的状态。</p>
-<p>状态可能是以下几种：<br>    •    IDLE：客户端空闲，没有活动的连接。<br>    •    CONNECTING：客户端正在尝试连接服务器。<br>    •    READY：客户端已成功连接到服务器，可以正常发送请求。<br>    •    TRANSIENT_FAILURE：暂时性连接失败，客户端会尝试重新连接。<br>    •    SHUTDOWN：客户端连接已关闭。</p>
+<p>状态可能是以下几种：<br>	•	IDLE：客户端空闲，没有活动的连接。<br>	•	CONNECTING：客户端正在尝试连接服务器。<br>	•	READY：客户端已成功连接到服务器，可以正常发送请求。<br>	•	TRANSIENT_FAILURE：暂时性连接失败，客户端会尝试重新连接。<br>	•	SHUTDOWN：客户端连接已关闭。</p>
 <p>示例代码：</p>
 <p>package main</p>
-<p>import (<br>    “log”<br>    “time”</p>
+<p>import (<br>	“log”<br>	“time”</p>
 <pre><code>&quot;google.golang.org/grpc&quot;
-</code></pre><p>)</p>
-<p>func checkConnectionState(conn *grpc.ClientConn) {<br>    state := conn.GetState().String()<br>    log.Printf(“Current gRPC connection state: %s”, state)<br>}</p>
-<p>func main() {<br>    // 创建 gRPC 客户端连接<br>    conn, err := grpc.Dial(“localhost:50051”, grpc.WithInsecure(), grpc.WithBlock())<br>    if err != nil {<br>        log.Fatalf(“Failed to connect to gRPC server: %v”, err)<br>    }<br>    defer conn.Close()</p>
+</code></pre>
+<p>)</p>
+<p>func checkConnectionState(conn *grpc.ClientConn) {<br>	state :&#x3D; conn.GetState().String()<br>	log.Printf(“Current gRPC connection state: %s”, state)<br>}</p>
+<p>func main() {<br>	&#x2F;&#x2F; 创建 gRPC 客户端连接<br>	conn, err :&#x3D; grpc.Dial(“localhost:50051”, grpc.WithInsecure(), grpc.WithBlock())<br>	if err !&#x3D; nil {<br>		log.Fatalf(“Failed to connect to gRPC server: %v”, err)<br>	}<br>	defer conn.Close()</p>
 <pre><code>// 定时检查连接状态
 ticker := time.NewTicker(5 * time.Second)
 defer ticker.Stop()
 
 for range ticker.C &#123;
-    checkConnectionState(conn)
+	checkConnectionState(conn)
 &#125;
-</code></pre><p>}</p>
-<ol>
+</code></pre>
+<p>}</p>
+<ol start="3">
 <li>如何处理断开的连接？</li>
 </ol>
 <p>自动重连</p>
-<p>gRPC 默认支持自动重连功能，可以通过以下方式启用：</p>
-<pre><code>1.    启用连接重试（推荐）：
-</code></pre><p>使用 grpc.WithDefaultServiceConfig 开启重试策略。</p>
-<p>conn, err := grpc.Dial(“localhost:50051”,<br>    grpc.WithInsecure(),<br>    grpc.WithDefaultServiceConfig(<code>&#123;
-        &quot;loadBalancingConfig&quot;: [&#123;
-            &quot;round_robin&quot;: &#123;&#125;
-        &#125;],
-        &quot;methodConfig&quot;: [&#123;
-            &quot;retryPolicy&quot;: &#123;
-                &quot;maxAttempts&quot;: 4,
-                &quot;initialBackoff&quot;: &quot;0.1s&quot;,
-                &quot;maxBackoff&quot;: &quot;1s&quot;,
-                &quot;backoffMultiplier&quot;: 2,
-                &quot;retryableStatusCodes&quot;: [&quot;UNAVAILABLE&quot;]
-            &#125;
-        &#125;]
-    &#125;</code>))<br>if err != nil {<br>    log.Fatalf(“Failed to connect: %v”, err)<br>}</p>
-<pre><code>2.    自动重试断开状态：
-</code></pre><p>如果客户端状态变为 TRANSIENT_FAILURE 或 IDLE，可以手动尝试重新连接或等待 gRPC 自动重连。</p>
-<ol>
+<p>gRPC 默认支持自动重连功能，可以通过以下方式启用：<br>	1.	启用连接重试（推荐）：<br>使用 grpc.WithDefaultServiceConfig 开启重试策略。</p>
+<p>conn, err :&#x3D; grpc.Dial(“localhost:50051”,<br>    grpc.WithInsecure(),<br>    grpc.WithDefaultServiceConfig(<code>&#123;         &quot;loadBalancingConfig&quot;: [&#123;             &quot;round_robin&quot;: &#123;&#125;         &#125;],         &quot;methodConfig&quot;: [&#123;             &quot;retryPolicy&quot;: &#123;                 &quot;maxAttempts&quot;: 4,                 &quot;initialBackoff&quot;: &quot;0.1s&quot;,                 &quot;maxBackoff&quot;: &quot;1s&quot;,                 &quot;backoffMultiplier&quot;: 2,                 &quot;retryableStatusCodes&quot;: [&quot;UNAVAILABLE&quot;]             &#125;         &#125;]     &#125;</code>))<br>if err !&#x3D; nil {<br>    log.Fatalf(“Failed to connect: %v”, err)<br>}</p>
+<pre><code>2.	自动重试断开状态：
+</code></pre>
+<p>如果客户端状态变为 TRANSIENT_FAILURE 或 IDLE，可以手动尝试重新连接或等待 gRPC 自动重连。</p>
+<ol start="4">
 <li>是否需要修复断开的连接？<br> •    如果启用了重连机制：不需要手动修复，gRPC 会自动尝试重连。<br> •    如果未启用重连机制：需要检查状态并重新创建连接。</li>
 </ol>
 <p>示例代码：手动检测并修复连接</p>
 <p>package main</p>
-<p>import (<br>    “log”<br>    “time”</p>
+<p>import (<br>	“log”<br>	“time”</p>
 <pre><code>&quot;google.golang.org/grpc&quot;
 &quot;google.golang.org/grpc/connectivity&quot;
-</code></pre><p>)</p>
-<p>func ensureConnection(conn *grpc.ClientConn) {<br>    for {<br>        state := conn.GetState()<br>        log.Printf(“Current connection state: %v”, state)</p>
-<pre><code>    if state == connectivity.TransientFailure || state == connectivity.Shutdown &#123;
-        log.Println(&quot;Connection lost. Attempting to reconnect...&quot;)
-        conn.ResetConnectBackoff()
-    &#125;
+</code></pre>
+<p>)</p>
+<p>func ensureConnection(conn *grpc.ClientConn) {<br>	for {<br>		state :&#x3D; conn.GetState()<br>		log.Printf(“Current connection state: %v”, state)</p>
+<pre><code>	if state == connectivity.TransientFailure || state == connectivity.Shutdown &#123;
+		log.Println(&quot;Connection lost. Attempting to reconnect...&quot;)
+		conn.ResetConnectBackoff()
+	&#125;
 
-    // 等待状态变化
-    conn.WaitForStateChange(nil, state)
+	// 等待状态变化
+	conn.WaitForStateChange(nil, state)
 &#125;
-</code></pre><p>}</p>
-<p>func main() {<br>    // 创建 gRPC 客户端连接<br>    conn, err := grpc.Dial(“localhost:50051”, grpc.WithInsecure(), grpc.WithBlock())<br>    if err != nil {<br>        log.Fatalf(“Failed to connect to gRPC server: %v”, err)<br>    }<br>    defer conn.Close()</p>
+</code></pre>
+<p>}</p>
+<p>func main() {<br>	&#x2F;&#x2F; 创建 gRPC 客户端连接<br>	conn, err :&#x3D; grpc.Dial(“localhost:50051”, grpc.WithInsecure(), grpc.WithBlock())<br>	if err !&#x3D; nil {<br>		log.Fatalf(“Failed to connect to gRPC server: %v”, err)<br>	}<br>	defer conn.Close()</p>
 <pre><code>// 检查并修复连接
 go ensureConnection(conn)
 
 // 模拟其他操作
 for &#123;
-    time.Sleep(1 * time.Second)
-    log.Println(&quot;Doing some work...&quot;)
+	time.Sleep(1 * time.Second)
+	log.Println(&quot;Doing some work...&quot;)
 &#125;
-</code></pre><p>}</p>
-<ol>
+</code></pre>
+<p>}</p>
+<ol start="5">
 <li>小结<br> •    检查连接状态：使用 conn.GetState() 获取连接状态。<br> •    自动重连：通过 grpc.WithDefaultServiceConfig 开启自动重连。<br> •    手动修复：监听状态变化，并在必要时调用 conn.ResetConnectBackoff() 或重新创建连接。<br> •    生产环境建议：启用 gRPC 的自动重试策略，减少手动管理的复杂性。</li>
 </ol>
 <p>如果你有特定的需求或问题场景，可以进一步描述，我会帮你完善解决方案！</p>

@@ -225,11 +225,12 @@
         <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>学习一些rust的tcp用法</p>
 <p><img src="/2024/11/22/rust-tcp-echo-svr/rusticon.png" alt="rusticon"></p>
 <span id="more"></span>
+
 <p>以下是一个使用 Rust 实现的最简单的 TCP Echo 服务器示例代码：</p>
 <p>代码示例</p>
 <p>use std::io::{Read, Write};<br>use std::net::{TcpListener, TcpStream};<br>use std::thread;</p>
-<p>fn handle_client(mut stream: TcpStream) {<br>    let mut buffer = [0; 512]; // 定义一个缓冲区<br>    loop {<br>        match stream.read(&amp;mut buffer) {<br>            Ok(0) =&gt; {<br>                // 客户端关闭连接<br>                println!(“Client disconnected”);<br>                break;<br>            }<br>            Ok(size) =&gt; {<br>                // 将收到的消息原样返回<br>                println!(“Received: {}”, String::from_utf8_lossy(&amp;buffer[..size]));<br>                if let Err(e) = stream.write_all(&amp;buffer[..size]) {<br>                    eprintln!(“Failed to send data: {}”, e);<br>                    break;<br>                }<br>            }<br>            Err(e) =&gt; {<br>                // 读取出错<br>                eprintln!(“Error reading from client: {}”, e);<br>                break;<br>            }<br>        }<br>    }<br>}</p>
-<p>fn main() -&gt; std::io::Result&lt;()&gt; {<br>    let listener = TcpListener::bind(“127.0.0.1:8080”)?; // 绑定到本地的 8080 端口<br>    println!(“Server listening on 127.0.0.1:8080”);</p>
+<p>fn handle_client(mut stream: TcpStream) {<br>    let mut buffer &#x3D; [0; 512]; &#x2F;&#x2F; 定义一个缓冲区<br>    loop {<br>        match stream.read(&amp;mut buffer) {<br>            Ok(0) &#x3D;&gt; {<br>                &#x2F;&#x2F; 客户端关闭连接<br>                println!(“Client disconnected”);<br>                break;<br>            }<br>            Ok(size) &#x3D;&gt; {<br>                &#x2F;&#x2F; 将收到的消息原样返回<br>                println!(“Received: {}”, String::from_utf8_lossy(&amp;buffer[..size]));<br>                if let Err(e) &#x3D; stream.write_all(&amp;buffer[..size]) {<br>                    eprintln!(“Failed to send data: {}”, e);<br>                    break;<br>                }<br>            }<br>            Err(e) &#x3D;&gt; {<br>                &#x2F;&#x2F; 读取出错<br>                eprintln!(“Error reading from client: {}”, e);<br>                break;<br>            }<br>        }<br>    }<br>}</p>
+<p>fn main() -&gt; std::io::Result&lt;()&gt; {<br>    let listener &#x3D; TcpListener::bind(“127.0.0.1:8080”)?; &#x2F;&#x2F; 绑定到本地的 8080 端口<br>    println!(“Server listening on 127.0.0.1:8080”);</p>
 <pre><code>for stream in listener.incoming() &#123;
     match stream &#123;
         Ok(stream) =&gt; &#123;
@@ -244,45 +245,55 @@
 &#125;
 
 Ok(())
-</code></pre><p>}</p>
+</code></pre>
+<p>}</p>
 <p>代码说明</p>
-<pre><code>1.    TcpListener: 用于监听指定的地址和端口。
-2.    TcpStream: 表示与客户端之间的连接。
-3.    handle_client: 一个处理客户端连接的函数，读取数据并回传（Echo）。
-4.    多线程: 每次有新连接时创建一个线程处理，以避免阻塞其他连接。
-5.    缓冲区: 使用了一个固定大小的缓冲区（512 字节）来存储客户端发送的数据。
-</code></pre><p>运行方法</p>
-<pre><code>1.    编译和运行:
-</code></pre><p>rustc echo_server.rs<br>./echo_server</p>
-<pre><code>2.    测试服务器:
-</code></pre><p>打开另一个终端，使用 telnet 或 nc 工具测试：</p>
+<pre><code>1.	TcpListener: 用于监听指定的地址和端口。
+2.	TcpStream: 表示与客户端之间的连接。
+3.	handle_client: 一个处理客户端连接的函数，读取数据并回传（Echo）。
+4.	多线程: 每次有新连接时创建一个线程处理，以避免阻塞其他连接。
+5.	缓冲区: 使用了一个固定大小的缓冲区（512 字节）来存储客户端发送的数据。
+</code></pre>
+<p>运行方法</p>
+<pre><code>1.	编译和运行:
+</code></pre>
+<p>rustc echo_server.rs<br>.&#x2F;echo_server</p>
+<pre><code>2.	测试服务器:
+</code></pre>
+<p>打开另一个终端，使用 telnet 或 nc 工具测试：</p>
 <p>nc 127.0.0.1 8080</p>
 <p>输入任意文本，服务器会原样返回。</p>
 <p>输出示例</p>
-<pre><code>1.    服务器终端输出：
-</code></pre><p>Server listening on 127.0.0.1:8080<br>New connection: 127.0.0.1:52832<br>Received: Hello, server!</p>
-<pre><code>2.    客户端终端：
-</code></pre><p>Hello, server!</p>
+<pre><code>1.	服务器终端输出：
+</code></pre>
+<p>Server listening on 127.0.0.1:8080<br>New connection: 127.0.0.1:52832<br>Received: Hello, server!</p>
+<pre><code>2.	客户端终端：
+</code></pre>
+<p>Hello, server!</p>
 <p>此代码简单易懂，可作为入门 TCP 服务器的基础代码。<br>下面是将 TCP Echo 服务器改造为支持 Protobuf 的简单例子。服务器会接收客户端发送的 Protobuf 消息，解析后打印，并以 Protobuf 格式返回消息。</p>
 <p>改造步骤</p>
-<pre><code>1.    定义 Protobuf 消息格式:
-</code></pre><p>创建 proto/message.proto 文件：</p>
-<p>syntax = “proto3”;</p>
+<pre><code>1.	定义 Protobuf 消息格式:
+</code></pre>
+<p>创建 proto&#x2F;message.proto 文件：</p>
+<p>syntax &#x3D; “proto3”;</p>
 <p>package example;</p>
-<p>message EchoMessage {<br>  string content = 1;<br>}</p>
-<pre><code>2.    设置 build.rs:
-</code></pre><p>使用 prost-build 编译 Protobuf 文件：</p>
-<p>fn main() {<br>    prost_build::compile_protos(&amp;[“proto/message.proto”], &amp;[“proto/“])<br>        .expect(“Failed to compile Protobuf files”);<br>}</p>
-<pre><code>3.    安装依赖:
-</code></pre><p>在 Cargo.toml 中添加：</p>
-<p>[dependencies]<br>prost = “0.11”<br>prost-types = “0.11”<br>tokio = { version = “1.0”, features = [“full”] }<br>bytes = “1.4”</p>
-<p>[build-dependencies]<br>prost-build = “0.11”</p>
-<pre><code>4.    实现服务器:
-</code></pre><p>以下是完整代码：</p>
+<p>message EchoMessage {<br>  string content &#x3D; 1;<br>}</p>
+<pre><code>2.	设置 build.rs:
+</code></pre>
+<p>使用 prost-build 编译 Protobuf 文件：</p>
+<p>fn main() {<br>    prost_build::compile_protos(&amp;[“proto&#x2F;message.proto”], &amp;[“proto&#x2F;“])<br>        .expect(“Failed to compile Protobuf files”);<br>}</p>
+<pre><code>3.	安装依赖:
+</code></pre>
+<p>在 Cargo.toml 中添加：</p>
+<p>[dependencies]<br>prost &#x3D; “0.11”<br>prost-types &#x3D; “0.11”<br>tokio &#x3D; { version &#x3D; “1.0”, features &#x3D; [“full”] }<br>bytes &#x3D; “1.4”</p>
+<p>[build-dependencies]<br>prost-build &#x3D; “0.11”</p>
+<pre><code>4.	实现服务器:
+</code></pre>
+<p>以下是完整代码：</p>
 <p>use prost::Message;<br>use tokio::net::{TcpListener, TcpStream};<br>use tokio::io::{AsyncReadExt, AsyncWriteExt};</p>
-<p>mod example {<br>    include!(concat!(env!(“OUT_DIR”), “/example.rs”));<br>}</p>
+<p>mod example {<br>    include!(concat!(env!(“OUT_DIR”), “&#x2F;example.rs”));<br>}</p>
 <p>use example::EchoMessage;</p>
-<p>// 处理客户端的连接<br>async fn handle_client(mut stream: TcpStream) -&gt; tokio::io::Result&lt;()&gt; {<br>    let mut buffer = vec![0; 1024]; // 用于接收数据</p>
+<p>&#x2F;&#x2F; 处理客户端的连接<br>async fn handle_client(mut stream: TcpStream) -&gt; tokio::io::Result&lt;()&gt; {<br>    let mut buffer &#x3D; vec![0; 1024]; &#x2F;&#x2F; 用于接收数据</p>
 <pre><code>loop &#123;
     // 读取客户端发送的数据
     let bytes_read = stream.read(&amp;mut buffer).await?;
@@ -311,8 +322,9 @@ Ok(())
 
     stream.write_all(&amp;encoded).await?;
 &#125;
-</code></pre><p>}</p>
-<h1 id="tokio-main"><a href="#tokio-main" class="headerlink" title="[tokio::main]"></a>[tokio::main]</h1><p>async fn main() -&gt; tokio::io::Result&lt;()&gt; {<br>    let listener = TcpListener::bind(“127.0.0.1:8080”).await?;<br>    println!(“Server listening on 127.0.0.1:8080”);</p>
+</code></pre>
+<p>}</p>
+<p>#[tokio::main]<br>async fn main() -&gt; tokio::io::Result&lt;()&gt; {<br>    let listener &#x3D; TcpListener::bind(“127.0.0.1:8080”).await?;<br>    println!(“Server listening on 127.0.0.1:8080”);</p>
 <pre><code>loop &#123;
     let (stream, addr) = listener.accept().await?;
     println!(&quot;New connection: &#123;&#125;&quot;, addr);
@@ -324,13 +336,14 @@ Ok(())
         &#125;
     &#125;);
 &#125;
-</code></pre><p>}</p>
+</code></pre>
+<p>}</p>
 <p>客户端测试代码</p>
 <p>这里使用 Rust 实现一个简单的客户端来测试服务器：</p>
 <p>use prost::Message;<br>use tokio::net::TcpStream;<br>use tokio::io::{AsyncReadExt, AsyncWriteExt};</p>
-<p>mod example {<br>    include!(concat!(env!(“OUT_DIR”), “/example.rs”));<br>}</p>
+<p>mod example {<br>    include!(concat!(env!(“OUT_DIR”), “&#x2F;example.rs”));<br>}</p>
 <p>use example::EchoMessage;</p>
-<h1 id="tokio-main-1"><a href="#tokio-main-1" class="headerlink" title="[tokio::main]"></a>[tokio::main]</h1><p>async fn main() -&gt; tokio::io::Result&lt;()&gt; {<br>    let mut stream = TcpStream::connect(“127.0.0.1:8080”).await?;<br>    println!(“Connected to server”);</p>
+<p>#[tokio::main]<br>async fn main() -&gt; tokio::io::Result&lt;()&gt; {<br>    let mut stream &#x3D; TcpStream::connect(“127.0.0.1:8080”).await?;<br>    println!(“Connected to server”);</p>
 <pre><code>// 创建一个消息
 let message = EchoMessage &#123;
     content: &quot;Hello, Protobuf!&quot;.to_string(),
@@ -349,23 +362,29 @@ let response = EchoMessage::decode(&amp;buffer[..bytes_read]).unwrap();
 println!(&quot;Response from server: &#123;&#125;&quot;, response.content);
 
 Ok(())
-</code></pre><p>}</p>
+</code></pre>
+<p>}</p>
 <p>运行与测试</p>
-<pre><code>1.    启动服务器:
-</code></pre><p>cargo run —bin server</p>
-<pre><code>2.    启动客户端:
-</code></pre><p>在另一个终端运行：</p>
-<p>cargo run —bin client</p>
-<pre><code>3.    结果示例:
-•    服务器终端输出：
-</code></pre><p>Server listening on 127.0.0.1:8080<br>New connection: 127.0.0.1:53000<br>Received: Hello, Protobuf!</p>
-<pre><code>•    客户端终端输出：
-</code></pre><p>Connected to server<br>Response from server: Echo: Hello, Protobuf!</p>
+<pre><code>1.	启动服务器:
+</code></pre>
+<p>cargo run –bin server</p>
+<pre><code>2.	启动客户端:
+</code></pre>
+<p>在另一个终端运行：</p>
+<p>cargo run –bin client</p>
+<pre><code>3.	结果示例:
+•	服务器终端输出：
+</code></pre>
+<p>Server listening on 127.0.0.1:8080<br>New connection: 127.0.0.1:53000<br>Received: Hello, Protobuf!</p>
+<pre><code>•	客户端终端输出：
+</code></pre>
+<p>Connected to server<br>Response from server: Echo: Hello, Protobuf!</p>
 <p>说明</p>
-<pre><code>•    服务器使用 prost 解析和生成 Protobuf 消息。
-•    采用 tokio 提供异步网络支持，能够高效处理多个客户端连接。
-•    客户端使用相同的 Protobuf 定义，与服务器实现完全兼容。
-</code></pre><p>这样，您就实现了一个支持 Protobuf 的简单 TCP Echo 服务器！</p>
+<pre><code>•	服务器使用 prost 解析和生成 Protobuf 消息。
+•	采用 tokio 提供异步网络支持，能够高效处理多个客户端连接。
+•	客户端使用相同的 Protobuf 定义，与服务器实现完全兼容。
+</code></pre>
+<p>这样，您就实现了一个支持 Protobuf 的简单 TCP Echo 服务器！</p>
 
     </div>
 
@@ -450,7 +469,7 @@ Ok(())
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tokio-main"><span class="nav-number">2.</span> <span class="nav-text">[tokio::main]</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tokio-main-1"><span class="nav-number">3.</span> <span class="nav-text">[tokio::main]</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

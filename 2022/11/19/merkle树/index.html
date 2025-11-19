@@ -232,6 +232,7 @@
 <p>hash树是一种校验机制，全部树的叶子节点就是我们需要做hash的原始数据，按照两个为一组，产生hash，层层建设这棵树，最后形成一个根。这样其中每个产出的hash节点如果被修改了，将会被父节点觉察到，层层推算到根的hash都不会匹配。</p>
 <p>hash函数是存在碰撞的可能性的，如果有人需要去破解merkle树的校验，就需要从篡改的节点，一直到根的全部的hash过程的碰撞的函数都搞定，这个难度可想而知。</p>
 <span id="more"></span>
+
 <h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><p><a target="_blank" rel="noopener" href="https://github.com/weichaoguo/merkle-tree">merkle-tree-github</a></p>
 <h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/introduction-to-merkle-tree/">introduction-tomerkle-tree</a></li>

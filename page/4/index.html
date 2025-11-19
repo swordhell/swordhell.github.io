@@ -300,80 +300,71 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><code>vcpkg</code> 是一个 C++ 包管理器，用于 Windows、Linux 和 macOS。它由 Microsoft 维护，并支持大量的 C++ 库。使用 <code>vcpkg</code>，你可以轻松地安装、升级和管理 C++ 依赖库。</p>
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><code>vcpkg</code> 是一个 C++ 包管理器，用于 Windows、Linux 和 macOS。它由 Microsoft 维护，并支持大量的 C++ 库。使用 <code>vcpkg</code>，你可以轻松地安装、升级和管理 C++ 依赖库。</p>
 <h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="安装-vcpkg"><a href="#安装-vcpkg" class="headerlink" title="安装 vcpkg"></a>安装 vcpkg</h3><p>git clone <a target="_blank" rel="noopener" href="https://github.com/microsoft/vcpkg">https://github.com/microsoft/vcpkg</a></p>
-<p>./bootstrap-vcpkg.sh<br>./vcpkg —version<br>vcpkg package management program version 2024-04-23-d6945642ee5c3076addd1a42c331bbf4cfc97457</p>
+<p>.&#x2F;bootstrap-vcpkg.sh<br>.&#x2F;vcpkg –version<br>vcpkg package management program version 2024-04-23-d6945642ee5c3076addd1a42c331bbf4cfc97457</p>
 <p>See LICENSE.txt for license information.</p>
-<p> vcpkg integrate bash<br>Adding vcpkg completion entry to /home/abel/.bashrc.</p>
+<p> vcpkg integrate bash<br>Adding vcpkg completion entry to &#x2F;home&#x2F;abel&#x2F;.bashrc.</p>
 <p>将目录增加到 PATH 里面方便运行。</p>
 <h3 id="尝试基本操作"><a href="#尝试基本操作" class="headerlink" title="尝试基本操作"></a>尝试基本操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vcpkg search boost</span><br><span class="line"></span><br><span class="line">vcpkg </span><br><span class="line">usage: vcpkg &lt;<span class="built_in">command</span>&gt; [--switches] [--options=values] [arguments] @response_file</span><br><span class="line">  @response_file         Contains one argument per line expanded at that location</span><br><span class="line"></span><br><span class="line">Package Installation:</span><br><span class="line">  <span class="built_in">export</span>                 Creates a standalone deployment of installed ports</span><br><span class="line">  install                Installs a package</span><br><span class="line">  remove                 Uninstalls a package</span><br><span class="line">  x-set-installed        Installs, upgrades, or removes packages such that that installed matches</span><br><span class="line">                         exactly those supplied</span><br><span class="line">  upgrade                Rebuilds all outdated packages</span><br><span class="line"></span><br><span class="line">Package Discovery:</span><br><span class="line">  x-check-support        Tests whether a port is supported without building it</span><br><span class="line">  depend-info            Displays a list of dependencies <span class="keyword">for</span> ports</span><br><span class="line">  list                   Lists installed libraries</span><br><span class="line">  owns                   Searches <span class="keyword">for</span> the owner of a file <span class="keyword">in</span> installed packages</span><br><span class="line">  x-package-info         Display detailed information on packages</span><br><span class="line">  portsdiff              Diffs changes <span class="keyword">in</span> port versions between commits</span><br><span class="line">  search                 Searches <span class="keyword">for</span> packages available to be built</span><br><span class="line">  update                 Lists packages that can be upgraded</span><br><span class="line"></span><br><span class="line">Package Manipulation:</span><br><span class="line">  add                    Adds dependency to manifest</span><br><span class="line">  x-add-version          Adds a version to the version database</span><br><span class="line">  create                 Creates a new port</span><br><span class="line">  edit                   Edits a port, optionally with <span class="variable">$EDITOR</span>, defaults to <span class="string">&quot;code&quot;</span></span><br><span class="line">  <span class="built_in">env</span>                    Creates a clean shell environment <span class="keyword">for</span> development or compiling</span><br><span class="line">  format-manifest        Prettyfies vcpkg.json</span><br><span class="line">  <span class="built_in">hash</span>                   Gets a file<span class="string">&#x27;s SHA256 or SHA512</span></span><br><span class="line"><span class="string">  x-init-registry        Creates a blank git registry</span></span><br><span class="line"><span class="string">  new                    Creates a new manifest</span></span><br><span class="line"><span class="string">  x-update-baseline      Updates baselines of git registries in a manifest to those registries&#x27;</span> HEAD</span><br><span class="line">                         commit</span><br><span class="line"></span><br><span class="line">Other:</span><br><span class="line">  ci                     Tries building all ports <span class="keyword">for</span> CI testing</span><br><span class="line">  x-ci-verify-versions   Checks integrity of the version database</span><br><span class="line">  contact                Displays contact information to send feedback</span><br><span class="line">  fetch                  Fetches something from the system or the internet</span><br><span class="line">  integrate              Integrates vcpkg with machines, projects, or shells</span><br><span class="line"></span><br><span class="line">For More Help:</span><br><span class="line">  <span class="built_in">help</span> topics            Displays full list of <span class="built_in">help</span> topics</span><br><span class="line">  <span class="built_in">help</span> &lt;topic&gt;           Displays specific <span class="built_in">help</span> topic</span><br><span class="line">  <span class="built_in">help</span> commands          Displays full list of commands, including rare ones not listed here</span><br><span class="line">  <span class="built_in">help</span> &lt;<span class="built_in">command</span>&gt;         Displays <span class="built_in">help</span> detail <span class="keyword">for</span> &lt;<span class="built_in">command</span>&gt;</span><br><span class="line"></span><br><span class="line">For more <span class="built_in">help</span> (including examples) see https://learn.microsoft.com/vcpkg</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置好 VCPKG_ROOT 环境变量</span></span><br><span class="line">cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=<span class="variable">$&#123;VCPKG_ROOT&#125;</span>/scripts/buildsystems/vcpkg.cmake</span><br><span class="line"><span class="comment"># 当找不到 cmake 文件的时候，可以直接去目录里面搜索一下 *.cmake ，就能解决问题了</span></span><br><span class="line"><span class="variable">$&#123;VCPKG_ROOT&#125;</span>/packages/boost-test_xxx/</span><br></pre></td></tr></table></figure>
+
 <p>不要去使用，因为没有用。</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_TOOLCHAIN_FILE <span class="string">&quot;/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake&quot;</span></span><br><span class="line">    CACHE <span class="keyword">STRING</span> <span class="string">&quot;Vcpkg toolchain file&quot;</span>)</span><br></pre></td></tr></table></figure>
+
 <p>在使用 vcpkg 管理项目依赖时，vcpkg.json 是一个配置文件，专门用来定义项目所需的依赖库以及版本信息。通过这种方式，vcpkg 会自动解析并安装这些库，从而让项目构建更加方便和可重复。</p>
-<p>vcpkg.json 的主要功能<br>    •    定义项目所依赖的库及版本号。<br>    •    自动管理依赖库的安装、更新和清理。<br>    •    与 CMake 等构建工具无缝集成。</p>
+<p>vcpkg.json 的主要功能<br>	•	定义项目所依赖的库及版本号。<br>	•	自动管理依赖库的安装、更新和清理。<br>	•	与 CMake 等构建工具无缝集成。</p>
 <p>vcpkg.json 文件的基本结构</p>
 <p>以下是一个示例的 vcpkg.json 配置文件：</p>
-<p>{<br>  “name”: “my-cool-project”,<br>  “version”: “1.0.0”,<br>  “description”: “A project using vcpkg to manage dependencies.”,<br>  “dependencies”: [<br>    { “name”: “fmt”, “version&gt;=”: “9.1.0” },<br>    “boost”,<br>    “openssl”<br>  ],<br>  “builtin-baseline”: “abcd1234efgh5678ijkl9012mnop3456qrst7890”<br>}</p>
-<p>字段说明</p>
-<pre><code>1.    name：
-•    项目名称，通常是你项目的标识符。
-•    例如：&quot;my-cool-project&quot;
-2.    version：
-•    项目版本号，遵循语义化版本规则。
-•    例如：&quot;1.0.0&quot;
-3.    description：
-•    对项目的简要描述（可选）。
-•    例如：&quot;A project using vcpkg to manage dependencies.&quot;
-4.    dependencies：
-•    项目依赖的库，可以是库名或指定版本的对象。
-•    支持的格式：
-•    仅指定库名：&quot;boost&quot;
-•    指定版本范围：&#123; &quot;name&quot;: &quot;fmt&quot;, &quot;version&gt;=&quot;: &quot;9.1.0&quot; &#125;
-5.    builtin-baseline：
-•    指定 vcpkg 使用的 Git 基线版本（必须匹配你的 vcpkg 克隆仓库的某次提交），确保依赖解析的一致性。
-•    例如：&quot;abcd1234efgh5678ijkl9012mnop3456qrst7890&quot;
-</code></pre><p>使用 vcpkg.json 管理项目依赖</p>
+<p>{<br>  “name”: “my-cool-project”,<br>  “version”: “1.0.0”,<br>  “description”: “A project using vcpkg to manage dependencies.”,<br>  “dependencies”: [<br>    { “name”: “fmt”, “version&gt;&#x3D;”: “9.1.0” },<br>    “boost”,<br>    “openssl”<br>  ],<br>  “builtin-baseline”: “abcd1234efgh5678ijkl9012mnop3456qrst7890”<br>}</p>
+<p>字段说明<br>	1.	name：<br>	•	项目名称，通常是你项目的标识符。<br>	•	例如：”my-cool-project”<br>	2.	version：<br>	•	项目版本号，遵循语义化版本规则。<br>	•	例如：”1.0.0”<br>	3.	description：<br>	•	对项目的简要描述（可选）。<br>	•	例如：”A project using vcpkg to manage dependencies.”<br>	4.	dependencies：<br>	•	项目依赖的库，可以是库名或指定版本的对象。<br>	•	支持的格式：<br>	•	仅指定库名：”boost”<br>	•	指定版本范围：{ “name”: “fmt”, “version&gt;&#x3D;”: “9.1.0” }<br>	5.	builtin-baseline：<br>	•	指定 vcpkg 使用的 Git 基线版本（必须匹配你的 vcpkg 克隆仓库的某次提交），确保依赖解析的一致性。<br>	•	例如：”abcd1234efgh5678ijkl9012mnop3456qrst7890”</p>
+<p>使用 vcpkg.json 管理项目依赖</p>
 <ol>
 <li>初始化 vcpkg.json</li>
 </ol>
 <p>在项目根目录创建 vcpkg.json 文件并填入依赖信息。例如：</p>
-<p>{<br>  “name”: “my-example”,<br>  “version”: “1.0.0”,<br>  “dependencies”: [<br>    “fmt”,<br>    “boost”,<br>    { “name”: “openssl”, “version&gt;=”: “1.1.1” }<br>  ],<br>  “builtin-baseline”: “abcd1234efgh5678ijkl9012mnop3456qrst7890”<br>}</p>
-<ol>
+<p>{<br>  “name”: “my-example”,<br>  “version”: “1.0.0”,<br>  “dependencies”: [<br>    “fmt”,<br>    “boost”,<br>    { “name”: “openssl”, “version&gt;&#x3D;”: “1.1.1” }<br>  ],<br>  “builtin-baseline”: “abcd1234efgh5678ijkl9012mnop3456qrst7890”<br>}</p>
+<ol start="2">
 <li>运行依赖安装命令</li>
 </ol>
 <p>在 vcpkg 根目录下，运行以下命令解析和安装依赖：</p>
 <p>vcpkg install</p>
-<pre><code>•    该命令会读取项目的 vcpkg.json 文件，自动安装依赖库及其版本。
-</code></pre><ol>
+<pre><code>•	该命令会读取项目的 vcpkg.json 文件，自动安装依赖库及其版本。
+</code></pre>
+<ol start="3">
 <li>与 CMake 项目集成</li>
 </ol>
 <p>在项目的 CMakeLists.txt 文件中，启用 vcpkg.json 集成：</p>
-<h1 id="CMakeLists-txt"><a href="#CMakeLists-txt" class="headerlink" title="CMakeLists.txt"></a>CMakeLists.txt</h1><h1 id="设置-vcpkg-的工具链文件"><a href="#设置-vcpkg-的工具链文件" class="headerlink" title="设置 vcpkg 的工具链文件"></a>设置 vcpkg 的工具链文件</h1><p>set(CMAKE_TOOLCHAIN_FILE “${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake”)</p>
+<h1 id="CMakeLists-txt"><a href="#CMakeLists-txt" class="headerlink" title="CMakeLists.txt"></a>CMakeLists.txt</h1><h1 id="设置-vcpkg-的工具链文件"><a href="#设置-vcpkg-的工具链文件" class="headerlink" title="设置 vcpkg 的工具链文件"></a>设置 vcpkg 的工具链文件</h1><p>set(CMAKE_TOOLCHAIN_FILE “${VCPKG_ROOT}&#x2F;scripts&#x2F;buildsystems&#x2F;vcpkg.cmake”)</p>
 <h1 id="项目定义"><a href="#项目定义" class="headerlink" title="项目定义"></a>项目定义</h1><p>project(my-example)</p>
 <h1 id="添加依赖的库"><a href="#添加依赖的库" class="headerlink" title="添加依赖的库"></a>添加依赖的库</h1><p>find_package(fmt CONFIG REQUIRED)<br>find_package(Boost REQUIRED)</p>
 <h1 id="链接库到目标"><a href="#链接库到目标" class="headerlink" title="链接库到目标"></a>链接库到目标</h1><p>add_executable(main main.cpp)<br>target_link_libraries(main PRIVATE fmt::fmt Boost::Boost)</p>
 <p>运行 CMake 时会自动解析和使用 vcpkg.json 中定义的依赖。</p>
-<ol>
+<ol start="4">
 <li>其他有用的命令<br> •    升级依赖库：</li>
 </ol>
 <p>vcpkg upgrade</p>
 <p>根据 vcpkg.json 检查并升级依赖库版本。</p>
-<pre><code>•    移除未使用的库：
-</code></pre><p>vcpkg remove —outdated</p>
-<pre><code>•    查看安装的库：
-</code></pre><p>vcpkg list</p>
+<pre><code>•	移除未使用的库：
+</code></pre>
+<p>vcpkg remove –outdated</p>
+<pre><code>•	查看安装的库：
+</code></pre>
+<p>vcpkg list</p>
 <p>依赖版本管理</p>
-<p>在 dependencies 中可以使用以下方式定义版本：</p>
-<pre><code>1.    不指定版本（默认最新）：
-</code></pre><p>“dependencies”: [“fmt”, “boost”]</p>
-<pre><code>2.    指定最小版本：
-</code></pre><p>“dependencies”: [<br>  { “name”: “fmt”, “version&gt;=”: “9.1.0” }<br>]</p>
-<pre><code>3.    指定精确版本：
-</code></pre><p>“dependencies”: [<br>  { “name”: “fmt”, “version”: “9.1.0” }<br>]</p>
-<pre><code>4.    版本范围（不常用）：
-</code></pre><p>“dependencies”: [<br>  { “name”: “fmt”, “version&gt;=”: “9.0.0”, “version&lt;=”: “9.1.0” }<br>]</p>
-<p>使用场景和优势<br>    •    简化依赖管理：开发者只需定义依赖，vcpkg 自动安装和管理。<br>    •    一致性保证：builtin-baseline 确保团队中的每个人使用相同版本的依赖。<br>    •    版本更新简单：通过更新 vcpkg.json 和 builtin-baseline 即可完成依赖升级。</p>
+<p>在 dependencies 中可以使用以下方式定义版本：<br>	1.	不指定版本（默认最新）：</p>
+<p>“dependencies”: [“fmt”, “boost”]</p>
+<pre><code>2.	指定最小版本：
+</code></pre>
+<p>“dependencies”: [<br>  { “name”: “fmt”, “version&gt;&#x3D;”: “9.1.0” }<br>]</p>
+<pre><code>3.	指定精确版本：
+</code></pre>
+<p>“dependencies”: [<br>  { “name”: “fmt”, “version”: “9.1.0” }<br>]</p>
+<pre><code>4.	版本范围（不常用）：
+</code></pre>
+<p>“dependencies”: [<br>  { “name”: “fmt”, “version&gt;&#x3D;”: “9.0.0”, “version&lt;&#x3D;”: “9.1.0” }<br>]</p>
+<p>使用场景和优势<br>	•	简化依赖管理：开发者只需定义依赖，vcpkg 自动安装和管理。<br>	•	一致性保证：builtin-baseline 确保团队中的每个人使用相同版本的依赖。<br>	•	版本更新简单：通过更新 vcpkg.json 和 builtin-baseline 即可完成依赖升级。</p>
 <p>如果你需要帮助配置具体依赖或项目集成，欢迎提供更多信息！</p>
 <p>好的，我帮你整理一份 vcpkg 使用手册（Markdown 格式），结合你在 macOS 上遇到的问题和常见操作，同时包含 Linux 下的用法。文档会标明常见坑和注意事项。</p>
 <p>⸻</p>
@@ -381,115 +372,126 @@
 <ol>
 <li>vcpkg 简介</li>
 </ol>
-<p>vcpkg 是微软提供的 C/C++ 包管理工具，支持跨平台安装第三方库，适合在 macOS、Linux、Windows 下统一管理依赖。<br>    •    管理依赖：boost, protobuf, mysql, redis++ 等。<br>    •    与 CMake 集成，通过 CMAKE_TOOLCHAIN_FILE 指定。<br>    •    支持多平台、arm64/x86 架构。</p>
+<p>vcpkg 是微软提供的 C&#x2F;C++ 包管理工具，支持跨平台安装第三方库，适合在 macOS、Linux、Windows 下统一管理依赖。<br>	•	管理依赖：boost, protobuf, mysql, redis++ 等。<br>	•	与 CMake 集成，通过 CMAKE_TOOLCHAIN_FILE 指定。<br>	•	支持多平台、arm64&#x2F;x86 架构。</p>
 <p>⸻</p>
-<ol>
+<ol start="2">
 <li>基本操作</li>
 </ol>
 <p>2.1 克隆 vcpkg</p>
-<p>git clone <a target="_blank" rel="noopener" href="https://github.com/microsoft/vcpkg.git">https://github.com/microsoft/vcpkg.git</a><br>cd vcpkg<br>./bootstrap-vcpkg.sh      # Linux/macOS<br>.\bootstrap-vcpkg.bat     # Windows</p>
+<p>git clone <a target="_blank" rel="noopener" href="https://github.com/microsoft/vcpkg.git">https://github.com/microsoft/vcpkg.git</a><br>cd vcpkg<br>.&#x2F;bootstrap-vcpkg.sh      # Linux&#x2F;macOS<br>.\bootstrap-vcpkg.bat     # Windows</p>
 <p>2.2 安装库</p>
-<p>./vcpkg install &lt;库名&gt;:<triplet></triplet></p>
-<pre><code>•    &lt;triplet&gt; 指编译平台和架构，例如：
-•    x64-osx → macOS x64
-•    arm64-osx → macOS ARM
-•    x64-linux → Linux x64
-</code></pre><p>示例：</p>
-<p>./vcpkg install boost:arm64-osx —without-python<br>./vcpkg install protobuf:arm64-osx<br>./vcpkg install libmysql:arm64-osx<br>./vcpkg install spdlog:arm64-osx<br>./vcpkg install redis++:arm64-osx<br>./vcpkg install nlohmann-json:arm64-osx<br>./vcpkg install curl:arm64-osx</p>
-<p>2.3 搜索库</p>
-<p>./vcpkg search &lt;关键字&gt;</p>
+<p>.&#x2F;vcpkg install &lt;库名&gt;:<triplet></triplet></p>
+<pre><code>•	&lt;triplet&gt; 指编译平台和架构，例如：
+•	x64-osx → macOS x64
+•	arm64-osx → macOS ARM
+•	x64-linux → Linux x64
+</code></pre>
 <p>示例：</p>
-<p>./vcpkg search mysql</p>
-<p>输出可能包含：<br>    •    libmysql → 官方 MySQL 客户端库<br>    •    libmariadb → MariaDB Connector/C（兼容 MySQL）<br>    •    boost-mysql → Boost MySQL 模块<br>    •    mysql-connector-cpp → MySQL C++ 连接器</p>
+<p>.&#x2F;vcpkg install boost:arm64-osx –without-python<br>.&#x2F;vcpkg install protobuf:arm64-osx<br>.&#x2F;vcpkg install libmysql:arm64-osx<br>.&#x2F;vcpkg install spdlog:arm64-osx<br>.&#x2F;vcpkg install redis++:arm64-osx<br>.&#x2F;vcpkg install nlohmann-json:arm64-osx<br>.&#x2F;vcpkg install curl:arm64-osx</p>
+<p>2.3 搜索库</p>
+<p>.&#x2F;vcpkg search &lt;关键字&gt;</p>
+<p>示例：</p>
+<p>.&#x2F;vcpkg search mysql</p>
+<p>输出可能包含：<br>	•	libmysql → 官方 MySQL 客户端库<br>	•	libmariadb → MariaDB Connector&#x2F;C（兼容 MySQL）<br>	•	boost-mysql → Boost MySQL 模块<br>	•	mysql-connector-cpp → MySQL C++ 连接器</p>
 <p>⚠️ 注意：有些旧库（如 mysql-connector-c、mariadb-connector-c）在新版 vcpkg 已经不存在，使用 libmysql 或 libmariadb 替代。</p>
 <p>2.4 列出已安装库</p>
-<p>./vcpkg list</p>
+<p>.&#x2F;vcpkg list</p>
 <p>2.5 更新 vcpkg</p>
-<p>git pull<br>./vcpkg update</p>
+<p>git pull<br>.&#x2F;vcpkg update</p>
 <p>2.6 移除库</p>
-<p>./vcpkg remove &lt;库名&gt;</p>
-<p>2.7 清理 / 重装库</p>
+<p>.&#x2F;vcpkg remove &lt;库名&gt;</p>
+<p>2.7 清理 &#x2F; 重装库</p>
 <p>如果出现 SDK 路径错误或编译失败：</p>
-<p>./vcpkg remove —outdated<br>./vcpkg remove &lt;库名&gt;<br>./vcpkg install &lt;库名&gt;:<triplet></triplet></p>
+<p>.&#x2F;vcpkg remove –outdated<br>.&#x2F;vcpkg remove &lt;库名&gt;<br>.&#x2F;vcpkg install &lt;库名&gt;:<triplet></triplet></p>
 <p>macOS 上常见问题：SDK 版本不一致（如 Xcode 升级后仍指向 MacOSX14.5.sdk），需要重新指定：</p>
-<p>export CMAKE_OSX_SYSROOT=$(xcrun —sdk macosx —show-sdk-path)</p>
+<p>export CMAKE_OSX_SYSROOT&#x3D;$(xcrun –sdk macosx –show-sdk-path)</p>
 <p>或者在 CMake 命令中指定：</p>
-<p>cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake \<br>      -DCMAKE_OSX_SYSROOT=$(xcrun —sdk macosx —show-sdk-path)</p>
+<p>cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE&#x3D;&#x2F;path&#x2F;to&#x2F;vcpkg&#x2F;scripts&#x2F;buildsystems&#x2F;vcpkg.cmake <br>      -DCMAKE_OSX_SYSROOT&#x3D;$(xcrun –sdk macosx –show-sdk-path)</p>
 <p>⸻</p>
-<ol>
+<ol start="3">
 <li>CMake 集成</li>
 </ol>
 <p>3.1 使用 vcpkg toolchain</p>
-<p>cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake</p>
-<pre><code>•    macOS 上可指定 SDK：
-</code></pre><p>-DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk</p>
+<p>cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE&#x3D;&#x2F;path&#x2F;to&#x2F;vcpkg&#x2F;scripts&#x2F;buildsystems&#x2F;vcpkg.cmake</p>
+<pre><code>•	macOS 上可指定 SDK：
+</code></pre>
+<p>-DCMAKE_OSX_SYSROOT&#x3D;&#x2F;Applications&#x2F;Xcode.app&#x2F;Contents&#x2F;Developer&#x2F;Platforms&#x2F;MacOSX.platform&#x2F;Developer&#x2F;SDKs&#x2F;MacOSX.sdk</p>
 <p>3.2 在 CMakeLists.txt 中引用</p>
 <p>find_package(Boost REQUIRED CONFIG COMPONENTS system filesystem program_options)<br>find_package(Protobuf CONFIG REQUIRED)<br>find_package(MySQL REQUIRED)<br>find_package(spdlog CONFIG REQUIRED)<br>find_package(redis++ CONFIG REQUIRED)<br>find_package(nlohmann_json CONFIG REQUIRED)<br>find_package(CURL REQUIRED)</p>
 <p>target_link_libraries(your_target PRIVATE<br>    Boost::system<br>    Boost::filesystem<br>    protobuf::libprotobuf<br>    MySQL::MySQL<br>    spdlog::spdlog_header_only<br>    redis++::redis++<br>    nlohmann_json::nlohmann_json<br>    CURL::libcurl<br>)</p>
 <p>⸻</p>
-<ol>
+<ol start="4">
 <li>macOS SDK 常见问题<ol>
-<li>libresolv.tbd / SDK 错误<br>•    出现 /usr/lib/libresolv.tbd 丢失或指向旧 SDK（MacOSX14.5.sdk）。<br>•    解决方法：</li>
+<li>libresolv.tbd &#x2F; SDK 错误</li>
+</ol>
+<p> •    出现 &#x2F;usr&#x2F;lib&#x2F;libresolv.tbd 丢失或指向旧 SDK（MacOSX14.5.sdk）。<br> •    解决方法：</p>
+<ol>
 <li>检查 SDK 路径：</li>
 </ol>
 </li>
 </ol>
-<p>xcrun —sdk macosx —show-sdk-path</p>
-<pre><code>2.    重新生成 CMake：
-</code></pre><p>rm -rf build/<br>cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake \<br>      -DCMAKE_OSX_SYSROOT=$(xcrun —sdk macosx —show-sdk-path)</p>
-<pre><code>2.    强制替换旧 SDK
-•    如果 vcpkg port 文件中写死了旧 SDK，可以批量替换：
-</code></pre><p>grep -rl “MacOSX14.5.sdk” ./vcpkg/installed/arm64-osx | while read f; do<br>    sed -i ‘’ ‘s#MacOSX14.5.sdk#MacOSX.sdk#g’ “$f”<br>done</p>
+<p>xcrun –sdk macosx –show-sdk-path</p>
+<pre><code>2.	重新生成 CMake：
+</code></pre>
+<p>rm -rf build&#x2F;<br>cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE&#x3D;&#x2F;path&#x2F;to&#x2F;vcpkg&#x2F;scripts&#x2F;buildsystems&#x2F;vcpkg.cmake <br>      -DCMAKE_OSX_SYSROOT&#x3D;$(xcrun –sdk macosx –show-sdk-path)</p>
+<pre><code>2.	强制替换旧 SDK
+•	如果 vcpkg port 文件中写死了旧 SDK，可以批量替换：
+</code></pre>
+<p>grep -rl “MacOSX14.5.sdk” .&#x2F;vcpkg&#x2F;installed&#x2F;arm64-osx | while read f; do<br>    sed -i ‘’ ‘s#MacOSX14.5.sdk#MacOSX.sdk#g’ “$f”<br>done</p>
 <p>⸻</p>
-<ol>
+<ol start="5">
 <li>Linux 使用示例<br> •    安装库（x64 Linux）：</li>
 </ol>
-<p>./vcpkg install boost:x64-linux<br>./vcpkg install protobuf:x64-linux<br>./vcpkg install libmysql:x64-linux<br>./vcpkg install spdlog:x64-linux<br>./vcpkg install redis++:x64-linux<br>./vcpkg install nlohmann-json:x64-linux<br>./vcpkg install curl:x64-linux</p>
-<pre><code>•    CMake 集成与 macOS 一样：
-</code></pre><p>cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake</p>
+<p>.&#x2F;vcpkg install boost:x64-linux<br>.&#x2F;vcpkg install protobuf:x64-linux<br>.&#x2F;vcpkg install libmysql:x64-linux<br>.&#x2F;vcpkg install spdlog:x64-linux<br>.&#x2F;vcpkg install redis++:x64-linux<br>.&#x2F;vcpkg install nlohmann-json:x64-linux<br>.&#x2F;vcpkg install curl:x64-linux</p>
+<pre><code>•	CMake 集成与 macOS 一样：
+</code></pre>
+<p>cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE&#x3D;&#x2F;path&#x2F;to&#x2F;vcpkg&#x2F;scripts&#x2F;buildsystems&#x2F;vcpkg.cmake</p>
 <p>⸻</p>
-<ol>
-<li>小技巧 / 常见坑</li>
+<ol start="6">
+<li>小技巧 &#x2F; 常见坑</li>
 </ol>
-<p>问题    原因    解决方法<br>找不到 libmysql / MySQLConfig.cmake    端口名不对（旧库）    使用 libmysql 或 libmariadb<br>编译 boost 时不需要 Python    默认启用 python    ./vcpkg install boost —without-python<br>macOS SDK 版本错误    port 文件写死旧 SDK    替换 SDK 或重新安装库<br>编译失败 python3:arm64-osx    vcpkg python3 port 构建问题    可跳过 python 依赖，或者查看 官方问题<br>搜索到 binary 文件匹配    grep -R 也会匹配二进制    用 grep -a 或 strings 过滤可读文本</p>
+<p>问题	原因	解决方法<br>找不到 libmysql &#x2F; MySQLConfig.cmake	端口名不对（旧库）	使用 libmysql 或 libmariadb<br>编译 boost 时不需要 Python	默认启用 python	.&#x2F;vcpkg install boost –without-python<br>macOS SDK 版本错误	port 文件写死旧 SDK	替换 SDK 或重新安装库<br>编译失败 python3:arm64-osx	vcpkg python3 port 构建问题	可跳过 python 依赖，或者查看 官方问题<br>搜索到 binary 文件匹配	grep -R 也会匹配二进制	用 grep -a 或 strings 过滤可读文本</p>
 <p>⸻</p>
-<ol>
+<ol start="7">
 <li>安装示例脚本（macOS arm64）</li>
 </ol>
-<h1 id="bin-bash"><a href="#bin-bash" class="headerlink" title="!/bin/bash"></a>!/bin/bash</h1><p>VCPKG_ROOT=~/vcpkg<br>TRIPLET=arm64-osx</p>
-<h1 id="更新-vcpkg"><a href="#更新-vcpkg" class="headerlink" title="更新 vcpkg"></a>更新 vcpkg</h1><p>cd $VCPKG_ROOT<br>git pull<br>./bootstrap-vcpkg.sh</p>
-<h1 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h1><p>./vcpkg install boost:$TRIPLET —without-python<br>./vcpkg install protobuf:$TRIPLET<br>./vcpkg install libmysql:$TRIPLET<br>./vcpkg install spdlog:$TRIPLET<br>./vcpkg install redis++:$TRIPLET<br>./vcpkg install nlohmann-json:$TRIPLET<br>./vcpkg install curl:$TRIPLET</p>
+<p>#!&#x2F;bin&#x2F;bash</p>
+<p>VCPKG_ROOT&#x3D;~&#x2F;vcpkg<br>TRIPLET&#x3D;arm64-osx</p>
+<h1 id="更新-vcpkg"><a href="#更新-vcpkg" class="headerlink" title="更新 vcpkg"></a>更新 vcpkg</h1><p>cd $VCPKG_ROOT<br>git pull<br>.&#x2F;bootstrap-vcpkg.sh</p>
+<h1 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h1><p>.&#x2F;vcpkg install boost:$TRIPLET –without-python<br>.&#x2F;vcpkg install protobuf:$TRIPLET<br>.&#x2F;vcpkg install libmysql:$TRIPLET<br>.&#x2F;vcpkg install spdlog:$TRIPLET<br>.&#x2F;vcpkg install redis++:$TRIPLET<br>.&#x2F;vcpkg install nlohmann-json:$TRIPLET<br>.&#x2F;vcpkg install curl:$TRIPLET</p>
 <p>⸻</p>
-<p>我可以帮你再生成一个 Linux 版本的安装脚本，和一个 CLion / VSCode 配置模板，直接就能在不同平台上切换。</p>
+<p>我可以帮你再生成一个 Linux 版本的安装脚本，和一个 CLion &#x2F; VSCode 配置模板，直接就能在不同平台上切换。</p>
 <p>你希望我帮你写吗？</p>
 <p>完全对，你的担心很合理。问题在于：</p>
 <p>⸻</p>
 <p>1️⃣ 原因</p>
-<p>你当前的 vcpkg 包（比如 libmysql、Boost 等）在编译时已经绑定了某个 SDK 版本（比如 MacOSX14.5.sdk）。这会导致：<br>    •    vcpkg 内部的 CMake 配置文件里硬编码了 SDK 路径：</p>
-<p>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk</p>
-<pre><code>•    如果系统升级了 Xcode 或 macOS SDK，旧路径就不存在，编译就会报错（找不到 libresolv.tbd、libdl.tbd 等）。
-</code></pre><p>⸻</p>
-<p>2️⃣ 为什么会出现这种情况<br>    •    vcpkg 默认会在 第一次构建时捕获环境中的 SDK，然后把路径写进 installed/arm64-osx/share/… 里的 *_targets.cmake 文件。<br>    •    这些 cmake 文件里面的 INTERFACE_LINK_LIBRARIES 或 CMAKE_OSX_SYSROOT 都指向了旧 SDK。<br>    •    之后即使你把 CMAKE_OSX_SYSROOT 改成新 SDK，vcpkg 的库仍然依赖旧路径。</p>
+<p>你当前的 vcpkg 包（比如 libmysql、Boost 等）在编译时已经绑定了某个 SDK 版本（比如 MacOSX14.5.sdk）。这会导致：<br>	•	vcpkg 内部的 CMake 配置文件里硬编码了 SDK 路径：</p>
+<p>&#x2F;Applications&#x2F;Xcode.app&#x2F;Contents&#x2F;Developer&#x2F;Platforms&#x2F;MacOSX.platform&#x2F;Developer&#x2F;SDKs&#x2F;MacOSX14.5.sdk</p>
+<pre><code>•	如果系统升级了 Xcode 或 macOS SDK，旧路径就不存在，编译就会报错（找不到 libresolv.tbd、libdl.tbd 等）。
+</code></pre>
+<p>⸻</p>
+<p>2️⃣ 为什么会出现这种情况<br>	•	vcpkg 默认会在 第一次构建时捕获环境中的 SDK，然后把路径写进 installed&#x2F;arm64-osx&#x2F;share&#x2F;… 里的 *_targets.cmake 文件。<br>	•	这些 cmake 文件里面的 INTERFACE_LINK_LIBRARIES 或 CMAKE_OSX_SYSROOT 都指向了旧 SDK。<br>	•	之后即使你把 CMAKE_OSX_SYSROOT 改成新 SDK，vcpkg 的库仍然依赖旧路径。</p>
 <p>⸻</p>
 <p>3️⃣ 解决方法</p>
-<p>方法 A：清理重装库</p>
-<pre><code>1.    删除整个 vcpkg 的 installed 目录（或针对 arm64-osx 清理）：
-</code></pre><p>rm -rf ~/vcpkg/installed/arm64-osx</p>
-<pre><code>2.    使用新 SDK 重新安装依赖：
-</code></pre><p>./vcpkg install libmysql boost spdlog nlohmann-json redis-plus-plus curl</p>
-<pre><code>•    可在命令行加上指定 SDK：
-</code></pre><p>cmake -DCMAKE_OSX_SYSROOT=$(xcrun —sdk macosx —show-sdk-path) …</p>
-<p>方法 B：不绑定 SDK（更灵活）<br>    •    安装时加上 VCPKG_FORCE_SYSTEM_BINARIES 或 VCPKG_CMAKE_SYSTEM_NAME，让 vcpkg 不硬编码 SDK。<br>    •    或者使用 vcpkg 的 toolchain.cmake 在 CMake 中动态设置 SDK：</p>
-<p>if(NOT DEFINED CMAKE_OSX_SYSROOT)<br>    execute_process(<br>        COMMAND xcrun —sdk macosx —show-sdk-path<br>        OUTPUT_VARIABLE CMAKE_OSX_SYSROOT<br>        OUTPUT_STRIP_TRAILING_WHITESPACE<br>    )<br>endif()</p>
-<p>方法 C：升级 vcpkg port 文件<br>    •    vcpkg 的新版本有些 port 会自动适配新 SDK，尤其是常用库如 Boost、libmysql。<br>    •    执行：</p>
-<p>git pull<br>./vcpkg update<br>./vcpkg upgrade —no-dry-run</p>
+<p>方法 A：清理重装库<br>	1.	删除整个 vcpkg 的 installed 目录（或针对 arm64-osx 清理）：</p>
+<p>rm -rf ~&#x2F;vcpkg&#x2F;installed&#x2F;arm64-osx</p>
+<pre><code>2.	使用新 SDK 重新安装依赖：
+</code></pre>
+<p>.&#x2F;vcpkg install libmysql boost spdlog nlohmann-json redis-plus-plus curl</p>
+<pre><code>•	可在命令行加上指定 SDK：
+</code></pre>
+<p>cmake -DCMAKE_OSX_SYSROOT&#x3D;$(xcrun –sdk macosx –show-sdk-path) …</p>
+<p>方法 B：不绑定 SDK（更灵活）<br>	•	安装时加上 VCPKG_FORCE_SYSTEM_BINARIES 或 VCPKG_CMAKE_SYSTEM_NAME，让 vcpkg 不硬编码 SDK。<br>	•	或者使用 vcpkg 的 toolchain.cmake 在 CMake 中动态设置 SDK：</p>
+<p>if(NOT DEFINED CMAKE_OSX_SYSROOT)<br>    execute_process(<br>        COMMAND xcrun –sdk macosx –show-sdk-path<br>        OUTPUT_VARIABLE CMAKE_OSX_SYSROOT<br>        OUTPUT_STRIP_TRAILING_WHITESPACE<br>    )<br>endif()</p>
+<p>方法 C：升级 vcpkg port 文件<br>	•	vcpkg 的新版本有些 port 会自动适配新 SDK，尤其是常用库如 Boost、libmysql。<br>	•	执行：</p>
+<p>git pull<br>.&#x2F;vcpkg update<br>.&#x2F;vcpkg upgrade –no-dry-run</p>
 <p>⸻</p>
-<p>💡 总结<br>    •    依赖旧 SDK 是 vcpkg 构建机制导致的，属于硬编码问题。<br>    •    最稳妥的办法是 清理 installed 目录 + 用新 SDK 重新编译所有依赖。<br>    •    如果想长期避免，每次 SDK 升级后都可以重装依赖，或者用上面动态获取 SDK 的方法。</p>
+<p>💡 总结<br>	•	依赖旧 SDK 是 vcpkg 构建机制导致的，属于硬编码问题。<br>	•	最稳妥的办法是 清理 installed 目录 + 用新 SDK 重新编译所有依赖。<br>	•	如果想长期避免，每次 SDK 升级后都可以重装依赖，或者用上面动态获取 SDK 的方法。</p>
 <p>⸻</p>
 <p>我可以帮你写一个 macOS vcpkg 自动升级 SDK 并重装依赖的 bash 脚本，保证以后 SDK 升级后直接一键更新。</p>
 <p>你希望我帮你写吗？</p>
-<p>cmake -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk ..</p>
-<p>echo $CMAKE_OSX_SYSROOT<br>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk</p>
+<p>cmake -DCMAKE_OSX_SYSROOT&#x3D;&#x2F;Applications&#x2F;Xcode.app&#x2F;Contents&#x2F;Developer&#x2F;Platforms&#x2F;MacOSX.platform&#x2F;Developer&#x2F;SDKs&#x2F;MacOSX15.5.sdk ..</p>
+<p>echo $CMAKE_OSX_SYSROOT<br>&#x2F;Applications&#x2F;Xcode.app&#x2F;Contents&#x2F;Developer&#x2F;Platforms&#x2F;MacOSX.platform&#x2F;Developer&#x2F;SDKs&#x2F;MacOSX15.5.sdk</p>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://github.com/microsoft/vcpkg">vcpkg-github站点</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://github.com/microsoft/vcpkg/blob/master/README_zh_CN.md">中文文档</a></li>
@@ -739,7 +741,9 @@
 
       
           <span id="more"></span>
+
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;bytes&quot;</span></span><br><span class="line">	<span class="string">&quot;crypto/des&quot;</span></span><br><span class="line">	<span class="string">&quot;errors&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// DESedeECBEncrypt ...</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DESedeECBEncrypt</span><span class="params">(origData, key []<span class="type">byte</span>)</span></span> ([]<span class="type">byte</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	tkey := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">24</span>, <span class="number">24</span>)</span><br><span class="line">	<span class="built_in">copy</span>(tkey, key)</span><br><span class="line">	k1 := tkey[:<span class="number">8</span>]</span><br><span class="line">	k2 := tkey[<span class="number">8</span>:<span class="number">16</span>]</span><br><span class="line">	k3 := tkey[<span class="number">16</span>:]</span><br><span class="line"></span><br><span class="line">	buf1, err := encrypt(origData, k1)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	buf2, err := decrypt(buf1, k2)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	out, err := encrypt(buf2, k3)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> out, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DESedeECBDecrypt ...</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DESedeECBDecrypt</span><span class="params">(crypted, key []<span class="type">byte</span>)</span></span> ([]<span class="type">byte</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	tkey := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">24</span>, <span class="number">24</span>)</span><br><span class="line">	<span class="built_in">copy</span>(tkey, key)</span><br><span class="line">	k1 := tkey[:<span class="number">8</span>]</span><br><span class="line">	k2 := tkey[<span class="number">8</span>:<span class="number">16</span>]</span><br><span class="line">	k3 := tkey[<span class="number">16</span>:]</span><br><span class="line">	buf1, err := decrypt(crypted, k3)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	buf2, err := encrypt(buf1, k2)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	out, err := decrypt(buf2, k1)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> out, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">encrypt</span><span class="params">(origData, key []<span class="type">byte</span>)</span></span> ([]<span class="type">byte</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(origData) &lt; <span class="number">1</span> || <span class="built_in">len</span>(key) &lt; <span class="number">1</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, errors.New(<span class="string">&quot;wrong data or key&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	block, err := des.NewCipher(key)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	bs := block.BlockSize()</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(origData)%bs != <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, errors.New(<span class="string">&quot;wrong padding&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	out := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="built_in">len</span>(origData))</span><br><span class="line">	dst := out</span><br><span class="line">	<span class="keyword">for</span> <span class="built_in">len</span>(origData) &gt; <span class="number">0</span> &#123;</span><br><span class="line">		block.Encrypt(dst, origData[:bs])</span><br><span class="line">		origData = origData[bs:]</span><br><span class="line">		dst = dst[bs:]</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> out, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">decrypt</span><span class="params">(crypted, key []<span class="type">byte</span>)</span></span> ([]<span class="type">byte</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(crypted) &lt; <span class="number">1</span> || <span class="built_in">len</span>(key) &lt; <span class="number">1</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, errors.New(<span class="string">&quot;wrong data or key&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	block, err := des.NewCipher(key)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	out := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="built_in">len</span>(crypted))</span><br><span class="line">	dst := out</span><br><span class="line">	bs := block.BlockSize()</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(crypted)%bs != <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, errors.New(<span class="string">&quot;wrong crypted size&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> <span class="built_in">len</span>(crypted) &gt; <span class="number">0</span> &#123;</span><br><span class="line">		block.Decrypt(dst, crypted[:bs])</span><br><span class="line">		crypted = crypted[bs:]</span><br><span class="line">		dst = dst[bs:]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> out, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://www.pixelstech.net/article/1564398187-Implementing-DESede-ECB-NoPadding-cipher-algorithm-in-GoLang">golang-DESede</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000006183694">Golang实现ECB模式3DES算法</a></li>
@@ -821,7 +825,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>简单理解：<br>    •    RAG 就像让 AI 先 “查资料”，再回答问题，适用于信息更新快的情况。<br>    •    Fine-tuning 是直接 “教 AI 记住” 这些知识，适用于需要长期固定知识的场景。</p>
+          <p>简单理解：<br>	•	RAG 就像让 AI 先 “查资料”，再回答问题，适用于信息更新快的情况。<br>	•	Fine-tuning 是直接 “教 AI 记住” 这些知识，适用于需要长期固定知识的场景。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/03/18/rag-fine-tuning/#more" rel="contents">
@@ -1091,7 +1095,7 @@
 <li><p><strong>适用场景：</strong> 由于其轻量级和嵌入式特性，SQLite 在移动应用、嵌入式系统、桌面应用等场景中广泛应用。</p>
 </li>
 </ol>
-<p>SQLite 是一个简单、易用且功能齐全的数据库系统，非常适合需要一个轻量级、嵌入式数据库的应用场景。<br></p>
+<p>SQLite 是一个简单、易用且功能齐全的数据库系统，非常适合需要一个轻量级、嵌入式数据库的应用场景。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/01/29/sqlite/#more" rel="contents">
