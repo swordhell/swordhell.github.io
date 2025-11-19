@@ -228,21 +228,18 @@
       
         <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>学习golang的入门的信息；本章只记录一下golang语言的历史，go语言环境搭建，如何编译go语言程序。</p>
 <span id="more"></span>
-
-<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>Go语言（或 Golang）起源于 2007 年，并在 2009 年正式对外发布。Go 是非常年轻的一门语言，它的主要目标是“兼具 Python 等动态语言的开发速度和 C&#x2F;C++ 等编译型语言的性能与安全性”。golang的 1.13 版本的时候，被gc被重新，将增加内存回收速度（2014-05）。</p>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>Go语言（或 Golang）起源于 2007 年，并在 2009 年正式对外发布。Go 是非常年轻的一门语言，它的主要目标是“兼具 Python 等动态语言的开发速度和 C/C++ 等编译型语言的性能与安全性”。golang的 1.13 版本的时候，被gc被重新，将增加内存回收速度（2014-05）。</p>
 <h2 id="环境部署"><a href="#环境部署" class="headerlink" title="环境部署"></a>环境部署</h2><p><a target="_blank" rel="noopener" href="https://go.dev/dl/">官方网站</a></p>
 <p><a target="_blank" rel="noopener" href="https://studygolang.com/dl">国内下载地址</a></p>
 <h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tar -C /usr/local -xzf go1.21.6.linux-amd64.tar.gz</span><br><span class="line"><span class="comment"># 设置环境变量</span></span><br><span class="line">/etc/bash.bashrc</span><br><span class="line"><span class="variable">$HOME</span>/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/local/go/bin</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>直接通过安装包安装；</p>
 <h3 id="需要配置的环境变量"><a href="#需要配置的环境变量" class="headerlink" title="需要配置的环境变量"></a>需要配置的环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GOPATH=D:\\work\\gopath</span><br><span class="line"><span class="comment"># 配置 GOPROXY 环境变量</span></span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.io,https://goproxy.cn,direct</span><br><span class="line"><span class="comment"># 还可以设置不走 proxy 的私有仓库或组，多个用逗号相隔（可选）</span></span><br><span class="line"><span class="built_in">export</span> GOPRIVATE=git.mycompany.com,github.com/my/private</span><br><span class="line"><span class="built_in">export</span> GO111MODULE=on</span><br><span class="line"></span><br><span class="line">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span><br></pre></td></tr></table></figure>
-
 <h4 id="linux环境搭建"><a href="#linux环境搭建" class="headerlink" title="linux环境搭建"></a>linux环境搭建</h4><p>先解压缩golang的包</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -xf ./go1.25.3.linux-amd64.tar.gz -C /usr/local</span><br><span class="line"><span class="comment"># 可能需要删除掉之前的目录</span></span><br><span class="line"><span class="built_in">rm</span> -rf /usr/local/go/</span><br><span class="line"><span class="comment"># Go 1.16+ 支持</span></span><br><span class="line">go install github.com/go-delve/delve/cmd/dlv@latest</span><br></pre></td></tr></table></figure>
-
 <p>升级的时候最好能将之前的目录都删除掉。</p>
-<p>使用go env查询具体的环境信息。通过编辑~&#x2F;.bashrc文件的环境变量来修改配置。</p>
-<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><h4 id="go-build"><a href="#go-build" class="headerlink" title="go build"></a>go build</h4><table>
+<p>使用go env查询具体的环境信息。通过编辑~/.bashrc文件的环境变量来修改配置。</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><h4 id="go-build"><a href="#go-build" class="headerlink" title="go build"></a>go build</h4><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>参数</th>
@@ -250,7 +247,8 @@
 <th>示例</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>-o</td>
 <td>可执行文件名</td>
 <td></td>
@@ -303,10 +301,12 @@
 <tr>
 <td>-race</td>
 <td>开启DATA RACE检测</td>
-<td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>编译器选项：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -314,7 +314,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>-B</td>
 <td>禁用越界检查</td>
 </tr>
@@ -338,8 +339,11 @@
 <td>-m</td>
 <td>输出优化信息，检查内存逃逸也可以通过这个来检查</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>ldflags：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -347,7 +351,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>-s</td>
 <td>禁用符号表</td>
 </tr>
@@ -357,22 +362,24 @@
 </tr>
 <tr>
 <td>-X</td>
-<td>设置字符串全局变量值   -X ver&#x3D;”0.99”</td>
+<td>设置字符串全局变量值   -X ver=”0.99”</td>
 </tr>
 <tr>
 <td>-H</td>
 <td>设置可执行文件格式 -H windowsgui</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>详细参数可以通过：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go tool compile -h</span><br><span class="line">go tool <span class="built_in">link</span> -h</span><br></pre></td></tr></table></figure>
-
-<p>获取更多信息也可以直接到<br>src&#x2F;cmd&#x2F;[compile|link]<br>目录下阅读doc.go文档。</p>
-<h4 id="go-install"><a href="#go-install" class="headerlink" title="go install"></a>go install</h4><p>参数和go build一致，只是将编译结果安装到bin&#x2F;pkg目录中。go install支持增量编译。如果没有修改，将会直接链接pkg目录中的静态包。编译器用buildid检查文件清单和导入依赖。</p>
+<p>获取更多信息也可以直接到<br>src/cmd/[compile|link]<br>目录下阅读doc.go文档。</p>
+<h4 id="go-install"><a href="#go-install" class="headerlink" title="go install"></a>go install</h4><p>参数和go build一致，只是将编译结果安装到bin/pkg目录中。go install支持增量编译。如果没有修改，将会直接链接pkg目录中的静态包。编译器用buildid检查文件清单和导入依赖。</p>
 <p>在没有mod之前，有些项目都是通过<code>go install</code>来编译工程的，并且将<code>GOBIN</code>环境变量临时修改成发布目录，如果已经用上了mod方式，尽量使用go build来编译工程。</p>
 <p>算法源码可以阅读</p>
-<p>src&#x2F;cmd&#x2F;go&#x2F;pkg.go</p>
+<p>src/cmd/go/pkg.go</p>
 <h4 id="go-get"><a href="#go-get" class="headerlink" title="go get"></a>go get</h4><p>下载第三方包到GOPATH列表中第一个工作目录。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -380,7 +387,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>-d</td>
 <td>仅下载，不安装</td>
 </tr>
@@ -408,11 +416,13 @@
 <td>-x</td>
 <td>显示正在执行的命令</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="go-env"><a href="#go-env" class="headerlink" title="go env"></a>go env</h4><p>显示全部环境变量</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> GO111MODULE=</span><br><span class="line"><span class="built_in">set</span> GOARCH=amd64</span><br><span class="line"><span class="built_in">set</span> GOBIN=</span><br><span class="line"><span class="built_in">set</span> GOCACHE=C:\Users\abel\AppData\Local\go-build</span><br><span class="line"><span class="built_in">set</span> GOENV=C:\Users\abel\AppData\Roaming\go\<span class="built_in">env</span></span><br><span class="line"><span class="built_in">set</span> GOEXE=.exe</span><br><span class="line"><span class="built_in">set</span> GOFLAGS=</span><br><span class="line"><span class="built_in">set</span> GOHOSTARCH=amd64</span><br><span class="line"><span class="built_in">set</span> GOHOSTOS=windows</span><br><span class="line"><span class="built_in">set</span> GONOPROXY=</span><br><span class="line"><span class="built_in">set</span> GONOSUMDB=</span><br><span class="line"><span class="built_in">set</span> GOOS=windows</span><br><span class="line"><span class="built_in">set</span> GOPATH=C:\main\code\fanghaoli\server</span><br><span class="line"><span class="built_in">set</span> GOPRIVATE=</span><br><span class="line"><span class="built_in">set</span> GOPROXY=https://goproxy.cn</span><br><span class="line"><span class="built_in">set</span> GOROOT=c:\go</span><br><span class="line"><span class="built_in">set</span> GOSUMDB=sum.golang.org</span><br><span class="line"><span class="built_in">set</span> GOTMPDIR=</span><br><span class="line"><span class="built_in">set</span> GOTOOLDIR=c:\go\pkg\tool\windows_amd64</span><br><span class="line"><span class="built_in">set</span> GCCGO=gccgo</span><br><span class="line"><span class="built_in">set</span> AR=ar</span><br><span class="line"><span class="built_in">set</span> CC=gcc</span><br><span class="line"><span class="built_in">set</span> CXX=g++</span><br><span class="line"><span class="built_in">set</span> CGO_ENABLED=1</span><br><span class="line"><span class="built_in">set</span> GOMOD=</span><br><span class="line"><span class="built_in">set</span> CGO_CFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_CPPFLAGS=</span><br><span class="line"><span class="built_in">set</span> CGO_CXXFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_FFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_LDFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> PKG_CONFIG=pkg-config</span><br><span class="line"><span class="built_in">set</span> GOGCCFLAGS=-m64 -mthreads -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=C:\Users\abel\AppData\Local\Temp\go-build072770210=/tmp/go-build -gno-record-gcc-switches</span><br></pre></td></tr></table></figure>
-
 <h4 id="go-clean"><a href="#go-clean" class="headerlink" title="go clean"></a>go clean</h4><p>清理工作目录，伤处编译和安装遗留的目标文件</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -420,7 +430,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>-i</td>
 <td>清理go install 安装的文件</td>
 </tr>
@@ -436,45 +447,38 @@
 <td>-n</td>
 <td>仅显示清理命令，不执行</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h4><p>如果喜欢使用gdb调试，一般需要使用 -gcflags “-N -l”阻止优化和内联，否则调试的时候会找不到调试信息。<br>当发布是，参数-ldflags “-w-s”会让连机器剔除掉符号表和调试信息，除了可以减少可执行文件的大小外，还能稍微增加反编译的难度。可以借助工具来对可执行文件进行减肥upx</p>
 <h4 id="交叉编译"><a href="#交叉编译" class="headerlink" title="交叉编译"></a>交叉编译</h4><p>corss compile，就是在一个平台下出其他平台所需的可执行文件。只需要使用GOOS、GOARCH来调整环境变量指定平台和架构。<br>go env GOOS<br>使用go install命令为目标平台预编译好标准库，避免go build每次都完整编译。<br>交叉编译不支持cgo。</p>
 <p>编写一个build_linux.bat文件。</p>
 <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> GOARCH=amd64</span><br><span class="line"><span class="built_in">set</span> GOOS=linux|windows|android|darwin|freebsd|netbsd|openbsd|solaris</span><br><span class="line">go build</span><br></pre></td></tr></table></figure>
-
 <p>跨平台编译需要下载一些库。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/golang/crypto.git</span><br><span class="line">https://github.com/golang/net.git</span><br><span class="line">https://github.com/golang/sys.git</span><br><span class="line">https://github.com/golang/tools.git</span><br></pre></td></tr></table></figure>
-
 <p>解压缩之后放到这个目录下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$GOPATH</span>/src/golang.org/x</span><br></pre></td></tr></table></figure>
-
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/41566495/golang-how-to-cross-compile-on-linux-for-windows">golang-how-to-cross-compile-on-linux-for-windows</a></p>
 <ol>
 <li>如果没有动用过cgo，全部代码都是golang编写成的，就直接执行下面的命令就好了；</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GOOS=windows GOARCH=amd64 go build</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
+<ol>
 <li>如果使用了cgo，这样你就需要使用mingw-w64编译器</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-multilib</span><br><span class="line">sudo apt-get install gcc-mingw-w64</span><br><span class="line"></span><br><span class="line">x86_64-w64-mingw32-gcc --version</span><br><span class="line"></span><br><span class="line">GOOS=windows GOARCH=386 \</span><br><span class="line">CGO_ENABLED=1 CXX=i686-w64-mingw32-g++ CC=i686-w64-mingw32-gcc \</span><br><span class="line">go build -o xxx.exe</span><br><span class="line"></span><br><span class="line">GOOS=windows GOARCH=amd64 CGO_ENABLED=1 \</span><br><span class="line">CXX=x86_64-w64-mingw32-g++ CC=x86_64-w64-mingw32-gcc \</span><br><span class="line">go build package-import-path</span><br></pre></td></tr></table></figure>
-
 <h4 id="条件编译"><a href="#条件编译" class="headerlink" title="条件编译"></a>条件编译</h4><p>编译器支持文件级别的条件编译。</p>
 <p>1.将平台和架构信息添加到文件名尾部。</p>
-<p>hello_darwin.go hello_linux.go 测试一下<br>GOOS&#x3D;darwin.go build -x<br>将会只编译hello_darwin.go。<br>也可以对架构做条件<br>sys_arm64.go sys_darwin_3866.s sys_freebsd_amd64.s<br>文件名中可以使用GOOS,或者加上GOARCH。</p>
+<p>hello_darwin.go hello_linux.go 测试一下<br>GOOS=darwin.go build -x<br>将会只编译hello_darwin.go。<br>也可以对架构做条件<br>sys_arm64.go sys_darwin_3866.s sys_freebsd_amd64.s<br>文件名中可以使用GOOS,或者加上GOARCH。</p>
 <p>2.使用build编译命令。</p>
 <p>a.go</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// +build windows</span></span><br><span class="line">       &lt;---必须有空行</span><br><span class="line">       </span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="built_in">println</span>(<span class="string">&quot;xxxx&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>b.go</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// +build linux darwin</span></span><br><span class="line"><span class="comment">// +build 386,/!cgo</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line">....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>3.使用自定义tag指令。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// +build !release</span></span><br><span class="line"><span class="comment">// +build log</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> build-tags <span class="string">&quot;release log&quot;</span> &amp;&amp; ./xxxx</span><br></pre></td></tr></table></figure>
-
 <h3 id="go-mod"><a href="#go-mod" class="headerlink" title="go mod"></a>go mod</h3><h4 id="如何使用本地库"><a href="#如何使用本地库" class="headerlink" title="如何使用本地库"></a>如何使用本地库</h4><p>在本工程里面<code>go.mod</code>中写入这样的话，将本地下载好的工程引入。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replace gitee.com/zhenghexcs/bevtreestatus =&gt; D:\work\trunk\new_project_server\server\bevtreestatus</span><br></pre></td></tr></table></figure>
-
 <h3 id="go-vendor"><a href="#go-vendor" class="headerlink" title="go vendor"></a>go vendor</h3><p>最近有个项目的代码是使用的go1.13版本编写的，还使用了vendor来管理中三方依赖库。所以就开始使用这样的方式来处理。</p>
 <h4 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h4><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/397903998">知乎的介绍</a></p>
 <p>关闭module <code>export GO111MODULE=&quot;off&quot;</code>。</p>
@@ -488,13 +492,13 @@
 <p>使用老版本的golang需要将<code>&quot;dlvFlags&quot;: [&quot;--check-go-version=false&quot;]</code>打开。</p>
 <p>最新delve仅支持调试go1.14及以上版本的代码，但有时有需要用较低版本golang，不方便升级golang。新版本的调试器，能挂载到老版本的程序上调试的。</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="comment">// 使用 IntelliSense 了解相关属性。 </span></span><br><span class="line">    <span class="comment">// 悬停以查看现有属性的描述。</span></span><br><span class="line">    <span class="comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Launch Package&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;go&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;auto&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceFolder&#125;/client&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;dlvFlags&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;--check-go-version=false&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;--env&quot;</span><span class="punctuation">,</span> <span class="string">&quot;local&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这种就是将当前文件调试：</span></span><br><span class="line"><span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;file&#125;&quot;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
-
 <p>If you really don’t want to update your Go version, then you can downgrade your dlv version to 1.6, but I don’t see why you would want to go all the way back to 1.2.0 or 1.3.2 versions of dlv from 2019. Those are very old. Each version of dlv usually supports 3 versions of go - recent stable and 2 older versions. If you try using a version of Go that is older or newer than those 3 expected versions, you get the error above. You can suppress them and debugging would in general work, but some things might be off. You can observe the pattern from dlv release changelog:</p>
 <p>1.7.0: Add Go 1.17, drop Go 1.14<br>1.6.0-1: Add Go 1.16, drop Go 1.13<br>…<br>1.3.0: Add Go 1.13<br>1.2.0: Add Go 1.12</p>
 <p>老版本的go需要配合老版本的dlv否则会出现很多的问题。</p>
-<p>could not open debug info - debuggee must not be built with ‘go run’ or -ldflags&#x3D;’-s -w’, which strip debug info</p>
+<p>could not open debug info - debuggee must not be built with ‘go run’ or -ldflags=’-s -w’, which strip debug info</p>
 <p>查看-ldflags参数表：</p>
 <p>ldflags:</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -502,7 +506,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>-s</td>
 <td>禁用符号表</td>
 </tr>
@@ -512,31 +517,33 @@
 </tr>
 <tr>
 <td>-X</td>
-<td>设置字符串全局变量值   -X ver&#x3D;”0.99”</td>
+<td>设置字符串全局变量值   -X ver=”0.99”</td>
 </tr>
 <tr>
 <td>-H</td>
 <td>设置可执行文件格式 -H windowsgui</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>很细碎，最终还是用了新版本的dlv挂载调试老版本的代码。</p>
 <h3 id="govendor"><a href="#govendor" class="headerlink" title="govendor"></a>govendor</h3><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6860377811488604168">govendor-使用</a></p>
 <p>可以考虑直接从网站上下载这个govendor程序。</p>
-<h3 id="golang"><a href="#golang" class="headerlink" title="golang &lt;&#x3D; 1.13 版本"></a>golang &lt;&#x3D; 1.13 版本</h3><p>这个版本的golang，使用的是vendor的包管理。</p>
+<h3 id="golang-lt-1-13-版本"><a href="#golang-lt-1-13-版本" class="headerlink" title="golang &lt;= 1.13 版本"></a>golang &lt;= 1.13 版本</h3><p>这个版本的golang，使用的是vendor的包管理。</p>
 <p>这次解决了一个问题：</p>
 <p>问题：</p>
 <ol>
-<li>源代码是 a.com 域名；代码目录下有个 vendor&#x2F;b.com ； 代码中大量引用了 b.com&#x2F;common&#x2F; 库；</li>
-<li>将代码切到 ${GO_ROOT}&#x2F;src&#x2F;a.com&#x2F;project 编译，将会让 a.com 下的 vendor&#x2F;b.com 库无法被扫描到；</li>
-<li>解决办法是将 ${GO_ROOT}&#x2F;src&#x2F;a.com&#x2F;project 放到 ${GO_ROOT}&#x2F;src&#x2F;b.com&#x2F;project 目录就可以了；</li>
-<li>还有一个办法，将源代码中 b.com&#x2F;common&#x2F; 修改成 c.com&#x2F;common&#x2F; ；并且将 vendor&#x2F;b.com 目录修改成 vendor&#x2F;c.com</li>
+<li>源代码是 a.com 域名；代码目录下有个 vendor/b.com ； 代码中大量引用了 b.com/common/ 库；</li>
+<li>将代码切到 ${GO_ROOT}/src/a.com/project 编译，将会让 a.com 下的 vendor/b.com 库无法被扫描到；</li>
+<li>解决办法是将 ${GO_ROOT}/src/a.com/project 放到 ${GO_ROOT}/src/b.com/project 目录就可以了；</li>
+<li>还有一个办法，将源代码中 b.com/common/ 修改成 c.com/common/ ；并且将 vendor/b.com 目录修改成 vendor/c.com</li>
 </ol>
 <p>很啰嗦；</p>
 <h3 id="golang-1-13-调试器"><a href="#golang-1-13-调试器" class="headerlink" title="golang 1.13 调试器"></a>golang 1.13 调试器</h3><p>这个版本需要自己手动下载delve版本。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/go-delve/delve/archive/refs/tags/v1.7.3.tar.gz">https://github.com/go-delve/delve/archive/refs/tags/v1.7.3.tar.gz</a></p>
 <p>手动编译了之后就能调试了。</p>
 <h3 id="调试器失灵"><a href="#调试器失灵" class="headerlink" title="调试器失灵"></a>调试器失灵</h3><p>could not launch process: error reading debug_info: decoding dwarf section info at offset 0x94ca8b: DW_FORM_strx with no .debug_str_offsets section</p>
-<p>go install github.com&#x2F;go-delve&#x2F;delve&#x2F;cmd&#x2F;dlv@master</p>
+<p>go install github.com/go-delve/delve/cmd/dlv@master</p>
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/78996918/getting-the-following-error-while-trying-to-debug-go-tests-in-vscode-on-mac">https://stackoverflow.com/questions/78996918/getting-the-following-error-while-trying-to-debug-go-tests-in-vscode-on-mac</a></p>
 <p>是的，Git Submodule 支持指定分支，你可以在添加子模块时指定它跟踪的分支，而不是默认的 HEAD。下面是详细操作：</p>
 <ol>
@@ -544,101 +551,91 @@
 </ol>
 <p>默认情况下，git submodule add 只会添加一个固定的 commit，而不会跟踪远程分支。要让 Submodule 跟踪特定分支，可以这样做：</p>
 <p>步骤 1：添加子模块并指定分支</p>
-<p>git submodule add -b my-branch <a target="_blank" rel="noopener" href="https://github.com/user/dependency-project.git">https://github.com/user/dependency-project.git</a> internal&#x2F;dependency</p>
-<p>这里：<br>	•	-b my-branch 让 dependency-project 跟踪 my-branch 分支。<br>	•	internal&#x2F;dependency 是存放子模块的路径。</p>
-<ol start="2">
+<p>git submodule add -b my-branch <a target="_blank" rel="noopener" href="https://github.com/user/dependency-project.git">https://github.com/user/dependency-project.git</a> internal/dependency</p>
+<p>这里：<br>    •    -b my-branch 让 dependency-project 跟踪 my-branch 分支。<br>    •    internal/dependency 是存放子模块的路径。</p>
+<ol>
 <li>更新 Submodule 以同步远程分支</li>
 </ol>
 <p>默认情况下，git submodule update 只会获取固定的 commit，而不会自动拉取最新的分支。所以，你需要执行：</p>
-<p>git submodule update –remote</p>
+<p>git submodule update —remote</p>
 <p>这会让所有子模块更新到 远程分支的最新提交。</p>
 <p>如果你只想更新某个特定的子模块：</p>
-<p>git submodule update –remote internal&#x2F;dependency</p>
-<ol start="3">
+<p>git submodule update —remote internal/dependency</p>
+<ol>
 <li>自动拉取最新代码</li>
 </ol>
 <p>如果你希望每次 git pull 时，Submodule 也自动更新，可以这样配置：</p>
-<p>git config -f .gitmodules submodule.internal&#x2F;dependency.branch my-branch</p>
+<p>git config -f .gitmodules submodule.internal/dependency.branch my-branch</p>
 <p>然后，在主项目里执行：</p>
-<p>git submodule update –remote –merge</p>
+<p>git submodule update —remote —merge</p>
 <p>这会 自动更新 Submodule 到远程 my-branch 的最新提交。</p>
-<ol start="4">
+<ol>
 <li>提交子模块的变更</li>
 </ol>
 <p>当 Submodule 有变更后，你需要在主项目中提交更新：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add internal/dependency</span><br><span class="line">git commit -m <span class="string">&quot;Update submodule to latest commit on my-branch&quot;</span></span><br><span class="line">git push origin main</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
+<ol>
 <li>克隆包含 Submodule 的项目</li>
 </ol>
 <p>如果其他人克隆你的项目，需要执行：</p>
 <p><code>git clone --recurse-submodules https://github.com/user/main-project.git</code></p>
 <p>如果已经克隆了主项目但没有子模块，可以手动初始化：</p>
-<p>git submodule update –init –recursive</p>
+<p>git submodule update —init —recursive</p>
 <p>总结</p>
-<p>命令	作用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git submodule add -b my-branch &lt;repo&gt; &lt;path&gt;	添加子模块并指定分支</span><br><span class="line">git submodule update --remote	更新所有 Submodule 到最新的远程分支</span><br><span class="line">git submodule update --remote --merge	更新 Submodule 并合并最新变更</span><br><span class="line">git config -f .gitmodules submodule.&lt;path&gt;.branch my-branch	配置子模</span><br></pre></td></tr></table></figure>
-<p>块跟踪分支<br><code>git clone --recurse-submodules &lt;repo&gt;	克隆项目并初始化子模块</code></p>
+<p>命令    作用<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git submodule add -b my-branch &lt;repo&gt; &lt;path&gt;	添加子模块并指定分支</span><br><span class="line">git submodule update --remote	更新所有 Submodule 到最新的远程分支</span><br><span class="line">git submodule update --remote --merge	更新 Submodule 并合并最新变更</span><br><span class="line">git config -f .gitmodules submodule.&lt;path&gt;.branch my-branch	配置子模</span><br></pre></td></tr></table></figure><br>块跟踪分支<br><code>git clone --recurse-submodules &lt;repo&gt;    克隆项目并初始化子模块</code></p>
 <p>这样，你的子模块就能自动跟随远程分支，而不只是固定在某个 commit 了！🚀<br>如果你想彻底移除某个 Git Submodule，需要清理多个地方。以下是完整的移除步骤：</p>
 <ol>
 <li>取消 Submodule 关联</li>
 </ol>
 <p>首先，使用以下命令从 Git 记录中删除子模块：</p>
 <p><code>git submodule deinit -f -- internal/dependency</code></p>
-<p>这里：<br>	•	internal&#x2F;dependency 是你的子模块路径。</p>
-<p>这会移除 .git&#x2F;modules&#x2F;internal&#x2F;dependency 目录，并取消子模块的关联。</p>
-<ol start="2">
+<p>这里：<br>    •    internal/dependency 是你的子模块路径。</p>
+<p>这会移除 .git/modules/internal/dependency 目录，并取消子模块的关联。</p>
+<ol>
 <li>删除子模块目录</li>
 </ol>
 <p>手动删除子模块的代码目录：</p>
-<p>rm -rf internal&#x2F;dependency</p>
+<p>rm -rf internal/dependency</p>
 <p>此时，子模块的代码文件已经被删除。</p>
-<ol start="3">
+<ol>
 <li>从 Git 配置中删除 Submodule</li>
 </ol>
 <p>编辑 .gitmodules 文件，找到类似下面的内容：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[submodule &quot;internal/dependency&quot;]</span><br><span class="line">    path = internal/dependency</span><br><span class="line">    url = https://github.com/user/dependency-project.git</span><br></pre></td></tr></table></figure>
-
 <p>删除该部分的配置，然后保存。</p>
-<ol start="4">
+<ol>
 <li>从 Git 记录中删除 Submodule</li>
 </ol>
 <p>从 Git 索引中删除子模块的记录：</p>
 <p><code>git rm --cached internal/dependency</code></p>
 <p>然后提交变更：</p>
 <p><code>git commit -m &quot;Remove submodule internal/dependency&quot;</code></p>
-<ol start="5">
+<ol>
 <li>清理 Git 残留（可选）</li>
 </ol>
 <p>可以执行以下命令，彻底清理子模块的缓存：</p>
 <p><code>rm -rf .git/modules/internal/dependency</code></p>
-<ol start="6">
+<ol>
 <li>推送到远程仓库</li>
 </ol>
 <p>最后，把删除 Submodule 的变更推送到远程：</p>
 <p><code>git push origin main</code></p>
 <p>总结</p>
-<p>步骤	命令<br>取消子模块关联	git submodule deinit -f – <submodule_path><br>删除子模块目录	rm -rf <submodule_path><br>移除 .gitmodules 里的配置	手动删除相关条目<br>从 Git 记录中删除	git rm –cached <submodule_path><br>清理 .git&#x2F;modules 目录	rm -rf .git&#x2F;modules&#x2F;<submodule_path><br>提交变更	git commit -m “Remove submodule <submodule_path>“ &amp;&amp; git push</submodule_path></submodule_path></submodule_path></submodule_path></submodule_path></p>
+<p>步骤    命令<br>取消子模块关联    git submodule deinit -f — <submodule_path><br>删除子模块目录    rm -rf <submodule_path><br>移除 .gitmodules 里的配置    手动删除相关条目<br>从 Git 记录中删除    git rm —cached <submodule_path><br>清理 .git/modules 目录    rm -rf .git/modules/<submodule_path><br>提交变更    git commit -m “Remove submodule <submodule_path>“ &amp;&amp; git push</submodule_path></submodule_path></submodule_path></submodule_path></submodule_path></p>
 <p>这样，你的 Git 仓库就完全清理掉了这个子模块！🚀</p>
 <p>WARNING: undefined behavior - version of Delve is too old for Go version 1.20.5 (maximum supported version 1.19)</p>
 <p>这是因为 go 的版本升级后，相对 dlv 的版本就低了。<br>所以解决办法就是升级对应的 dlv 版本</p>
 <p>进入到 GOPATH 中<br>如果忘记了 GOPATH 是什么，输入 go env GOPATH 即可。</p>
 <p>在 GOPATH 对应目录下安装最新版的 dlv<br><code>go install github.com/go-delve/delve/cmd/dlv@latest</code></p>
-<p>安装完毕后，其被安装在 GOPATH&#x2F;bin 目录下，即 GOPATH&#x2F;bin&#x2F;dlv</p>
+<p>安装完毕后，其被安装在 GOPATH/bin 目录下，即 GOPATH/bin/dlv</p>
 <p>打开 Goland 菜单栏 Help 下的 Edit Custom Properties，会自动打开一个文件 idea.properties</p>
 <p>添加如下内容到 idea.properites<br><code>dlv.path=/Users/solego/go/bin/dlv</code></p>
 <p>重启Goland即可</p>
 <p>打开 Goland 菜单栏 Help 下的 Edit Custom Properties，会自动打开一个文件 idea.properties</p>
-<p>添加如下内容到 idea.properites</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dlv.path</span>=/Users/solego/go/bin/dlv</span><br></pre></td></tr></table></figure>
-
+<p>添加如下内容到 idea.properites<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dlv.path</span>=/Users/solego/go/bin/dlv</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go install github.com/go-delve/delve/cmd/dlv@latest</span><br></pre></td></tr></table></figure>
-
-<p>可以做go语言的校验；</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh \</span><br><span class="line">  | sh -s -- -b $(go <span class="built_in">env</span> GOPATH)/bin v2.4.0</span><br><span class="line">go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.4.0</span><br><span class="line">golangci-lint --version</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">GOCACHE=<span class="string">&#x27;/root/.cache/go-build&#x27;</span></span><br><span class="line">GOMODCACHE=<span class="string">&#x27;/root/go/pkg/mod&#x27;</span></span><br><span class="line"></span><br><span class="line">go clean -cache -modcache -testcache</span><br></pre></td></tr></table></figure>
-
+<p>可以做go语言的校验；<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh \</span><br><span class="line">  | sh -s -- -b $(go <span class="built_in">env</span> GOPATH)/bin v2.4.0</span><br><span class="line">go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.4.0</span><br><span class="line">golangci-lint --version</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">GOCACHE=<span class="string">&#x27;/root/.cache/go-build&#x27;</span></span><br><span class="line">GOMODCACHE=<span class="string">&#x27;/root/go/pkg/mod&#x27;</span></span><br><span class="line"></span><br><span class="line">go clean -cache -modcache -testcache</span><br></pre></td></tr></table></figure></p>
 <h2 id="清理go的库"><a href="#清理go的库" class="headerlink" title="清理go的库"></a>清理go的库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 0 * * 6 /usr/local/go/bin/go clean -modcache &gt;&gt; /var/log/go_clean_modcache.log 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
-
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://www.runoob.com/go/go-tutorial.html">Go语言菜鸟</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="http://c.biancheng.net/golang/">Go语言入门</a></li>
@@ -728,7 +725,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%86%E5%8F%B2"><span class="nav-number">1.1.</span> <span class="nav-text">历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2"><span class="nav-number">1.2.</span> <span class="nav-text">环境部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux"><span class="nav-number">1.2.1.</span> <span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows"><span class="nav-number">1.2.2.</span> <span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AE%E7%9A%84%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.3.</span> <span class="nav-text">需要配置的环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#linux%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">linux环境搭建</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.4.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#go-build"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">go build</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-install"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">go install</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-get"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">go get</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-env"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">go env</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-clean"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">go clean</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.4.6.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.4.7.</span> <span class="nav-text">交叉编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.4.8.</span> <span class="nav-text">条件编译</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-mod"><span class="nav-number">1.2.5.</span> <span class="nav-text">go mod</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%BA%93"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">如何使用本地库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-vendor"><span class="nav-number">1.2.6.</span> <span class="nav-text">go vendor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">基本用法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#govendor"><span class="nav-number">1.2.7.</span> <span class="nav-text">govendor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang"><span class="nav-number">1.2.8.</span> <span class="nav-text">golang &lt;&#x3D; 1.13 版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang-1-13-%E8%B0%83%E8%AF%95%E5%99%A8"><span class="nav-number">1.2.9.</span> <span class="nav-text">golang 1.13 调试器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E5%99%A8%E5%A4%B1%E7%81%B5"><span class="nav-number">1.2.10.</span> <span class="nav-text">调试器失灵</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%85%E7%90%86go%E7%9A%84%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">清理go的库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.4.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%86%E5%8F%B2"><span class="nav-number">1.1.</span> <span class="nav-text">历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2"><span class="nav-number">1.2.</span> <span class="nav-text">环境部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux"><span class="nav-number">1.2.1.</span> <span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows"><span class="nav-number">1.2.2.</span> <span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AE%E7%9A%84%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.3.</span> <span class="nav-text">需要配置的环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#linux%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">linux环境搭建</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.4.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#go-build"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">go build</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-install"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">go install</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-get"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">go get</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-env"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">go env</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-clean"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">go clean</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.4.6.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.4.7.</span> <span class="nav-text">交叉编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.4.8.</span> <span class="nav-text">条件编译</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-mod"><span class="nav-number">1.2.5.</span> <span class="nav-text">go mod</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%BA%93"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">如何使用本地库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-vendor"><span class="nav-number">1.2.6.</span> <span class="nav-text">go vendor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">基本用法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#govendor"><span class="nav-number">1.2.7.</span> <span class="nav-text">govendor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang-lt-1-13-%E7%89%88%E6%9C%AC"><span class="nav-number">1.2.8.</span> <span class="nav-text">golang &lt;&#x3D; 1.13 版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang-1-13-%E8%B0%83%E8%AF%95%E5%99%A8"><span class="nav-number">1.2.9.</span> <span class="nav-text">golang 1.13 调试器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E5%99%A8%E5%A4%B1%E7%81%B5"><span class="nav-number">1.2.10.</span> <span class="nav-text">调试器失灵</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%85%E7%90%86go%E7%9A%84%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">清理go的库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.4.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -750,7 +747,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

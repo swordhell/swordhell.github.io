@@ -230,7 +230,6 @@
 <p>Linux里面的时间调度算法采用了这个算法。我们熟悉的crontab是使用了这个。</p>
 <p>java里面 Dubbo Netty Akka Quartz Kafka 都有实现。能解决<code>时间任务调度</code>的任务。</p>
 <span id="more"></span>
-
 <h2 id="浅析"><a href="#浅析" class="headerlink" title="浅析"></a>浅析</h2><p>内部的数据结构类似于家里的水表，时间轮是按照固定的刻度走动。定时任务需要加入的时候，先按照距离现在的时间长短加入到合适的轮子中。如果太久远将会被安排到很远的时间轮位置上，而且还不会被算法去过细的处理。</p>
 <p>堆排序经常用于处理定时器，你可以想象其中的处理过程，堆虽然内部也是无须真实的排序，将一个元素放入堆需要比较的次数是对数级别的，时间轮是常数级别的。在每次推动轮子的时候，才会去将这些轮子里面的有限个数的元素做排序，落入到转速更快的小轮子里面。本质上这是开始的时候积攒下来的活，最后按照时间，拆散了给每个tick来做。</p>
 <p>场景：定时器时间元素很多，时间被均匀的分布在未来时间里面。如果我们使用堆排序方式，那就会看到一棵二叉树，某一侧的一直往下生长，而不会均匀的两侧生长。如果如此退化，对于二叉树的优势，反而变成了一种链表了，只是说粗一点的链表。而对于时间轮排序，它会先按照超时时间的远近，先将这些节点写入到不同级别的轮子里面。</p>
@@ -345,7 +344,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

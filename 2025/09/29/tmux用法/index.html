@@ -20,19 +20,20 @@
     var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="当然，这是一份为新手准备的 tmux 使用说明文档。layout: posttitle: “tmux用法”subtitle: ‘tmux用法’date: 2025-09-29author: “Abel”header-style: textcategories:   1-基础 tmuxtags:   AI   简介 Tmux 新手入门指南Tmux（Terminal Multiplexer）是一个强大">
+  <meta name="description" content="简介 Tmux 新手入门指南Tmux（Terminal Multiplexer）是一个强大的终端复用工具，可以让你在一个终端窗口中创建、管理和切换多个终端会话。它最大的好处是，即使你关闭了终端或者断开了 SSH 连接，后台的会话和程序仍然会继续运行。 这份文档将教会你如何开始使用 Tmux，以及掌握一些最核心的概念和命令。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Abel&#39;Blog">
-<meta property="og:url" content="https://swordhell.github.io/2025/09/19/tmux%E7%94%A8%E6%B3%95/index.html">
+<meta property="og:title" content="tmux用法">
+<meta property="og:url" content="https://swordhell.github.io/2025/09/29/tmux%E7%94%A8%E6%B3%95/index.html">
 <meta property="og:site_name" content="Abel&#39;Blog">
-<meta property="og:description" content="当然，这是一份为新手准备的 tmux 使用说明文档。layout: posttitle: “tmux用法”subtitle: ‘tmux用法’date: 2025-09-29author: “Abel”header-style: textcategories:   1-基础 tmuxtags:   AI   简介 Tmux 新手入门指南Tmux（Terminal Multiplexer）是一个强大">
+<meta property="og:description" content="简介 Tmux 新手入门指南Tmux（Terminal Multiplexer）是一个强大的终端复用工具，可以让你在一个终端窗口中创建、管理和切换多个终端会话。它最大的好处是，即使你关闭了终端或者断开了 SSH 连接，后台的会话和程序仍然会继续运行。 这份文档将教会你如何开始使用 Tmux，以及掌握一些最核心的概念和命令。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-19T01:57:26.226Z">
-<meta property="article:modified_time" content="2025-11-15T00:22:57.448Z">
+<meta property="article:published_time" content="2025-09-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-19T23:11:47.066Z">
 <meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://swordhell.github.io/2025/09/19/tmux%E7%94%A8%E6%B3%95/">
+<link rel="canonical" href="https://swordhell.github.io/2025/09/29/tmux%E7%94%A8%E6%B3%95/">
 
 
 <script id="page-configurations">
@@ -45,7 +46,7 @@
   };
 </script>
 
-  <title> | Abel'Blog</title>
+  <title>tmux用法 | Abel'Blog</title>
   
 
 
@@ -161,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/09/19/tmux%E7%94%A8%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/09/29/tmux%E7%94%A8%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -174,7 +175,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          tmux用法
         </h1>
 
         <div class="post-meta">
@@ -184,15 +185,28 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-09-19 09:57:26" itemprop="dateCreated datePublished" datetime="2025-09-19T09:57:26+08:00">2025-09-19</time>
+              <time title="创建时间：2025-09-29 00:00:00" itemprop="dateCreated datePublished" datetime="2025-09-29T00:00:00+08:00">2025-09-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-11-15 08:22:57" itemprop="dateModified" datetime="2025-11-15T08:22:57+08:00">2025-11-15</time>
+                <time title="修改时间：2025-11-20 07:11:47" itemprop="dateModified" datetime="2025-11-20T07:11:47+08:00">2025-11-20</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/tmux/" itemprop="url" rel="index"><span itemprop="name">tmux</span></a>
+                </span>
+            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -212,21 +226,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="当然，这是一份为新手准备的-tmux-使用说明文档。"><a href="#当然，这是一份为新手准备的-tmux-使用说明文档。" class="headerlink" title="当然，这是一份为新手准备的 tmux 使用说明文档。"></a>当然，这是一份为新手准备的 tmux 使用说明文档。</h2><p>layout: post<br>title: “tmux用法”<br>subtitle: ‘tmux用法’<br>date: 2025-09-29<br>author: “Abel”<br>header-style: text<br>categories:</p>
-<ul>
-<li><ul>
-<li>1-基础</li>
-<li>tmux<br>tags:</li>
-</ul>
-</li>
-<li>AI</li>
-</ul>
-<hr>
-<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><hr>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><hr>
 <h3 id="Tmux-新手入门指南"><a href="#Tmux-新手入门指南" class="headerlink" title="Tmux 新手入门指南"></a>Tmux 新手入门指南</h3><p>Tmux（<strong>T</strong>erminal <strong>M</strong>ulti<strong>pl</strong>exer）是一个强大的终端复用工具，可以让你在一个终端窗口中创建、管理和切换多个终端会话。它最大的好处是，即使你关闭了终端或者断开了 SSH 连接，后台的会话和程序仍然会继续运行。</p>
 <p>这份文档将教会你如何开始使用 Tmux，以及掌握一些最核心的概念和命令。</p>
 <span id="more"></span>
-
 <h4 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h4><p>在使用 Tmux 前，你需要理解三个基本概念：</p>
 <ul>
 <li><strong>Session (会话)</strong>: 类似于一个独立的工作空间，可以包含多个窗口。你可以给会话命名，方便以后重新连接。</li>
@@ -236,11 +239,9 @@
 <h4 id="启动和退出"><a href="#启动和退出" class="headerlink" title="启动和退出"></a>启动和退出</h4><p><strong>1. 启动一个新的 Tmux 会话</strong></p>
 <p>这是你开始使用 Tmux 的第一步。最简单的方式是直接输入 <code>tmux</code>。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux</span><br></pre></td></tr></table></figure>
-
 <p>这会创建一个默认名称的新会话，并立即进入。</p>
 <p>如果你想创建一个带有特定名称的会话（强烈推荐），可以使用 <code>-s</code> 参数：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new-session -s my-project</span><br></pre></td></tr></table></figure>
-
 <p>这会创建一个名为 <code>my-project</code> 的会话。</p>
 <p><strong>2. 退出并分离会话</strong></p>
 <p>当你完成了工作，或者需要暂时离开时，你可以<strong>分离 (detach)</strong> 当前会话。这会让会话在后台继续运行，而你则回到常规的终端。</p>
@@ -251,53 +252,57 @@
 <p>当你需要返回 Tmux 会话继续工作时，你可以使用 <code>attach</code> 命令。</p>
 <ul>
 <li><strong>重新连接到最近的会话</strong>:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach</span><br></pre></td></tr></table></figure></li>
-<li><strong>重新连接到指定名称的会话</strong>:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach -t my-project</span><br></pre></td></tr></table></figure></li>
+<li><strong>重新连接到指定名称的会话</strong>:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach -t my-project</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p><strong>4. 彻底终止会话</strong></p>
 <p>当你完全不再需要某个会话时，可以终止它：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux kill-session -t my-project</span><br></pre></td></tr></table></figure>
-
 <h4 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h4><p>Tmux 的所有快捷键都以一个前缀键开始，默认是 <strong><code>Ctrl-b</code></strong>。这意味着你必须先按下 <code>Ctrl-b</code>，松开，然后再按下一个键来执行操作。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">快捷键 (按下 <code>Ctrl-b</code> 后)</th>
-<th align="left">描述</th>
+<th style="text-align:left">快捷键 (按下 <code>Ctrl-b</code> 后)</th>
+<th style="text-align:left">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><code>c</code></td>
-<td align="left"><strong>创建新窗口</strong> (Create)</td>
+<tbody>
+<tr>
+<td style="text-align:left"><code>c</code></td>
+<td style="text-align:left"><strong>创建新窗口</strong> (Create)</td>
 </tr>
 <tr>
-<td align="left"><code>p</code></td>
-<td align="left"><strong>切换到上一个窗口</strong> (Previous)</td>
+<td style="text-align:left"><code>p</code></td>
+<td style="text-align:left"><strong>切换到上一个窗口</strong> (Previous)</td>
 </tr>
 <tr>
-<td align="left"><code>n</code></td>
-<td align="left"><strong>切换到下一个窗口</strong> (Next)</td>
+<td style="text-align:left"><code>n</code></td>
+<td style="text-align:left"><strong>切换到下一个窗口</strong> (Next)</td>
 </tr>
 <tr>
-<td align="left"><code>,</code></td>
-<td align="left"><strong>重命名当前窗口</strong></td>
+<td style="text-align:left"><code>,</code></td>
+<td style="text-align:left"><strong>重命名当前窗口</strong></td>
 </tr>
 <tr>
-<td align="left"><code>%</code></td>
-<td align="left"><strong>垂直分割窗格</strong></td>
+<td style="text-align:left"><code>%</code></td>
+<td style="text-align:left"><strong>垂直分割窗格</strong></td>
 </tr>
 <tr>
-<td align="left"><code>&quot;</code></td>
-<td align="left"><strong>水平分割窗格</strong></td>
+<td style="text-align:left"><code>&quot;</code></td>
+<td style="text-align:left"><strong>水平分割窗格</strong></td>
 </tr>
 <tr>
-<td align="left"><code>Arrow Keys</code></td>
-<td align="left">在窗格之间<strong>移动</strong></td>
+<td style="text-align:left"><code>Arrow Keys</code></td>
+<td style="text-align:left">在窗格之间<strong>移动</strong></td>
 </tr>
 <tr>
-<td align="left"><code>x</code></td>
-<td align="left"><strong>关闭当前窗格</strong></td>
+<td style="text-align:left"><code>x</code></td>
+<td style="text-align:left"><strong>关闭当前窗格</strong></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="快速参考"><a href="#快速参考" class="headerlink" title="快速参考"></a>快速参考</h4><ul>
 <li><strong>查看所有会话</strong>: <code>tmux ls</code></li>
 <li><strong>查看所有快捷键</strong>: <code>Ctrl-b ?</code></li>
@@ -322,14 +327,17 @@
 <li><p>然后，松开前缀键，按下 <code>:</code>。</p>
 </li>
 <li><p>在底部弹出的命令行中，输入以下命令并按回车：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename-window new-name</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename-window new-name</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <p>将 <code>new-name</code> 替换成你想要的窗口名称。</p>
 <hr>
 <h4 id="额外提示"><a href="#额外提示" class="headerlink" title="额外提示"></a>额外提示</h4><ul>
 <li>你可以在 <code>tmux.conf</code> 配置文件中修改前缀键，如果你觉得默认的 <code>Ctrl-b</code> 不顺手的话。</li>
-<li>给窗口命名可以帮助你更好地组织工作，尤其是在一个会话中打开了多个窗口时。</li>
+<li>给窗口命名可以帮助你更好地组织工作，尤其是在一个会话中打开了多个窗口时。<ul>
 <li>你也可以使用 <code>rename-window</code> 命令的缩写 <code>renamew</code></li>
+</ul>
+</li>
 </ul>
 <p>你说的“解除 tmux 窗口”在 tmux 里对应的术语其实叫 detach——就是把当前会话从当前终端“脱开”，但不关闭它，程序还在后台跑。</p>
 <p>在 tmux 里有几个常见的“解除”动作👇</p>
@@ -343,11 +351,10 @@
 <p>tmux attach -t dev</p>
 <p>⸻</p>
 <p>2️⃣ 把当前窗口拆到新会话（break window）</p>
-<p>如果你想把某个 window 单独拆成一个新 session（相当于“解除绑定”）：<br>	•	先 Ctrl-b 然后按 : 进入 tmux 命令行，输入：</p>
+<p>如果你想把某个 window 单独拆成一个新 session（相当于“解除绑定”）：<br>    •    先 Ctrl-b 然后按 : 进入 tmux 命令行，输入：</p>
 <p>break-window</p>
-<pre><code>•	或者直接快捷键：
-</code></pre>
-<p>Ctrl-b  !</p>
+<pre><code>•    或者直接快捷键：
+</code></pre><p>Ctrl-b  !</p>
 <p>这样当前窗口就会变成一个新的 session。</p>
 <p>⸻</p>
 <p>3️⃣ 关闭窗口（kill window）</p>
@@ -359,13 +366,13 @@
 <p>在 tmux 外面直接：</p>
 <p>tmux kill-session -t dev</p>
 <p>⸻</p>
-<p>💡 所以：<br>	•	“解除 tmux 窗口” &#x3D; Ctrl-b d（脱离整个会话）。<br>	•	“把窗口拆成新会话” &#x3D; Ctrl-b !。<br>	•	“关掉窗口” &#x3D; Ctrl-b &amp;。</p>
+<p>💡 所以：<br>    •    “解除 tmux 窗口” = Ctrl-b d（脱离整个会话）。<br>    •    “把窗口拆成新会话” = Ctrl-b !。<br>    •    “关掉窗口” = Ctrl-b &amp;。</p>
 <p>你想要的是哪种？（后台运行不退出，还是拆出来新 session？）</p>
-<p>1️⃣ 进入复制模式（scroll 模式）<br>	•	默认快捷键：<br>Ctrl+b 然后按 [<br>（按完就可以用方向键上下滚动、翻页）</p>
-<p>按键<br>作用<br>↑ &#x2F; ↓<br>按行上&#x2F;下滚动<br>PageUp<br>向上翻一页<br>PageDown<br>向下翻一页<br>Space<br>也可向下翻一屏（取决于配置）<br>g<br>跳到缓冲区顶部<br>G<br>跳到缓冲区底部</p>
+<p>1️⃣ 进入复制模式（scroll 模式）<br>    •    默认快捷键：<br>Ctrl+b 然后按 [<br>（按完就可以用方向键上下滚动、翻页）</p>
+<p>按键<br>作用<br>↑ / ↓<br>按行上/下滚动<br>PageUp<br>向上翻一页<br>PageDown<br>向下翻一页<br>Space<br>也可向下翻一屏（取决于配置）<br>g<br>跳到缓冲区顶部<br>G<br>跳到缓冲区底部</p>
 <p>3️⃣ 退出复制模式</p>
 <p>按 q 或 Enter 退出。</p>
-<p>mac 键盘上：<br>	•	Fn + ↑ &#x3D; PageUp（向上翻一页）<br>	•	Fn + ↓ &#x3D; PageDown（向下翻一页）</p>
+<p>mac 键盘上：<br>    •    Fn + ↑ = PageUp（向上翻一页）<br>    •    Fn + ↓ = PageDown（向下翻一页）</p>
 
     </div>
 
@@ -374,6 +381,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+          </div>
 
         
 
@@ -447,7 +457,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%93%E7%84%B6%EF%BC%8C%E8%BF%99%E6%98%AF%E4%B8%80%E4%BB%BD%E4%B8%BA%E6%96%B0%E6%89%8B%E5%87%86%E5%A4%87%E7%9A%84-tmux-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3%E3%80%82"><span class="nav-number">1.</span> <span class="nav-text">当然，这是一份为新手准备的 tmux 使用说明文档。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number"></span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tmux-%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97"><span class="nav-number">0.1.</span> <span class="nav-text">Tmux 新手入门指南</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">0.1.1.</span> <span class="nav-text">核心概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%92%8C%E9%80%80%E5%87%BA"><span class="nav-number">0.1.2.</span> <span class="nav-text">启动和退出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">0.1.3.</span> <span class="nav-text">常用快捷键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%8F%82%E8%80%83"><span class="nav-number">0.1.4.</span> <span class="nav-text">快速参考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE"><span class="nav-number">0.1.5.</span> <span class="nav-text">实践建议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE%EF%BC%88%E6%9C%80%E5%B8%B8%E7%94%A8%EF%BC%89"><span class="nav-number">0.2.</span> <span class="nav-text">方法一：使用快捷键（最常用）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="nav-number">0.3.</span> <span class="nav-text">方法二：使用命令行</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%9D%E5%A4%96%E6%8F%90%E7%A4%BA"><span class="nav-number">0.3.1.</span> <span class="nav-text">额外提示</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tmux-%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97"><span class="nav-number">1.0.1.</span> <span class="nav-text">Tmux 新手入门指南</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">核心概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%92%8C%E9%80%80%E5%87%BA"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">启动和退出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">常用快捷键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%8F%82%E8%80%83"><span class="nav-number">1.0.1.4.</span> <span class="nav-text">快速参考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.0.1.5.</span> <span class="nav-text">实践建议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE%EF%BC%88%E6%9C%80%E5%B8%B8%E7%94%A8%EF%BC%89"><span class="nav-number">1.0.2.</span> <span class="nav-text">方法一：使用快捷键（最常用）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="nav-number">1.0.3.</span> <span class="nav-text">方法二：使用命令行</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%9D%E5%A4%96%E6%8F%90%E7%A4%BA"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">额外提示</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -469,7 +479,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -624,7 +634,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'BlogComment',
       owner       : 'swordhell',
       admin       : ['swordhell'],
-      id          : '26a8ae3dfeada71cd04b3af2628542c6',
+      id          : '9dcf01e2cb48b87ee4ebdfad9986199d',
         language: 'zh-CN',
       distractionFreeMode: true
     });

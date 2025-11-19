@@ -222,7 +222,6 @@
       
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>如何使用 hset+set来做个关系型数据保存。</p>
 <span id="more"></span>
-
 <p>要设计一个 Redis 方案来存储 Telegram Bot 加入的群信息，包括群名称、加入时间，并支持删除操作和获取群列表，以下是一个可能的设计方案：</p>
 <h3 id="设计需求："><a href="#设计需求：" class="headerlink" title="设计需求："></a>设计需求：</h3><ol>
 <li>存储每个 Telegram Bot 加入的群信息，包括 <strong>群ID</strong>、<strong>群名称</strong> 和 <strong>加入时间</strong>。</li>
@@ -249,30 +248,25 @@
 </ul>
 <h3 id="实现操作："><a href="#实现操作：" class="headerlink" title="实现操作："></a>实现操作：</h3><h4 id="1-存储群加入信息"><a href="#1-存储群加入信息" class="headerlink" title="1. 存储群加入信息"></a>1. 存储群加入信息</h4><p>当 Bot 加入群时，需要存储群 ID、群名称、和加入时间。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设定群详细信息</span></span><br><span class="line">HSET bot:&#123;bot_id&#125;:group:&#123;group_id&#125; name <span class="string">&quot;Group Name&quot;</span> join_time 1631012345</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将群 ID 加入集合</span></span><br><span class="line">SADD bot:&#123;bot_id&#125;:<span class="built_in">groups</span> &#123;group_id&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="2-删除群退出信息"><a href="#2-删除群退出信息" class="headerlink" title="2. 删除群退出信息"></a>2. 删除群退出信息</h4><p>当 Bot 退出群时，删除相应的群记录和从群 ID 列表中移除。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除群详细信息</span></span><br><span class="line">DEL bot:&#123;bot_id&#125;:group:&#123;group_id&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从加入的群 ID 集合中移除</span></span><br><span class="line">SREM bot:&#123;bot_id&#125;:<span class="built_in">groups</span> &#123;group_id&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="3-获取当前已加入的群列表"><a href="#3-获取当前已加入的群列表" class="headerlink" title="3. 获取当前已加入的群列表"></a>3. 获取当前已加入的群列表</h4><p>可以通过以下步骤获取 Bot 当前加入的所有群的详细信息：</p>
 <ul>
 <li><p><strong>获取所有群 ID</strong>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SMEMBERS bot:&#123;bot_id&#125;:<span class="built_in">groups</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>获取每个群的详细信息</strong>：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HGETALL bot:&#123;bot_id&#125;:group:&#123;group_id&#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HGETALL bot:&#123;bot_id&#125;:group:&#123;group_id&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h3 id="具体示例："><a href="#具体示例：" class="headerlink" title="具体示例："></a>具体示例：</h3><h4 id="场景-1：存储-Bot-加入了群"><a href="#场景-1：存储-Bot-加入了群" class="headerlink" title="场景 1：存储 Bot 加入了群"></a>场景 1：存储 Bot 加入了群</h4><p>假设 Bot ID 是 <code>12345</code>，加入了群 <code>1001</code>，群名称是 <code>Tech Group</code>，加入时间为 <code>2024-09-21 12:00</code>（时间戳 <code>1695297600</code>）。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 存储群详细信息</span></span><br><span class="line">HSET bot:12345:group:1001 name <span class="string">&quot;Tech Group&quot;</span> join_time 1695297600</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将群 ID 加入群组集合</span></span><br><span class="line">SADD bot:12345:<span class="built_in">groups</span> 1001</span><br></pre></td></tr></table></figure>
-
 <h4 id="场景-2：删除-Bot-退出群"><a href="#场景-2：删除-Bot-退出群" class="headerlink" title="场景 2：删除 Bot 退出群"></a>场景 2：删除 Bot 退出群</h4><p>当 Bot 退出群 <code>1001</code> 时，删除相应的记录：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除群详细信息</span></span><br><span class="line">DEL bot:12345:group:1001</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从加入的群 ID 集合中移除</span></span><br><span class="line">SREM bot:12345:<span class="built_in">groups</span> 1001</span><br></pre></td></tr></table></figure>
-
 <h4 id="场景-3：获取-Bot-当前已加入的群"><a href="#场景-3：获取-Bot-当前已加入的群" class="headerlink" title="场景 3：获取 Bot 当前已加入的群"></a>场景 3：获取 Bot 当前已加入的群</h4><p>获取所有已加入的群：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取所有群 ID</span></span><br><span class="line">SMEMBERS bot:12345:<span class="built_in">groups</span></span><br></pre></td></tr></table></figure>
-
 <p>获取某个群的详细信息：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取群 1001 的详细信息</span></span><br><span class="line">HGETALL bot:12345:group:1001</span><br></pre></td></tr></table></figure>
-
 <h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
 <li>使用 <strong>Redis Set</strong> 存储 Bot 加入的群 ID，方便群 ID 去重及高效查询。</li>
 <li>使用 <strong>Redis Hash</strong> 存储每个群的详细信息，如群名称和加入时间。</li>
@@ -385,7 +379,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

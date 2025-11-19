@@ -228,60 +228,63 @@
       
         <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在制作网络游戏的时候，经常会讨论同步方式。同步这个话题就是让不同客户端的游戏表现同步。资料都来自于网络。</p>
 <span id="more"></span>
-
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>王者荣耀是使用的帧同步(Lockstep)，有成功案例，后续才会有很多人想着跟进。</p>
 <p>帧同步：服务器按照帧转换客户端的操作，其他客户端依赖这些信息在本地模拟表现。</p>
 <p>状态同步：客户端操作的时候，只能将状态数据提交给服务器，服务器得到了通过运算将最终结果广播给全部客户端。</p>
 <p>成功案例清单：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left"></th>
-<th align="left">帧同步</th>
-<th align="left">状态同步</th>
+<th style="text-align:left"></th>
+<th style="text-align:left">帧同步</th>
+<th style="text-align:left">状态同步</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">FPS</td>
-<td align="left">doom</td>
-<td align="left">CSGO、守望先锋、逆战、绝地求生</td>
+<tbody>
+<tr>
+<td style="text-align:left">FPS</td>
+<td style="text-align:left">doom</td>
+<td style="text-align:left">CSGO、守望先锋、逆战、绝地求生</td>
 </tr>
 <tr>
-<td align="left">MOBA</td>
-<td align="left">王者荣耀、DOTA、英雄战境</td>
-<td align="left">全民超神、LOL、DOTA2</td>
+<td style="text-align:left">MOBA</td>
+<td style="text-align:left">王者荣耀、DOTA、英雄战境</td>
+<td style="text-align:left">全民超神、LOL、DOTA2</td>
 </tr>
 <tr>
-<td align="left">SPT</td>
-<td align="left">NBAOline、街头篮球、FIFA</td>
-<td align="left"></td>
+<td style="text-align:left">SPT</td>
+<td style="text-align:left">NBAOline、街头篮球、FIFA</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left">FGT,ACT</td>
-<td align="left">街霸</td>
-<td align="left">怪物猎人</td>
+<td style="text-align:left">FGT,ACT</td>
+<td style="text-align:left">街霸</td>
+<td style="text-align:left">怪物猎人</td>
 </tr>
 <tr>
-<td align="left">RTS</td>
-<td align="left">星际争霸、魔兽争霸</td>
-<td align="left"></td>
+<td style="text-align:left">RTS</td>
+<td style="text-align:left">星际争霸、魔兽争霸</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left">MMO</td>
-<td align="left">全民斗战神</td>
-<td align="left">魔兽世界、轩辕传奇、天涯明月刀</td>
+<td style="text-align:left">MMO</td>
+<td style="text-align:left">全民斗战神</td>
+<td style="text-align:left">魔兽世界、轩辕传奇、天涯明月刀</td>
 </tr>
 <tr>
-<td align="left">RAC</td>
-<td align="left"></td>
-<td align="left">QQ飞车</td>
+<td style="text-align:left">RAC</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">QQ飞车</td>
 </tr>
 <tr>
-<td align="left">其他</td>
-<td align="left">街机、主机模拟器、刀塔传奇、剑与家园</td>
-<td align="left">各种类型都有</td>
+<td style="text-align:left">其他</td>
+<td style="text-align:left">街机、主机模拟器、刀塔传奇、剑与家园</td>
+<td style="text-align:left">各种类型都有</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>大量玩家参与的游戏只能使用状态同步。要求及时性高，</p>
 <p>本文就记录一下同步的差异，各项资料都来自于baidu搜索的。其实在google上搜索，也没有看老外大量使用 state sync，frame sync，frame lock sync 之类的文章。可能是我使用的词汇有问题。</p>
 <h2 id="网络同步模式的演化史"><a href="#网络同步模式的演化史" class="headerlink" title="网络同步模式的演化史"></a>网络同步模式的演化史</h2><p>参考文档有：《The-DOOM-III-Network-Architecture》</p>
@@ -296,7 +299,7 @@
 <p>FPS实体列表：</p>
 <p>玩家，怪物，导弹，门。</p>
 <p>参与者去管理和维护自由的那份拷贝，一种实现是通过施加一致性的逻辑推动所有的状态去同步地更新，另一种实现是随着时间的流逝不断地比较和发送最小的状态变化和差异。</p>
-<h3 id="P2P模型"><a href="#P2P模型" class="headerlink" title="P2P模型"></a>P2P模型</h3><p>Doom（1994）的网络模型是完全同步的P2P系统。每秒对玩家动作（move&#x2F;turn&#x2F;use&#x2F;fire, etc.) 采样 35 次 (得到一个 tick command) 并发送给其他所有玩家，每个玩家都接受来自所有玩家的 tick command，当某个玩家收到所有其他玩家的下一帧 tick command 后，该玩家的本地游戏状态推进到下一帧。这样的后果是全局性的延迟 (每个玩家从做出动作到收到反馈的响应时间) 由<strong>最慢网络</strong>连接的玩家决定。</p>
+<h3 id="P2P模型"><a href="#P2P模型" class="headerlink" title="P2P模型"></a>P2P模型</h3><p>Doom（1994）的网络模型是完全同步的P2P系统。每秒对玩家动作（move/turn/use/fire, etc.) 采样 35 次 (得到一个 tick command) 并发送给其他所有玩家，每个玩家都接受来自所有玩家的 tick command，当某个玩家收到所有其他玩家的下一帧 tick command 后，该玩家的本地游戏状态推进到下一帧。这样的后果是全局性的延迟 (每个玩家从做出动作到收到反馈的响应时间) 由<strong>最慢网络</strong>连接的玩家决定。</p>
 <p>存在问题清单：</p>
 <ol>
 <li>所有玩家都需要主动维护完美的状态同步，由于硬件不同(有时甚至是未初始化的变量)等引入的不一致，会让每个参与者细微的不同被累积下来，导致参与者之间显著的视觉和逻辑的差异。这种不一致的引入很难查，因为只有当它们累积起来才会有明显的效果，而等感觉到差异时，真正的问题已经发生很久了。</li>
@@ -306,14 +309,14 @@
 <li>由于玩家本地维护了所有的状态，方便了作弊的实现。</li>
 </ol>
 <h3 id="Packet-Server（包的简单中继）"><a href="#Packet-Server（包的简单中继）" class="headerlink" title="Packet Server（包的简单中继）"></a>Packet Server（包的简单中继）</h3><p>P2P模型上增加Packet Server，将接受到的tick command转发，这样减少了客户端直接的链接。能解决某个玩家慢的问题。</p>
-<h3 id="Client-Server-（Quake-I-II-III）"><a href="#Client-Server-（Quake-I-II-III）" class="headerlink" title="Client Server （Quake I&#x2F;II&#x2F;III）"></a>Client Server （Quake I&#x2F;II&#x2F;III）</h3><p>Quake I&#x2F;II&#x2F;III 实现了比较典型的 C&#x2F;S 架构 (1996)，这个模型中服务器负责所有的逻辑判断，客户端本质上只是一个渲染终端。玩家把自己的操作和输入发送给服务器，收到一个实体列表用于渲染。服务器把压缩后的快照发给客户端 (10-20Hz) 客户端使用这些快照来插值或推导出平滑连贯的体验 (interpolates between, or extrapolates from the last two snapshots)。</p>
+<h3 id="Client-Server-（Quake-I-II-III）"><a href="#Client-Server-（Quake-I-II-III）" class="headerlink" title="Client Server （Quake I/II/III）"></a>Client Server （Quake I/II/III）</h3><p>Quake I/II/III 实现了比较典型的 C/S 架构 (1996)，这个模型中服务器负责所有的逻辑判断，客户端本质上只是一个渲染终端。玩家把自己的操作和输入发送给服务器，收到一个实体列表用于渲染。服务器把压缩后的快照发给客户端 (10-20Hz) 客户端使用这些快照来插值或推导出平滑连贯的体验 (interpolates between, or extrapolates from the last two snapshots)。</p>
 <p>在一般情况下(比如在古代的引擎Quake 1中)，客户端收集到用户命令后发送给服务器，此后就在等待服务器返回新的游戏状态。这是很笨的。在Quake 3中，客户端不会傻等，而会预测可能的游戏状态，其实预测状态所用的代码跟服务器端的代码是一样的，所以服务器端的状态和客户端的状态往往是一致的。如果确实不一致，则“服务器为准原则”将生效。</p>
 <p>“Quake III Arena 网络协议规范(非官方)”</p>
-<h3 id="响应性和预判"><a href="#响应性和预判" class="headerlink" title="响应性和预判"></a>响应性和预判</h3><p>这个模型同样有响应性问题，从输入的采样和发送到屏幕反馈同样需要一个 roundtrip 延时。为了克服延时客户端预测了玩家的下一步行动 (在之前的 blog中有提到)。玩家的输入在发出去的同时，本地立刻处理，而环境状态做了上文说到的 interpolate&#x2F;extrapolate，也就是说玩家看到的自身是 (可预计的) 操作结果，而其他人是过去的状态。(这一点与魔兽世界是一致的) 这个 C&#x2F;S 架构是异步的。对任何一个玩家而言，服务器的全局模拟落后于该玩家在本地的实际操作快照，而环境的状态同步更是落后于全局模拟。</p>
+<h3 id="响应性和预判"><a href="#响应性和预判" class="headerlink" title="响应性和预判"></a>响应性和预判</h3><p>这个模型同样有响应性问题，从输入的采样和发送到屏幕反馈同样需要一个 roundtrip 延时。为了克服延时客户端预测了玩家的下一步行动 (在之前的 blog中有提到)。玩家的输入在发出去的同时，本地立刻处理，而环境状态做了上文说到的 interpolate/extrapolate，也就是说玩家看到的自身是 (可预计的) 操作结果，而其他人是过去的状态。(这一点与魔兽世界是一致的) 这个 C/S 架构是异步的。对任何一个玩家而言，服务器的全局模拟落后于该玩家在本地的实际操作快照，而环境的状态同步更是落后于全局模拟。</p>
 <p>这个模型允许中途加入和退出 (除了做 server 的玩家，如果不是 dedicated 的话)。由于玩家的判断基于的是其他玩家过去的状态，实际的击中检测发生在晚些时候的服务器上，在延时较高的情况下，玩家需要不断考虑延时状况并打提前量才能在未来的实际判断中击中对方。</p>
 <h3 id="延迟补偿的潜在问题"><a href="#延迟补偿的潜在问题" class="headerlink" title="延迟补偿的潜在问题"></a>延迟补偿的潜在问题</h3><p>半条命在这个基础上引入了一种特定的延迟补偿 (lag compensation)，当玩家向某个目标 (若干毫秒前的状态) 射击时，做实际检测的服务器会采用该目标若干毫秒前的状态来检验是否击中。这么做需要服务器把之前一小段时间的状态持续地保存下来，这样不仅增加了实现复杂度，而且导致了某种程度的不一致性。延时高的玩家反而更容易因为补偿获得更有利的判断，严重影响游戏体验 (实例见这里第六页末尾，值得一读)。这种补偿只能对目标的位置回滚，而所有其他环境状态的改变却已无法倒退，这也会影响实际的体验。</p>
 <h3 id="工程问题：逻辑和预测代码分离"><a href="#工程问题：逻辑和预测代码分离" class="headerlink" title="工程问题：逻辑和预测代码分离"></a>工程问题：逻辑和预测代码分离</h3><p>Q3 里服务器上跑的逻辑代码 (“game code”) 跟客户端跑的渲染和预测代码 (“client game code”) 实现在物理上不同的模块里，但却需要对彼此的内部细节非常清楚 (才能保证预测和实际行为的一致性)。这个强耦合使得扩展游戏变得很困难，这也是难以实现单人游戏模式的原因之一。有时使用 Q3 引擎的游戏得为多人模式和单人模式发布两个不同的 exe，其中单人模式直接使用 game code 来简化逻辑流程。</p>
-<h3 id="插值-推导的局限性"><a href="#插值-推导的局限性" class="headerlink" title="插值&#x2F;推导的局限性"></a>插值&#x2F;推导的局限性</h3><p>由于快照的接收频率往往低于实际渲染的帧速，就需要上文提到的 interpolate&#x2F;extrapolate，考虑物理模拟和交互的话，(为了跟服务器逻辑一致) 推导会增加额外的实现复杂度。这些插值对位置数据很有效，但其他一些状态很难插值，有时性能也是问题，比如四元数的 slerp 就挺费的 (上一篇末尾提到了相关的优化)</p>
+<h3 id="插值-推导的局限性"><a href="#插值-推导的局限性" class="headerlink" title="插值/推导的局限性"></a>插值/推导的局限性</h3><p>由于快照的接收频率往往低于实际渲染的帧速，就需要上文提到的 interpolate/extrapolate，考虑物理模拟和交互的话，(为了跟服务器逻辑一致) 推导会增加额外的实现复杂度。这些插值对位置数据很有效，但其他一些状态很难插值，有时性能也是问题，比如四元数的 slerp 就挺费的 (上一篇末尾提到了相关的优化)</p>
 <h3 id="压缩、状态同步冗余、固定字长"><a href="#压缩、状态同步冗余、固定字长" class="headerlink" title="压缩、状态同步冗余、固定字长"></a>压缩、状态同步冗余、固定字长</h3><p>Quake III 里只有在 PVS 内的实体才会被同步状态，而且被同步的是压缩后的与上一次同步比较的差值 (delta compressed relative to the entity states from a previous snapshot) 这导致的结果是如果一个物体频繁进出 PVS 就没法做 delta 比较，总是发送完整状态，会导致不少冗余的同步量。</p>
 <blockquote>
 <p>为了提高网络通讯速度，降低带宽，Quake 3中采用了压缩的技术。这并不是指用一些压缩算法来直接压缩数据。而是指，在传送游戏状态数据时，只传送改变了的游戏状态，而不是全部发送过来。一般来说，这个叫做Delta技术。</p>
@@ -327,7 +330,7 @@
 <li>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/105826545">帧同步和状态同步该怎么选（下）</a></li>
 <li>[3] <a target="_blank" rel="noopener" href="https://zentia.github.io/2019/04/22/frame-sync/">帧锁定同步.按帧同步.状态同步</a></li>
 <li>[4] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38468615">帧同步联机战斗（预测，快照，回滚）</a></li>
-<li>[5] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/21705866">Doom&#x2F;Quake I&#x2F;II&#x2F;III网络模型演化</a></li>
+<li>[5] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/21705866">Doom/Quake I/II/III网络模型演化</a></li>
 <li>[6] <a target="_blank" rel="noopener" href="https://github.com/id-Software/DOOM">Doom源码</a></li>
 <li>[7] <a target="_blank" rel="noopener" href="https://fabiensanglard.net/doom3_documentation/The-DOOM-III-Network-Architecture.pdf">The-DOOM-III-Network-Architecture</a></li>
 <li>[8] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/130702310">细谈网络同步在游戏历史中的发展变化</a></li>
@@ -439,7 +442,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

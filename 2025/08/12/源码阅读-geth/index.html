@@ -228,31 +228,27 @@
       
         <p>阅读源代码，学习go语言如何写大框架。</p>
 <span id="more"></span>
-
 <p>路线图</p>
-<p>“main.go → 初始化 → 启动节点 → 启动 P2P&#x2F;RPC&#x2F;共识”的全路径。</p>
+<p>“main.go → 初始化 → 启动节点 → 启动 P2P/RPC/共识”的全路径。</p>
 <h2 id="1️⃣-找到入口"><a href="#1️⃣-找到入口" class="headerlink" title="1️⃣ 找到入口"></a>1️⃣ 找到入口</h2><p><code>cmd/geth/main.go</code></p>
-<p>全部服务器都是从 *cli.App 派生出来。 使用了 “github.com&#x2F;urfave&#x2F;cli&#x2F;v2” 库。</p>
-<p>CLI11<br>	•	网址：<a target="_blank" rel="noopener" href="https://github.com/CLIUtils/CLI11">https://github.com/CLIUtils/CLI11</a></p>
-<pre><code>•	现代 C++17 设计，支持子命令、参数验证、自动生成帮助信息。
+<p>全部服务器都是从 *cli.App 派生出来。 使用了 “github.com/urfave/cli/v2” 库。</p>
+<p>CLI11<br>    •    网址：<a target="_blank" rel="noopener" href="https://github.com/CLIUtils/CLI11">https://github.com/CLIUtils/CLI11</a></p>
+<pre><code>•    现代 C++17 设计，支持子命令、参数验证、自动生成帮助信息。
 
-•	使用简单，支持多种参数类型，解析丰富。
+•    使用简单，支持多种参数类型，解析丰富。
 
-•	类似 Go 的 urfave/cli，功能全面。
-</code></pre>
-<p>里面有个version的子命令，用于记录当前的版本，git commit信息之类的。我们这里也可以仿照制作一个。</p>
+•    类似 Go 的 urfave/cli，功能全面。
+</code></pre><p>里面有个version的子命令，用于记录当前的版本，git commit信息之类的。我们这里也可以仿照制作一个。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> version</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    GitCommit <span class="type">string</span> <span class="comment">// commit hash</span></span><br><span class="line">    GitDate   <span class="type">string</span> <span class="comment">// commit date</span></span><br><span class="line">    BuildTime <span class="type">string</span> <span class="comment">// build time (额外的构建时间，可选)</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;your_project/version&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Printf(<span class="string">&quot;Git Commit: %s\n&quot;</span>, version.GitCommit)</span><br><span class="line">    fmt.Printf(<span class="string">&quot;Git Date:   %s\n&quot;</span>, version.GitDate)</span><br><span class="line">    fmt.Printf(<span class="string">&quot;Build Time: %s\n&quot;</span>, version.BuildTime)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go build -ldflags <span class="string">&quot;\</span></span><br><span class="line"><span class="string">    -X your_project/version.GitCommit=<span class="subst">$(git rev-parse HEAD)</span> \</span></span><br><span class="line"><span class="string">    -X your_project/version.GitDate=<span class="subst">$(git show -s --format=%cd --date=format:%Y-%m-%d)</span> \</span></span><br><span class="line"><span class="string">    -X your_project/version.BuildTime=<span class="subst">$(date +%Y-%m-%dT%H:%M:%S)</span>&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>main() 函数会调用 cmd&#x2F;utils 来解析命令行参数，然后进入 geth 的 app.Run()。</p>
+<p>main() 函数会调用 cmd/utils 来解析命令行参数，然后进入 geth 的 app.Run()。</p>
 <p>主要作用：CLI 初始化 → 配置解析 → 启动服务（节点、控制台、RPC 等）。</p>
 <h1 id="Geth-启动流程图"><a href="#Geth-启动流程图" class="headerlink" title="Geth 启动流程图"></a>Geth 启动流程图</h1><pre class="mermaid">flowchart TD
     A[main.go - 程序入口] --> B[解析命令行参数 & 构建 node.Config]
     B --> C[makeFullNode() → node.New(config)]
     C --> D[初始化 Node 基础结构 & 服务注册表]
     D --> E[stack.Start() - 启动节点]
-    
+
     subgraph Ethereum 服务
         E --> F[eth.New() - 初始化 Ethereum 服务]
         F --> G[Blockchain 管理器 (core/blockchain.go)]
@@ -287,105 +283,99 @@
 
 <pre class="mermaid">sequenceDiagram
     loop events扫描
-		alt http定时拉取,runScaner
-		scaner ->> process: 定时获取events
-		else websocket订阅,runSubscriber
-		scaner -->> process: 第三方主动推送events
-		end
+        alt http定时拉取,runScaner
+        scaner ->> process: 定时获取events
+        else websocket订阅,runSubscriber
+        scaner -->> process: 第三方主动推送events
+        end
 
-		process ->> process: abi根据事件ID解析具体事件内容
-		alt 订单事件,procOrderEventLog
-		process ->> repository: 市价单、现价单
-		par 用户数据
-			repository ->> db: 订单表，事件表
-		end
-		else 仓位事件,procPositionEventLog
-		process -->> repository: 开仓、平仓
-		par 用户数据
-			repository ->> db: 成交表，事件表
-			repository ->> db: 成交积分，推荐积分
-		end
-		else 池子事件,procPoolEventLog
-		process -x repository: 添加、移除流动性
-		par 用户数据
-			repository ->> db: 池子订单表，事件表
-		end
-		end
+        process ->> process: abi根据事件ID解析具体事件内容
+        alt 订单事件,procOrderEventLog
+        process ->> repository: 市价单、现价单
+        par 用户数据
+            repository ->> db: 订单表，事件表
+        end
+        else 仓位事件,procPositionEventLog
+        process -->> repository: 开仓、平仓
+        par 用户数据
+            repository ->> db: 成交表，事件表
+            repository ->> db: 成交积分，推荐积分
+        end
+        else 池子事件,procPoolEventLog
+        process -x repository: 添加、移除流动性
+        par 用户数据
+            repository ->> db: 池子订单表，事件表
+        end
+        end
 
-		process ->> repository: 更新已消费区块号
-	end
+        process ->> repository: 更新已消费区块号
+    end
 
     loop 合约扫描,pairStatSchedule
-		scaner ->> process: 定时获取池子统计数据
-		alt 是否零点
-		process ->> repository: 写入天表daily
-		else
-		process -->> repository: 写入分钟表timely
-		end
+        scaner ->> process: 定时获取池子统计数据
+        alt 是否零点
+        process ->> repository: 写入天表daily
+        else
+        process -->> repository: 写入分钟表timely
+        end
     end
 
-	loop tx扫描,chainTxCostSchedule
-		scaner ->> repository: 定时获取tx的gas
-		alt 是否用户下单
-		repository ->> db: 用户tx_cost累加
-		end
+    loop tx扫描,chainTxCostSchedule
+        scaner ->> repository: 定时获取tx的gas
+        alt 是否用户下单
+        repository ->> db: 用户tx_cost累加
+        end
     end
 
-	loop block扫描,chainBlockSchedule
-		scaner ->> repository: 定时获取区块中失败的tx的gas
-		alt 是否用户下单
-		repository ->> db: 用户tx_cost_failed累加
-		end
+    loop block扫描,chainBlockSchedule
+        scaner ->> repository: 定时获取区块中失败的tx的gas
+        alt 是否用户下单
+        repository ->> db: 用户tx_cost_failed累加
+        end
     end
 
-	loop 统计数据推送,procDailyStat
-		statistics ->> repository: 北京时间8点推送统计数据
-		alt LP积分汇总
-		repository ->> db: 用户stacked_points累加
-		end
-		alt NFT快照
-		repository ->> db: 用户积分累加
-		end
-	end 
+    loop 统计数据推送,procDailyStat
+        statistics ->> repository: 北京时间8点推送统计数据
+        alt LP积分汇总
+        repository ->> db: 用户stacked_points累加
+        end
+        alt NFT快照
+        repository ->> db: 用户积分累加
+        end
+    end 
 
     Note over repository: 缓存数据，批量写入表</pre>
 
 
-<h2 id="2️⃣-配置和启动流程"><a href="#2️⃣-配置和启动流程" class="headerlink" title="2️⃣ 配置和启动流程"></a>2️⃣ 配置和启动流程</h2><p>•	配置结构：</p>
+<h2 id="2️⃣-配置和启动流程"><a href="#2️⃣-配置和启动流程" class="headerlink" title="2️⃣ 配置和启动流程"></a>2️⃣ 配置和启动流程</h2><p>•    配置结构：</p>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node/config.go</span><br><span class="line">eth/config.go</span><br></pre></td></tr></table></figure>
+<p>•    启动节点：</p>
+<pre><code>•    node.New() → 创建节点实例
 
-<p>•	启动节点：</p>
-<pre><code>•	node.New() → 创建节点实例
+•    stack.Register() → 注册子服务（如 Ethereum 协议）
 
-•	stack.Register() → 注册子服务（如 Ethereum 协议）
-
-•	stack.Start() → 启动服务（会开启 P2P、RPC、共识等）
-</code></pre>
-<h2 id="3️⃣-网络层（P2P）"><a href="#3️⃣-网络层（P2P）" class="headerlink" title="3️⃣ 网络层（P2P）"></a>3️⃣ 网络层（P2P）</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2p/</span><br></pre></td></tr></table></figure>
-
-<p>核心文件：<br>	•	server.go：P2P 服务管理器，负责节点发现（discovery）、握手、数据传输。</p>
-<pre><code>•	peer.go：单个节点的连接和会话处理。
-</code></pre>
-<p>建议先看 节点启动时是怎么找到其他节点的（Kademlia DHT 发现协议）。</p>
+•    stack.Start() → 启动服务（会开启 P2P、RPC、共识等）
+</code></pre><h2 id="3️⃣-网络层（P2P）"><a href="#3️⃣-网络层（P2P）" class="headerlink" title="3️⃣ 网络层（P2P）"></a>3️⃣ 网络层（P2P）</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2p/</span><br></pre></td></tr></table></figure>
+<p>核心文件：<br>    •    server.go：P2P 服务管理器，负责节点发现（discovery）、握手、数据传输。</p>
+<pre><code>•    peer.go：单个节点的连接和会话处理。
+</code></pre><p>建议先看 节点启动时是怎么找到其他节点的（Kademlia DHT 发现协议）。</p>
 <h2 id="4️⃣-协议层（Ethereum）"><a href="#4️⃣-协议层（Ethereum）" class="headerlink" title="4️⃣ 协议层（Ethereum）"></a>4️⃣ 协议层（Ethereum）</h2><p>目录：</p>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eth/</span><br></pre></td></tr></table></figure>
-
-<p>•	backend.go：Ethereum 服务的主要逻辑（同步区块、处理交易、共识）。</p>
-<p>•	handler.go：处理来自 P2P 的 Ethereum 协议消息（新区块、交易广播等）。</p>
+<p>•    backend.go：Ethereum 服务的主要逻辑（同步区块、处理交易、共识）。</p>
+<p>•    handler.go：处理来自 P2P 的 Ethereum 协议消息（新区块、交易广播等）。</p>
 <h2 id="5️⃣-共识层"><a href="#5️⃣-共识层" class="headerlink" title="5️⃣ 共识层"></a>5️⃣ 共识层</h2><p>Geth 默认是 Ethash（PoW），但现在主网切到 PoS（Beacon Chain），PoW 部分成了历史代码。</p>
-<p>•	PoW 共识：consensus&#x2F;ethash&#x2F;</p>
-<p>•	PoS 相关的：现在主要通过外部 Beacon Chain 驱动执行层，可以在 consensus&#x2F; 下找 clique（PoA 测试链） 或 ethash（历史 PoW）。</p>
+<p>•    PoW 共识：consensus/ethash/</p>
+<p>•    PoS 相关的：现在主要通过外部 Beacon Chain 驱动执行层，可以在 consensus/ 下找 clique（PoA 测试链） 或 ethash（历史 PoW）。</p>
 <h2 id="6️⃣-区块链存储"><a href="#6️⃣-区块链存储" class="headerlink" title="6️⃣ 区块链存储"></a>6️⃣ 区块链存储</h2><p>关键文件：</p>
-<p>•	blockchain.go：区块链管理核心（区块验证、插入、重组）。</p>
-<p>•	tx_pool.go：交易池逻辑。</p>
-<p>•	state&#x2F;：账户状态（Trie 存储）。</p>
-<p>•	rawdb&#x2F;：LevelDB 数据存储接口。</p>
+<p>•    blockchain.go：区块链管理核心（区块验证、插入、重组）。</p>
+<p>•    tx_pool.go：交易池逻辑。</p>
+<p>•    state/：账户状态（Trie 存储）。</p>
+<p>•    rawdb/：LevelDB 数据存储接口。</p>
 <h2 id="7️⃣-RPC-层"><a href="#7️⃣-RPC-层" class="headerlink" title="7️⃣ RPC 层"></a>7️⃣ RPC 层</h2><p>目录：</p>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpc/</span><br><span class="line">internal/web3ext/</span><br></pre></td></tr></table></figure>
-
-<p>•	提供 JSON-RPC 服务给外部（例如 web3.js）。</p>
-<p>•	rpc&#x2F;server.go 是启动点。</p>
-<p>•	eth&#x2F;api.go、eth&#x2F;api_backend.go 提供具体方法（eth_getBlockByNumber 等）。</p>
+<p>•    提供 JSON-RPC 服务给外部（例如 web3.js）。</p>
+<p>•    rpc/server.go 是启动点。</p>
+<p>•    eth/api.go、eth/api_backend.go 提供具体方法（eth_getBlockByNumber 等）。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">flowchart TD</span><br><span class="line">    A[cmd/geth/main.go] --&gt; B[解析命令行参数 &amp; 配置]</span><br><span class="line">    B --&gt; C[创建 Node 实例\nnode.New()]</span><br><span class="line">    C --&gt; D[注册 Ethereum 服务\nstack.Register(eth)]</span><br><span class="line">    D --&gt; E[启动节点 stack.Start()]</span><br><span class="line"></span><br><span class="line">    subgraph Ethereum 服务启动</span><br><span class="line">        E --&gt; F[eth.New() - 创建以太坊服务]</span><br><span class="line">        F --&gt; G[初始化区块链 core/blockchain.go]</span><br><span class="line">        F --&gt; H[初始化交易池 core/tx_pool.go]</span><br><span class="line">        F --&gt; I[初始化共识 consensus/*]</span><br><span class="line">        F --&gt; J[初始化 P2P 协议 eth/handler.go]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph P2P 网络</span><br><span class="line">        J --&gt; K[p2p/server.go - 启动 P2P Server]</span><br><span class="line">        K --&gt; L[节点发现\nKademlia DHT]</span><br><span class="line">        K --&gt; M[握手 &amp; 同步协议]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph 区块链同步</span><br><span class="line">        M --&gt; N[区块同步器 eth/sync.go]</span><br><span class="line">        N --&gt; O[区块验证\ncore/block_validator.go]</span><br><span class="line">        O --&gt; P[写入数据库 rawdb/*]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph RPC 服务</span><br><span class="line">        E --&gt; Q[rpc/server.go - 启动 RPC]</span><br><span class="line">        Q --&gt; R[注册 API\neth/api.go]</span><br><span class="line">        R --&gt; S[对外提供 JSON-RPC/HTTP/WebSocket]</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
 
     </div>
@@ -493,7 +483,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

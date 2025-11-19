@@ -228,54 +228,48 @@
 <p>在开发国际化应用时，多语言（i18n）支持是一个不可忽视的需求。本文将介绍如何在 Golang 项目中优雅地实现多语言支持，特别适用于如 Telegram Bot 等多语言交互系统。</p>
 <p>⸻</p>
 <p>📦 使用 go-i18n 实现多语言</p>
-<p>go-i18n 是 Golang 最成熟、最广泛使用的国际化库，支持 YAML&#x2F;JSON 格式的翻译文件。</p>
+<p>go-i18n 是 Golang 最成熟、最广泛使用的国际化库，支持 YAML/JSON 格式的翻译文件。</p>
 <p>⸻</p>
 <p>🧱 项目结构设计</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mybot/</span><br><span class="line">├── main.go</span><br><span class="line">├── i18n/</span><br><span class="line">│   └── i18n.go            <span class="comment"># 初始化和翻译调用逻辑</span></span><br><span class="line">├── locales/               <span class="comment"># 翻译文件</span></span><br><span class="line">│   ├── active.zh.yaml     <span class="comment"># 中文</span></span><br><span class="line">│   ├── active.en.yaml     <span class="comment"># 英文</span></span><br><span class="line">│   ├── active.ja.yaml     <span class="comment"># 日语</span></span><br><span class="line">│   ├── active.ru.yaml     <span class="comment"># 俄语</span></span><br><span class="line">│   └── active.uk.yaml     <span class="comment"># 乌克兰语</span></span><br></pre></td></tr></table></figure>
-
 <p>⸻</p>
 <p>🚀 使用步骤</p>
 <ol>
 <li>安装 go-i18n</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/nicksnyder/go-i18n/v2/goi18n</span><br></pre></td></tr></table></figure>
-
 <p>⸻</p>
-<ol start="2">
+<ol>
 <li>编写语言文件</li>
 </ol>
-<p>示例：locales&#x2F;active.zh.yaml</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">id:</span> <span class="string">welcome</span></span><br><span class="line">  <span class="attr">translation:</span> <span class="string">&quot;欢迎你，<span class="template-variable">&#123;&#123;.Name&#125;&#125;</span>！&quot;</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">id:</span> <span class="string">choose_language</span></span><br><span class="line">  <span class="attr">translation:</span> <span class="string">&quot;请选择你的语言：&quot;</span></span><br></pre></td></tr></table></figure>
-<p>示例：locales&#x2F;active.en.yaml</p>
+<p>示例：locales/active.zh.yaml<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">id:</span> <span class="string">welcome</span></span><br><span class="line">  <span class="attr">translation:</span> <span class="string">&quot;欢迎你，<span class="template-variable">&#123;&#123;.Name&#125;&#125;</span>！&quot;</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">id:</span> <span class="string">choose_language</span></span><br><span class="line">  <span class="attr">translation:</span> <span class="string">&quot;请选择你的语言：&quot;</span></span><br></pre></td></tr></table></figure><br>示例：locales/active.en.yaml</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">id:</span> <span class="string">welcome</span></span><br><span class="line">  <span class="attr">translation:</span> <span class="string">&quot;Welcome, <span class="template-variable">&#123;&#123;.Name&#125;&#125;</span>!&quot;</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">id:</span> <span class="string">choose_language</span></span><br><span class="line">  <span class="attr">translation:</span> <span class="string">&quot;Please choose your language:&quot;</span></span><br></pre></td></tr></table></figure>
 <p>（其他语言同理）</p>
 <p>⸻</p>
-<ol start="3">
+<ol>
 <li>初始化多语言系统</li>
 </ol>
-<p>i18n&#x2F;i18n.go</p>
+<p>i18n/i18n.go</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> i18n</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;embed&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/nicksnyder/go-i18n/v2/i18n&quot;</span></span><br><span class="line">    <span class="string">&quot;golang.org/x/text/language&quot;</span></span><br><span class="line">    <span class="string">&quot;gopkg.in/yaml.v2&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//go:embed ../locales/*.yaml</span></span><br><span class="line"><span class="keyword">var</span> localeFS embed.FS</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bundle *i18n.Bundle</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">InitI18n</span><span class="params">()</span></span> &#123;</span><br><span class="line">    bundle = i18n.NewBundle(language.English)</span><br><span class="line">    bundle.RegisterUnmarshalFunc(<span class="string">&quot;yaml&quot;</span>, yaml.Unmarshal)</span><br><span class="line"></span><br><span class="line">    entries, _ := localeFS.ReadDir(<span class="string">&quot;locales&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> _, e := <span class="keyword">range</span> entries &#123;</span><br><span class="line">        data, _ := localeFS.ReadFile(<span class="string">&quot;locales/&quot;</span> + e.Name())</span><br><span class="line">        bundle.ParseMessageFileBytes(data, e.Name())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetMessage</span><span class="params">(lang, msgID <span class="type">string</span>, data <span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;)</span></span> <span class="type">string</span> &#123;</span><br><span class="line">    localizer := i18n.NewLocalizer(bundle, lang)</span><br><span class="line">    msg, err := localizer.Localize(&amp;i18n.LocalizeConfig&#123;</span><br><span class="line">        MessageID:    msgID,</span><br><span class="line">        TemplateData: data,</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> msgID <span class="comment">// fallback</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> msg</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>⸻</p>
-<ol start="4">
+<ol>
 <li>使用翻译内容</li>
 </ol>
 <p>在业务逻辑中使用：</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">i18n.InitI18n()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HandleStart</span><span class="params">(lang <span class="type">string</span>, name <span class="type">string</span>)</span></span> <span class="type">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> i18n.GetMessage(lang, <span class="string">&quot;welcome&quot;</span>, <span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;&#123;</span><br><span class="line">        <span class="string">&quot;Name&quot;</span>: name,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>⸻</p>
 <p>🔄 自动翻译建议</p>
 <p>建议仅手动维护中文文件 active.zh.yaml，然后通过脚本或翻译服务生成其他语言：</p>
-<p>推荐自动翻译工具：<br>	•	🧠 ChatGPT API<br>	•	🌐 Google Translate API<br>	•	🛠️ 自定义 Golang&#x2F;YAML 脚本解析与写入</p>
+<p>推荐自动翻译工具：<br>    •    🧠 ChatGPT API<br>    •    🌐 Google Translate API<br>    •    🛠️ 自定义 Golang/YAML 脚本解析与写入</p>
 <p>这样可以避免重复劳动，提升翻译一致性与效率。</p>
 <p>⸻</p>
 <p>🌐 Telegram 中的语言码</p>
-<p>语言	语言码<br>英语	en<br>中文	zh<br>日语	ja<br>俄语	ru<br>乌克兰语	uk</p>
+<p>语言    语言码<br>英语    en<br>中文    zh<br>日语    ja<br>俄语    ru<br>乌克兰语    uk</p>
 <p>可通过 update.Message.From.LanguageCode 获取 Telegram 用户的语言。</p>
 <p>⸻</p>
-<p>✅ 总结<br>	•	使用 go-i18n 实现多语言是 Golang 项目中最推荐的方式；<br>	•	只需维护主语言（如中文）翻译文件，其他语言通过脚本生成；<br>	•	代码中统一通过 MessageID 和模板数据使用文本，避免硬编码；<br>	•	项目结构清晰，易于扩展和维护。</p>
+<p>✅ 总结<br>    •    使用 go-i18n 实现多语言是 Golang 项目中最推荐的方式；<br>    •    只需维护主语言（如中文）翻译文件，其他语言通过脚本生成；<br>    •    代码中统一通过 MessageID 和模板数据使用文本，避免硬编码；<br>    •    项目结构清晰，易于扩展和维护。</p>
 <p>⸻</p>
-<p>📘 推荐参考<br>	•	<a target="_blank" rel="noopener" href="https://github.com/nicksnyder/go-i18n">go-i18n GitHub</a><br>	•	<a target="_blank" rel="noopener" href="https://pkg.go.dev/golang.org/x/text/language">golang.org&#x2F;x&#x2F;text</a></p>
+<p>📘 推荐参考<br>    •    <a target="_blank" rel="noopener" href="https://github.com/nicksnyder/go-i18n">go-i18n GitHub</a><br>    •    <a target="_blank" rel="noopener" href="https://pkg.go.dev/golang.org/x/text/language">golang.org/x/text</a></p>
 <p>⸻</p>
 <p>如需我进一步提供：自动翻译脚本（中文 → 多语言），欢迎继续留言。</p>
 <p>是否还需要我为这个项目生成一个可运行的 Demo 项目？</p>
@@ -385,7 +379,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
