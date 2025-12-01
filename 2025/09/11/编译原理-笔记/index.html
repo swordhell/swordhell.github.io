@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="概述阅读一下龙书🐲。">
+  <meta name="description" content="概述  阅读一下龙书🐲。能增加计算机基础知识。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="编译原理-笔记">
 <meta property="og:url" content="https://swordhell.github.io/2025/09/11/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Abel&#39;Blog">
-<meta property="og:description" content="概述阅读一下龙书🐲。">
+<meta property="og:description" content="概述  阅读一下龙书🐲。能增加计算机基础知识。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-19T07:19:44.637Z">
+<meta property="article:modified_time" content="2025-12-01T00:36:17.091Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="Compute">
 <meta name="twitter:card" content="summary">
@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-11-19 15:19:44" itemprop="dateModified" datetime="2025-11-19T15:19:44+08:00">2025-11-19</time>
+                <time title="修改时间：2025-12-01 08:36:17" itemprop="dateModified" datetime="2025-12-01T08:36:17+08:00">2025-12-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -226,27 +226,56 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>阅读一下龙书🐲。</p>
+        <blockquote>
+<p>概述</p>
+</blockquote>
+<p>阅读一下龙书🐲。能增加计算机基础知识。</p>
 <span id="more"></span>
-<h1 id="第一章-引论"><a href="#第一章-引论" class="headerlink" title="第一章 引论"></a>第一章 引论</h1><pre class="mermaid">flowchart TB
 
-    A[源代码<br>Source Code]
+<h1 id="第一章-引论"><a href="#第一章-引论" class="headerlink" title="第一章 引论"></a>第一章 引论</h1><p>定义一门语言的规则，按照规则编写代码，将代码翻译成机器能运行的程序叫做编译器（compiler）。研究编译器的编写将涉及到<code>程序设计语言</code>、<code>计算机体系结构</code>、<code>形式语言理论</code>、<code>算法</code>和<code>软件工程</code>。</p>
+<p>介绍内容：</p>
+<ul>
+<li>语言翻译器的不同形式；</li>
+<li>在高层次上论述一个典型编译器的结构；</li>
+<li>程序设计语言和硬件体系结构的发展趋势；这些趋势将影响编译器的形式。</li>
+<li>介绍关于编译器设计和计算机科学理论的关系的一些事实，并给出编译技术在编译领域之外的应用。</li>
+<li>简单论述论述研究编译器时用到的重要程序设计语言概念。</li>
+</ul>
+<h2 id="语言处理器"><a href="#语言处理器" class="headerlink" title="语言处理器"></a>语言处理器</h2><p>一个编译器</p>
+<pre class="mermaid">flowchart TB
+	A[源代码]
+	B[编译器]
+	C[目标程序]
+	A --> B --> C</pre>
+<p>解释器结构</p>
+<pre class="mermaid">flowchart TB
+	A[源代码]
+	B[输入]
+	C[解释器]
+	D[输出]
+	A --> C
+	B --> C
+	C --> D</pre>
 
-    B[词法分析<br>Lexical Analysis]
+<pre class="mermaid">flowchart TB
 
-    C[语法分析<br>Syntax Analysis]
+    A[源代码<br>Source Code]
 
-    D[语义分析<br>Semantic Analysis]
+    B[词法分析<br>Lexical Analysis]
 
-    E[中间代码生成<br>Intermediate Code]
+    C[语法分析<br>Syntax Analysis]
 
-    F[优化<br>Optimization]
+    D[语义分析<br>Semantic Analysis]
 
-    G[目标代码生成<br>Target Code Generation]
+    E[中间代码生成<br>Intermediate Code]
 
-    H[可执行程序<br>Executable Program]
+    F[优化<br>Optimization]
 
-    A --> B --> C --> D --> E --> F --> G --> H</pre>
+    G[目标代码生成<br>Target Code Generation]
+
+    H[可执行程序<br>Executable Program]
+
+    A --> B --> C --> D --> E --> F --> G --> H</pre>
 
 <h1 id="第二章-一个简单的语法制导翻译器"><a href="#第二章-一个简单的语法制导翻译器" class="headerlink" title="第二章 一个简单的语法制导翻译器"></a>第二章 一个简单的语法制导翻译器</h1><h2 id="2-1-引言"><a href="#2-1-引言" class="headerlink" title="2.1 引言"></a>2.1 引言</h2><p>一个语言的<code>语法（syntax）</code>描述了该语言的程序都正确形式；而该语言的<code>语义（seantics）</code>则定了程序的含义，即每个程序在运行时做什么事情。将会在 <code>2.2 语法定义</code> 给出广泛使用的表示方法来描述<code>语法（synta）</code>，这个方法就是<code>上下文无关文法</code>或者<code>BNF（Backus-Naur范式）</code>。用现有的语义表示方法来描述一个语言的语义的难度大于描述语言的语法的难度。</p>
 <blockquote>
@@ -353,7 +382,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%BC%95%E8%AE%BA"><span class="nav-number">2.</span> <span class="nav-text">第一章 引论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">第二章 一个简单的语法制导翻译器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%BC%95%E8%A8%80"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%AF%AD%E6%B3%95%E5%AE%9A%E4%B9%89"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 语法定义</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%BC%95%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">第一章 引论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">语言处理器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">第二章 一个简单的语法制导翻译器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%BC%95%E8%A8%80"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%AF%AD%E6%B3%95%E5%AE%9A%E4%B9%89"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 语法定义</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

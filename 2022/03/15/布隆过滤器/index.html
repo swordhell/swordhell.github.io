@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://swordhell.github.io/2022/03/15/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/720px-Bloom_filter.svg.png">
 <meta property="og:image" content="https://swordhell.github.io/2022/03/15/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/Gemini_Generated_Image_3ygg9u3ygg9u3ygg.png">
 <meta property="article:published_time" content="2022-03-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-19T02:13:42.182Z">
+<meta property="article:modified_time" content="2025-11-26T03:58:19.078Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="golang">
 <meta property="article:tag" content="Algorithm">
@@ -196,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-11-19 10:13:42" itemprop="dateModified" datetime="2025-11-19T10:13:42+08:00">2025-11-19</time>
+                <time title="修改时间：2025-11-26 11:58:19" itemprop="dateModified" datetime="2025-11-26T11:58:19+08:00">2025-11-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,25 +231,28 @@
 
       
         <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>Bloom Filter布隆过滤器用法。</p>
-<p><img src="/2022/03/15/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/720px-Bloom_filter.svg.png" alt></p>
+<p><img src="/2022/03/15/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/720px-Bloom_filter.svg.png"></p>
 <ol>
 <li>如果被判断不是集合的，一定是真；</li>
 <li>被判断为集合的，不一定是真；</li>
 <li>不能删除数据；</li>
 </ol>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">做过一个工程数据记录</span><br><span class="line">bloom filter 加载了60,910 条数据；</span><br><span class="line">序列化成json: 111,856 长度</span><br><span class="line">内存中占用 670,955 bytes</span><br></pre></td></tr></table></figure>
-<h2 id><a href="#" class="headerlink" title></a><span id="more"></span></h2><h3 id="核心比喻：光影剧场-The-Shadow-Play"><a href="#核心比喻：光影剧场-The-Shadow-Play" class="headerlink" title="核心比喻：光影剧场 (The Shadow Play)"></a>核心比喻：光影剧场 (The Shadow Play)</h3><ol>
+
+<span id="more"></span>
+<hr>
+<h3 id="核心比喻：光影剧场-The-Shadow-Play"><a href="#核心比喻：光影剧场-The-Shadow-Play" class="headerlink" title="核心比喻：光影剧场 (The Shadow Play)"></a>核心比喻：光影剧场 (The Shadow Play)</h3><ol>
 <li>幕布：存储空间</li>
 </ol>
 <p>Bloom Filter 本质是一块巨大的黑色幕布（位数组 Bit Array），初始状态全黑（全为 0）。</p>
-<ol>
+<ol start="2">
 <li>投影：写入过程</li>
 </ol>
 <p>当“登记”一个字符串时，它经过几盏聚光灯（Hash 函数）的照射，同时在幕布的特定坐标上打下白点（置 1）。</p>
 <blockquote>
 <p><em>注：幕布不记录字符串本身，只记录它留下的光点坐标。</em></p>
 </blockquote>
-<ol>
+<ol start="3">
 <li>验票：查询逻辑</li>
 </ol>
 <p>要核验一个字符串是否“来过”，我们再次打开聚光灯照射：</p>
@@ -260,13 +263,13 @@
 </li>
 <li><p>如果落点全都是亮的：</p>
 <p>  ⚠️ 可能存在（Maybe Exists）。</p>
-<p>  逻辑：这些白点可能是它自己留下的，也可能是被之前的几个字符串凑巧共同点亮的（误判/Hash碰撞）。</p>
+<p>  逻辑：这些白点可能是它自己留下的，也可能是被之前的几个字符串凑巧共同点亮的（误判&#x2F;Hash碰撞）。</p>
 </li>
 </ul>
 <p>总结</p>
-<p>Bloom Filter 是一种<strong>“宁可错信（存在），不可漏判（不存在）”</strong>的空间压缩艺术。它牺牲了微小的准确率（存在假阳性），换取了极致的存储空间。</p>
+<p>Bloom Filter 是一种 <strong>“宁可错信（存在），不可漏判（不存在）”</strong> 的空间压缩艺术。它牺牲了微小的准确率（存在假阳性），换取了极致的存储空间。</p>
 <hr>
-<p><img src="/2022/03/15/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/Gemini_Generated_Image_3ygg9u3ygg9u3ygg.png" alt></p>
+<p><img src="/2022/03/15/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/Gemini_Generated_Image_3ygg9u3ygg9u3ygg.png"></p>
 <h2 id="一点点数学"><a href="#一点点数学" class="headerlink" title="一点点数学"></a>一点点数学</h2><p>布隆过滤器的容量应该足够大以容纳你要存储的样本数据。在这种情况下，如果你有600万个比特币地址作为样本数据，你需要考虑以下几点来确定布隆过滤器的容量：</p>
 <ol>
 <li><strong>数据量大小：</strong> 600万个比特币地址。</li>
@@ -274,18 +277,19 @@
 </ol>
 <p>布隆过滤器的容量应该足够大，以至于填充600万个比特币地址后，误判率仍然可以保持在可接受的范围内。但具体需要多大的容量取决于所选的误判率。你可以使用布隆过滤器的理论公式来估算所需的位数组大小。</p>
 <p>具体计算公式如下：</p>
-<p>$m = -\frac{n \ln p}{(\ln 2)^2}$</p>
+<p>$m &#x3D; -\frac{n \ln p}{(\ln 2)^2}$</p>
 <p>其中：</p>
 <ul>
 <li>( m ) 是位数组的大小（容量）。</li>
 <li>( n ) 是预期要插入的元素数量，即比特币地址的数量。</li>
 <li>( p ) 是所需的误判率。</li>
 </ul>
-<p>在这个例子中，( n = 600万 )，( p ) 是你选择的误判率。假设你选择了一个相对较小的误判率，比如0.001（或0.1%），那么你可以将 ( p = 0.001 ) 带入计算公式。</p>
-<p>$m = -\frac{6000000 \times \ln(0.001)}{(\ln 2)^2}$</p>
+<p>在这个例子中，( n &#x3D; 600万 )，( p ) 是你选择的误判率。假设你选择了一个相对较小的误判率，比如0.001（或0.1%），那么你可以将 ( p &#x3D; 0.001 ) 带入计算公式。</p>
+<p>$m &#x3D; -\frac{6000000 \times \ln(0.001)}{(\ln 2)^2}$</p>
 <p>计算出 ( m ) 后，你会得到所需的位数组大小（容量），你可以将其用作布隆过滤器的初始化参数之一。</p>
 <p>需要注意的是，这个计算只是一个估算，实际应用中可能需要根据实际情况进行调整。如果内存资源允许，可以选择更大的容量以减小误判率。</p>
 <h2 id="工程实践"><a href="#工程实践" class="headerlink" title="工程实践"></a>工程实践</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/bits-and-blooms/bloom/v3&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 创建一个布隆过滤器，设置容量为 1000，错误率为 0.01</span></span><br><span class="line">	filter := bloom.NewWithEstimates(<span class="number">1000</span>, <span class="number">0.01</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 添加一些元素到布隆过滤器中</span></span><br><span class="line">	filter.Add([]<span class="type">byte</span>(<span class="string">&quot;foo&quot;</span>))</span><br><span class="line">	filter.Add([]<span class="type">byte</span>(<span class="string">&quot;bar&quot;</span>))</span><br><span class="line">	filter.Add([]<span class="type">byte</span>(<span class="string">&quot;baz&quot;</span>))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 检查元素是否存在于布隆过滤器中</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;foo exists:&quot;</span>, filter.Test([]<span class="type">byte</span>(<span class="string">&quot;foo&quot;</span>))) <span class="comment">// 应该返回 true</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;hello exists:&quot;</span>, filter.Test([]<span class="type">byte</span>(<span class="string">&quot;hello&quot;</span>))) <span class="comment">// 应该返回 false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
 <li>[1]<a target="_blank" rel="noopener" href="https://github.com/bits-and-blooms/bloom">github-bloom-fight</a></li>
 </ul>
@@ -374,7 +378,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%AF%94%E5%96%BB%EF%BC%9A%E5%85%89%E5%BD%B1%E5%89%A7%E5%9C%BA-The-Shadow-Play"><span class="nav-number">2.1.</span> <span class="nav-text">核心比喻：光影剧场 (The Shadow Play)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E7%82%B9%E7%82%B9%E6%95%B0%E5%AD%A6"><span class="nav-number">3.</span> <span class="nav-text">一点点数学</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5"><span class="nav-number">4.</span> <span class="nav-text">工程实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">引用</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">概要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%AF%94%E5%96%BB%EF%BC%9A%E5%85%89%E5%BD%B1%E5%89%A7%E5%9C%BA-The-Shadow-Play"><span class="nav-number">1.1.</span> <span class="nav-text">核心比喻：光影剧场 (The Shadow Play)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E7%82%B9%E7%82%B9%E6%95%B0%E5%AD%A6"><span class="nav-number">2.</span> <span class="nav-text">一点点数学</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5"><span class="nav-number">3.</span> <span class="nav-text">工程实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
