@@ -233,22 +233,25 @@
 <p>如果想按照月来进行分组并统计 count，可以使用 DATE_FORMAT() 或数据库支持的类似函数，将时间字段转换为“年-月”的格式。以 MySQL 为例，按月分组可以这样做：</p>
 <p>SELECT DATE_FORMAT(created_at, ‘%Y-%m’) , COUNT(*) AS count<br>FROM your_table<br>GROUP BY DATE_FORMAT(created_at, ‘%Y-%m’)  ;</p>
 <p>解释：</p>
-<pre><code>•    DATE_FORMAT(created_at, &#39;%Y-%m&#39;)：将 created_at 转换为 “年-月” 格式（如 2024-10），只保留年和月部分。
-•    COUNT(*)：统计每个月的记录数。
-•    GROUP BY year_month：按转换后的 “年-月” 进行分组。
-•    ORDER BY year_month：按 “年-月” 排序输出。
-</code></pre><p>如果使用 PostgreSQL，类似操作可以用 TO_CHAR() 函数：</p>
+<pre><code>•	DATE_FORMAT(created_at, &#39;%Y-%m&#39;)：将 created_at 转换为 “年-月” 格式（如 2024-10），只保留年和月部分。
+•	COUNT(*)：统计每个月的记录数。
+•	GROUP BY year_month：按转换后的 “年-月” 进行分组。
+•	ORDER BY year_month：按 “年-月” 排序输出。
+</code></pre>
+<p>如果使用 PostgreSQL，类似操作可以用 TO_CHAR() 函数：</p>
 <p>SELECT TO_CHAR(created_at, ‘YYYY-MM’) AS year_month, COUNT(*) AS count<br>FROM your_table<br>GROUP BY year_month<br>ORDER BY year_month;</p>
 <p>这会按月统计每个月的记录数，并按时间顺序返回。<br>要按时间字段按天进行 GROUP BY 操作并统计 count，可以使用 SQL 语句中的 DATE() 函数，将时间字段转换为日期（去掉时分秒部分），然后按天进行分组。以下是一个简单的 SQL 例子，假设表名为 your_table，时间字段为 created_at：</p>
 <p>SELECT DATE(created_at) AS date, COUNT(*) AS count<br>FROM your_table<br>GROUP BY DATE(created_at)<br>ORDER BY date;</p>
 <p>解释：</p>
-<pre><code>•    DATE(created_at)：将 created_at 转换为日期，去掉时分秒。
-•    COUNT(*)：统计每一天的记录数。
-•    GROUP BY DATE(created_at)：按转换后的日期字段进行分组。
-•    ORDER BY date：按日期排序输出。
-</code></pre><p>这样，每一天的记录数将会被统计出来并按日期显示。<br><strong>DATE_FORMAT 函数解释</strong>：</p>
+<pre><code>•	DATE(created_at)：将 created_at 转换为日期，去掉时分秒。
+•	COUNT(*)：统计每一天的记录数。
+•	GROUP BY DATE(created_at)：按转换后的日期字段进行分组。
+•	ORDER BY date：按日期排序输出。
+</code></pre>
+<p>这样，每一天的记录数将会被统计出来并按日期显示。<br><strong>DATE_FORMAT 函数解释</strong>：</p>
 <p>在 MySQL 中，<code>DATE_FORMAT()</code> 是一个非常有用的日期格式化函数，它允许你将日期或日期时间类型的数据转换为指定的字符串格式。该函数的基本语法如下：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DATE_FORMAT(<span class="type">date</span>, format);</span><br></pre></td></tr></table></figure>
+
 <p>其中：</p>
 <ul>
 <li><code>date</code>：是要格式化的日期或日期时间类型的数据，可以是一个日期列、日期函数的结果或者一个日期值。</li>
@@ -276,16 +279,21 @@
 </ul>
 <p><strong>示例使用</strong>：<br>假设你有一个表 <code>orders</code>，其中包含一个 <code>order_date</code> 列，其存储的是订单日期，你可以使用 <code>DATE_FORMAT</code> 函数将其转换为不同的格式，以下是一些示例：</p>
 <ol>
-<li><p>将日期格式化为 <code>YYYY-MM-DD</code>：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> DATE_FORMAT(order_date, <span class="string">&#x27;%Y-%m-%d&#x27;</span>) <span class="keyword">AS</span> formatted_date <span class="keyword">FROM</span> orders;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将日期格式化为 <code>YYYY-MM-DD HH:MM:SS</code>：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> DATE_FORMAT(order_date, <span class="string">&#x27;%Y-%m-%d %H:%i:%s&#x27;</span>) <span class="keyword">AS</span> formatted_date_time <span class="keyword">FROM</span> orders;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将日期格式化为 <code>Month Day, Year</code>：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> DATE_FORMAT(order_date, <span class="string">&#x27;%M %d, %Y&#x27;</span>) <span class="keyword">AS</span> formatted_date <span class="keyword">FROM</span> orders;</span><br></pre></td></tr></table></figure>
-</li>
+<li>将日期格式化为 <code>YYYY-MM-DD</code>：</li>
 </ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> DATE_FORMAT(order_date, <span class="string">&#x27;%Y-%m-%d&#x27;</span>) <span class="keyword">AS</span> formatted_date <span class="keyword">FROM</span> orders;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>将日期格式化为 <code>YYYY-MM-DD HH:MM:SS</code>：</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> DATE_FORMAT(order_date, <span class="string">&#x27;%Y-%m-%d %H:%i:%s&#x27;</span>) <span class="keyword">AS</span> formatted_date_time <span class="keyword">FROM</span> orders;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>将日期格式化为 <code>Month Day, Year</code>：</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> DATE_FORMAT(order_date, <span class="string">&#x27;%M %d, %Y&#x27;</span>) <span class="keyword">AS</span> formatted_date <span class="keyword">FROM</span> orders;</span><br></pre></td></tr></table></figure>
+
+
 <p><strong>注意事项</strong>：</p>
 <ul>
 <li><code>DATE_FORMAT</code> 函数仅适用于日期或日期时间类型的数据，如果你尝试将其应用于非日期类型的数据，可能会得到意外的结果或错误。</li>
@@ -399,7 +407,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

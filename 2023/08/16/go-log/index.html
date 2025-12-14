@@ -215,8 +215,10 @@
       
         <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>记录一下log相关的知识。日志系统用于分析问题最重要了。</p>
 <span id="more"></span>
+
 <h2 id="给日志添加行号"><a href="#给日志添加行号" class="headerlink" title="给日志添加行号"></a>给日志添加行号</h2><p><a target="_blank" rel="noopener" href="https://www.golinuxcloud.com/logrus-print-function-file-name-line-number/">https://www.golinuxcloud.com/logrus-print-function-file-name-line-number/</a></p>
 <h2 id="循环日志"><a href="#循环日志" class="headerlink" title="循环日志"></a>循环日志</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">logFile := &amp;lumberjack.Logger&#123;</span><br><span class="line">	Filename:   <span class="string">&quot;log.txt&quot;</span>, <span class="comment">// 日志文件名</span></span><br><span class="line">	MaxSize:    <span class="number">10</span>,                                          <span class="comment">// 最大文件大小（MB）</span></span><br><span class="line">	MaxBackups: <span class="number">3</span>,                                           <span class="comment">// 最大备份文件数</span></span><br><span class="line">	MaxAge:     <span class="number">7</span>,                                           <span class="comment">// 保留的最大天数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="多渠道输出日志"><a href="#多渠道输出日志" class="headerlink" title="多渠道输出日志"></a>多渠道输出日志</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logrus.SetOutput(io.MultiWriter(logrus.StandardLogger().Out, logFile))</span><br></pre></td></tr></table></figure>
 
     </div>
@@ -324,7 +326,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

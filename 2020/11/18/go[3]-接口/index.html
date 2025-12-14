@@ -231,22 +231,28 @@
       
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>接口是对类型行为的抽象和概括。接口抽象的方法可以让我们函数更加灵活和适应性。中间只定义了函数类型。接口就是约定。</p>
 <span id="more"></span>
+
 <p>接口本事存储数据内容为：</p>
 <blockquote>
 <p>type: xxx<br>value: xxx</p>
 </blockquote>
 <p>定义实例</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> interfaceName <span class="keyword">interface</span> &#123;</span><br><span class="line">     Write([]<span class="type">byte</span>)</span><br><span class="line">     Read([]<span class="type">byte</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="包含nil指针的接口不是nil接口"><a href="#包含nil指针的接口不是nil接口" class="headerlink" title="包含nil指针的接口不是nil接口"></a>包含nil指针的接口不是nil接口</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="keyword">var</span> buf *bytes.Buffer</span><br><span class="line"> f(buf)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(out io.Writer)</span></span> &#123;</span><br><span class="line">  <span class="keyword">if</span> out != <span class="literal">nil</span> &#123;</span><br><span class="line">     out.Write([]<span class="type">byte</span>(<span class="string">&quot;done!\n&quot;</span>))</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>虽然已经对out做了空的判断，但是依然会崩溃。原因是这个调用f函数的时候，给了一个空的*bytes.Buffer指针。所以接口本身不是空。</p>
 <h2 id="类型断言"><a href="#类型断言" class="headerlink" title="类型断言"></a>类型断言</h2><p>x为一个interface，T为一个定义的类型。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> w io.Writer</span><br><span class="line">w = os.Stdout</span><br><span class="line">f := w.(*os.File) <span class="comment">// success</span></span><br><span class="line">e := w.(*bytes.Buffer) <span class="comment">// panic</span></span><br></pre></td></tr></table></figure>
+
 <p>如果转换失败了，将会直接造成panic。如果断言操作的对象是一个nil接口，无论被断言成什么类型都会失败。</p>
 <p>使用两个返回值方式的，第二个参数将会返回是否转换成功。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b,ok :=w.(*bytes.Buffer)</span><br></pre></td></tr></table></figure>
+
 <p>我们可以拿着ok变量来做逻辑。</p>
 <p>对于类型的switch case语句可以这样来编写</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sqlQuote</span><span class="params">(x <span class="keyword">interface</span>&#123;&#125;)</span></span> <span class="type">string</span> &#123;</span><br><span class="line">    <span class="keyword">switch</span> x:=x.(<span class="keyword">type</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="literal">nil</span>:</span><br><span class="line">         <span class="keyword">return</span> <span class="string">&quot;NULL&quot;</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">int</span>,<span class="type">uint</span>:</span><br><span class="line">         <span class="keyword">return</span> fmt.Sprintf(<span class="string">&quot;%d&quot;</span>,x)</span><br><span class="line">   <span class="keyword">default</span>:</span><br><span class="line">        <span class="built_in">panic</span>(fmt.Sprintf(<span class="string">&quot;unexpected type: %T: %v&quot;</span>,x,x))</span><br></pre></td></tr></table></figure>
+
 <h2 id="一些建议"><a href="#一些建议" class="headerlink" title="一些建议"></a>一些建议</h2><p>设计一个新的包时，先创建一个接口的集合开始，后面定义满足它们具体的类型。每个接口都实现一个。请不要这么做，这种接口是不必要去抽象。只有两个或者以上的具体类型必须以相同的方法进行处理时候才需要。ask only for what you need.（奥卡姆剃刀）</p>
 <h2 id="使用golang组合时常犯的错"><a href="#使用golang组合时常犯的错" class="headerlink" title="使用golang组合时常犯的错"></a>使用golang组合时常犯的错</h2><p>类关系：</p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/yRbZk9"><img src="https://s3.ax1x.com/2021/02/18/yRbZk9.png" alt="yRbZk9.png"></a></p>
@@ -373,7 +379,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

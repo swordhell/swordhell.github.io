@@ -233,6 +233,7 @@
         <p>借过同事的一本《go语言并发之道》一直都没有去阅读。我是非常懒惰的，开一篇笔记，督促自己将本书阅读完成。主要是抓举一些概念，然后就是理解如何组织代码。</p>
 <p>O’Reily 奥莱利 出版社，原书名：《Concurrency in Go》，IBSN 978-7-5198-2494-5. 图书馆编码 TP312</p>
 <span id="more"></span>
+
 <h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h1><p>本书一共6章节。</p>
 <p>作者罗列golang中的好处，简洁、编译快速、运行稳定、支持鸭子类型(duck typing)。最重要的还是语言级原生支持并发。</p>
 <p>作者在过去几年使用golang做项目，出于在社区里面没有Golang并发编程的综合指南，决定编写这本书。</p>
@@ -248,40 +249,40 @@
 <p>Global_Keys<br>从广泛的历史视角说明并发的重要性，讨论并发中的一些难点。简要介绍golang如何解决这些问题。</p>
 <p>如果知道并发相关知识，可以跳过本章；</p>
 <blockquote>
-<ol>
+<ol start="2">
 <li>对你的代码建模：通讯顺序进程</li>
 </ol>
 </blockquote>
 <p>论述推动golang设计的一些激励因素。 </p>
 <blockquote>
-<ol>
+<ol start="3">
 <li>golang并发组件</li>
 </ol>
 </blockquote>
 <p>介绍golang并发原语。介绍控制内存访问同步sync包。</p>
 <p>通过golang代码并发片段，与其他语言的并发模型对比。有助于完全理解golang的并发实现。</p>
 <blockquote>
-<ol>
+<ol start="4">
 <li>Golang的并发模式</li>
 </ol>
 </blockquote>
 <p>讨论使用Golang原语函数构建合理的模式。</p>
 <p>对于已经开始写golang的并发代码，这种是有些用处。</p>
 <blockquote>
-<ol>
+<ol start="5">
 <li>大规模并发</li>
 </ol>
 </blockquote>
 <p>将组合并发模式，设计合理的模型，应用于大型程序、服务和分布式系统中。</p>
 <blockquote>
-<ol>
+<ol start="6">
 <li>goroutine和golang运行时</li>
 </ol>
 </blockquote>
 <p>描述golang中的goroutine如何调度。想了解golang虚拟机的人可以阅读这一章节。</p>
 <h1 id="1-并发概述"><a href="#1-并发概述" class="headerlink" title="1. 并发概述"></a>1. 并发概述</h1><h2 id="1-1-并发的重要性"><a href="#1-1-并发的重要性" class="headerlink" title="1.1. 并发的重要性"></a>1.1. 并发的重要性</h2><p>摩尔定理增速会放缓。</p>
 <p>Amdahl定律（Gene Amdahl）：并行计算中的加速比是用并行前的执行速度和并行后的执行速度之比来表示的，它表示了在并行化之后的效率提升情况。</p>
-<p>阿姆达尔定律是固定负载（计算总量不变时）时的量化标准。可用公式：(Ws+Wp)/(Ws+(Wp/p))来表示。式中Ws,Wp分别表示问题规模的串行分量（问题中不能并行化的那一部分）和并行分量，p表示处理器数量。</p>
+<p>阿姆达尔定律是固定负载（计算总量不变时）时的量化标准。可用公式：(Ws+Wp)&#x2F;(Ws+(Wp&#x2F;p))来表示。式中Ws,Wp分别表示问题规模的串行分量（问题中不能并行化的那一部分）和并行分量，p表示处理器数量。</p>
 <p>当p趋近于无穷大，这意味着无论我们如何增大处理器数目，加速比是无法高于这个数的。</p>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%98%BF%E5%A7%86%E8%BE%BE%E5%B0%94%E5%AE%9A%E5%BE%8B">参考文献</a></p>
 <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/rKmdnH"><img src="https://s3.ax1x.com/2020/12/15/rKmdnH.png" alt="rKmdnH.png"></a></p>
@@ -338,15 +339,21 @@
 <h1 id="3-Go语言并发组件"><a href="#3-Go语言并发组件" class="headerlink" title="3.Go语言并发组件"></a>3.Go语言并发组件</h1><h2 id="goroutine"><a href="#goroutine" class="headerlink" title="goroutine"></a>goroutine</h2><p>开启一个golang的协程。作者8G内存的机器，理论上可以创建数百万个goroutine。而且协程切换上下文的时候，成本比较低。</p>
 <h2 id="sync包"><a href="#sync包" class="headerlink" title="sync包"></a>sync包</h2><h3 id="WaitGroup"><a href="#WaitGroup" class="headerlink" title="WaitGroup"></a>WaitGroup</h3><p>可以把它当作线程安全的计数器。Add函数增加计数，Done函数减少计数，Wait函数阻塞，直到计数为0.</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">wg.Add(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">defer</span> wg.Done()</span><br><span class="line">&#125;()</span><br><span class="line">wg.Wait()</span><br></pre></td></tr></table></figure>
+
 <h3 id="互斥锁和读写锁"><a href="#互斥锁和读写锁" class="headerlink" title="互斥锁和读写锁"></a>互斥锁和读写锁</h3><p>互斥锁用于保护临界区资源</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> lock sync.Mutex</span><br><span class="line">lock.Lock()</span><br><span class="line">lock.Unlock()</span><br></pre></td></tr></table></figure>
+
 <p>读写锁</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> m = sync.RWMutex</span><br><span class="line">m.RLocker()</span><br><span class="line">RWMutex提供了四个方法：</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(*RWMutex)</span></span> Lock <span class="comment">// 写锁定</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(*RWMutex)</span></span> Unlock <span class="comment">// 写解锁</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(*RWMutex)</span></span> RLock <span class="comment">// 读锁定</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(*RWMutex)</span></span> RUnlock <span class="comment">// 读解锁</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="cond"><a href="#cond" class="headerlink" title="cond"></a>cond</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> locker = <span class="built_in">new</span>(sync.Mutex)</span><br><span class="line"><span class="keyword">var</span> cond = sync.NewCond(locker)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">(x <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">        cond.L.Lock() <span class="comment">//获取锁</span></span><br><span class="line">        fmt.Println(<span class="string">&quot;aaa: &quot;</span>, x)</span><br><span class="line">        cond.Wait()<span class="comment">//等待通知  暂时阻塞</span></span><br><span class="line">        fmt.Println(<span class="string">&quot;bbb: &quot;</span>, x)</span><br><span class="line">        time.Sleep(time.Second * <span class="number">2</span>)</span><br><span class="line">        cond.L.Unlock()<span class="comment">//释放锁</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">                <span class="keyword">go</span> test(i)</span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Println(<span class="string">&quot;start all&quot;</span>)</span><br><span class="line">        time.Sleep(time.Second * <span class="number">1</span>)</span><br><span class="line">        fmt.Println(<span class="string">&quot;broadcast&quot;</span>)</span><br><span class="line">        cond.Signal()   <span class="comment">// 下发一个通知给已经获取锁的goroutine</span></span><br><span class="line">        time.Sleep(time.Second * <span class="number">1</span>)</span><br><span class="line">        cond.Signal()<span class="comment">// 3秒之后 下发一个通知给已经获取锁的goroutine</span></span><br><span class="line">        time.Sleep(time.Second * <span class="number">1</span>)</span><br><span class="line">        cond.Broadcast()<span class="comment">//3秒之后 下发广播给所有等待的goroutine</span></span><br><span class="line">        time.Sleep(time.Second * <span class="number">10</span>)</span><br><span class="line">        fmt.Println(<span class="string">&quot;finish all&quot;</span>)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h3 id="once"><a href="#once" class="headerlink" title="once"></a>once</h3><p>让一个操作只调用一次，就可以使用这个方式来制作。</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;sync&quot;</span></span><br><span class="line">    <span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> once sync.Once</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, v := <span class="keyword">range</span> <span class="built_in">make</span>([]<span class="type">string</span>, <span class="number">10</span>) &#123;</span><br><span class="line">        once.Do(onces)</span><br><span class="line">        fmt.Println(<span class="string">&quot;count:&quot;</span>, v, <span class="string">&quot;---&quot;</span>, i)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            once.Do(onced)</span><br><span class="line">            fmt.Println(<span class="string">&quot;213&quot;</span>)</span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;</span><br><span class="line">    time.Sleep(<span class="number">4000</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">onces</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;onces&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">onced</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;onced&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>常用于制作单例的情况。具体写法：</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 编译命令：</span></span><br><span class="line"><span class="comment">// go build -gcflags &quot;-N -l&quot; -race ./...</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;sync&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> MyStruct <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    myInst *MyStruct</span><br><span class="line">    once   sync.Once</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(inst *MyStruct)</span></span> sayHi() &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetInst</span><span class="params">()</span></span> *MyStruct &#123;</span><br><span class="line">    once.Do(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        myInst = &amp;MyStruct&#123;&#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> myInst</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">goFun</span><span class="params">(wg *sync.WaitGroup)</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.Done()</span><br><span class="line">    GetInst().sayHi()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    wg := &amp;sync.WaitGroup&#123;&#125;</span><br><span class="line">    <span class="keyword">defer</span> wg.Wait()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++ &#123;</span><br><span class="line">        wg.Add(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">go</span> goFun(wg)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h3 id="池"><a href="#池" class="headerlink" title="池"></a>池</h3><p>池是对于Pool模式的一种并发安全实现。</p>
 <p>对外提供Get方法，如果发现池子里面没有空闲的元素，将会新建一个元素出来。</p>
 <p>当使用完成了之后，将会需要调用Put方法将内存归还。</p>
@@ -364,105 +371,106 @@
 <h2 id="channel"><a href="#channel" class="headerlink" title="channel"></a>channel</h2><p>channel是由Hoare的CSP派生出来的同步原语之一。</p>
 <p>channel通常使用Stream来命名这种变量。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dataStream <span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">dataStream = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line"><span class="keyword">var</span> recvChan &lt;-<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line"><span class="keyword">var</span> sendChan &lt;-<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">recvChan = dataStream</span><br><span class="line">sendChan = dataStream</span><br><span class="line"></span><br><span class="line">&lt;-writeStream</span><br><span class="line"><span class="comment">// invaslid operation: &lt;- writeStream (receive  from send-only type)</span></span><br></pre></td></tr></table></figure>
+
 <p>上述的例子是构建了一个双向链表，recvChan和sendChan是为了约束数据的流向，防止在生产者场景下读取了数据。</p>
 <p>channel里面读取数据的写法如下：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">salutation,ok := &lt;-stringStream</span><br></pre></td></tr></table></figure>
+
 <p>当channel被关闭了，返回的ok也是失败的。</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:left">操作</th>
-<th style="text-align:left">Channel状态</th>
-<th style="text-align:left">结果</th>
+<th align="left">操作</th>
+<th align="left">Channel状态</th>
+<th align="left">结果</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">Read</td>
-<td style="text-align:left">nil</td>
-<td style="text-align:left">阻塞</td>
+<tbody><tr>
+<td align="left">Read</td>
+<td align="left">nil</td>
+<td align="left">阻塞</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">打开且非空</td>
-<td style="text-align:left">输出值</td>
+<td align="left"></td>
+<td align="left">打开且非空</td>
+<td align="left">输出值</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">关闭的</td>
-<td style="text-align:left">&lt;默认值&gt;,false</td>
+<td align="left"></td>
+<td align="left">关闭的</td>
+<td align="left">&lt;默认值&gt;,false</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">只读</td>
-<td style="text-align:left">编译报错</td>
+<td align="left"></td>
+<td align="left">只读</td>
+<td align="left">编译报错</td>
 </tr>
 <tr>
-<td style="text-align:left">Write</td>
-<td style="text-align:left">nil</td>
-<td style="text-align:left">阻塞</td>
+<td align="left">Write</td>
+<td align="left">nil</td>
+<td align="left">阻塞</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">打开的但填满</td>
-<td style="text-align:left">阻塞</td>
+<td align="left"></td>
+<td align="left">打开的但填满</td>
+<td align="left">阻塞</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">打开，但不满</td>
-<td style="text-align:left">写入值</td>
+<td align="left"></td>
+<td align="left">打开，但不满</td>
+<td align="left">写入值</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">关闭的</td>
-<td style="text-align:left">panic</td>
+<td align="left"></td>
+<td align="left">关闭的</td>
+<td align="left">panic</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">只读</td>
-<td style="text-align:left">编译报错</td>
+<td align="left"></td>
+<td align="left">只读</td>
+<td align="left">编译报错</td>
 </tr>
 <tr>
-<td style="text-align:left">close</td>
-<td style="text-align:left">nil</td>
-<td style="text-align:left">panic</td>
+<td align="left">close</td>
+<td align="left">nil</td>
+<td align="left">panic</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">打开且非空</td>
-<td style="text-align:left">关闭channel；读取成功，直到通道耗尽，然后读取产生值的默认值</td>
+<td align="left"></td>
+<td align="left">打开且非空</td>
+<td align="left">关闭channel；读取成功，直到通道耗尽，然后读取产生值的默认值</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">打开但空</td>
-<td style="text-align:left">关闭channel；读到生产者的默认值</td>
+<td align="left"></td>
+<td align="left">打开但空</td>
+<td align="left">关闭channel；读到生产者的默认值</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">关闭的</td>
-<td style="text-align:left">panic</td>
+<td align="left"></td>
+<td align="left">关闭的</td>
+<td align="left">panic</td>
 </tr>
 <tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">只读</td>
-<td style="text-align:left">编译报错</td>
+<td align="left"></td>
+<td align="left">只读</td>
+<td align="left">编译报错</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>如果关闭了channel，其实还是会将里面的内容都读取出来的。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> stringStream <span class="keyword">chan</span> <span class="type">string</span></span><br><span class="line">stringStream = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">string</span>, <span class="number">1</span>)</span><br><span class="line"><span class="keyword">var</span> recvStream &lt;-<span class="keyword">chan</span> <span class="type">string</span></span><br><span class="line"><span class="keyword">var</span> sendStream <span class="keyword">chan</span>&lt;- <span class="type">string</span></span><br><span class="line"></span><br><span class="line">recvStream = stringStream</span><br><span class="line">sendStream = stringStream</span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> val, ok := &lt;-recvStream; ok &#123;</span><br><span class="line">            fmt.Println(val)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            fmt.Println(<span class="string">&quot;no data&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;()</span><br><span class="line">sendStream &lt;- <span class="string">&quot;hh&quot;</span></span><br><span class="line">sendStream &lt;- <span class="string">&quot;hh&quot;</span></span><br><span class="line"><span class="built_in">close</span>(stringStream)</span><br><span class="line">time.Sleep(<span class="number">8</span> * time.Second)</span><br></pre></td></tr></table></figure>
+
 <p>对于channel来说，生产者负责发送数据，并且负责销毁。消费者只负责读取，当无法读取的时候，就说明关闭了。</p>
 <p>channel是goroutine的黏合剂</p>
 <h2 id="select语句"><a href="#select语句" class="headerlink" title="select语句"></a>select语句</h2><p>select是将channel绑定到一块的黏合剂。</p>
 <p>select将会选择在其语句段内的某个可工作的通道工作一次。</p>
 <h2 id="GOMAXPROCES控制"><a href="#GOMAXPROCES控制" class="headerlink" title="GOMAXPROCES控制"></a>GOMAXPROCES控制</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runtime.GOMAXPROCS(runtime.NumCPU())</span><br></pre></td></tr></table></figure>
+
 <p>在1.5之前版本，这个值都是设置成1。后面的版本好像都是已经按照cpu个数来决定多少个线程。2</p>
 <h1 id="4-Go语言的并发模型"><a href="#4-Go语言的并发模型" class="headerlink" title="4.Go语言的并发模型"></a>4.Go语言的并发模型</h1><p>本章主要是使用3章节中学习到的原语，构建模型出来。</p>
 <h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><p>使用词法阅书将channel从生产者传给消费者的时候，只给只读的接口。</p>
 <h2 id="for-select循环"><a href="#for-select循环" class="headerlink" title="for-select循环"></a>for-select循环</h2><p>按照类似这种结构来组织代码</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">  <span class="keyword">select</span>&#123;</span><br><span class="line">    <span class="keyword">case</span> str &lt;- recvStream:</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _, s := <span class="keyword">range</span>[]<span class="type">string</span>&#123;<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>,<span class="string">&quot;c&quot;</span>&#125;&#123;</span><br><span class="line">  <span class="keyword">select</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> &lt;-done:</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">case</span> stringStream &lt;- e:</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="防止goroutine泄露"><a href="#防止goroutine泄露" class="headerlink" title="防止goroutine泄露"></a>防止goroutine泄露</h2><p>goroutine是存在泄露风险，且会造成内存增长。</p>
 <p>goroutine有3中情况下种植</p>
 <blockquote>
@@ -471,12 +479,13 @@
 <p>设计原则就是谁创建channel，谁负责将channel关闭。</p>
 <h2 id="or-channel"><a href="#or-channel" class="headerlink" title="or-channel"></a>or-channel</h2><p>将一个或多个完成的channel合并到一个完成channel，任何channel关闭时自己也关闭。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> or <span class="function"><span class="keyword">func</span><span class="params">(channels ...&lt;-<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;)</span></span> &lt;-<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">    or = <span class="function"><span class="keyword">func</span><span class="params">(channels ...&lt;-<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;)</span></span> &lt;-<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125; &#123; <span class="comment">// &lt;1&gt;</span></span><br><span class="line">        <span class="keyword">switch</span> <span class="built_in">len</span>(channels) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>: <span class="comment">// &lt;2&gt;</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>: <span class="comment">// &lt;3&gt;</span></span><br><span class="line">            <span class="keyword">return</span> channels[<span class="number">0</span>]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        orDone := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123; <span class="comment">// &lt;4&gt;</span></span><br><span class="line">            <span class="keyword">defer</span> <span class="built_in">close</span>(orDone)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">switch</span> <span class="built_in">len</span>(channels) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>: <span class="comment">// &lt;5&gt;</span></span><br><span class="line">                <span class="keyword">select</span> &#123;</span><br><span class="line">                <span class="keyword">case</span> &lt;-channels[<span class="number">0</span>]:</span><br><span class="line">                <span class="keyword">case</span> &lt;-channels[<span class="number">1</span>]:</span><br><span class="line">                &#125;</span><br><span class="line">            <span class="keyword">default</span>: <span class="comment">// &lt;6&gt;</span></span><br><span class="line">                <span class="keyword">select</span> &#123;</span><br><span class="line">                <span class="keyword">case</span> &lt;-channels[<span class="number">0</span>]:</span><br><span class="line">                <span class="keyword">case</span> &lt;-channels[<span class="number">1</span>]:</span><br><span class="line">                <span class="keyword">case</span> &lt;-channels[<span class="number">2</span>]:</span><br><span class="line">                <span class="keyword">case</span> &lt;-or(<span class="built_in">append</span>(channels[<span class="number">3</span>:], orDone)...): <span class="comment">// &lt;6&gt;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;()</span><br><span class="line">        <span class="keyword">return</span> orDone</span><br><span class="line">    &#125;</span><br><span class="line">    sig := <span class="function"><span class="keyword">func</span><span class="params">(after time.Duration)</span></span> &lt;-<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125; &#123; <span class="comment">// &lt;1&gt;</span></span><br><span class="line">        c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            <span class="keyword">defer</span> <span class="built_in">close</span>(c)</span><br><span class="line">            time.Sleep(after)</span><br><span class="line">        &#125;()</span><br><span class="line">        <span class="keyword">return</span> c</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    start := time.Now() <span class="comment">// &lt;2&gt;</span></span><br><span class="line">    &lt;-or(</span><br><span class="line">        sig(<span class="number">2</span>*time.Hour),</span><br><span class="line">        sig(<span class="number">5</span>*time.Minute),</span><br><span class="line">        sig(<span class="number">1</span>*time.Second),</span><br><span class="line">        sig(<span class="number">1</span>*time.Hour),</span><br><span class="line">        sig(<span class="number">1</span>*time.Minute),</span><br><span class="line">    )</span><br><span class="line">    fmt.Printf(<span class="string">&quot;done after %v&quot;</span>, time.Since(start)) <span class="comment">// &lt;3&gt;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>这样就能将多个channel的结束，合并到一个channel中，任意一个channel结束了就结束。</p>
 <p>后续使用”context包”也能做这个事情。</p>
 <h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>错误处理核心问题是“谁负责处理错误”？</p>
 <p>谁有全景呈现问题的完整信息，就交付给谁来发起对于错误的报告。</p>
 <h2 id="pipeline"><a href="#pipeline" class="headerlink" title="pipeline"></a>pipeline</h2><p>不要编写大函数，看待程序应该从两个方面来看待：1.流程；2.处理细节。</p>
-<h3 id="构建pipeline的最佳实践"><a href="#构建pipeline的最佳实践" class="headerlink" title="构建pipeline的最佳实践"></a>构建pipeline的最佳实践</h3><p>代码中使用了之前<a href="#防止goroutine泄露">防止goroutine泄露</a>写法，防止goroutine无法正常退出。</p>
+<h3 id="构建pipeline的最佳实践"><a href="#构建pipeline的最佳实践" class="headerlink" title="构建pipeline的最佳实践"></a>构建pipeline的最佳实践</h3><p>代码中使用了之前<a href="#%E9%98%B2%E6%AD%A2goroutine%E6%B3%84%E9%9C%B2">防止goroutine泄露</a>写法，防止goroutine无法正常退出。</p>
 <p>使用pipeline封装每个stage的处理，可以方便让其能分离出多端独立的逻辑来，然后就能做一些并发的事务了。并且这样做是比较安全的。</p>
 <h3 id="一些便利的生成器"><a href="#一些便利的生成器" class="headerlink" title="一些便利的生成器"></a>一些便利的生成器</h3><p>这章节的实例也是编写了两个stage来处理生成器，一个负责发生随机字符，另一个控制需要拿多少个。</p>
 <p>本章还通过对比测试，其实在多核的时候，并行计算将会更加快速。</p>
@@ -491,6 +500,7 @@
 <h2 id="tee-channel"><a href="#tee-channel" class="headerlink" title="tee-channel"></a>tee-channel</h2><p>类似Unix系统中的tee函数，输入的内容可以在屏幕上输出，并且也输出到一些设定好的文件里面。这种模式其实就是将一份数据并发的分配给两个channel，然后出发后续他们的处理。</p>
 <h2 id="桥接channel模式"><a href="#桥接channel模式" class="headerlink" title="桥接channel模式"></a>桥接channel模式</h2><p>需要从这个结构里面将其中的channel拿出来，直接写逻辑。使用这个模式就式为了完成这项工作。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;- <span class="keyword">chan</span>  &lt;- <span class="keyword">chan</span>  <span class="keyword">interface</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
 <p>里面也使用了orDone方式读取 &lt;- chan interface{}</p>
 <h2 id="队列排队"><a href="#队列排队" class="headerlink" title="队列排队"></a>队列排队</h2><p>有时候，在队列没有准备好的时候，就开始接受请求很有用，这种情况叫做队列。</p>
 <p>队列的真正用途是将stage分离，以便一个stage的运行时间不会影响另一个stage的运行时间。以这种方式解耦stage，然后级联以改变整个系统的运行时行为。</p>
@@ -499,14 +509,14 @@
 <p>利特尔法则</p>
 </blockquote>
 <ul>
-<li>L = 系统中平均负载数。</li>
-<li>$\lambda$ = 负载的平均到达率。</li>
-<li>W = 负载在系统中花费的平均时间。</li>
+<li>L &#x3D; 系统中平均负载数。</li>
+<li>$\lambda$ &#x3D; 负载的平均到达率。</li>
+<li>W &#x3D; 负载在系统中花费的平均时间。</li>
 </ul>
-<p>L = $\lambda W$</p>
+<p>L &#x3D; $\lambda W$</p>
 <p>这个等式应用于稳定系统，稳定系统的定义就是输入管道的速率和输出的速率相等。</p>
-<p>$nL = \lambda nW$</p>
-<p>$L = \lambda \sum_{i=1}^{\infty} Wi$</p>
+<p>$nL &#x3D; \lambda nW$</p>
+<p>$L &#x3D; \lambda \sum_{i&#x3D;1}^{\infty} Wi$</p>
 <p>通过利特尔法则，我们已经证明了队列不会有助于减少在系统中所花费的时间。你的管道只会和最慢的stage一样快。</p>
 <p>利特尔法则无法预知处理请求的失败。</p>
 <p>队列可能会很有用，但是它是复杂的，作者建议作为最后的优化手段。</p>
@@ -515,11 +525,13 @@
 <p>通过context.WithXXX都将返回新的 Context 和 CancelFunc。调用 CancelFunc 将取消子代，移除父代对子代的引用，并且停止所有定时器。未能调用 CancelFunc 将泄漏子代，直到父代被取消或定时器触发。go vet工具检查所有流程控制路径上使用 CancelFuncs。</p>
 <p>创建context的时候，需要可能需要使用这两个接口。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一般用于根context创建</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Background</span><span class="params">()</span></span> Context</span><br><span class="line"><span class="comment">// 一般用于做占位符，现在还悬而未决的</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TODO</span><span class="params">()</span></span> Context</span><br></pre></td></tr></table></figure>
-<p>创建的时候，Cancel/Deadline/Timeout/Value这四类。</p>
+
+<p>创建的时候，Cancel&#x2F;Deadline&#x2F;Timeout&#x2F;Value这四类。</p>
 <p>WithTimeout和WithDeadline没有什么差别，就是区分一下输入参数。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>模式其实就是抽象出运行的模型，将具体逻辑从运行流程模型中分离出来。这样写逻辑的人只需要按照这个里面的范式来制作内容。</p>
 <p>分析一次错误的代码，而且是使用<code>go vet</code>来分析的。</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &gt; go vet ./...</span></span><br><span class="line">ctx, _ := context.WithTimeout(context.Background(), <span class="number">10</span>*time.Second)</span><br><span class="line"><span class="comment">// Attribute\entity.go:673:7: the cancel function returned by context.WithTimeout should be called, not discarded, to avoid a context leak</span></span><br><span class="line"><span class="comment">// 这里的错误是如果存在context的传递的时候，如果不主动调用cancel函数，将会造成服务器的内存泄露。</span></span><br></pre></td></tr></table></figure>
+
 <h1 id="5-大规模并发"><a href="#5-大规模并发" class="headerlink" title="5.大规模并发"></a>5.大规模并发</h1><h2 id="异常传递"><a href="#异常传递" class="headerlink" title="异常传递"></a>异常传递</h2><p>在并发系统，特别是分布式系统中，可能会出现难于理解的错误。需要在制作的时候就考虑：如何将这些错误通过分布式系统传递出来，如何将错误呈现给使用者。</p>
 <p>呈现异常关键信息：</p>
 <ol>
@@ -533,9 +545,10 @@
 <li>系统饱和</li>
 <li>陈旧数据</li>
 </ol>
-<p>数据有窗口期，如果事先知道时间可以使用context.WithTimeout/context.WithDeadline。如果不知道，可以采取 context.WithCancel</p>
+<p>数据有窗口期，如果事先知道时间可以使用context.WithTimeout&#x2F;context.WithDeadline。如果不知道，可以采取 context.WithCancel</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line">i:=<span class="number">0</span></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            time.Sleep(time.Second)</span><br><span class="line">            fmt.Println(<span class="string">&quot;=============&quot;</span>,i,<span class="string">&quot;=================&quot;</span>)</span><br><span class="line">            i++</span><br><span class="line">            <span class="comment">// todo 需要执行的操作</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
-<ol>
+
+<ol start="3">
 <li>试图防止死锁</li>
 </ol>
 <p>尝试等待一段时间，如果没有将会解开锁定，从而使死锁变成活锁。</p>
@@ -557,7 +570,7 @@
 </ol>
 <p>对于任何长时间运行或者需要被测试的goroutine，作者强烈建议使用这个模式。</p>
 <h2 id="复制请求"><a href="#复制请求" class="headerlink" title="复制请求"></a>复制请求</h2><p>程序处理http请求的时候，可以将这个分配给多个进程、程序或者服务器。优点是更快的拿到结果，缺点是需要维护很多实例，而且消耗更多资源。</p>
-<h2 id="速率限制"><a href="#速率限制" class="headerlink" title="速率限制"></a>速率限制</h2><p>用于控制http请求时候，不能无限制的对外提供请求资源。否则会容易被攻击。DDoS—-分布式拒绝服务攻击。</p>
+<h2 id="速率限制"><a href="#速率限制" class="headerlink" title="速率限制"></a>速率限制</h2><p>用于控制http请求时候，不能无限制的对外提供请求资源。否则会容易被攻击。DDoS—分布式拒绝服务攻击。</p>
 <p>即使是正常用户，如果用户足够多，也会出现负载异常，造成死亡螺旋。</p>
 <p>go语言限速是基于令牌桶算法。</p>
 <p>原理：</p>
@@ -568,14 +581,14 @@
 <p>Erlang语言里面有那种监控树 supervisor 也有类似模式。其实最好是能在golang语言本身上构建这样的体系。</p>
 <h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>本章介绍的方法用于保持系统的稳定和易于理解。</p>
 <h1 id="6-goroutine和Go语言运行时"><a href="#6-goroutine和Go语言运行时" class="headerlink" title="6 goroutine和Go语言运行时"></a>6 goroutine和Go语言运行时</h1><h2 id="工作窃取"><a href="#工作窃取" class="headerlink" title="工作窃取"></a>工作窃取</h2><p>Go语言将会为你调度多个goroutine在不同的系统线程上运行，算法就被称为工作窃取策略。</p>
-<p>初步方案是N个处理器，X个任务会被公平调度策略中，每个处理器都获得X/N个任务。但是这样会出现一些问题，比如某项任务比较重，造成其他的CPU会空闲。而且如果任务1依赖于任务4的输出，而它们被分配到不同的P里面，也会造成P的阻塞。</p>
+<p>初步方案是N个处理器，X个任务会被公平调度策略中，每个处理器都获得X&#x2F;N个任务。但是这样会出现一些问题，比如某项任务比较重，造成其他的CPU会空闲。而且如果任务1依赖于任务4的输出，而它们被分配到不同的P里面，也会造成P的阻塞。</p>
 <p>解决办法是创建一个集中队列，让处理器都共享。</p>
 <p>工作窃取算法原则：</p>
 <ol>
 <li>在fork点，将任务添加到与线程关联的双端队列的尾部。</li>
 <li>如果线程空闲，则选择一个随机线程，从它的关联双端队列头部窃取工作。</li>
 <li>如果在未准备好的join点（即与其同步的goroutine还没有完成），则将工作从线程的双端队列尾部出战。</li>
-<li>如果线程的双端队列是空的，则：<br>a. 暂停加入<br>b. 从随机线程关联的双端队列中窃取工作。</li>
+<li>如果线程的双端队列是空的，则：<br>  a. 暂停加入<br>  b. 从随机线程关联的双端队列中窃取工作。</li>
 </ol>
 <h3 id="窃取任务还是续体"><a href="#窃取任务还是续体" class="headerlink" title="窃取任务还是续体"></a>窃取任务还是续体</h3><p>go语言中，goroutine就是任务；</p>
 <p>在goroutine之后的一切都被称为续体。</p>
@@ -700,7 +713,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

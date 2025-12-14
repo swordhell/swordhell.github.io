@@ -231,6 +231,7 @@
 </blockquote>
 <p>阅读一下龙书🐲。能增加计算机基础知识。</p>
 <span id="more"></span>
+
 <h1 id="第一章-引论"><a href="#第一章-引论" class="headerlink" title="第一章 引论"></a>第一章 引论</h1><p>定义一门语言的规则，按照规则编写代码，将代码翻译成机器能运行的程序叫做编译器（compiler）。研究编译器的编写将涉及到<code>程序设计语言</code>、<code>计算机体系结构</code>、<code>形式语言理论</code>、<code>算法</code>和<code>软件工程</code>。</p>
 <p>介绍内容：</p>
 <ul>
@@ -242,42 +243,39 @@
 </ul>
 <h2 id="语言处理器"><a href="#语言处理器" class="headerlink" title="语言处理器"></a>语言处理器</h2><p>编译器就是阅读某种语言（在阅读过程中能检查语法是否正确），并且翻译成等价的目标语言的程序。</p>
 <pre class="mermaid">flowchart LR
-    A["源代码"] --- B[编译器] --- C["目标程序"]</pre>
-**Figure 1-1 编译器**
-
-目标程序就是机器语言程序，用户就可以直接调用。
+    A["源代码"] --- B[编译器] --- C["目标程序"]</pre>
+<p><strong>Figure 1-1 编译器</strong></p>
+<p>目标程序就是机器语言程序，用户就可以直接调用。</p>
 <pre class="mermaid">flowchart LR
-    A["输入"] --- B[目标程序] --- C["输出"]</pre>
-**Figure 1-2 编译器**
+    A["输入"] --- B[目标程序] --- C["输出"]</pre>
+<p><strong>Figure 1-2 编译器</strong></p>
 <pre class="mermaid">stateDiagram-v2
  Idle --> Running : 用户点击开始按钮 
  Running --> Paused : 收到暂停指令
  Paused --> Running : 继续执行
  Running --> Finished : 任务完成</pre>
-**Figure 1-2 状态机**
-*解释器*（interpreter）也是语言处理器。不会翻译生成目标程序。解释器直接用用户提供的输入执行源代码中的指定的操作
-
+<p><strong>Figure 1-2 状态机</strong><br><em>解释器</em>（interpreter）也是语言处理器。不会翻译生成目标程序。解释器直接用用户提供的输入执行源代码中的指定的操作</p>
 <pre class="mermaid">flowchart LR
-    A[源代码]
-    B[输入]
-    C[解释器]
-    D[输出]
-    A --> C
-    B --> C
-    C --> D</pre>
-**Figure 1-3 一个解释器**
-
+	A[源代码]
+	B[输入]
+	C[解释器]
+	D[输出]
+	A --> C
+	B --> C
+	C --> D</pre>
+<p><strong>Figure 1-3 一个解释器</strong></p>
 <pre class="mermaid">graph TD
     A[expr] --> B1[expr1]
     A --> B2(➕)
     A --> B3[term]
     A --> B4["{print(➕)}"]
-    B1 --> C1[expr2]</pre>
-**Figure 2-14 把9-5+2翻译成95-2+的语义动作**
-* 在将用户输入加工成输出处理过程，编译器产生的目标程序比解释器快很多。
-* 解释器的错误诊断效果要比编译器更好。（解释器是逐行执行源代码）
-
-java程序是结合了编译、解释两个过程。
+	B1 --> C1[expr2]</pre>
+<p><strong>Figure 2-14 把9-5+2翻译成95-2+的语义动作</strong></p>
+<ul>
+<li>在将用户输入加工成输出处理过程，编译器产生的目标程序比解释器快很多。</li>
+<li>解释器的错误诊断效果要比编译器更好。（解释器是逐行执行源代码）</li>
+</ul>
+<p>java程序是结合了编译、解释两个过程。</p>
 <pre class="mermaid">flowchart LR
 
     %% ---------- 上半部分：纵向 TB ----------
@@ -300,37 +298,32 @@ java程序是结合了编译、解释两个过程。
 
     %% ---------- 上下连接 ----------
     C --> E</pre>
-**Figure 1-4 一个混合编译器**
-
+<p><strong>Figure 1-4 一个混合编译器</strong></p>
 <pre class="mermaid">flowchart TB
-    linkStyle default corners 90
+	linkStyle default corners 90
+	
+    A[源代码<br>Source Code]
 
-    A[源代码<br>Source Code]
+    B[词法分析<br>Lexical Analysis]
 
-    B[词法分析<br>Lexical Analysis]
+    C[语法分析<br>Syntax Analysis]
 
-    C[语法分析<br>Syntax Analysis]
+    D[语义分析<br>Semantic Analysis]
 
-    D[语义分析<br>Semantic Analysis]
+    E[中间代码生成<br>Intermediate Code]
 
-    E[中间代码生成<br>Intermediate Code]
+    F[优化<br>Optimization]
 
-    F[优化<br>Optimization]
+    G[目标代码生成<br>Target Code Generation]
 
-    G[目标代码生成<br>Target Code Generation]
+    H[可执行程序<br>Executable Program]
 
-    H[可执行程序<br>Executable Program]
-
-    A --> B --> C --> D --> E --> F --> G --> H</pre>
-**Figure 1-4 一个语言处理系统**
-
-# 第二章 一个简单的语法制导翻译器
-
-## 2.1 引言
-
-一个语言的`语法（syntax）`描述了该语言的程序都正确形式；而该语言的`语义（seantics）`则定了程序的含义，即每个程序在运行时做什么事情。将会在 `2.2 语法定义` 给出广泛使用的表示方法来描述`语法（synta）`，这个方法就是`上下文无关文法`或者`BNF（Backus-Naur范式）`。用现有的语义表示方法来描述一个语言的语义的难度大于描述语言的语法的难度。
-> 💡人去描述语义非常困难，而且用BNF去描述也是非常困难。所以这里提出了新的工具来描述。
-
+    A --> B --> C --> D --> E --> F --> G --> H</pre>
+<p><strong>Figure 1-4 一个语言处理系统</strong></p>
+<h1 id="第二章-一个简单的语法制导翻译器"><a href="#第二章-一个简单的语法制导翻译器" class="headerlink" title="第二章 一个简单的语法制导翻译器"></a>第二章 一个简单的语法制导翻译器</h1><h2 id="2-1-引言"><a href="#2-1-引言" class="headerlink" title="2.1 引言"></a>2.1 引言</h2><p>一个语言的<code>语法（syntax）</code>描述了该语言的程序都正确形式；而该语言的<code>语义（seantics）</code>则定了程序的含义，即每个程序在运行时做什么事情。将会在 <code>2.2 语法定义</code> 给出广泛使用的表示方法来描述<code>语法（synta）</code>，这个方法就是<code>上下文无关文法</code>或者<code>BNF（Backus-Naur范式）</code>。用现有的语义表示方法来描述一个语言的语义的难度大于描述语言的语法的难度。</p>
+<blockquote>
+<p>💡人去描述语义非常困难，而且用BNF去描述也是非常困难。所以这里提出了新的工具来描述。</p>
+</blockquote>
 <pre class="mermaid">flowchart TB
 
     %% 节点
@@ -432,7 +425,7 @@ java程序是结合了编译、解释两个过程。
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%BC%95%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">第一章 引论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">语言处理器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%AF%AD%E6%B3%95%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">2.2 语法定义</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%BC%95%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">第一章 引论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">语言处理器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">第二章 一个简单的语法制导翻译器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%BC%95%E8%A8%80"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%AF%AD%E6%B3%95%E5%AE%9A%E4%B9%89"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 语法定义</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -454,7 +447,7 @@ java程序是结合了编译、解释两个过程。
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

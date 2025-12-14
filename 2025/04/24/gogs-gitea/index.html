@@ -222,53 +222,54 @@
       
         <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Gogs 和 Gitea 都是用 Go 语言开发的轻量级 Git 代码托管平台，界面风格类似 GitHub，可以自部署，适用于小型团队或个人使用。它们的历史也有一定渊源：Gitea 是从 Gogs 分叉而来的，原因是社区对 Gogs 的开发停滞不前感到担忧，所以创建了 Gitea 来提供更加活跃的社区支持和开发。</p>
 <span id="more"></span>
+
 <p>Gogs 和 Gitea 都是用 Go 语言开发的轻量级 Git 代码托管平台，界面风格类似 GitHub，可以自部署，适用于小型团队或个人使用。它们的历史也有一定渊源：Gitea 是从 Gogs 分叉而来的，原因是社区对 Gogs 的开发停滞不前感到担忧，所以创建了 Gitea 来提供更加活跃的社区支持和开发。</p>
 <p>下面是二者的对比：</p>
 <p>⸻</p>
 <p>🌱 一、项目活跃度对比</p>
-<p>项目    Gogs    Gitea<br>活跃度    开发进展较慢，主要由原作者维护    社区活跃，贡献者多，更新频繁<br>社区支持    社区不大，主要依赖作者    拥有活跃社区，PR 和 issue 处理较快<br>分支起源    原始项目    从 Gogs 分叉而来，强调社区驱动</p>
+<p>项目	Gogs	Gitea<br>活跃度	开发进展较慢，主要由原作者维护	社区活跃，贡献者多，更新频繁<br>社区支持	社区不大，主要依赖作者	拥有活跃社区，PR 和 issue 处理较快<br>分支起源	原始项目	从 Gogs 分叉而来，强调社区驱动</p>
 <p>⸻</p>
 <p>🧩 二、功能对比</p>
-<p>功能    Gogs    Gitea<br>基本功能    都支持 Git 仓库管理、SSH、HTTP、Webhook、Issue、Wiki 等    同 Gogs<br>OAuth 支持    有，但支持平台较少    支持 GitHub、GitLab、Gitee、Google 等多个平台登录<br>CI/CD 集成    手动配置    支持 Drone、Woodpecker 等集成更友好<br>主题与 UI 自定义    支持有限    支持更多主题和定制化 UI（如 light/dark 模式）<br>多语言支持    支持，种类较少    支持更全面，翻译质量更好<br>镜像与备份    有，但较基础    支持定时备份、迁移等功能更丰富</p>
+<p>功能	Gogs	Gitea<br>基本功能	都支持 Git 仓库管理、SSH、HTTP、Webhook、Issue、Wiki 等	同 Gogs<br>OAuth 支持	有，但支持平台较少	支持 GitHub、GitLab、Gitee、Google 等多个平台登录<br>CI&#x2F;CD 集成	手动配置	支持 Drone、Woodpecker 等集成更友好<br>主题与 UI 自定义	支持有限	支持更多主题和定制化 UI（如 light&#x2F;dark 模式）<br>多语言支持	支持，种类较少	支持更全面，翻译质量更好<br>镜像与备份	有，但较基础	支持定时备份、迁移等功能更丰富</p>
 <p>⸻</p>
 <p>⚙️ 三、部署与维护</p>
-<p>对比项    Gogs    Gitea<br>部署难度    都很轻量，二进制文件一键运行    同 Gogs<br>Docker 支持    支持    支持，Docker 镜像更常用、更新频繁<br>容器支持    有    有，且 Helm Chart 等 Kubernetes 支持更完善</p>
+<p>对比项	Gogs	Gitea<br>部署难度	都很轻量，二进制文件一键运行	同 Gogs<br>Docker 支持	支持	支持，Docker 镜像更常用、更新频繁<br>容器支持	有	有，且 Helm Chart 等 Kubernetes 支持更完善</p>
 <p>⸻</p>
 <p>📌 四、维护与未来发展</p>
-<p>项目    Gogs    Gitea<br>维护模式    作者主导，集中式开发    社区主导，分布式贡献者<br>开发节奏    较慢，有时几个月才更新一次    快速迭代，功能更新频繁<br>未来规划    比较不明确    路线图清晰，计划长期支持和扩展新功能（如 ForgeFed 联邦）</p>
+<p>项目	Gogs	Gitea<br>维护模式	作者主导，集中式开发	社区主导，分布式贡献者<br>开发节奏	较慢，有时几个月才更新一次	快速迭代，功能更新频繁<br>未来规划	比较不明确	路线图清晰，计划长期支持和扩展新功能（如 ForgeFed 联邦）</p>
 <p>⸻</p>
 <p>✅ 总结：选择建议</p>
-<p>使用场景    推荐项目<br>想用最小化依赖、很轻量部署的 Git 服务    Gogs<br>想要功能更全、社区活跃、持续迭代的项目    ✅ Gitea（更推荐）<br>团队协作，未来可能扩展功能、CI、OAuth 等    ✅ Gitea</p>
+<p>使用场景	推荐项目<br>想用最小化依赖、很轻量部署的 Git 服务	Gogs<br>想要功能更全、社区活跃、持续迭代的项目	✅ Gitea（更推荐）<br>团队协作，未来可能扩展功能、CI、OAuth 等	✅ Gitea</p>
 <p>⸻</p>
 <p>如果你是要部署一个团队使用的内网 Git 仓库服务，Gitea 更推荐。如果你偏好项目简单、几乎零维护，Gogs 也可以胜任，但可能后续想加功能时会受限。</p>
 <p>你准备自建服务吗？我也可以提供部署参考（Docker 或系统服务都行）。</p>
-<p>可以的！你完全可以将现有的 Gogs 仓库迁移到 Gitea，因为：<br>    •    Gitea 是从 Gogs 分叉而来的，数据库结构和数据格式非常相似；<br>    •    Gitea 官方文档就支持直接“接管” Gogs 的数据，无需手动一个个导入仓库。</p>
+<p>可以的！你完全可以将现有的 Gogs 仓库迁移到 Gitea，因为：<br>	•	Gitea 是从 Gogs 分叉而来的，数据库结构和数据格式非常相似；<br>	•	Gitea 官方文档就支持直接“接管” Gogs 的数据，无需手动一个个导入仓库。</p>
 <p>下面是 迁移步骤指南：</p>
 <p>⸻</p>
 <p>🔄 从 Gogs 切换到 Gitea 的步骤</p>
 <p>✅ 1. 备份你的 Gogs 数据</p>
 <h1 id="停止-Gogs-服务"><a href="#停止-Gogs-服务" class="headerlink" title="停止 Gogs 服务"></a>停止 Gogs 服务</h1><p>systemctl stop gogs # 或者直接 kill 掉进程</p>
-<h1 id="备份数据库和数据文件"><a href="#备份数据库和数据文件" class="headerlink" title="备份数据库和数据文件"></a>备份数据库和数据文件</h1><p>cp -r /path/to/gogs /path/to/gogs_backup</p>
+<h1 id="备份数据库和数据文件"><a href="#备份数据库和数据文件" class="headerlink" title="备份数据库和数据文件"></a>备份数据库和数据文件</h1><p>cp -r &#x2F;path&#x2F;to&#x2F;gogs &#x2F;path&#x2F;to&#x2F;gogs_backup</p>
 <p>Gogs 的默认数据结构通常如下：</p>
-<p>/gogs<br>  ├── data/<br>  ├── repositories/<br>  ├── custom/<br>  └── gogs.db（或是 PostgreSQL/MySQL）</p>
+<p>&#x2F;gogs<br>  ├── data&#x2F;<br>  ├── repositories&#x2F;<br>  ├── custom&#x2F;<br>  └── gogs.db（或是 PostgreSQL&#x2F;MySQL）</p>
 <p>✅ 2. 下载并配置 Gitea</p>
 <p>你可以从 Gitea 官网下载二进制程序，或用 Docker：</p>
-<h1 id="使用-Docker-部署-Gitea"><a href="#使用-Docker-部署-Gitea" class="headerlink" title="使用 Docker 部署 Gitea"></a>使用 Docker 部署 Gitea</h1><p>docker run -d —name=gitea \<br>  -p 3000:3000 -p 222:22 \<br>  -v /path/to/gitea:/data \<br>  gitea/gitea:latest</p>
+<h1 id="使用-Docker-部署-Gitea"><a href="#使用-Docker-部署-Gitea" class="headerlink" title="使用 Docker 部署 Gitea"></a>使用 Docker 部署 Gitea</h1><p>docker run -d –name&#x3D;gitea <br>  -p 3000:3000 -p 222:22 <br>  -v &#x2F;path&#x2F;to&#x2F;gitea:&#x2F;data <br>  gitea&#x2F;gitea:latest</p>
 <p>也可以使用二进制：</p>
-<p>wget <a target="_blank" rel="noopener" href="https://dl.gitea.io/gitea/latest/gitea">https://dl.gitea.io/gitea/latest/gitea</a><br>chmod +x gitea<br>./gitea web</p>
+<p>wget <a target="_blank" rel="noopener" href="https://dl.gitea.io/gitea/latest/gitea">https://dl.gitea.io/gitea/latest/gitea</a><br>chmod +x gitea<br>.&#x2F;gitea web</p>
 <p>✅ 3. 配置 Gitea 使用 Gogs 的数据库</p>
 <p>如果你 Gogs 使用的是 SQLite（默认），只需要把 gogs.db 重命名为 gitea.db 并放到 Gitea 的 data 目录下即可。</p>
-<p>如果是 MySQL/PostgreSQL，只需：<br>    •    在 Gitea 安装向导中选择“已有数据库”；<br>    •    使用 Gogs 的数据库信息；<br>    •    Gitea 会识别旧数据结构并自动升级。</p>
+<p>如果是 MySQL&#x2F;PostgreSQL，只需：<br>	•	在 Gitea 安装向导中选择“已有数据库”；<br>	•	使用 Gogs 的数据库信息；<br>	•	Gitea 会识别旧数据结构并自动升级。</p>
 <p>✅ 4. 迁移仓库数据（重要）</p>
 <p>复制 Gogs 的仓库数据到 Gitea 的 data 目录中：</p>
-<p>cp -r /path/to/gogs-repositories /path/to/gitea/data/gitea-repositories</p>
-<p>注意路径格式可能不同，比如：<br>    •    Gogs 默认是 gogs-repositories<br>    •    Gitea 默认是 gitea-repositories</p>
+<p>cp -r &#x2F;path&#x2F;to&#x2F;gogs-repositories &#x2F;path&#x2F;to&#x2F;gitea&#x2F;data&#x2F;gitea-repositories</p>
+<p>注意路径格式可能不同，比如：<br>	•	Gogs 默认是 gogs-repositories<br>	•	Gitea 默认是 gitea-repositories</p>
 <p>Gitea 启动后会自动识别仓库。</p>
 <p>⸻</p>
 <p>🚀 启动 Gitea，验证迁移</p>
 <p>启动 Gitea 后访问 <a href="http://localhost:3000，你应该能看到原来的用户、仓库、Issue、Wiki">http://localhost:3000，你应该能看到原来的用户、仓库、Issue、Wiki</a> 等都在。如果数据库格式有小差异，Gitea 会自动迁移 schema。</p>
 <p>⸻</p>
-<p>💡 注意事项<br>    •    用户密码应该仍然有效；<br>    •    如果你使用了邮件等外部服务，请重新配置；<br>    •    SSH 公钥和 Hook 也会保留；<br>    •    最好在非高峰期操作。</p>
+<p>💡 注意事项<br>	•	用户密码应该仍然有效；<br>	•	如果你使用了邮件等外部服务，请重新配置；<br>	•	SSH 公钥和 Hook 也会保留；<br>	•	最好在非高峰期操作。</p>
 <p>⸻</p>
 <p>如果你希望我根据你的部署环境（Docker or 二进制）给出完整命令和路径，我可以帮你写个一键迁移脚本。你想试试哪种方式？</p>
 
@@ -377,7 +378,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

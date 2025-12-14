@@ -228,6 +228,7 @@
       
         <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>智能指针在C++中其实是非常推荐使用的。从《Effective C++》、《现代C++白皮书》和《Modern Effective C++》里面也提到了带来的好处。减少内存泄漏的问题。在遇到了异常的时候，也能很好的防止内存泄漏的发生。很早之前STL中就推出了auto_ptr（1998年发明），在C++11废弃（deprecated）被unique_ptr取代在使用过程中还需要使用转移语法。C++11提供了shared_ptr，unique_ptr，weak_ptr三种智能指针。</p>
 <span id="more"></span>
+
 <h3 id="Item-18-独占资源使用std-unique-ptr"><a href="#Item-18-独占资源使用std-unique-ptr" class="headerlink" title="Item 18 独占资源使用std::unique_ptr"></a>Item 18 独占资源使用std::unique_ptr</h3><p>前提是指针是独占方式的话，可以当成内存指针来使用。速度和空间都不会有太多的损失。</p>
 <p>它是有专属性，通过std::move转换所有权。不允许拷贝，如果使用了拷贝，其实两个<code>unique_ptr</code>指向同一个对象指针，销毁的时候将会调用两次析构函数。</p>
 <p>最常用的情况就是通过工厂类产出的一个指针。</p>
@@ -341,7 +342,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

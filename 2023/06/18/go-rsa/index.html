@@ -235,6 +235,7 @@
 <li>写文章的原则“豹头、猪肚、凤尾”。</li>
 </ul>
 <span id="more"></span>
+
 <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h3><p>RSA签名流程主要包括以下步骤：</p>
 <ol>
 <li>对要签名的数据（消息）进行哈希处理，得到消息摘要。</li>
@@ -244,20 +245,26 @@
 <h3 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h3><p>RSA是一种非对称加密技术，其中包含公钥和私钥。公钥可以用于加密数据，私钥可以用于解密数据。下面是RSA的加密和解密过程：</p>
 <p>生成一对公钥和私钥。</p>
 <ol>
-<li>选择两个大质数p和q。</li>
-<li>计算n = p * q和φ(n)=(p-1)(q-1)。</li>
-<li>选择一个整数e，使得1 &lt; e &lt; φ(n)，且e与φ(n)互质。</li>
-<li>计算d，使得d * e ≡ 1 (mod φ(n))，即d是e关于模φ(n)的乘法逆元。</li>
+<li><p>选择两个大质数p和q。</p>
+</li>
+<li><p>计算n &#x3D; p * q和φ(n)&#x3D;(p-1)(q-1)。</p>
+</li>
+<li><p>选择一个整数e，使得1 &lt; e &lt; φ(n)，且e与φ(n)互质。</p>
+</li>
+<li><p>计算d，使得d * e ≡ 1 (mod φ(n))，即d是e关于模φ(n)的乘法逆元。</p>
+</li>
 <li><p>将n和e封装成公钥，将n和d封装成私钥。<br>加密过程：</p>
 </li>
 <li><p>对要加密的数据（明文）进行哈希处理，得到消息摘要M’。</p>
 </li>
-<li>使用公钥对消息摘要进行加密，得到密文C。具体地，将消息摘要M’用二进制表示成位串，然后对位串进行填充，生成一个长度为k的多项式f(x)，然后计算f(0)、f(1)、…、f(k-1)，得到一个k位的密文C。</li>
+<li><p>使用公钥对消息摘要进行加密，得到密文C。具体地，将消息摘要M’用二进制表示成位串，然后对位串进行填充，生成一个长度为k的多项式f(x)，然后计算f(0)、f(1)、…、f(k-1)，得到一个k位的密文C。</p>
+</li>
 <li><p>将密文C传输给接收方。<br>解密过程：</p>
 </li>
 <li><p>使用私钥对密文进行解密，得到消息摘要M’’。</p>
 </li>
-<li>对解密后的消息摘要进行哈希处理，得到明文M。</li>
+<li><p>对解密后的消息摘要进行哈希处理，得到明文M。</p>
+</li>
 </ol>
 <ul>
 <li>注意：在加密过程中，不需要输入私钥进行加密，而是输入公钥进行加密。</li>
@@ -268,10 +275,12 @@
 <p>因此，PKCS#1和PKCS#8的主要区别在于它们定义的内容不同。PKCS#1主要用于定义RSA密钥对的表示格式，而PKCS#8主要用于定义RSA私钥的表示格式。</p>
 <p>PKCS#8标准定义的是存储和管理私钥的格式，并不包含公钥的信息。因此，PKCS#8私钥中并不包含公钥。</p>
 <p>在PKCS#8标准中，私钥的格式定义包括了私钥的算法、模数、私钥的哈希代码等信息。而公钥的信息通常是在证书中存储的，因此如果需要使用PKCS#8私钥进行加密解密等操作，需要将其转换为包含公钥的证书格式。</p>
-<p>在Go语言中，如果您需要从PKCS#8格式的私钥中提取公钥，可以使用crypto/x509包中的ParsePKCS8PrivateKey()函数将私钥解析为<em>rsa.PrivateKey结构体，然后使用x509.MarshalPKCS1PublicKey()函数将</em>rsa.PrivateKey结构体转换为PKCS#1格式的公钥。</p>
+<p>在Go语言中，如果您需要从PKCS#8格式的私钥中提取公钥，可以使用crypto&#x2F;x509包中的ParsePKCS8PrivateKey()函数将私钥解析为<em>rsa.PrivateKey结构体，然后使用x509.MarshalPKCS1PublicKey()函数将</em>rsa.PrivateKey结构体转换为PKCS#1格式的公钥。</p>
 <h2 id="工程实践"><a href="#工程实践" class="headerlink" title="工程实践"></a>工程实践</h2><h3 id="加密解密"><a href="#加密解密" class="headerlink" title="加密解密"></a>加密解密</h3><p>在这个示例中，我们使用Go语言实现了RSA加密和解密过程。我们首先使用rsa.GenerateKey()函数生成一个2048位的公钥和私钥对。然后，我们使用rsa.EncryptOAEP()函数使用公钥加密数据，并使用rsa.DecryptOAEP()函数使用私钥解密数据。最后，我们输出原始数据、加密后的数据和解密后的数据。请注意，加密和解密过程都需要使用随机数生成器，以增加安全性。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line"> <span class="string">&quot;fmt&quot;</span>  </span><br><span class="line"> <span class="string">&quot;crypto/rand&quot;</span>  </span><br><span class="line"> <span class="string">&quot;crypto/rsa&quot;</span>  </span><br><span class="line"> <span class="string">&quot;crypto/x509&quot;</span>  </span><br><span class="line"> <span class="string">&quot;encoding/pem&quot;</span>  </span><br><span class="line"> <span class="string">&quot;encoding/base64&quot;</span>  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line"> <span class="comment">// 生成公钥和私钥  </span></span><br><span class="line"> privateKey, err := rsa.GenerateKey(rand.Reader, <span class="number">2048</span>)  </span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line"> <span class="built_in">panic</span>(err)  </span><br><span class="line"> &#125;  </span><br><span class="line"> pub := &amp;privateKey.PublicKey  </span><br><span class="line">  </span><br><span class="line"> <span class="comment">// 加密数据  </span></span><br><span class="line"> message := []<span class="type">byte</span>(<span class="string">&quot;Hello, world!&quot;</span>)  </span><br><span class="line"> envelope, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, pub, message, <span class="literal">nil</span>)  </span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line"> <span class="built_in">panic</span>(err)  </span><br><span class="line"> &#125;  </span><br><span class="line">  </span><br><span class="line"> <span class="comment">// 解密数据  </span></span><br><span class="line"> decrypted, err := rsa.DecryptOAEP(sha256.New(), rand.Reader, privateKey, envelope, <span class="literal">nil</span>)  </span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line"> <span class="built_in">panic</span>(err)  </span><br><span class="line"> &#125;  </span><br><span class="line">  </span><br><span class="line"> <span class="comment">// 输出结果  </span></span><br><span class="line"> fmt.Printf(<span class="string">&quot;原始数据：%s\n&quot;</span>, message)  </span><br><span class="line"> fmt.Printf(<span class="string">&quot;加密后的数据：%s\n&quot;</span>, base64.StdEncoding.EncodeToString(envelope))  </span><br><span class="line"> fmt.Printf(<span class="string">&quot;解密后的数据：%s\n&quot;</span>, <span class="type">string</span>(decrypted))  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="签名-1"><a href="#签名-1" class="headerlink" title="签名"></a>签名</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">&quot;crypto/rand&quot;</span>  </span><br><span class="line">    <span class="string">&quot;crypto/rsa&quot;</span>  </span><br><span class="line">    <span class="string">&quot;crypto/sha256&quot;</span>  </span><br><span class="line">    <span class="string">&quot;encoding/base64&quot;</span>  </span><br><span class="line">    <span class="string">&quot;fmt&quot;</span>  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="comment">// 原始数据  </span></span><br><span class="line">    data := []<span class="type">byte</span>(<span class="string">&quot;Hello, world!&quot;</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 生成私钥和公钥  </span></span><br><span class="line">    privateKey, err := rsa.GenerateKey(rand.Reader, <span class="number">2048</span>)  </span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="built_in">panic</span>(err)  </span><br><span class="line">    &#125;  </span><br><span class="line">    publicKey := &amp;privateKey.PublicKey  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 使用私钥进行签名  </span></span><br><span class="line">    hashed := sha256.Sum256(data)  </span><br><span class="line">    signature, err := rsa.SignPKCS8(rand.Reader, privateKey, crypto.SHA256, hashed[:])  </span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="built_in">panic</span>(err)  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 将签名转换为字符串  </span></span><br><span class="line">    signatureBytes := signature.ToWire().Data()  </span><br><span class="line">    signatureBase64 := <span class="built_in">make</span>([]<span class="type">byte</span>, base64.StdEncoding.EncodedLen(<span class="built_in">len</span>(signatureBytes)))  </span><br><span class="line">    base64.StdEncoding.Encode(signatureBase64, signatureBytes)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 使用公钥进行验证  </span></span><br><span class="line">    <span class="keyword">if</span> rsa.VerifyPKCS8(publicKey, crypto.SHA256, hashed[:], signature) == <span class="literal">nil</span> &#123;  </span><br><span class="line">        fmt.Println(<span class="string">&quot;Signature verified successfully&quot;</span>)  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        fmt.Println(<span class="string">&quot;Signature verification failed&quot;</span>)  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 输出结果  </span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;Original data: %s\n&quot;</span>, data)  </span><br><span class="line">    fmt.Printf(<span class="string">&quot;Encrypted data: %s\n&quot;</span>, base64.StdEncoding.EncodeToString(hashed[:]))  </span><br><span class="line">    fmt.Printf(<span class="string">&quot;Signature: %s\n&quot;</span>, <span class="type">string</span>(signatureBase64))  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>在这个示例代码中，我们使用rsa.GenerateKey()函数生成一个2048位的私钥和公钥对。然后，我们使用rsa.SignPKCS8()函数使用私钥对原始数据进行SHA256哈希，并使用RSA-PKCS#8算法对哈希值进行签名。签名后，我们将签名转换为字符串，并使用rsa.VerifyPKCS8()函数使用公钥验证签名的正确性。最后，我们输出原始数据、加密后的数据和签名。请注意，在RSA-PKCS#8签名中，需要指定填充方案为rsa.PSSS，并且在验证时需要指定公钥格式为PKCS#8格式。</p>
 <h2 id="go补充资料"><a href="#go补充资料" class="headerlink" title="go补充资料"></a>go补充资料</h2><h3 id="x509"><a href="#x509" class="headerlink" title="x509"></a>x509</h3><p>在Go语言中，x509是一个用于处理X.509证书和密钥的库。X.509是一种公钥基础设施（PKI）标准，用于定义和管理数字证书的格式和用法。x509库提供了用于解析、验证和创建X.509证书的功能。</p>
 <p>x509库提供了以下主要功能：</p>
@@ -291,6 +300,7 @@
 <p><code>openssl rsa -in public.key -out public_key.pem</code><br>其中public.key是公钥文件的路径。该命令将读取公钥并将其保存在public_key.pem文件中。</p>
 <p>使用RSA密钥对加密和解密数据<br>可以使用以下命令使用RSA密钥对加密和解密数据：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl rsautl -encrypt -inkey private.key -pubin -<span class="keyword">in</span> data.txt -out data.encrypted  </span><br><span class="line">openssl rsautl -decrypt -inkey public.key -<span class="keyword">in</span> data.encrypted -out data.decrypted</span><br></pre></td></tr></table></figure>
+
 <p>其中private.key是私钥文件的路径，public.key是公钥文件的路径，data.txt是要加密的数据文件的路径，data.encrypted是加密后的数据的路径，data.decrypted是解密后的数据的路径。</p>
 <ul>
 <li>注意：在使用RSA密钥对加密和解密数据时，需要使用相同的RSA密钥对。</li>
@@ -404,7 +414,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

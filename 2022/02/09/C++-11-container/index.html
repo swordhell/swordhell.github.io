@@ -228,16 +228,17 @@
       
         <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>继续整理C++相关知识，阅读c++11里面新增加的容器相关内容。参考的书籍《C++标准库：第2版》 ISBN 987-7-121-26089-6</p>
 <span id="more"></span>
+
 <h3 id="序列容器"><a href="#序列容器" class="headerlink" title="序列容器"></a>序列容器</h3><p>实现顺序访问方式的数据结构。</p>
 <h4 id="array-c-11"><a href="#array-c-11" class="headerlink" title="array c++11"></a>array c++11</h4><p>静态连续数组。在建立的时候需要指明大小，不能改变长度，只能修改值。允许随机访问。它能直接使用STL中的通用算法。</p>
 <h4 id="vector"><a href="#vector" class="headerlink" title="vector"></a>vector</h4><p>动态连续数组。支持随机访问。尾部插入元素、移除元素都很迅速，头部，中间插入比较费时。</p>
 <h4 id="deque"><a href="#deque" class="headerlink" title="deque"></a>deque</h4><p>双头队列。尾部或者头部安插元素十分迅速。中间插入比较费时，需要移动其他元素。</p>
-<h4 id="list"><a href="#list" class="headerlink" title="list"></a>list</h4><p>双向链表。不提供随机访问，访问链表中元素时，需要沿着链表方向访问。比起vector/deque在中段插入时候的效率要快很多。</p>
+<h4 id="list"><a href="#list" class="headerlink" title="list"></a>list</h4><p>双向链表。不提供随机访问，访问链表中元素时，需要沿着链表方向访问。比起vector&#x2F;deque在中段插入时候的效率要快很多。</p>
 <h4 id="forward-list-c-11"><a href="#forward-list-c-11" class="headerlink" title="forward_list c++11"></a>forward_list c++11</h4><p>单向链表。类似于list，只指向下一个元素的指针。不支持“后退移动”。能从头插入，或者指定的迭代器位置后插入。</p>
 <h3 id="关联容器"><a href="#关联容器" class="headerlink" title="关联容器"></a>关联容器</h3><p>通常关联容器由二叉树实现。在无序容器中是使用了hash map方式来实现的。</p>
 <h4 id="set"><a href="#set" class="headerlink" title="set"></a>set</h4><p>根据value自动排序，每个元素只出现一次。</p>
 <h4 id="multiset"><a href="#multiset" class="headerlink" title="multiset"></a>multiset</h4><p>和set唯一差别就是元素可重复。</p>
-<h4 id="map"><a href="#map" class="headerlink" title="map"></a>map</h4><p>key/value pair，key是自动排序的。</p>
+<h4 id="map"><a href="#map" class="headerlink" title="map"></a>map</h4><p>key&#x2F;value pair，key是自动排序的。</p>
 <h4 id="mutilmap"><a href="#mutilmap" class="headerlink" title="mutilmap"></a>mutilmap</h4><p>和map唯一差别就是元素可重复。</p>
 <h4 id="unordered-map"><a href="#unordered-map" class="headerlink" title="unordered_map"></a>unordered_map</h4><p>使用hash作为底层的逻辑。</p>
 <h3 id="非标准序列容器"><a href="#非标准序列容器" class="headerlink" title="非标准序列容器"></a>非标准序列容器</h3><h4 id="slist"><a href="#slist" class="headerlink" title="slist"></a>slist</h4><h4 id="rope"><a href="#rope" class="headerlink" title="rope"></a>rope</h4><h3 id="工具容器"><a href="#工具容器" class="headerlink" title="工具容器"></a>工具容器</h3><p>Utility library</p>
@@ -351,7 +352,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

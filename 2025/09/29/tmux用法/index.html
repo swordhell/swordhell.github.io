@@ -230,6 +230,7 @@
 <h3 id="Tmux-新手入门指南"><a href="#Tmux-新手入门指南" class="headerlink" title="Tmux 新手入门指南"></a>Tmux 新手入门指南</h3><p>Tmux（<strong>T</strong>erminal <strong>M</strong>ulti<strong>pl</strong>exer）是一个强大的终端复用工具，可以让你在一个终端窗口中创建、管理和切换多个终端会话。它最大的好处是，即使你关闭了终端或者断开了 SSH 连接，后台的会话和程序仍然会继续运行。</p>
 <p>这份文档将教会你如何开始使用 Tmux，以及掌握一些最核心的概念和命令。</p>
 <span id="more"></span>
+
 <h4 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h4><p>在使用 Tmux 前，你需要理解三个基本概念：</p>
 <ul>
 <li><strong>Session (会话)</strong>: 类似于一个独立的工作空间，可以包含多个窗口。你可以给会话命名，方便以后重新连接。</li>
@@ -239,9 +240,11 @@
 <h4 id="启动和退出"><a href="#启动和退出" class="headerlink" title="启动和退出"></a>启动和退出</h4><p><strong>1. 启动一个新的 Tmux 会话</strong></p>
 <p>这是你开始使用 Tmux 的第一步。最简单的方式是直接输入 <code>tmux</code>。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux</span><br></pre></td></tr></table></figure>
+
 <p>这会创建一个默认名称的新会话，并立即进入。</p>
 <p>如果你想创建一个带有特定名称的会话（强烈推荐），可以使用 <code>-s</code> 参数：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new-session -s my-project</span><br></pre></td></tr></table></figure>
+
 <p>这会创建一个名为 <code>my-project</code> 的会话。</p>
 <p><strong>2. 退出并分离会话</strong></p>
 <p>当你完成了工作，或者需要暂时离开时，你可以<strong>分离 (detach)</strong> 当前会话。这会让会话在后台继续运行，而你则回到常规的终端。</p>
@@ -252,57 +255,53 @@
 <p>当你需要返回 Tmux 会话继续工作时，你可以使用 <code>attach</code> 命令。</p>
 <ul>
 <li><strong>重新连接到最近的会话</strong>:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach</span><br></pre></td></tr></table></figure></li>
-<li><strong>重新连接到指定名称的会话</strong>:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach -t my-project</span><br></pre></td></tr></table></figure>
-</li>
+<li><strong>重新连接到指定名称的会话</strong>:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach -t my-project</span><br></pre></td></tr></table></figure></li>
 </ul>
 <p><strong>4. 彻底终止会话</strong></p>
 <p>当你完全不再需要某个会话时，可以终止它：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux kill-session -t my-project</span><br></pre></td></tr></table></figure>
+
 <h4 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h4><p>Tmux 的所有快捷键都以一个前缀键开始，默认是 <strong><code>Ctrl-b</code></strong>。这意味着你必须先按下 <code>Ctrl-b</code>，松开，然后再按下一个键来执行操作。</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:left">快捷键 (按下 <code>Ctrl-b</code> 后)</th>
-<th style="text-align:left">描述</th>
+<th align="left">快捷键 (按下 <code>Ctrl-b</code> 后)</th>
+<th align="left">描述</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left"><code>c</code></td>
-<td style="text-align:left"><strong>创建新窗口</strong> (Create)</td>
+<tbody><tr>
+<td align="left"><code>c</code></td>
+<td align="left"><strong>创建新窗口</strong> (Create)</td>
 </tr>
 <tr>
-<td style="text-align:left"><code>p</code></td>
-<td style="text-align:left"><strong>切换到上一个窗口</strong> (Previous)</td>
+<td align="left"><code>p</code></td>
+<td align="left"><strong>切换到上一个窗口</strong> (Previous)</td>
 </tr>
 <tr>
-<td style="text-align:left"><code>n</code></td>
-<td style="text-align:left"><strong>切换到下一个窗口</strong> (Next)</td>
+<td align="left"><code>n</code></td>
+<td align="left"><strong>切换到下一个窗口</strong> (Next)</td>
 </tr>
 <tr>
-<td style="text-align:left"><code>,</code></td>
-<td style="text-align:left"><strong>重命名当前窗口</strong></td>
+<td align="left"><code>,</code></td>
+<td align="left"><strong>重命名当前窗口</strong></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>%</code></td>
-<td style="text-align:left"><strong>垂直分割窗格</strong></td>
+<td align="left"><code>%</code></td>
+<td align="left"><strong>垂直分割窗格</strong></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>&quot;</code></td>
-<td style="text-align:left"><strong>水平分割窗格</strong></td>
+<td align="left"><code>&quot;</code></td>
+<td align="left"><strong>水平分割窗格</strong></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>Arrow Keys</code></td>
-<td style="text-align:left">在窗格之间<strong>移动</strong></td>
+<td align="left"><code>Arrow Keys</code></td>
+<td align="left">在窗格之间<strong>移动</strong></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>x</code></td>
-<td style="text-align:left"><strong>关闭当前窗格</strong></td>
+<td align="left"><code>x</code></td>
+<td align="left"><strong>关闭当前窗格</strong></td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <h4 id="快速参考"><a href="#快速参考" class="headerlink" title="快速参考"></a>快速参考</h4><ul>
 <li><strong>查看所有会话</strong>: <code>tmux ls</code></li>
 <li><strong>查看所有快捷键</strong>: <code>Ctrl-b ?</code></li>
@@ -327,17 +326,14 @@
 <li><p>然后，松开前缀键，按下 <code>:</code>。</p>
 </li>
 <li><p>在底部弹出的命令行中，输入以下命令并按回车：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename-window new-name</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename-window new-name</span><br></pre></td></tr></table></figure></li>
 </ol>
 <p>将 <code>new-name</code> 替换成你想要的窗口名称。</p>
 <hr>
 <h4 id="额外提示"><a href="#额外提示" class="headerlink" title="额外提示"></a>额外提示</h4><ul>
 <li>你可以在 <code>tmux.conf</code> 配置文件中修改前缀键，如果你觉得默认的 <code>Ctrl-b</code> 不顺手的话。</li>
-<li>给窗口命名可以帮助你更好地组织工作，尤其是在一个会话中打开了多个窗口时。<ul>
+<li>给窗口命名可以帮助你更好地组织工作，尤其是在一个会话中打开了多个窗口时。</li>
 <li>你也可以使用 <code>rename-window</code> 命令的缩写 <code>renamew</code></li>
-</ul>
-</li>
 </ul>
 <p>你说的“解除 tmux 窗口”在 tmux 里对应的术语其实叫 detach——就是把当前会话从当前终端“脱开”，但不关闭它，程序还在后台跑。</p>
 <p>在 tmux 里有几个常见的“解除”动作👇</p>
@@ -351,10 +347,11 @@
 <p>tmux attach -t dev</p>
 <p>⸻</p>
 <p>2️⃣ 把当前窗口拆到新会话（break window）</p>
-<p>如果你想把某个 window 单独拆成一个新 session（相当于“解除绑定”）：<br>    •    先 Ctrl-b 然后按 : 进入 tmux 命令行，输入：</p>
+<p>如果你想把某个 window 单独拆成一个新 session（相当于“解除绑定”）：<br>	•	先 Ctrl-b 然后按 : 进入 tmux 命令行，输入：</p>
 <p>break-window</p>
-<pre><code>•    或者直接快捷键：
-</code></pre><p>Ctrl-b  !</p>
+<pre><code>•	或者直接快捷键：
+</code></pre>
+<p>Ctrl-b  !</p>
 <p>这样当前窗口就会变成一个新的 session。</p>
 <p>⸻</p>
 <p>3️⃣ 关闭窗口（kill window）</p>
@@ -366,13 +363,13 @@
 <p>在 tmux 外面直接：</p>
 <p>tmux kill-session -t dev</p>
 <p>⸻</p>
-<p>💡 所以：<br>    •    “解除 tmux 窗口” = Ctrl-b d（脱离整个会话）。<br>    •    “把窗口拆成新会话” = Ctrl-b !。<br>    •    “关掉窗口” = Ctrl-b &amp;。</p>
+<p>💡 所以：<br>	•	“解除 tmux 窗口” &#x3D; Ctrl-b d（脱离整个会话）。<br>	•	“把窗口拆成新会话” &#x3D; Ctrl-b !。<br>	•	“关掉窗口” &#x3D; Ctrl-b &amp;。</p>
 <p>你想要的是哪种？（后台运行不退出，还是拆出来新 session？）</p>
-<p>1️⃣ 进入复制模式（scroll 模式）<br>    •    默认快捷键：<br>Ctrl+b 然后按 [<br>（按完就可以用方向键上下滚动、翻页）</p>
-<p>按键<br>作用<br>↑ / ↓<br>按行上/下滚动<br>PageUp<br>向上翻一页<br>PageDown<br>向下翻一页<br>Space<br>也可向下翻一屏（取决于配置）<br>g<br>跳到缓冲区顶部<br>G<br>跳到缓冲区底部</p>
+<p>1️⃣ 进入复制模式（scroll 模式）<br>	•	默认快捷键：<br>Ctrl+b 然后按 [<br>（按完就可以用方向键上下滚动、翻页）</p>
+<p>按键<br>作用<br>↑ &#x2F; ↓<br>按行上&#x2F;下滚动<br>PageUp<br>向上翻一页<br>PageDown<br>向下翻一页<br>Space<br>也可向下翻一屏（取决于配置）<br>g<br>跳到缓冲区顶部<br>G<br>跳到缓冲区底部</p>
 <p>3️⃣ 退出复制模式</p>
 <p>按 q 或 Enter 退出。</p>
-<p>mac 键盘上：<br>    •    Fn + ↑ = PageUp（向上翻一页）<br>    •    Fn + ↓ = PageDown（向下翻一页）</p>
+<p>mac 键盘上：<br>	•	Fn + ↑ &#x3D; PageUp（向上翻一页）<br>	•	Fn + ↓ &#x3D; PageDown（向下翻一页）</p>
 <p>tmux里面这个很棒。</p>
 <p>按 Ctrl+b s（如果前缀是默认 Ctrl+b）</p>
 
@@ -481,7 +478,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
