@@ -215,53 +215,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><img src="/2023/06/29/go-gorm/gorm.svg"></p>
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><img src="/2023/06/29/go-gorm/gorm.svg" alt></p>
 <p>记录一下关于<code>gorm</code>相关的资料。使用gorm是比较普遍的数据库操作方式。其实资料很容易，这里记录一下，如果用起来的时候，将会非常快速上手。</p>
 <blockquote>
 <p>现在<code>chatGPT</code>出来了，改变太多了，这种文章只能当作自己的草稿纸。</p>
 </blockquote>
 <span id="more"></span>
-
 <h3 id="连接-mysql"><a href="#连接-mysql" class="headerlink" title="连接 mysql"></a>连接 mysql</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;github.com/sirupsen/logrus&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/spf13/viper&quot;</span></span><br><span class="line">	<span class="string">&quot;gorm.io/driver/mysql&quot;</span></span><br><span class="line">	<span class="string">&quot;gorm.io/gen&quot;</span></span><br><span class="line">	<span class="string">&quot;gorm.io/gorm&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	viper.SetConfigFile(<span class="string">&quot;config.json&quot;</span>)</span><br><span class="line">	viper.AddConfigPath(<span class="string">&quot;.&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err := viper.ReadInConfig(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(fmt.Sprintf(<span class="string">&quot;Failed to load config: %s&quot;</span>, err))</span><br><span class="line">	&#125;</span><br><span class="line">	logrus.SetFormatter(&amp;logrus.TextFormatter&#123;&#125;)</span><br><span class="line"></span><br><span class="line">	dsn := fmt.Sprintf(</span><br><span class="line">		<span class="string">&quot;%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&amp;parseTime=True&amp;loc=Local&quot;</span>,</span><br><span class="line">		viper.GetString(<span class="string">&quot;mysqldb.user&quot;</span>),</span><br><span class="line">		viper.GetString(<span class="string">&quot;mysqldb.password&quot;</span>),</span><br><span class="line">		viper.GetString(<span class="string">&quot;mysqldb.host&quot;</span>),</span><br><span class="line">		viper.GetInt(<span class="string">&quot;mysqldb.port&quot;</span>),</span><br><span class="line">		viper.GetString(<span class="string">&quot;mysqldb.database&quot;</span>),</span><br><span class="line">	)</span><br><span class="line">	g := gen.NewGenerator(gen.Config&#123;</span><br><span class="line">		OutPath: <span class="string">&quot;./query&quot;</span>,</span><br><span class="line">		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, <span class="comment">// generate mode</span></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	gormdb, _ := gorm.Open(mysql.Open(dsn))</span><br><span class="line">	g.UseDB(gormdb)</span><br><span class="line"></span><br><span class="line">	g.ApplyBasic(</span><br><span class="line">		g.GenerateModel(<span class="string">&quot;t_football_match&quot;</span>),</span><br><span class="line">		g.GenerateModel(<span class="string">&quot;t_ball_game&quot;</span>),</span><br><span class="line">		g.GenerateModel(<span class="string">&quot;t_basketball_match&quot;</span>),</span><br><span class="line">		g.GenerateModel(<span class="string">&quot;t_beidan_match&quot;</span>),</span><br><span class="line">		g.GenerateModel(<span class="string">&quot;t_racing_ball&quot;</span>),</span><br><span class="line">	)</span><br><span class="line">	g.Execute()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><h4 id="upsert"><a href="#upsert" class="headerlink" title="upsert"></a>upsert</h4><p>这个在用于更新字段很有用。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;gorm.io/gorm/clause&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Do nothing on conflict</span></span><br><span class="line">db.Clauses(clause.OnConflict&#123;DoNothing: <span class="literal">true</span>&#125;).Create(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Update columns to default value on `id` conflict</span></span><br><span class="line">db.Clauses(clause.OnConflict&#123;</span><br><span class="line">  Columns:   []clause.Column&#123;&#123;Name: <span class="string">&quot;id&quot;</span>&#125;&#125;,</span><br><span class="line">  DoUpdates: clause.Assignments(<span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>&#125;),</span><br><span class="line">&#125;).Create(&amp;users)</span><br><span class="line"><span class="comment">// MERGE INTO &quot;users&quot; USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server</span></span><br><span class="line"><span class="comment">// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Use SQL expression</span></span><br><span class="line">db.Clauses(clause.OnConflict&#123;</span><br><span class="line">  Columns:   []clause.Column&#123;&#123;Name: <span class="string">&quot;id&quot;</span>&#125;&#125;,</span><br><span class="line">  DoUpdates: clause.Assignments(<span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;&#123;<span class="string">&quot;count&quot;</span>: gorm.Expr(<span class="string">&quot;GREATEST(count, VALUES(count))&quot;</span>)&#125;),</span><br><span class="line">&#125;).Create(&amp;users)</span><br><span class="line"><span class="comment">// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `count`=GREATEST(count, VALUES(count));</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Update columns to new value on `id` conflict</span></span><br><span class="line">db.Clauses(clause.OnConflict&#123;</span><br><span class="line">  Columns:   []clause.Column&#123;&#123;Name: <span class="string">&quot;id&quot;</span>&#125;&#125;,</span><br><span class="line">  DoUpdates: clause.AssignmentColumns([]<span class="type">string</span>&#123;<span class="string">&quot;name&quot;</span>, <span class="string">&quot;age&quot;</span>&#125;),</span><br><span class="line">&#125;).Create(&amp;users)</span><br><span class="line"><span class="comment">// MERGE INTO &quot;users&quot; USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET &quot;name&quot;=&quot;excluded&quot;.&quot;name&quot;; SQL Server</span></span><br><span class="line"><span class="comment">// INSERT INTO &quot;users&quot; *** ON CONFLICT (&quot;id&quot;) DO UPDATE SET &quot;name&quot;=&quot;excluded&quot;.&quot;name&quot;, &quot;age&quot;=&quot;excluded&quot;.&quot;age&quot;; PostgreSQL</span></span><br><span class="line"><span class="comment">// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age); MySQL</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Update all columns to new value on conflict except primary keys and those columns having default values from sql func</span></span><br><span class="line">db.Clauses(clause.OnConflict&#123;</span><br><span class="line">  UpdateAll: <span class="literal">true</span>,</span><br><span class="line">&#125;).Create(&amp;users)</span><br><span class="line"><span class="comment">// INSERT INTO &quot;users&quot; *** ON CONFLICT (&quot;id&quot;) DO UPDATE SET &quot;name&quot;=&quot;excluded&quot;.&quot;name&quot;, &quot;age&quot;=&quot;excluded&quot;.&quot;age&quot;, ...;</span></span><br><span class="line"><span class="comment">// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL</span></span><br></pre></td></tr></table></figure>
-
 <h4 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h4><p>这里支持某基础上修改多少。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// product&#x27;s ID is `3`</span></span><br><span class="line">db.Model(&amp;product).Update(<span class="string">&quot;price&quot;</span>, gorm.Expr(<span class="string">&quot;price * ? + ?&quot;</span>, <span class="number">2</span>, <span class="number">100</span>))</span><br><span class="line"><span class="comment">// UPDATE &quot;products&quot; SET &quot;price&quot; = price * 2 + 100, &quot;updated_at&quot; = &#x27;2013-11-17 21:34:10&#x27; WHERE &quot;id&quot; = 3;</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;product).Updates(<span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;&#123;<span class="string">&quot;price&quot;</span>: gorm.Expr(<span class="string">&quot;price * ? + ?&quot;</span>, <span class="number">2</span>, <span class="number">100</span>)&#125;)</span><br><span class="line"><span class="comment">// UPDATE &quot;products&quot; SET &quot;price&quot; = price * 2 + 100, &quot;updated_at&quot; = &#x27;2013-11-17 21:34:10&#x27; WHERE &quot;id&quot; = 3;</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;product).UpdateColumn(<span class="string">&quot;quantity&quot;</span>, gorm.Expr(<span class="string">&quot;quantity - ?&quot;</span>, <span class="number">1</span>))</span><br><span class="line"><span class="comment">// UPDATE &quot;products&quot; SET &quot;quantity&quot; = quantity - 1 WHERE &quot;id&quot; = 3;</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;product).Where(<span class="string">&quot;quantity &gt; 1&quot;</span>).UpdateColumn(<span class="string">&quot;quantity&quot;</span>, gorm.Expr(<span class="string">&quot;quantity - ?&quot;</span>, <span class="number">1</span>))</span><br><span class="line"><span class="comment">// UPDATE &quot;products&quot; SET &quot;quantity&quot; = quantity - 1 WHERE &quot;id&quot; = 3 AND quantity &gt; 1;</span></span><br></pre></td></tr></table></figure>
-
 <h4 id="group方式读取指定某个数据"><a href="#group方式读取指定某个数据" class="headerlink" title="group方式读取指定某个数据"></a>group方式读取指定某个数据</h4><ol>
 <li>有一个表保存了很多person数据</li>
 <li>person数据里面包含 name, age, sex, address</li>
-<li>只想查询一下 age</li>
+<li>只想查询一下 age </li>
 </ol>
 <h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="处理空字符串"><a href="#处理空字符串" class="headerlink" title="处理空字符串"></a>处理空字符串</h3><p>我发现两次这个问题了，在使用 gorm 的时候，string 是有可能为空的，如果没有小心处理将会造成 null 和 blank 混淆。这个时候只能使用下面这段代码来处理。防止出现问题。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;database/sql&quot;</span></span><br><span class="line">sqlString := sql.NullString&#123;String: input, Valid: <span class="built_in">len</span>(input)&gt;<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="查询不出来问题"><a href="#查询不出来问题" class="headerlink" title="查询不出来问题"></a>查询不出来问题</h3><p>数据量少的时候，不会出现问题，但是数据量之后就会出现问题了。其实还是习惯问题。</p>
 <p>搞错了事情：</p>
 <ol>
 <li>每个record对象都需要重新创建，（否则会造成各种问题；数据量小的时候不会出问题，数据量大就会随机出问题）</li>
 </ol>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> record models.Home</span><br><span class="line">err := tx.Model(&amp;models.Home&#123;&#125;).</span><br><span class="line">	Where(<span class="string">&quot;id = ?&quot;</span>, id).</span><br><span class="line">	Where(<span class="string">&quot;address = ?&quot;</span>, address).</span><br><span class="line">	First(&amp;record).Error</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;record, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line">rawErr := err</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 函数域内，不能重复使用 models</span></span><br><span class="line"><span class="keyword">var</span> record models.Home</span><br><span class="line">err = tx.Model(&amp;models.Home&#123;&#125;).</span><br><span class="line">	Where(<span class="string">&quot;address = ?&quot;</span>, address).</span><br><span class="line">	First(&amp;byaddr_record).Error</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <h3 id="密码无需做escape"><a href="#密码无需做escape" class="headerlink" title="密码无需做escape"></a>密码无需做escape</h3><p>密码无需做escape就能用。<br>在使用 GORM（Go的ORM库）时，通常不需要手动进行SQL转义，因为GORM会自动处理大多数的SQL注入问题。然而，如果你确实需要手动对一个字符串进行SQL转义，可以使用GORM提供的一些辅助函数。</p>
 <p>GORM的<code>DB.Raw</code>方法允许你执行原生的SQL查询，同时可以使用<code>db.Conn</code>的方法对字符串进行SQL转义。</p>
 <p>以下是一个示例，展示如何对字符串进行SQL转义：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;gorm.io/driver/sqlite&quot;</span></span><br><span class="line">	<span class="string">&quot;gorm.io/gorm&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 初始化数据库连接</span></span><br><span class="line">	db, err := gorm.Open(sqlite.Open(<span class="string">&quot;test.db&quot;</span>), &amp;gorm.Config&#123;&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(<span class="string">&quot;failed to connect database&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义需要转义的字符串</span></span><br><span class="line">	rawString := <span class="string">&quot;O&#x27;Reilly&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 使用 GORM 的 DB.Conn 方法进行转义</span></span><br><span class="line">	escapedString := db.Conn(<span class="function"><span class="keyword">func</span><span class="params">(conn *gorm.DB)</span></span> <span class="type">error</span> &#123;</span><br><span class="line">		escapedString := conn.Dialector.Explain(<span class="string">&quot;?&quot;</span>, rawString)</span><br><span class="line">		fmt.Println(<span class="string">&quot;Escaped String:&quot;</span>, escapedString)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> escapedString != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(<span class="string">&quot;failed to escape string&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>在这个示例中，<code>conn.Dialector.Explain</code> 方法用来生成包含转义字符串的SQL查询。这个方法接收一个格式化字符串和参数，返回一个包含转义字符串的完整查询。</p>
 <p>如果你只是需要转义字符串，而不需要执行查询，可以使用<code>fmt.Sprintf</code>结合<code>conn.Dialector.Explain</code>来实现：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;gorm.io/driver/sqlite&quot;</span></span><br><span class="line">	<span class="string">&quot;gorm.io/gorm&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 初始化数据库连接</span></span><br><span class="line">	db, err := gorm.Open(sqlite.Open(<span class="string">&quot;test.db&quot;</span>), &amp;gorm.Config&#123;&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(<span class="string">&quot;failed to connect database&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义需要转义的字符串</span></span><br><span class="line">	rawString := <span class="string">&quot;O&#x27;Reilly&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 使用 GORM 的 DB.Conn 方法进行转义</span></span><br><span class="line">	<span class="keyword">var</span> escapedString <span class="type">string</span></span><br><span class="line">	db.Conn(<span class="function"><span class="keyword">func</span><span class="params">(conn *gorm.DB)</span></span> <span class="type">error</span> &#123;</span><br><span class="line">		escapedString = fmt.Sprintf(<span class="string">&quot;%s&quot;</span>, conn.Dialector.Explain(<span class="string">&quot;?&quot;</span>, rawString))</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 打印转义后的字符串</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;Escaped String:&quot;</span>, escapedString)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>以上代码会正确转义字符串，使其在SQL查询中安全可用。如果你有更多特定的需求或遇到其他问题，请告诉我！</p>
 <h3 id="多字段unique"><a href="#多字段unique" class="headerlink" title="多字段unique"></a>多字段unique</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Something <span class="keyword">struct</span> &#123;</span><br><span class="line">    gorm.Model</span><br><span class="line">    First  <span class="type">string</span> <span class="string">`gorm:&quot;index:idx_name,unique&quot;`</span></span><br><span class="line">    Second <span class="type">string</span> <span class="string">`gorm:&quot;index:idx_name,unique&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="需要调查一下"><a href="#需要调查一下" class="headerlink" title="需要调查一下"></a>需要调查一下</h3><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unreadable: invalid interface type</span><br><span class="line"></span><br><span class="line">未查询到记录返回该错误</span><br></pre></td></tr></table></figure>
-
 <h3 id="软删除"><a href="#软删除" class="headerlink" title="软删除"></a>软删除</h3><p><code>Unscoped</code></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Unscoped disables the global scope of soft deletion in a query.</span></span><br><span class="line"><span class="comment">// By default, GORM uses soft deletion, marking records as &quot;deleted&quot;</span></span><br><span class="line"><span class="comment">// by setting a timestamp on a specific field (e.g., `deleted_at`).</span></span><br><span class="line"><span class="comment">// Unscoped allows queries to include records marked as deleted,</span></span><br><span class="line"><span class="comment">// overriding the soft deletion behavior.</span></span><br><span class="line"><span class="comment">// Example:</span></span><br><span class="line"><span class="comment">//    var users []User</span></span><br><span class="line"><span class="comment">//    db.Unscoped().Find(&amp;users)</span></span><br><span class="line"><span class="comment">//    // Retrieves all users, including deleted ones.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(db *DB)</span></span> Unscoped() (tx *DB) &#123;</span><br><span class="line">	tx = db.getInstance()</span><br><span class="line">	tx.Statement.Unscoped = <span class="literal">true</span></span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>在 GORM 中，默认情况下，模型的删除操作是软删除，即不会真正从数据库中删除记录，而是设置一个 DeletedAt 字段来标记记录被删除。如果你需要真正删除记录而不是软删除，可以通过以下几种方式来实现。</p>
 <ol>
 <li>禁用软删除功能</li>
@@ -270,32 +259,30 @@
 <p>假设你有一个模型：</p>
 <p>type User struct {<br>    ID   uint<br>    Name string<br>    Age  int<br>}</p>
 <p>你可以直接使用 db.Delete() 来执行真正的删除操作：</p>
-<p>var user User<br>db.Where(“id &#x3D; ?”, 1).Delete(&amp;user)</p>
+<p>var user User<br>db.Where(“id = ?”, 1).Delete(&amp;user)</p>
 <p>这将从数据库中真正删除该记录，而不是软删除。</p>
-<ol start="2">
+<ol>
 <li>忽略软删除字段（如果模型带有 gorm.DeletedAt）</li>
 </ol>
 <p>如果你的模型带有 gorm.DeletedAt 字段，且默认使用了软删除，你可以通过以下方式忽略软删除字段，实现真实删除。</p>
 <p>例如，带有软删除字段的模型：</p>
 <p>type User struct {<br>    ID        uint<br>    Name      string<br>    Age       int<br>    DeletedAt gorm.DeletedAt <code>gorm:&quot;index&quot;</code><br>}</p>
 <p>在删除时通过 Unscoped() 方法来忽略软删除逻辑，实现真实删除：</p>
-<p>var user User<br>db.Unscoped().Where(“id &#x3D; ?”, 1).Delete(&amp;user)</p>
+<p>var user User<br>db.Unscoped().Where(“id = ?”, 1).Delete(&amp;user)</p>
 <p>Unscoped() 方法会忽略软删除特性，直接从数据库中删除记录。</p>
-<ol start="3">
+<ol>
 <li>使用 Exec 执行原生 SQL 语句</li>
 </ol>
 <p>如果你想完全避免 GORM 的删除逻辑，直接使用原生 SQL 来执行删除操作：</p>
-<p>db.Exec(“DELETE FROM users WHERE id &#x3D; ?”, 1)</p>
+<p>db.Exec(“DELETE FROM users WHERE id = ?”, 1)</p>
 <p>这种方式不经过 GORM 的任何处理，直接执行 SQL 语句，完全由你控制删除行为。</p>
 <p>总结</p>
-<pre><code>•	默认删除：db.Delete(&amp;user)，会执行软删除（如果模型有 DeletedAt 字段）。
-•	真实删除：db.Unscoped().Delete(&amp;user)，忽略软删除，真正从数据库中删除。
-•	原生 SQL 删除：db.Exec(&quot;DELETE FROM users WHERE id = ?&quot;, id)，直接执行 SQL 删除操作。
-</code></pre>
-<h3 id="时间为空的情况"><a href="#时间为空的情况" class="headerlink" title="时间为空的情况"></a>时间为空的情况</h3><p>Data truncation: Incorrect datetime value: ‘0000-00-00 00:00:00’ for column ‘expire_time’ at row 1</p>
+<pre><code>•    默认删除：db.Delete(&amp;user)，会执行软删除（如果模型有 DeletedAt 字段）。
+•    真实删除：db.Unscoped().Delete(&amp;user)，忽略软删除，真正从数据库中删除。
+•    原生 SQL 删除：db.Exec(&quot;DELETE FROM users WHERE id = ?&quot;, id)，直接执行 SQL 删除操作。
+</code></pre><h3 id="时间为空的情况"><a href="#时间为空的情况" class="headerlink" title="时间为空的情况"></a>时间为空的情况</h3><p>Data truncation: Incorrect datetime value: ‘0000-00-00 00:00:00’ for column ‘expire_time’ at row 1</p>
 <p>需要对字段定义成这样：</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> YourModel <span class="keyword">struct</span> &#123;</span><br><span class="line">    ExpireTime *time.Time <span class="string">`gorm:&quot;default:NULL&quot;`</span> <span class="comment">// 使用指针，以允许 NULL 值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="使用-COALESCE-防止报错"><a href="#使用-COALESCE-防止报错" class="headerlink" title="使用 COALESCE 防止报错"></a>使用 COALESCE 防止报错</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tx := dbinit.Gormdb.Model(&amp;model.TbUserFlow&#123;&#125;).</span><br><span class="line">	Where(<span class="string">&quot;user_id = ? status = ?&quot;</span>, userId, Init).</span><br><span class="line">	Select(<span class="string">&quot;COALESCE(SUM(changed),0)&quot;</span>).Scan(&amp;total)</span><br></pre></td></tr></table></figure>
 <p>在 GORM 中，你可以使用 Updates 方法来进行批量更新，但默认情况下，Updates 只能一次性更新符合条件的多条记录为相同的值。如果你需要为每条记录更新不同的值，则需要结合其他方法。</p>
 <ol>
@@ -304,91 +291,86 @@
 <p>如果你想更新多条记录，但每条记录的更新字段值相同，可以使用如下代码：</p>
 <p>db.Model(&amp;model.User{}).Where(“id IN ?”, []int{1, 2, 3}).Updates(map[string]interface{}{<br>    “name”: “New Name”,<br>    “age”:  30,<br>})</p>
 <p>上面代码会将 id 为 1、2、3 的用户的 name 字段更新为 “New Name”，age 更新为 30。</p>
-<ol start="2">
+<ol>
 <li>批量更新不同的字段值</li>
 </ol>
 <p>GORM 本身没有直接支持为每条记录批量更新不同的字段值的功能。为了实现批量更新不同字段值的需求，可以通过手动构造批量更新的 SQL 语句或使用事务来逐条更新。</p>
 <p>方法1：构造原生 SQL 语句</p>
 <p>可以通过 Raw SQL 实现批量更新不同值的需求。例如：</p>
-<p>updates :&#x3D; []struct {<br>    ID   int<br>    Name string<br>    Age  int<br>}{<br>    {ID: 1, Name: “Alice”, Age: 25},<br>    {ID: 2, Name: “Bob”, Age: 30},<br>    {ID: 3, Name: “Charlie”, Age: 35},<br>}</p>
-<p>&#x2F;&#x2F; 构造 SQL<br>sql :&#x3D; “UPDATE users SET name &#x3D; CASE id”<br>ids :&#x3D; []int{}<br>for _, u :&#x3D; range updates {<br>    sql +&#x3D; fmt.Sprintf(“ WHEN %d THEN ‘%s’”, u.ID, u.Name)<br>    ids &#x3D; append(ids, u.ID)<br>}<br>sql +&#x3D; “ END, age &#x3D; CASE id”<br>for _, u :&#x3D; range updates {<br>    sql +&#x3D; fmt.Sprintf(“ WHEN %d THEN %d”, u.ID, u.Age)<br>}<br>sql +&#x3D; “ END WHERE id IN ?”</p>
-<p>&#x2F;&#x2F; 执行 SQL<br>db.Exec(sql, ids)</p>
+<p>updates := []struct {<br>    ID   int<br>    Name string<br>    Age  int<br>}{<br>    {ID: 1, Name: “Alice”, Age: 25},<br>    {ID: 2, Name: “Bob”, Age: 30},<br>    {ID: 3, Name: “Charlie”, Age: 35},<br>}</p>
+<p>// 构造 SQL<br>sql := “UPDATE users SET name = CASE id”<br>ids := []int{}<br>for <em>, u := range updates {<br>    sql += fmt.Sprintf(“ WHEN %d THEN ‘%s’”, u.ID, u.Name)<br>    ids = append(ids, u.ID)<br>}<br>sql += “ END, age = CASE id”<br>for </em>, u := range updates {<br>    sql += fmt.Sprintf(“ WHEN %d THEN %d”, u.ID, u.Age)<br>}<br>sql += “ END WHERE id IN ?”</p>
+<p>// 执行 SQL<br>db.Exec(sql, ids)</p>
 <p>这段代码会生成如下 SQL 语句，并执行批量更新：</p>
-<p>UPDATE users SET name &#x3D; CASE id<br>    WHEN 1 THEN ‘Alice’<br>    WHEN 2 THEN ‘Bob’<br>    WHEN 3 THEN ‘Charlie’<br>END, age &#x3D; CASE id<br>    WHEN 1 THEN 25<br>    WHEN 2 THEN 30<br>    WHEN 3 THEN 35<br>END WHERE id IN (1, 2, 3);</p>
+<p>UPDATE users SET name = CASE id<br>    WHEN 1 THEN ‘Alice’<br>    WHEN 2 THEN ‘Bob’<br>    WHEN 3 THEN ‘Charlie’<br>END, age = CASE id<br>    WHEN 1 THEN 25<br>    WHEN 2 THEN 30<br>    WHEN 3 THEN 35<br>END WHERE id IN (1, 2, 3);</p>
 <p>方法2：使用事务进行逐条更新</p>
 <p>如果你不想构造复杂的 SQL，可以使用事务逐条更新数据：</p>
-<p>tx :&#x3D; db.Begin()</p>
-<p>updates :&#x3D; []struct {<br>    ID   int<br>    Name string<br>    Age  int<br>}{<br>    {ID: 1, Name: “Alice”, Age: 25},<br>    {ID: 2, Name: “Bob”, Age: 30},<br>    {ID: 3, Name: “Charlie”, Age: 35},<br>}</p>
-<p>for _, u :&#x3D; range updates {<br>    tx.Model(&amp;model.User{}).Where(“id &#x3D; ?”, u.ID).Updates(map[string]interface{}{<br>        “name”: u.Name,<br>        “age”:  u.Age,<br>    })<br>}</p>
+<p>tx := db.Begin()</p>
+<p>updates := []struct {<br>    ID   int<br>    Name string<br>    Age  int<br>}{<br>    {ID: 1, Name: “Alice”, Age: 25},<br>    {ID: 2, Name: “Bob”, Age: 30},<br>    {ID: 3, Name: “Charlie”, Age: 35},<br>}</p>
+<p>for _, u := range updates {<br>    tx.Model(&amp;model.User{}).Where(“id = ?”, u.ID).Updates(map[string]interface{}{<br>        “name”: u.Name,<br>        “age”:  u.Age,<br>    })<br>}</p>
 <p>tx.Commit()</p>
 <p>这种方式虽然性能不如原生 SQL 高效，但代码逻辑较为简洁，并且事务可以保证数据一致性。</p>
-<ol start="3">
+<ol>
 <li>使用 Save 方法批量保存（插入或更新）</li>
 </ol>
 <p>如果你的需求是根据主键批量插入或更新数据，你可以使用 Save 方法：</p>
-<p>users :&#x3D; []model.User{<br>    {ID: 1, Name: “Alice”, Age: 25},<br>    {ID: 2, Name: “Bob”, Age: 30},<br>    {ID: 3, Name: “Charlie”, Age: 35},<br>}</p>
+<p>users := []model.User{<br>    {ID: 1, Name: “Alice”, Age: 25},<br>    {ID: 2, Name: “Bob”, Age: 30},<br>    {ID: 3, Name: “Charlie”, Age: 35},<br>}</p>
 <p>db.Save(&amp;users)</p>
 <p>GORM 会根据主键判断记录是否存在，如果存在则执行 UPDATE，否则执行 INSERT。</p>
 <p>总结</p>
-<pre><code>•	如果要批量更新相同字段值，可以直接使用 GORM 的 Updates 方法。
-•	如果要批量更新不同字段值，可以使用构造的原生 SQL 或使用事务逐条更新的方式。
-•	如果你的需求是根据主键批量插入或更新，可以使用 Save 方法。
-</code></pre>
-<p>具体选择哪种方式取决于你的业务需求和性能考虑。<br>GORM 默认在 First 查询时会在 ORDER BY 里自动添加 id，这是因为 First 方法通常用于查找最早的记录，而 id 通常是主键。因此，GORM 会默认追加 ORDER BY id，但你的场景不需要这个行为。</p>
+<pre><code>•    如果要批量更新相同字段值，可以直接使用 GORM 的 Updates 方法。
+•    如果要批量更新不同字段值，可以使用构造的原生 SQL 或使用事务逐条更新的方式。
+•    如果你的需求是根据主键批量插入或更新，可以使用 Save 方法。
+</code></pre><p>具体选择哪种方式取决于你的业务需求和性能考虑。<br>GORM 默认在 First 查询时会在 ORDER BY 里自动添加 id，这是因为 First 方法通常用于查找最早的记录，而 id 通常是主键。因此，GORM 会默认追加 ORDER BY id，但你的场景不需要这个行为。</p>
 <p>⸻</p>
 <p>✅ 解决方案</p>
 <p>方法 1：使用 Select 指定查询字段</p>
-<p>tx :&#x3D; dbinit.Gormdb.Debug().<br>    Model(&amp;model.TblLogs{}).<br>    Select(“*”).  &#x2F;&#x2F; 显式选择所有字段，避免 GORM 默认加 <code>id</code><br>    Where(“workchain &#x3D; ? AND shard &#x3D; ? AND robot_id &#x3D; ?”, workchain, shard, viper.GetInt(“chain.robot_id”)).<br>    Order(“seqno DESC”).<br>    Limit(1).<br>    Find(&amp;row) &#x2F;&#x2F; 改用 <code>Find</code> 而不是 <code>First</code></p>
-<p>为什么？<br>	•	First(&amp;row) 会默认添加 ORDER BY id，导致你的 SQL 出现 ORDER BY seqno DESC, id。<br>	•	Find(&amp;row) 不会自动追加 id，但仍然可以使用 Limit(1) 来获取最新一条数据。</p>
+<p>tx := dbinit.Gormdb.Debug().<br>    Model(&amp;model.TblLogs{}).<br>    Select(“*”).  // 显式选择所有字段，避免 GORM 默认加 <code>id</code><br>    Where(“workchain = ? AND shard = ? AND robot_id = ?”, workchain, shard, viper.GetInt(“chain.robot_id”)).<br>    Order(“seqno DESC”).<br>    Limit(1).<br>    Find(&amp;row) // 改用 <code>Find</code> 而不是 <code>First</code></p>
+<p>为什么？<br>    •    First(&amp;row) 会默认添加 ORDER BY id，导致你的 SQL 出现 ORDER BY seqno DESC, id。<br>    •    Find(&amp;row) 不会自动追加 id，但仍然可以使用 Limit(1) 来获取最新一条数据。</p>
 <p>⸻</p>
 <p>方法 2：使用 Session(&amp;gorm.Session{SkipDefaultTransaction: true})</p>
 <p>如果你仍想使用 First，但不想要 id，可以用 Session 让 GORM 忽略一些默认行为：</p>
-<p>tx :&#x3D; dbinit.Gormdb.Debug().<br>    Session(&amp;gorm.Session{QueryFields: true}). &#x2F;&#x2F; 让 GORM 严格按 <code>SELECT *</code> 查询<br>    Model(&amp;model.TblLogs{}).<br>    Where(“workchain &#x3D; ? AND shard &#x3D; ? AND robot_id &#x3D; ?”, workchain, shard, viper.GetInt(“chain.robot_id”)).<br>    Order(“seqno DESC”).<br>    First(&amp;row)</p>
+<p>tx := dbinit.Gormdb.Debug().<br>    Session(&amp;gorm.Session{QueryFields: true}). // 让 GORM 严格按 <code>SELECT *</code> 查询<br>    Model(&amp;model.TblLogs{}).<br>    Where(“workchain = ? AND shard = ? AND robot_id = ?”, workchain, shard, viper.GetInt(“chain.robot_id”)).<br>    Order(“seqno DESC”).<br>    First(&amp;row)</p>
 <p>但是 方法 1 更推荐，因为 Find 不会加 id，更符合你的需求。</p>
 <p>⸻</p>
 <p>✅ 结论</p>
 <p>推荐方法：使用 Find(&amp;row).Limit(1)，避免 GORM 在 ORDER BY 里强制加 id。</p>
-<h2 id="删除掉数据的时候按照这个逻辑来写"><a href="#删除掉数据的时候按照这个逻辑来写" class="headerlink" title="删除掉数据的时候按照这个逻辑来写"></a>删除掉数据的时候按照这个逻辑来写</h2><pre><code class="language-golang">func ClearPersonData(timeLimit time.Time, countLimit int) &#123;
-	var ids []int64
+<h2 id="删除掉数据的时候按照这个逻辑来写"><a href="#删除掉数据的时候按照这个逻辑来写" class="headerlink" title="删除掉数据的时候按照这个逻辑来写"></a>删除掉数据的时候按照这个逻辑来写</h2><p>```golang<br>func ClearPersonData(timeLimit time.Time, countLimit int) {<br>    var ids []int64</p>
+<pre><code>// 1️⃣ 查询符合条件的 ID，限制 countLimit
+err := Gormdb.Model(&amp;model.TblPersonData&#123;&#125;).
+    Select(&quot;id&quot;, &quot;open_time&quot;).
+    Where(&quot;open_time &lt; ?&quot;, timeLimit).
+    Order(&quot;id ASC&quot;).
+    Limit(countLimit).
+    Pluck(&quot;id&quot;, &amp;ids).Error
 
-	// 1️⃣ 查询符合条件的 ID，限制 countLimit
-	err := Gormdb.Model(&amp;model.TblPersonData&#123;&#125;).
-		Select(&quot;id&quot;, &quot;open_time&quot;).
-		Where(&quot;open_time &lt; ?&quot;, timeLimit).
-		Order(&quot;id ASC&quot;).
-		Limit(countLimit).
-		Pluck(&quot;id&quot;, &amp;ids).Error
-
-	if err != nil &#123;
-		logrus.Warnln(&quot;Query Person IDs failed&quot;, err, &quot;timeLimit&quot;, timeLimit, &quot;countLimit&quot;, countLimit)
-		return
-	&#125;
-
-	// 2️⃣ 没有数据可删，直接返回
-	if len(ids) == 0 &#123;
-		logrus.Infoln(&quot;No outdated Person data found, skipping deletion&quot;)
-		return
-	&#125;
-
-	// 3️⃣ 按 ID 删除，避免全表扫描
-	tx := Gormdb.Where(&quot;id IN (?)&quot;, ids).Delete(&amp;model.TblPersonData&#123;&#125;)
-	if tx.Error != nil &#123;
-		logrus.Warnln(&quot;ClearPersonData delete error&quot;, tx.Error, &quot;timeLimit&quot;, timeLimit, &quot;countLimit&quot;, countLimit)
-	&#125; else &#123;
-		logrus.Infoln(&quot;ClearPersonData success&quot;,
-			&quot;timeLimit&quot;, timeLimit,
-			&quot;countLimit&quot;, countLimit,
-			&quot;RowsAffected&quot;, tx.RowsAffected)
-	&#125;
+if err != nil &#123;
+    logrus.Warnln(&quot;Query Person IDs failed&quot;, err, &quot;timeLimit&quot;, timeLimit, &quot;countLimit&quot;, countLimit)
+    return
 &#125;
 
-## 参考
+// 2️⃣ 没有数据可删，直接返回
+if len(ids) == 0 &#123;
+    logrus.Infoln(&quot;No outdated Person data found, skipping deletion&quot;)
+    return
+&#125;
 
-* [1] [gorm-github](https://github.com/go-gorm/gorm)
-* [2] [gorm中文资料](https://gorm.io/zh_CN/docs/index.html)
-* [3] [database变成结构体](https://gorm.io/gen/database_to_structs.html)
-* [4] [multi-column-unique-gorm](https://stackoverflow.com/questions/30831316/how-to-specify-a-struct-with-a-multi-column-unique-index-for-gorm)
-</code></pre>
+// 3️⃣ 按 ID 删除，避免全表扫描
+tx := Gormdb.Where(&quot;id IN (?)&quot;, ids).Delete(&amp;model.TblPersonData&#123;&#125;)
+if tx.Error != nil &#123;
+    logrus.Warnln(&quot;ClearPersonData delete error&quot;, tx.Error, &quot;timeLimit&quot;, timeLimit, &quot;countLimit&quot;, countLimit)
+&#125; else &#123;
+    logrus.Infoln(&quot;ClearPersonData success&quot;,
+        &quot;timeLimit&quot;, timeLimit,
+        &quot;countLimit&quot;, countLimit,
+        &quot;RowsAffected&quot;, tx.RowsAffected)
+&#125;
+</code></pre><p>}</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm">gorm-github</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://gorm.io/zh_CN/docs/index.html">gorm中文资料</a></li>
+<li>[3] <a target="_blank" rel="noopener" href="https://gorm.io/gen/database_to_structs.html">database变成结构体</a></li>
+<li>[4] <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/30831316/how-to-specify-a-struct-with-a-multi-column-unique-index-for-gorm">multi-column-unique-gorm</a></li>
+</ul>
 
     </div>
 
@@ -473,7 +455,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5-mysql"><span class="nav-number">1.0.1.</span> <span class="nav-text">连接 mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA"><span class="nav-number">1.0.2.</span> <span class="nav-text">创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#upsert"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">upsert</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#group%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%8F%96%E6%8C%87%E5%AE%9A%E6%9F%90%E4%B8%AA%E6%95%B0%E6%8D%AE"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">group方式读取指定某个数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E7%A9%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.1.1.</span> <span class="nav-text">处理空字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E4%B8%8D%E5%87%BA%E6%9D%A5%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">查询不出来问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E6%97%A0%E9%9C%80%E5%81%9Aescape"><span class="nav-number">1.1.3.</span> <span class="nav-text">密码无需做escape</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%AD%97%E6%AE%B5unique"><span class="nav-number">1.1.4.</span> <span class="nav-text">多字段unique</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E8%B0%83%E6%9F%A5%E4%B8%80%E4%B8%8B"><span class="nav-number">1.1.5.</span> <span class="nav-text">需要调查一下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E5%88%A0%E9%99%A4"><span class="nav-number">1.1.6.</span> <span class="nav-text">软删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E4%B8%BA%E7%A9%BA%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">1.1.7.</span> <span class="nav-text">时间为空的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-COALESCE-%E9%98%B2%E6%AD%A2%E6%8A%A5%E9%94%99"><span class="nav-number">1.1.8.</span> <span class="nav-text">使用 COALESCE 防止报错</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%8E%89%E6%95%B0%E6%8D%AE%E7%9A%84%E6%97%B6%E5%80%99%E6%8C%89%E7%85%A7%E8%BF%99%E4%B8%AA%E9%80%BB%E8%BE%91%E6%9D%A5%E5%86%99"><span class="nav-number">1.2.</span> <span class="nav-text">删除掉数据的时候按照这个逻辑来写</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5-mysql"><span class="nav-number">1.0.1.</span> <span class="nav-text">连接 mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA"><span class="nav-number">1.0.2.</span> <span class="nav-text">创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#upsert"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">upsert</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#group%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%8F%96%E6%8C%87%E5%AE%9A%E6%9F%90%E4%B8%AA%E6%95%B0%E6%8D%AE"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">group方式读取指定某个数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E7%A9%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.1.1.</span> <span class="nav-text">处理空字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E4%B8%8D%E5%87%BA%E6%9D%A5%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">查询不出来问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E6%97%A0%E9%9C%80%E5%81%9Aescape"><span class="nav-number">1.1.3.</span> <span class="nav-text">密码无需做escape</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%AD%97%E6%AE%B5unique"><span class="nav-number">1.1.4.</span> <span class="nav-text">多字段unique</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E8%B0%83%E6%9F%A5%E4%B8%80%E4%B8%8B"><span class="nav-number">1.1.5.</span> <span class="nav-text">需要调查一下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E5%88%A0%E9%99%A4"><span class="nav-number">1.1.6.</span> <span class="nav-text">软删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E4%B8%BA%E7%A9%BA%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">1.1.7.</span> <span class="nav-text">时间为空的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-COALESCE-%E9%98%B2%E6%AD%A2%E6%8A%A5%E9%94%99"><span class="nav-number">1.1.8.</span> <span class="nav-text">使用 COALESCE 防止报错</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%8E%89%E6%95%B0%E6%8D%AE%E7%9A%84%E6%97%B6%E5%80%99%E6%8C%89%E7%85%A7%E8%BF%99%E4%B8%AA%E9%80%BB%E8%BE%91%E6%9D%A5%E5%86%99"><span class="nav-number">1.2.</span> <span class="nav-text">删除掉数据的时候按照这个逻辑来写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

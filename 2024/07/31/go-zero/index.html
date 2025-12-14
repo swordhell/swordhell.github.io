@@ -215,7 +215,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><img src="/2024/07/31/go-zero/arch-cn.svg"></p>
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><img src="/2024/07/31/go-zero/arch-cn.svg" alt></p>
 <p>go-zero 包含极简的 API 定义和生成工具 goctl，可以根据定义的 api 文件一键生成 Go, iOS, Android, Kotlin, Dart, TypeScript, JavaScript 代码，并可直接运行。</p>
 <p>使用 go-zero 的好处：</p>
 <ul>
@@ -227,13 +227,10 @@
 <li>大量微服务治理和并发工具包</li>
 </ul>
 <span id="more"></span>
-
 <h2 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 goct 软件</span></span><br><span class="line">go install github.com/zeromicro/go-zero/tools/goctl@latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装插件</span></span><br><span class="line">goctl <span class="built_in">env</span> check --install --verbose --force</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查是否已经安装完成</span></span><br><span class="line">goctl <span class="built_in">env</span> check --verbose</span><br><span class="line">[goctl-env]: preparing to check <span class="built_in">env</span></span><br><span class="line"></span><br><span class="line">[goctl-env]: looking up <span class="string">&quot;protoc&quot;</span></span><br><span class="line">[goctl-env]: <span class="string">&quot;protoc&quot;</span> is installed</span><br><span class="line"></span><br><span class="line">[goctl-env]: looking up <span class="string">&quot;protoc-gen-go&quot;</span></span><br><span class="line">[goctl-env]: <span class="string">&quot;protoc-gen-go&quot;</span> is installed</span><br><span class="line"></span><br><span class="line">[goctl-env]: looking up <span class="string">&quot;protoc-gen-go-grpc&quot;</span></span><br><span class="line">[goctl-env]: <span class="string">&quot;protoc-gen-go-grpc&quot;</span> is installed</span><br><span class="line"></span><br><span class="line">[goctl-env]: congratulations! your goctl environment is ready!</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">mkdir</span> &lt;project name&gt; &amp;&amp; <span class="built_in">cd</span> &lt;project name&gt; <span class="comment"># project name 为具体值</span></span><br><span class="line">$ go mod init &lt;module name&gt; <span class="comment"># module name 为具体值</span></span><br><span class="line">$ go get -u github.com/zeromicro/go-zero@latest</span><br></pre></td></tr></table></figure>
-
 <h2 id="DSL-语言"><a href="#DSL-语言" class="headerlink" title="DSL 语言"></a>DSL 语言</h2><p>在 Go Zero 框架中，DSL（Domain-Specific Language）通常用于定义 API 接口、数据库模型等。Go Zero 提供了 <code>api</code>、<code>model</code> 等工具，可以通过简洁的 DSL 来生成对应的代码。</p>
 <h3 id="1-API-DSL"><a href="#1-API-DSL" class="headerlink" title="1. API DSL"></a>1. API DSL</h3><p>在 Go Zero 中，API 的 DSL 文件通常以 <code>.api</code> 结尾，定义了 HTTP 路由、请求和响应结构。下面是一个简单的 API DSL 示例：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">info(</span><br><span class="line">  title: <span class="string">&quot;User API&quot;</span></span><br><span class="line">  desc: <span class="string">&quot;This is a simple user API&quot;</span></span><br><span class="line">  author: <span class="string">&quot;Your Name&quot;</span></span><br><span class="line">  version: <span class="string">&quot;1.0.0&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> (</span><br><span class="line">  UserRequest &#123;</span><br><span class="line">    UserId <span class="type">int</span> <span class="string">`json:&quot;userId&quot;`</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  UserResponse &#123;</span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`json:&quot;name&quot;`</span></span><br><span class="line">    Email <span class="type">string</span> <span class="string">`json:&quot;email&quot;`</span></span><br><span class="line">  &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">service user-api &#123;</span><br><span class="line">  @handler GetUser</span><br><span class="line">  get /user/:userId(UserRequest) returns (UserResponse)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>解释:</strong></p>
 <ul>
 <li><code>info</code>: 定义了 API 的元信息，比如标题、描述、作者、版本等。</li>
@@ -244,7 +241,6 @@
 </ul>
 <h3 id="2-Model-DSL"><a href="#2-Model-DSL" class="headerlink" title="2. Model DSL"></a>2. Model DSL</h3><p>Go Zero 的 <code>model</code> 工具用于生成数据库模型。可以通过定义 DSL 文件，自动生成 CRUD 操作的代码。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> (</span><br><span class="line">  User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Id        <span class="type">int64</span>     <span class="string">`db:&quot;id&quot;`</span></span><br><span class="line">    Name      <span class="type">string</span>    <span class="string">`db:&quot;name&quot;`</span></span><br><span class="line">    Email     <span class="type">string</span>    <span class="string">`db:&quot;email&quot;`</span></span><br><span class="line">    CreatedAt time.Time <span class="string">`db:&quot;created_at&quot;`</span></span><br><span class="line">  &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">method (</span><br><span class="line">  FindOne(id <span class="type">int64</span>) (*User, <span class="type">error</span>)</span><br><span class="line">  Insert(data *User) <span class="type">error</span></span><br><span class="line">  Update(data *User) <span class="type">error</span></span><br><span class="line">  Delete(id <span class="type">int64</span>) <span class="type">error</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
 <p><strong>解释:</strong></p>
 <ul>
 <li><code>type</code>: 定义了数据库表结构，这里的 <code>User</code> 对应数据库中的 <code>user</code> 表。</li>
@@ -256,26 +252,28 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">goctl api go -api user.api -<span class="built_in">dir</span> .</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>生成 Model 代码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">goctl model mysql ddl -src user.sql -<span class="built_in">dir</span> .</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">goctl model mysql ddl -src user.sql -<span class="built_in">dir</span> .</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>通过这些 DSL，Go Zero 可以帮助开发者快速生成标准化的代码，减少手动编写的工作量。</p>
 <h3 id="使用gRpc方式来制作"><a href="#使用gRpc方式来制作" class="headerlink" title="使用gRpc方式来制作"></a>使用gRpc方式来制作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 单个 rpc 服务生成示例指令</span></span><br><span class="line">$ goctl rpc protoc greet.proto --go_out=./pb --go-grpc_out=./pb --zrpc_out=. --client=<span class="literal">true</span> </span><br><span class="line"><span class="comment"># 多个 rpc 服务生成示例指令</span></span><br><span class="line">$ goctl rpc protoc greet.proto --go_out=./pb --go-grpc_out=./pb --zrpc_out=. --client=<span class="literal">true</span> -m</span><br></pre></td></tr></table></figure>
-
 <h3 id="model-导出数据"><a href="#model-导出数据" class="headerlink" title="model 导出数据"></a>model 导出数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">goctl model pg datasource --url <span class="string">&quot;postgres://postgres:123456@127.0.0.1:5432/postgres?sslmode=disable&quot;</span> -table=<span class="string">&quot;tb_kline_config,tb_kline_data,tb_kline_rpc,tb_token_quote&quot;</span></span><br></pre></td></tr></table></figure>
 <p>在 go-zero 框架中，通过 gRPC 的拦截器机制，可以轻松实现对每个接口调用速度的监控。拦截器是一种中间层机制，允许你在 gRPC 请求处理的前后执行额外的逻辑，例如记录日志、统计调用时间、验证权限等。</p>
 <p>以下是实现步骤和示例代码：</p>
 <p>实现步骤</p>
-<pre><code>1.	定义一个拦截器
-</code></pre>
-<p>使用 UnaryServerInterceptor 来监控单次请求，或使用 StreamServerInterceptor 来监控流式请求。<br>	2.	在拦截器中记录每次接口调用的开始和结束时间<br>使用 time.Now() 捕获起始时间，计算处理完成时的耗时。<br>	3.	在 gRPC 服务注册时添加拦截器<br>在服务启动时，将拦截器注册到 gRPC 服务器。</p>
+<pre><code>1.    定义一个拦截器
+</code></pre><p>使用 UnaryServerInterceptor 来监控单次请求，或使用 StreamServerInterceptor 来监控流式请求。</p>
+<pre><code>2.    在拦截器中记录每次接口调用的开始和结束时间
+</code></pre><p>使用 time.Now() 捕获起始时间，计算处理完成时的耗时。</p>
+<pre><code>3.    在 gRPC 服务注册时添加拦截器
+</code></pre><p>在服务启动时，将拦截器注册到 gRPC 服务器。</p>
 <p>示例代码</p>
 <p>定义拦截器</p>
 <p>package middleware</p>
 <p>import (<br>    “context”<br>    “log”<br>    “time”</p>
 <pre><code>&quot;google.golang.org/grpc&quot;
-</code></pre>
-<p>)</p>
-<p>&#x2F;&#x2F; UnaryServerInterceptor for monitoring request processing time<br>func UnaryLoggingInterceptor(<br>    ctx context.Context,<br>    req interface{},<br>    info *grpc.UnaryServerInfo,<br>    handler grpc.UnaryHandler,<br>) (resp interface{}, err error) {<br>    start :&#x3D; time.Now()</p>
+</code></pre><p>)</p>
+<p>// UnaryServerInterceptor for monitoring request processing time<br>func UnaryLoggingInterceptor(<br>    ctx context.Context,<br>    req interface{},<br>    info *grpc.UnaryServerInfo,<br>    handler grpc.UnaryHandler,<br>) (resp interface{}, err error) {<br>    start := time.Now()</p>
 <pre><code>// 调用实际的处理器
 resp, err = handler(ctx, req)
 
@@ -284,9 +282,8 @@ duration := time.Since(start)
 log.Printf(&quot;Request - Method: %s, Duration: %s, Error: %v&quot;, info.FullMethod, duration, err)
 
 return resp, err
-</code></pre>
-<p>}</p>
-<p>&#x2F;&#x2F; StreamServerInterceptor for monitoring stream request processing time<br>func StreamLoggingInterceptor(<br>    srv interface{},<br>    ss grpc.ServerStream,<br>    info *grpc.StreamServerInfo,<br>    handler grpc.StreamHandler,<br>) error {<br>    start :&#x3D; time.Now()</p>
+</code></pre><p>}</p>
+<p>// StreamServerInterceptor for monitoring stream request processing time<br>func StreamLoggingInterceptor(<br>    srv interface{},<br>    ss grpc.ServerStream,<br>    info *grpc.StreamServerInfo,<br>    handler grpc.StreamHandler,<br>) error {<br>    start := time.Now()</p>
 <pre><code>// 调用实际的处理器
 err := handler(srv, ss)
 
@@ -295,8 +292,7 @@ duration := time.Since(start)
 log.Printf(&quot;Stream Request - Method: %s, Duration: %s, Error: %v&quot;, info.FullMethod, duration, err)
 
 return err
-</code></pre>
-<p>}</p>
+</code></pre><p>}</p>
 <p>在服务启动时注册拦截器</p>
 <p>在 go-zero 的 gRPC 服务中，拦截器可以通过配置 grpc.ServerOption 来注册。</p>
 <p>package main</p>
@@ -304,9 +300,8 @@ return err
 <pre><code>&quot;github.com/zeromicro/go-zero/zrpc&quot;
 &quot;google.golang.org/grpc&quot;
 &quot;your_project_path/middleware&quot;
-</code></pre>
-<p>)</p>
-<p>func main() {<br>    &#x2F;&#x2F; 创建一个 gRPC 服务器<br>    s :&#x3D; zrpc.MustNewServer(zrpc.RpcServerConf{}, func(grpcServer *grpc.Server) {<br>        &#x2F;&#x2F; 注册服务实现（示例：注册 UserService）<br>        RegisterUserServiceServer(grpcServer, &amp;UserService{})<br>    })</p>
+</code></pre><p>)</p>
+<p>func main() {<br>    // 创建一个 gRPC 服务器<br>    s := zrpc.MustNewServer(zrpc.RpcServerConf{}, func(grpcServer *grpc.Server) {<br>        // 注册服务实现（示例：注册 UserService）<br>        RegisterUserServiceServer(grpcServer, &amp;UserService{})<br>    })</p>
 <pre><code>// 添加拦截器
 s.AddUnaryInterceptors(middleware.UnaryLoggingInterceptor)
 s.AddStreamInterceptors(middleware.StreamLoggingInterceptor)
@@ -315,25 +310,25 @@ s.AddStreamInterceptors(middleware.StreamLoggingInterceptor)
 defer s.Stop()
 log.Printf(&quot;Starting rpc server at %s...\n&quot;, s.Addr())
 s.Start()
-</code></pre>
-<p>}</p>
+</code></pre><p>}</p>
 <p>结果</p>
-<pre><code>1.	每次 gRPC 接口调用，UnaryLoggingInterceptor 或 StreamLoggingInterceptor 会自动记录接口的执行时间。
-2.	日志会输出类似以下信息：
-</code></pre>
-<p>Request - Method: &#x2F;UserService&#x2F;GetUser, Duration: 3.2ms, Error: <nil></nil></p>
-<pre><code>3.	你可以根据 Duration 来分析接口的响应速度。
-</code></pre>
-<p>优化建议</p>
-<pre><code>1.	统计存储:
-</code></pre>
-<p>如果需要长时间分析接口性能，可以将数据存储到数据库或监控工具（如 Prometheus）中。<br>	2.	结合 Metrics 工具:<br>使用 go-zero 提供的监控工具（如 Prometheus 集成）自动统计接口性能和调用量。<br>	3.	区分接口类型:<br>根据 info.FullMethod 提取服务名和接口名，方便按模块统计。</p>
+<pre><code>1.    每次 gRPC 接口调用，UnaryLoggingInterceptor 或 StreamLoggingInterceptor 会自动记录接口的执行时间。
+2.    日志会输出类似以下信息：
+</code></pre><p>Request - Method: /UserService/GetUser, Duration: 3.2ms, Error: <nil></nil></p>
+<pre><code>3.    你可以根据 Duration 来分析接口的响应速度。
+</code></pre><p>优化建议</p>
+<pre><code>1.    统计存储:
+</code></pre><p>如果需要长时间分析接口性能，可以将数据存储到数据库或监控工具（如 Prometheus）中。</p>
+<pre><code>2.    结合 Metrics 工具:
+</code></pre><p>使用 go-zero 提供的监控工具（如 Prometheus 集成）自动统计接口性能和调用量。</p>
+<pre><code>3.    区分接口类型:
+</code></pre><p>根据 info.FullMethod 提取服务名和接口名，方便按模块统计。</p>
 <p>进一步扩展</p>
 <p>如果需要对调用速度设置阈值报警，可以在拦截器中添加逻辑：</p>
-<p>if duration &gt; time.Millisecond*500 { &#x2F;&#x2F; 超过 500ms<br>    log.Printf(“WARNING: Slow request detected - Method: %s, Duration: %s”, info.FullMethod, duration)<br>}</p>
+<p>if duration &gt; time.Millisecond*500 { // 超过 500ms<br>    log.Printf(“WARNING: Slow request detected - Method: %s, Duration: %s”, info.FullMethod, duration)<br>}</p>
 <p>这样可以在代码中快速检测并报警慢接口问题。</p>
 <p>跨域的问题如何解决： CORS 问题：</p>
-<p>server :&#x3D; rest.MustNewServer(c.RestConf, rest.WithCors())</p>
+<p>server := rest.MustNewServer(c.RestConf, rest.WithCors())</p>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://github.com/zeromicro/go-zero">github-go-zero</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://go-zero.dev/">go-zero</a></li>

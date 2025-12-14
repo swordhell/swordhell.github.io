@@ -228,196 +228,193 @@
       
         <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>记录一下Linux运维的时候常用的bash的知识。</p>
 <span id="more"></span>
-
 <h2 id="目录相关"><a href="#目录相关" class="headerlink" title="目录相关"></a>目录相关</h2><h3 id="获取当前文件的绝对目录"><a href="#获取当前文件的绝对目录" class="headerlink" title="获取当前文件的绝对目录"></a>获取当前文件的绝对目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ -L <span class="variable">$0</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    BASE_DIR=`<span class="built_in">dirname</span> $(<span class="built_in">readlink</span> <span class="variable">$0</span>)`</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    BASE_DIR=`<span class="built_in">dirname</span> <span class="variable">$0</span>`</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-
 <p>$0 获取当前可执行程序的名称；</p>
 <p>if [ -L $0 ] 用于检查一个名字是否为link；</p>
 <p>$(readlink $0) 用于获取一个文件的正式的位置；</p>
 <p>dirname 直接获取某个文件所在目录</p>
 <h2 id="本地IP地址抓取"><a href="#本地IP地址抓取" class="headerlink" title="本地IP地址抓取"></a>本地IP地址抓取</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCALIP=`ip addr|grep <span class="string">&quot;eth0:&quot;</span> -A 3|grep <span class="string">&quot;inet &quot;</span>|sed -r <span class="string">&quot;s@.* (([0-9]&#123;1,3&#125;\.)&#123;3&#125;[0-9]&#123;1,3&#125;)/(32|24|16|8) .*@\1@&quot;</span>`</span><br></pre></td></tr></table></figure>
-
 <p>中间是使用了 s@正则@\1@ 来抓取了其中的IP地址；</p>
-<h2 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h2><table>
+<h2 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="left">指令</th>
-<th align="left">备注</th>
+<th style="text-align:left">指令</th>
+<th style="text-align:left">备注</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">–b</td>
-<td align="left">当file存在并且是块文件时返回真</td>
+<tbody>
+<tr>
+<td style="text-align:left">–b</td>
+<td style="text-align:left">当file存在并且是块文件时返回真</td>
 </tr>
 <tr>
-<td align="left">-c</td>
-<td align="left">当file存在并且是字符文件时返回真</td>
+<td style="text-align:left">-c</td>
+<td style="text-align:left">当file存在并且是字符文件时返回真</td>
 </tr>
 <tr>
-<td align="left">-d</td>
-<td align="left">当pathname存在并且是一个目录时返回真</td>
+<td style="text-align:left">-d</td>
+<td style="text-align:left">当pathname存在并且是一个目录时返回真</td>
 </tr>
 <tr>
-<td align="left">-e</td>
-<td align="left">当pathname指定的文件或目录存在时返回真</td>
+<td style="text-align:left">-e</td>
+<td style="text-align:left">当pathname指定的文件或目录存在时返回真</td>
 </tr>
 <tr>
-<td align="left">-f</td>
-<td align="left">当file存在并且是正规文件时返回真</td>
+<td style="text-align:left">-f</td>
+<td style="text-align:left">当file存在并且是正规文件时返回真</td>
 </tr>
 <tr>
-<td align="left">-g</td>
-<td align="left">当由pathname指定的文件或目录存在并且设置了SGID位时返回为真</td>
+<td style="text-align:left">-g</td>
+<td style="text-align:left">当由pathname指定的文件或目录存在并且设置了SGID位时返回为真</td>
 </tr>
 <tr>
-<td align="left">-h</td>
-<td align="left">当file存在并且是符号链接文件时返回真，该选项在一些老系统上无效</td>
+<td style="text-align:left">-h</td>
+<td style="text-align:left">当file存在并且是符号链接文件时返回真，该选项在一些老系统上无效</td>
 </tr>
 <tr>
-<td align="left">-k</td>
-<td align="left">当由pathname指定的文件或目录存在并且设置了“粘滞”位时返回真</td>
+<td style="text-align:left">-k</td>
+<td style="text-align:left">当由pathname指定的文件或目录存在并且设置了“粘滞”位时返回真</td>
 </tr>
 <tr>
-<td align="left">-p</td>
-<td align="left">当file存在并且是命令管道时返回为真</td>
+<td style="text-align:left">-p</td>
+<td style="text-align:left">当file存在并且是命令管道时返回为真</td>
 </tr>
 <tr>
-<td align="left">-r</td>
-<td align="left">当由pathname指定的文件或目录存在并且可读时返回为真</td>
+<td style="text-align:left">-r</td>
+<td style="text-align:left">当由pathname指定的文件或目录存在并且可读时返回为真</td>
 </tr>
 <tr>
-<td align="left">-s</td>
-<td align="left">当file存在文件大小大于0时返回真</td>
+<td style="text-align:left">-s</td>
+<td style="text-align:left">当file存在文件大小大于0时返回真</td>
 </tr>
 <tr>
-<td align="left">-u</td>
-<td align="left">当由pathname指定的文件或目录存在并且设置了SUID位时返回真</td>
+<td style="text-align:left">-u</td>
+<td style="text-align:left">当由pathname指定的文件或目录存在并且设置了SUID位时返回真</td>
 </tr>
 <tr>
-<td align="left">-w</td>
-<td align="left">当由pathname指定的文件或目录存在并且可执行时返回真。一个目录为了它的内容被访问必然是可执行的。</td>
+<td style="text-align:left">-w</td>
+<td style="text-align:left">当由pathname指定的文件或目录存在并且可执行时返回真。一个目录为了它的内容被访问必然是可执行的。</td>
 </tr>
 <tr>
-<td align="left">-o</td>
-<td align="left">当由pathname指定的文件或目录存在并且被子当前进程的有效用户ID所指定的用户拥有时返回真。</td>
+<td style="text-align:left">-o</td>
+<td style="text-align:left">当由pathname指定的文件或目录存在并且被子当前进程的有效用户ID所指定的用户拥有时返回真。</td>
 </tr>
-</tbody></table>
-<h2 id="字符串、数字比较"><a href="#字符串、数字比较" class="headerlink" title="字符串、数字比较"></a>字符串、数字比较</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="字符串、数字比较"><a href="#字符串、数字比较" class="headerlink" title="字符串、数字比较"></a>字符串、数字比较</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="left">运算符</th>
-<th align="left">描述</th>
-<th align="left">示例</th>
+<th style="text-align:left">运算符</th>
+<th style="text-align:left">描述</th>
+<th style="text-align:left">示例</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">-e filename</td>
-<td align="left">如果 filename 存在，则为真</td>
-<td align="left">[ -e &#x2F;var&#x2F;log&#x2F;syslog ]</td>
+<tbody>
+<tr>
+<td style="text-align:left">-e filename</td>
+<td style="text-align:left">如果 filename 存在，则为真</td>
+<td style="text-align:left">[ -e /var/log/syslog ]</td>
 </tr>
 <tr>
-<td align="left">-d filename</td>
-<td align="left">如果 filename 为目录，则为真</td>
-<td align="left">[ -d &#x2F;tmp&#x2F;mydir ]</td>
+<td style="text-align:left">-d filename</td>
+<td style="text-align:left">如果 filename 为目录，则为真</td>
+<td style="text-align:left">[ -d /tmp/mydir ]</td>
 </tr>
 <tr>
-<td align="left">-f filename</td>
-<td align="left">如果 filename 为常规文件，则为真</td>
-<td align="left">[ -f &#x2F;usr&#x2F;bin&#x2F;grep ]</td>
+<td style="text-align:left">-f filename</td>
+<td style="text-align:left">如果 filename 为常规文件，则为真</td>
+<td style="text-align:left">[ -f /usr/bin/grep ]</td>
 </tr>
 <tr>
-<td align="left">-L filename</td>
-<td align="left">如果 filename 为符号链接，则为真</td>
-<td align="left">[ -L &#x2F;usr&#x2F;bin&#x2F;grep ]</td>
+<td style="text-align:left">-L filename</td>
+<td style="text-align:left">如果 filename 为符号链接，则为真</td>
+<td style="text-align:left">[ -L /usr/bin/grep ]</td>
 </tr>
 <tr>
-<td align="left">-r filename</td>
-<td align="left">如果 filename 可读，则为真</td>
-<td align="left">[ -r &#x2F;var&#x2F;log&#x2F;syslog ]</td>
+<td style="text-align:left">-r filename</td>
+<td style="text-align:left">如果 filename 可读，则为真</td>
+<td style="text-align:left">[ -r /var/log/syslog ]</td>
 </tr>
 <tr>
-<td align="left">-w filename</td>
-<td align="left">如果 filename 可写，则为真</td>
-<td align="left">[ -w &#x2F;var&#x2F;mytmp.txt ]</td>
+<td style="text-align:left">-w filename</td>
+<td style="text-align:left">如果 filename 可写，则为真</td>
+<td style="text-align:left">[ -w /var/mytmp.txt ]</td>
 </tr>
 <tr>
-<td align="left">-x filename</td>
-<td align="left">如果 filename 可执行，则为真</td>
-<td align="left">[ -L &#x2F;usr&#x2F;bin&#x2F;grep ]</td>
+<td style="text-align:left">-x filename</td>
+<td style="text-align:left">如果 filename 可执行，则为真</td>
+<td style="text-align:left">[ -L /usr/bin/grep ]</td>
 </tr>
 <tr>
-<td align="left">-z string</td>
-<td align="left">如果 string 长度为零，则为真</td>
-<td align="left">[ -z $myvar ]</td>
+<td style="text-align:left">-z string</td>
+<td style="text-align:left">如果 string 长度为零，则为真</td>
+<td style="text-align:left">[ -z $myvar ]</td>
 </tr>
 <tr>
-<td align="left">-n string</td>
-<td align="left">如果 string 长度非零，则为真</td>
-<td align="left">[ -n $myvar ]</td>
+<td style="text-align:left">-n string</td>
+<td style="text-align:left">如果 string 长度非零，则为真</td>
+<td style="text-align:left">[ -n $myvar ]</td>
 </tr>
 <tr>
-<td align="left">string1 &#x3D; string2</td>
-<td align="left">如果 string1 与 string2 相同，则为真</td>
-<td align="left">[ $myvar &#x3D; one two three ]</td>
+<td style="text-align:left">string1 = string2</td>
+<td style="text-align:left">如果 string1 与 string2 相同，则为真</td>
+<td style="text-align:left">[ $myvar = one two three ]</td>
 </tr>
 <tr>
-<td align="left">string1 !&#x3D; string2</td>
-<td align="left">如果 string1 与 string2 不同，则为真</td>
-<td align="left">[ $myvar !&#x3D; one two three ]</td>
+<td style="text-align:left">string1 != string2</td>
+<td style="text-align:left">如果 string1 与 string2 不同，则为真</td>
+<td style="text-align:left">[ $myvar != one two three ]</td>
 </tr>
 <tr>
-<td align="left">num1 -eq num2</td>
-<td align="left">等于</td>
-<td align="left">[ 3 -eq $mynum ]</td>
+<td style="text-align:left">num1 -eq num2</td>
+<td style="text-align:left">等于</td>
+<td style="text-align:left">[ 3 -eq $mynum ]</td>
 </tr>
 <tr>
-<td align="left">num1 -ne num2</td>
-<td align="left">不等于</td>
-<td align="left">[ 3 -ne $mynum ]</td>
+<td style="text-align:left">num1 -ne num2</td>
+<td style="text-align:left">不等于</td>
+<td style="text-align:left">[ 3 -ne $mynum ]</td>
 </tr>
 <tr>
-<td align="left">num1 -lt num2</td>
-<td align="left">小于</td>
-<td align="left">[ 3 -lt $mynum ]</td>
+<td style="text-align:left">num1 -lt num2</td>
+<td style="text-align:left">小于</td>
+<td style="text-align:left">[ 3 -lt $mynum ]</td>
 </tr>
 <tr>
-<td align="left">num1 -le num2</td>
-<td align="left">小于或等于</td>
-<td align="left">[ 3 -le $mynum ]</td>
+<td style="text-align:left">num1 -le num2</td>
+<td style="text-align:left">小于或等于</td>
+<td style="text-align:left">[ 3 -le $mynum ]</td>
 </tr>
 <tr>
-<td align="left">num1 -gt num2</td>
-<td align="left">大于</td>
-<td align="left">[ 3 -gt $mynum ]</td>
+<td style="text-align:left">num1 -gt num2</td>
+<td style="text-align:left">大于</td>
+<td style="text-align:left">[ 3 -gt $mynum ]</td>
 </tr>
 <tr>
-<td align="left">num1 -ge num2</td>
-<td align="left">大于或等于</td>
-<td align="left">[ 3 -ge $mynum ]</td>
+<td style="text-align:left">num1 -ge num2</td>
+<td style="text-align:left">大于或等于</td>
+<td style="text-align:left">[ 3 -ge $mynum ]</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">　　filename1 -nt filename2 如果 filename1 比 filename2 新，则为真 [ /tmp/install/etc/services -nt /etc/services ]</span><br><span class="line">　　filename1 -ot filename2   如果 filename1 比 filename2 旧，则为真  [ /boot/bzImage -ot <span class="built_in">arch</span>/i386/boot/bzImage ]</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">killreg</span></span> () &#123;</span><br><span class="line">        <span class="keyword">if</span> [ <span class="variable">$#</span> -lt 1 ]</span><br><span class="line">        <span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;[Usage]&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;killreg &lt;regexp&gt; [killarg]&quot;</span></span><br><span class="line">                <span class="built_in">return</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">        result=`ps ux | grep <span class="string">&quot;<span class="variable">$1</span>&quot;</span> | grep -v grep` </span><br><span class="line">        <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$result</span>&quot;</span> ]</span><br><span class="line">        <span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;Can not find any process.&quot;</span></span><br><span class="line">                <span class="built_in">return</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="variable">$result</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">true</span></span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">                <span class="built_in">vared</span> -p <span class="string">&#x27;kill process aboe?[Y/n]&#x27;</span> -c input</span><br><span class="line">                <span class="keyword">case</span> <span class="variable">$input</span> <span class="keyword">in</span></span><br><span class="line">                        ([yY][eE][sS] | [yY] | <span class="string">&quot;&quot;</span>) ps ux | grep --color=auto --exclude-dir=&#123;.bzr,CVS,.git,.hg,.svn,.idea,.tox&#125; <span class="string">&quot;<span class="variable">$1</span>&quot;</span> | grep --color=auto --exclude-dir=&#123;.bzr,CVS,.git,.hg,.svn,.idea,.tox&#125; -v grep | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | xargs <span class="built_in">kill</span> <span class="variable">$2</span></span><br><span class="line">                                <span class="built_in">return</span> ;;</span><br><span class="line">                        ([nN][oO] | [nN]) <span class="built_in">echo</span> <span class="string">&quot;do nothing&quot;</span></span><br><span class="line">                                <span class="built_in">return</span> ;;</span><br><span class="line">                        (*) <span class="built_in">echo</span> <span class="string">&quot;Invalid input...&quot;</span> ;;</span><br><span class="line">                <span class="keyword">esac</span></span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="z-判断"><a href="#z-判断" class="headerlink" title="-z 判断"></a>-z 判断</h3><p>a.sh</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ -z <span class="variable">$RPCPASS</span> ]; <span class="keyword">then</span> </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;is true&#x27;</span>;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;is false&#x27;</span>;</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-
 <p>如何让它输出 true, false.<code>export RPCPASS=1</code>设置一下，执行就会变成 is false。</p>
 <h3 id="grep-在目录中查找代码"><a href="#grep-在目录中查找代码" class="headerlink" title="grep 在目录中查找代码"></a>grep 在目录中查找代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -r --include=<span class="string">&quot;*.go&quot;</span> --text <span class="string">&quot;PushBatch&quot;</span> .</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-1"><a href="#2-1" class="headerlink" title="2&gt;&amp;1"></a>2&gt;&amp;1</h3><p>在Linux Bash中，2&gt;&amp;1是一种将标准错误输出重定向到标准输出的方法。其中，“2”是表示标准错误输出的文件描述符，而“1”则是表示标准输出的文件描述符。</p>
+<h3 id="2-gt-amp-1"><a href="#2-gt-amp-1" class="headerlink" title="2&gt;&amp;1"></a>2&gt;&amp;1</h3><p>在Linux Bash中，2&gt;&amp;1是一种将标准错误输出重定向到标准输出的方法。其中，“2”是表示标准错误输出的文件描述符，而“1”则是表示标准输出的文件描述符。</p>
 <p>具体来说，2&gt;&amp;1将标准错误输出重定向到与标准输出相同的地方，也就是说，它将标准错误输出发送到与标准输出相同的位置，这可以方便地将错误信息与正常输出一起处理。</p>
 <p>例如，如果我们想要将一个命令的输出和错误信息都输出到一个文件中，可以使用如下的命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">command</span> &gt; output.txt 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
-
 <p>在这个例子中，&gt;符号将命令的输出重定向到名为output.txt的文件中，而2&gt;&amp;1则将标准错误输出也发送到相同的位置。这样，我们就可以同时捕获正常输出和错误信息，并将它们保存到同一个文件中。</p>
 <h3 id="读取json地址，批量拷贝文件"><a href="#读取json地址，批量拷贝文件" class="headerlink" title="读取json地址，批量拷贝文件"></a>读取json地址，批量拷贝文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash  </span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 从 JSON 文件中读取 remote_addr 数组  </span></span><br><span class="line">remote_addrs=$(<span class="built_in">cat</span> /path/to/your/json_file.json | jq -r <span class="string">&#x27;.remote_addr[]&#x27;</span>)  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 遍历 remote_addr 数组并复制文件到远程机器  </span></span><br><span class="line"><span class="keyword">for</span> addr <span class="keyword">in</span> <span class="variable">$remote_addrs</span>; <span class="keyword">do</span>  </span><br><span class="line">    <span class="comment"># 拼接 scp 命令  </span></span><br><span class="line">    cmd=<span class="string">&quot;scp /root/tmp.log root@<span class="variable">$addr</span>:/path/to/remote/destination&quot;</span>  </span><br><span class="line">    <span class="comment"># 执行命令  </span></span><br><span class="line">    <span class="variable">$cmd</span>  </span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="读取数据，转换"><a href="#读取数据，转换" class="headerlink" title="读取数据，转换"></a>读取数据，转换</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">change_hex_str_int</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> hexstr=`<span class="built_in">echo</span> <span class="variable">$1</span> |<span class="built_in">cut</span> -c 3-`</span><br><span class="line">    <span class="built_in">echo</span> $((<span class="number">16</span>#<span class="variable">$&#123;hexstr&#125;</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">get_bsc_info</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> hexheight=`curl -s -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">    -X POST --data <span class="string">&#x27;&#123;&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;eth_blockNumber&quot;,&quot;params&quot;:[],&quot;id&quot;:1&#125;&#x27;</span> \</span><br><span class="line">    <span class="variable">$1</span> | jq -r <span class="string">&#x27;.result&#x27;</span>`</span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> height=`change_hex_str_int <span class="string">&quot;<span class="variable">$&#123;hexheight&#125;</span>&quot;</span>`</span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;height: <span class="variable">$&#123;height&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> hextimestamp=`curl -s -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">    -X POST --data <span class="string">&#x27;&#123;&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;eth_getBlockByNumber&quot;,&quot;params&quot;:[&quot;&#x27;</span><span class="variable">$&#123;hexheight&#125;</span><span class="string">&#x27;&quot;,false],&quot;id&quot;:1&#125;&#x27;</span> \</span><br><span class="line">    <span class="variable">$1</span> | jq -r <span class="string">&#x27;.result.timestamp&#x27;</span>`</span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> timestamp=`change_hex_str_int <span class="string">&quot;<span class="variable">$&#123;hextimestamp&#125;</span>&quot;</span>`</span><br><span class="line">    <span class="built_in">echo</span> `gdate -d @<span class="variable">$&#123;timestamp&#125;</span>`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">get_bsc_info <span class="string">&quot;http://xxxxxx&quot;</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="将秒数转换成人看得懂的事件"><a href="#将秒数转换成人看得懂的事件" class="headerlink" title="将秒数转换成人看得懂的事件"></a>将秒数转换成人看得懂的事件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">seconds_to_hms</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> input=<span class="variable">$1</span></span><br><span class="line">  <span class="built_in">local</span> hours=$((input / <span class="number">3600</span>))</span><br><span class="line">  <span class="built_in">local</span> minutes=$(( (input % <span class="number">3600</span>) / <span class="number">60</span>))</span><br><span class="line">  <span class="built_in">local</span> seconds=$((input % <span class="number">60</span>))</span><br><span class="line">  <span class="built_in">printf</span> <span class="string">&quot;%02d:%02d:%02d\n&quot;</span> <span class="variable">$hours</span> <span class="variable">$minutes</span> <span class="variable">$seconds</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">seconds=3665</span><br><span class="line">formatted_time=$(seconds_to_hms <span class="variable">$seconds</span>)</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$formatted_time</span></span><br></pre></td></tr></table></figure>
-
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://www.cnblogs.com/image-eye/archive/2011/08/20/2147015.html">Linux中使用的if语句</a></li>
 </ul>
@@ -505,7 +502,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%9B%B8%E5%85%B3"><span class="nav-number">1.1.</span> <span class="nav-text">目录相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%96%87%E4%BB%B6%E7%9A%84%E7%BB%9D%E5%AF%B9%E7%9B%AE%E5%BD%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">获取当前文件的绝对目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0IP%E5%9C%B0%E5%9D%80%E6%8A%93%E5%8F%96"><span class="nav-number">1.2.</span> <span class="nav-text">本地IP地址抓取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.3.</span> <span class="nav-text">if语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E6%95%B0%E5%AD%97%E6%AF%94%E8%BE%83"><span class="nav-number">1.4.</span> <span class="nav-text">字符串、数字比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#z-%E5%88%A4%E6%96%AD"><span class="nav-number">1.4.1.</span> <span class="nav-text">-z 判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-%E5%9C%A8%E7%9B%AE%E5%BD%95%E4%B8%AD%E6%9F%A5%E6%89%BE%E4%BB%A3%E7%A0%81"><span class="nav-number">1.4.2.</span> <span class="nav-text">grep 在目录中查找代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1"><span class="nav-number">1.4.3.</span> <span class="nav-text">2&gt;&amp;1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96json%E5%9C%B0%E5%9D%80%EF%BC%8C%E6%89%B9%E9%87%8F%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6"><span class="nav-number">1.4.4.</span> <span class="nav-text">读取json地址，批量拷贝文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%EF%BC%8C%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.4.5.</span> <span class="nav-text">读取数据，转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E7%A7%92%E6%95%B0%E8%BD%AC%E6%8D%A2%E6%88%90%E4%BA%BA%E7%9C%8B%E5%BE%97%E6%87%82%E7%9A%84%E4%BA%8B%E4%BB%B6"><span class="nav-number">1.4.6.</span> <span class="nav-text">将秒数转换成人看得懂的事件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.5.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%9B%B8%E5%85%B3"><span class="nav-number">1.1.</span> <span class="nav-text">目录相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%96%87%E4%BB%B6%E7%9A%84%E7%BB%9D%E5%AF%B9%E7%9B%AE%E5%BD%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">获取当前文件的绝对目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0IP%E5%9C%B0%E5%9D%80%E6%8A%93%E5%8F%96"><span class="nav-number">1.2.</span> <span class="nav-text">本地IP地址抓取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.3.</span> <span class="nav-text">if语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E6%95%B0%E5%AD%97%E6%AF%94%E8%BE%83"><span class="nav-number">1.4.</span> <span class="nav-text">字符串、数字比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#z-%E5%88%A4%E6%96%AD"><span class="nav-number">1.4.1.</span> <span class="nav-text">-z 判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-%E5%9C%A8%E7%9B%AE%E5%BD%95%E4%B8%AD%E6%9F%A5%E6%89%BE%E4%BB%A3%E7%A0%81"><span class="nav-number">1.4.2.</span> <span class="nav-text">grep 在目录中查找代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-gt-amp-1"><span class="nav-number">1.4.3.</span> <span class="nav-text">2&gt;&amp;1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96json%E5%9C%B0%E5%9D%80%EF%BC%8C%E6%89%B9%E9%87%8F%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6"><span class="nav-number">1.4.4.</span> <span class="nav-text">读取json地址，批量拷贝文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%EF%BC%8C%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.4.5.</span> <span class="nav-text">读取数据，转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E7%A7%92%E6%95%B0%E8%BD%AC%E6%8D%A2%E6%88%90%E4%BA%BA%E7%9C%8B%E5%BE%97%E6%87%82%E7%9A%84%E4%BA%8B%E4%BB%B6"><span class="nav-number">1.4.6.</span> <span class="nav-text">将秒数转换成人看得懂的事件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.5.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

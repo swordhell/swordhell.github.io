@@ -236,13 +236,10 @@
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>记录TCP相关的知识。包含三次握手，四次挥手。使用tcpdump来观察这些流程的细节。</p>
 <p><img src="/2021/12/19/Network-TCP/network-layer.png" alt="network layer"></p>
 <span id="more"></span>
-
 <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>在理论设计的时候是按照层来设计的。每层都接受它的下层提供的特定服务，并且负责为自己上层提供特定服务。上下层之间的交互叫做“接口”，同一层之间交互遵循的是“协议”。</p>
 <h4 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h4><h5 id="TCP报文数据结构"><a href="#TCP报文数据结构" class="headerlink" title="TCP报文数据结构"></a>TCP报文数据结构</h5><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">0                            15                              31</span><br><span class="line">-----------------------------------------------------------------</span><br><span class="line">|          source port          |       destination port        |</span><br><span class="line">-----------------------------------------------------------------</span><br><span class="line">|                        sequence number                        |</span><br><span class="line">-----------------------------------------------------------------</span><br><span class="line">|                     acknowledgment number                     |</span><br><span class="line">-----------------------------------------------------------------</span><br><span class="line">|  HL   | rsvd  |C|E|U|A|P|R|S|F|        window size            |</span><br><span class="line">-----------------------------------------------------------------</span><br><span class="line">|         TCP checksum          |       urgent pointer          |</span><br><span class="line">-----------------------------------------------------------------</span><br></pre></td></tr></table></figure>
-
 <p>其中有一部分是协议Flags位。</p>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">|                 |</span><br><span class="line">| --------------- |</span><br><span class="line">| C               | E | U | A | P | R | S | F |</span><br><span class="line">| --------------- |</span><br><span class="line">| 7   5   3     0 |</span><br><span class="line"></span><br><span class="line">CWR | ECE | URG | ACK | PSH | RST | SYN | FIN</span><br></pre></td></tr></table></figure>
-
 <p>CWR: Congestin Window Reduced</p>
 <p>ECE: 显示拥塞提醒回应 ECN-Echo</p>
 <p>CWR和ECE用于传输过程中拥塞控制，与TCP的窗口协同工作</p>
@@ -257,42 +254,45 @@
 <h5 id="函数调用过程"><a href="#函数调用过程" class="headerlink" title="函数调用过程"></a>函数调用过程</h5><p><img src="/2021/12/19/Network-TCP/tcp-function.png" alt="function"></p>
 <p>下面是使用tcpdump观察到的信息：</p>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -vv -n -K -i eth0 tcp port 10011</span><br><span class="line">14:53:43.401807 IP (tos 0x14, ttl 54, id 23240, offset 0, flags [DF], proto TCP (6), length 52)</span><br><span class="line">    内网ip.xxx.xxx.xxx.31631 &gt; 外网IP.xxx.xxx.xx.10011: Flags [S], seq 899257915, win 64240, options [mss 1460,nop,wscale 8,nop,nop,sackOK], length 0</span><br><span class="line">14:53:43.401817 IP (tos 0x0, ttl 64, id 0, offset 0, flags [DF], proto TCP (6), length 52)</span><br><span class="line">    外网IP.xxx.xxx.xx.10011 &gt; 内网ip.xxx.xxx.xxx.31631: Flags [S.], seq 2904016695, ack 899257916, win 29200, options [mss 1460,nop,nop,sackOK,nop,wscale 7], length 0</span><br><span class="line">14:53:43.406776 IP (tos 0x14, ttl 54, id 23241, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    内网ip.xxx.xxx.xxx.31631 &gt; 外网IP.xxx.xxx.xx.10011: Flags [.], seq 1, ack 1, win 1026, length 0</span><br></pre></td></tr></table></figure>
-
 <h5 id="TCP状态转换图"><a href="#TCP状态转换图" class="headerlink" title="TCP状态转换图"></a>TCP状态转换图</h5><p><img src="/2021/12/19/Network-TCP/Network-TCP-Statue.png" alt="ip-address"></p>
-<h5 id="TIME-WAIT"><a href="#TIME-WAIT" class="headerlink" title="TIME_WAIT"></a>TIME_WAIT</h5><h3 id="IP地址类型"><a href="#IP地址类型" class="headerlink" title="IP地址类型"></a>IP地址类型</h3><table>
+<h5 id="TIME-WAIT"><a href="#TIME-WAIT" class="headerlink" title="TIME_WAIT"></a>TIME_WAIT</h5><h3 id="IP地址类型"><a href="#IP地址类型" class="headerlink" title="IP地址类型"></a>IP地址类型</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="left">值域</th>
-<th align="left">类型</th>
-<th align="left">应用</th>
+<th style="text-align:left">值域</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">应用</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">0.0.0.0-127.255.255.255</td>
-<td align="left">A类</td>
-<td align="left">一般用于大型网络。</td>
+<tbody>
+<tr>
+<td style="text-align:left">0.0.0.0-127.255.255.255</td>
+<td style="text-align:left">A类</td>
+<td style="text-align:left">一般用于大型网络。</td>
 </tr>
 <tr>
-<td align="left">128.0.0.0-191.255.255.255</td>
-<td align="left">B类</td>
-<td align="left">中等规模网络。</td>
+<td style="text-align:left">128.0.0.0-191.255.255.255</td>
+<td style="text-align:left">B类</td>
+<td style="text-align:left">中等规模网络。</td>
 </tr>
 <tr>
-<td align="left">192.0.0.0-223.255.255.255</td>
-<td align="left">C类</td>
-<td align="left">用于小型网络。</td>
+<td style="text-align:left">192.0.0.0-223.255.255.255</td>
+<td style="text-align:left">C类</td>
+<td style="text-align:left">用于小型网络。</td>
 </tr>
 <tr>
-<td align="left">224.0.0.0-239.255.255.255</td>
-<td align="left">D类</td>
-<td align="left">多路广播用户</td>
+<td style="text-align:left">224.0.0.0-239.255.255.255</td>
+<td style="text-align:left">D类</td>
+<td style="text-align:left">多路广播用户</td>
 </tr>
 <tr>
-<td align="left">240.0.0.0-247.255.255.255</td>
-<td align="left">E类</td>
-<td align="left">多路广播用户</td>
+<td style="text-align:left">240.0.0.0-247.255.255.255</td>
+<td style="text-align:left">E类</td>
+<td style="text-align:left">多路广播用户</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>IP地址由两部分组成，即网络地址和主机地址。网络地址表示其属于互联网的哪一个网络，主机地址表示其属于该网络中的哪一台主机。二者是主从关系。</p>
 <p><img src="/2021/12/19/Network-TCP/ip-address.png" alt="ip-address"></p>
 <h3 id="DDoS攻击"><a href="#DDoS攻击" class="headerlink" title="DDoS攻击"></a>DDoS攻击</h3><p>分布式拒绝服务工具。利用的正是TCP里面的三次握手、四次挥手的规则。从根本上是很难防御。有些公司是购买一些硬件防火墙来构建防御。</p>

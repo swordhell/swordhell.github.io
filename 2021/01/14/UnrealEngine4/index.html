@@ -229,7 +229,6 @@
       
         <p>开一篇文章记录学习Unreal Engine相关知识。参考《虚幻引擎程序设计浅析》ISBN 978-7-121-31349-3，电子工业出版社。带着问题来学习，才能学的快速。看书先需要阅读的就是作者划分的章节目录，反复多看几遍，能从总体上看出知识的结构。</p>
 <span id="more"></span>
-
 <h2 id="第一部分-虚幻引擎C-编程"><a href="#第一部分-虚幻引擎C-编程" class="headerlink" title="第一部分 虚幻引擎C++编程"></a>第一部分 虚幻引擎C++编程</h2><h3 id="第1章-五个类的熟悉"><a href="#第1章-五个类的熟悉" class="headerlink" title="第1章 五个类的熟悉"></a>第1章 五个类的熟悉</h3><p>最首先了解5个类，比较关键。</p>
 <p>UObject Actor Pawn Controller Character</p>
 <h4 id="UObject"><a href="#UObject" class="headerlink" title="UObject"></a>UObject</h4><p>提供垃圾回收</p>
@@ -243,7 +242,7 @@
 <p>运行时类型识别</p>
 <p>这个功能也会和C++标准中的RTTI机制：dynamic_cast有冲突。一旦使用，要使用Cast&lt;&gt;函数做类型转换。虚幻号称会提供更加高效的类型识别。</p>
 <p>网络复制</p>
-<p>在c&#x2F;s架构中，其被宏标记的变量能够自动完成网络复制。从服务器端复制对应值到客户端。</p>
+<p>在c/s架构中，其被宏标记的变量能够自动完成网络复制。从服务器端复制对应值到客户端。</p>
 <h4 id="Actor"><a href="#Actor" class="headerlink" title="Actor"></a>Actor</h4><p>它能被挂载组件Component。</p>
 <p>UE中的Component和unity的是很大的不同。在虚幻里面，Component含义被极大削弱。</p>
 <h4 id="灵魂与肉体：Pawn、Character和Controller"><a href="#灵魂与肉体：Pawn、Character和Controller" class="headerlink" title="灵魂与肉体：Pawn、Character和Controller"></a>灵魂与肉体：Pawn、Character和Controller</h4><h4 id="Pawn"><a href="#Pawn" class="headerlink" title="Pawn"></a>Pawn</h4><p>类是提供被操控的特性。它能被Controller操控，Controller可以是用户输入或者AI。Pawn离开操控者无法自主行动的肉体。</p>
@@ -257,7 +256,6 @@
 <p>有一个创建的流程，可以在过程中选择基类。输入名称选择路径。</p>
 <h4 id="手动创建C-类"><a href="#手动创建C-类" class="headerlink" title="手动创建C++类"></a>手动创建C++类</h4><p>文件目录结构为</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--public/</span><br><span class="line">--private/</span><br><span class="line">--.build.cs</span><br></pre></td></tr></table></figure>
-
 <p>头文件放到public文件夹，cpp放入private文件夹。</p>
 <p>如果继承了UE的类，需要增加一些宏，否则编译不过。</p>
 <p>cpp文件中包含pch文件。</p>
@@ -268,10 +266,8 @@
 <h3 id="第4章-对象"><a href="#第4章-对象" class="headerlink" title="第4章 对象"></a>第4章 对象</h3><h4 id="类对象的产生"><a href="#类对象的产生" class="headerlink" title="类对象的产生"></a>类对象的产生</h4><p>如果是纯C++类型，可以通过new产生。</p>
 <p>如果你的类继承自UObject，需要通过NewObject函数来产生。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NewObject</span>&lt;T&gt;();</span><br></pre></td></tr></table></figure>
-
 <p>如果继承自AActor，需要通过SpawnActor函数产生对象。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">GetWorld</span>()-&gt;<span class="built_in">SpawnActor</span>&lt;AYourActorClass&gt;();</span><br></pre></td></tr></table></figure>
-
 <h4 id="类对象的获取"><a href="#类对象的获取" class="headerlink" title="类对象的获取"></a>类对象的获取</h4><p>通过对象的引用或者指针来获取。GetWorld能使用IActorIterator<code>&lt;AACtor&gt;</code>迭代World里面全部的Actor。</p>
 <h4 id="类对象的销毁"><a href="#类对象的销毁" class="headerlink" title="类对象的销毁"></a>类对象的销毁</h4><p>纯C++类型，就是自己delete就可以了。</p>
 <p>UObject的对象，本身有一套内存管理机制，当没有对象引用了，就会触发GC。</p>
@@ -292,16 +288,15 @@
 </blockquote>
 <p>客户端只能向服务器发送“指令”，服务器根据指令处理之后，改变游戏世界的状态，并且将状态<em>同步</em>给每个客户端。</p>
 <h5 id="广义的客户端-服务器模型"><a href="#广义的客户端-服务器模型" class="headerlink" title="广义的客户端-服务器模型"></a>广义的客户端-服务器模型</h5><blockquote>
-<p>客户端是对服务器的拙劣模仿 — 虚幻官方文档UDN中描述<br>“拙劣”二字，表示是服务器的世界是正确的，而客户端则是不断试图猜测服务器当前的状态，并且模仿。</p>
+<p>客户端是对服务器的拙劣模仿 —- 虚幻官方文档UDN中描述<br>“拙劣”二字，表示是服务器的世界是正确的，而客户端则是不断试图猜测服务器当前的状态，并且模仿。</p>
 </blockquote>
 <h3 id="第7章-引擎系统相关类"><a href="#第7章-引擎系统相关类" class="headerlink" title="第7章 引擎系统相关类"></a>第7章 引擎系统相关类</h3><p>本章主要介绍一些虚幻引擎4提供的一些类，防止程序重复造轮子。</p>
 <h4 id="7-1-正则表达式"><a href="#7-1-正则表达式" class="headerlink" title="7.1 正则表达式"></a>7.1 正则表达式</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#<span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Regex.h&quot;</span></span></span><br><span class="line"><span class="function">FString <span class="title">TextStr</span><span class="params">(<span class="string">&quot;AAAABBBBB&quot;</span>)</span></span>;</span><br><span class="line"><span class="function">FRegexPattern <span class="title">TestPattern</span><span class="params">(TEXT(<span class="string">&quot;C.+H&quot;</span>))</span></span>;</span><br><span class="line">FRegexMatcher xxx;</span><br></pre></td></tr></table></figure>
-
 <p><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/API/Runtime/Core/Internationalization/FRegexPattern/index.html">FRegexPattern手册</a></p>
 <p>基本上能满足匹配，抓取之类的操作。</p>
 <h4 id="7-2-FPaths"><a href="#7-2-FPaths" class="headerlink" title="7.2 FPaths"></a>7.2 FPaths</h4><p>获取游戏的根目录；判断文件是否存在；路径转换成绝对路径类似的功能。</p>
 <p><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/API/Runtime/Core/Misc/FPaths/index.html">FPaths官方文档</a></p>
-<h4 id="7-3-XML-JSON"><a href="#7-3-XML-JSON" class="headerlink" title="7.3 XML&#x2F;JSON"></a>7.3 XML&#x2F;JSON</h4><p>FXmlFile&#x2F;FastXML访问XML数据；</p>
+<h4 id="7-3-XML-JSON"><a href="#7-3-XML-JSON" class="headerlink" title="7.3 XML/JSON"></a>7.3 XML/JSON</h4><p>FXmlFile/FastXML访问XML数据；</p>
 <p><code>TJsonReaderFactory&lt;TCHAR&gt;/TJsonReader&lt;TCHAR&gt;</code></p>
 <p>FJsonSerializer::Deserialize 来加载json字符串。</p>
 <h4 id="7-4-文件读写与访问"><a href="#7-4-文件读写与访问" class="headerlink" title="7.4 文件读写与访问"></a>7.4 文件读写与访问</h4><p>PlatformFileManager.h</p>
@@ -321,33 +316,30 @@
 <p>包含完整RGBA(red green blue alpha)数据的图片，是没有压缩过的，和格式没有关系，称为RawData原生的数据。</p>
 <p>CompressedData会随着图片格式不同而不同。</p>
 <p>ImagerWrapper是对这两个的封装。</p>
-<h2 id="第二部分-虚幻引擎浅析"><a href="#第二部分-虚幻引擎浅析" class="headerlink" title="第二部分 虚幻引擎浅析"></a>第二部分 虚幻引擎浅析</h2><h3 id="第8章-模块机制"><a href="#第8章-模块机制" class="headerlink" title="第8章 模块机制"></a>第8章 模块机制</h3><h4 id="8-1-模块简介"><a href="#8-1-模块简介" class="headerlink" title="8.1 模块简介"></a>8.1 模块简介</h4><p>C++项目对外提供库的时候，需要管理include,lib目录。Debug&#x2F;Release模式下的lib文件的管理。而且还需要编译不同平台下的库文件。</p>
+<h2 id="第二部分-虚幻引擎浅析"><a href="#第二部分-虚幻引擎浅析" class="headerlink" title="第二部分 虚幻引擎浅析"></a>第二部分 虚幻引擎浅析</h2><h3 id="第8章-模块机制"><a href="#第8章-模块机制" class="headerlink" title="第8章 模块机制"></a>第8章 模块机制</h3><h4 id="8-1-模块简介"><a href="#8-1-模块简介" class="headerlink" title="8.1 模块简介"></a>8.1 模块简介</h4><p>C++项目对外提供库的时候，需要管理include,lib目录。Debug/Release模式下的lib文件的管理。而且还需要编译不同平台下的库文件。</p>
 <p>在UE3的时候，使用MakeFile来模拟模块，UE4为了彻底解决这些问题，使用了Unreal Build Tool。</p>
 <h4 id="8-2-创建自己的模块"><a href="#8-2-创建自己的模块" class="headerlink" title="8.2 创建自己的模块"></a>8.2 创建自己的模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">模块名.Build.cs</span><br><span class="line">模块名.h</span><br><span class="line">模块名.cpp</span><br></pre></td></tr></table></figure>
-
 <p>引入模块</p>
 <p>工程名.Target.cs</p>
 <p>SetupBinaries 方法里面调用 AddRange 函数将模块引入。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">OutExtraModuleNames.<span class="built_in">AddRange</span>( <span class="keyword">new</span> string[]&#123;</span><br><span class="line">  <span class="string">&quot;pluginDev&quot;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
 <p>插件名.uplugin</p>
 <p>文件里面写了关于插件相关的信息。文件格式是json。</p>
 <h4 id="8-3-虚幻引擎初始化模块加载顺序"><a href="#8-3-虚幻引擎初始化模块加载顺序" class="headerlink" title="8.3 虚幻引擎初始化模块加载顺序"></a>8.3 虚幻引擎初始化模块加载顺序</h4><p>本章就是列举了加载各种模块的顺序。</p>
-<h4 id="8-4-UBT-UHT"><a href="#8-4-UBT-UHT" class="headerlink" title="8.4 UBT&#x2F;UHT"></a>8.4 UBT&#x2F;UHT</h4><p>UBT&#x3D;Unreal Build Tool</p>
+<h4 id="8-4-UBT-UHT"><a href="#8-4-UBT-UHT" class="headerlink" title="8.4 UBT/UHT"></a>8.4 UBT/UHT</h4><p>UBT=Unreal Build Tool</p>
 <p>UBT工作分为三个阶段：</p>
 <ol>
 <li>收集阶段，将环境变量、UE源码目录，工程目录信息收集起来；</li>
 <li>参数解析阶段，将传入的命令行参数，确定自己生成的目标类型；</li>
 <li>实际生成阶段，根据环境、参数，开始生成makefile，确定C++的各种目录位置。开始构建项目。</li>
 </ol>
-<p>UHT&#x3D;Unreal Header Tool</p>
+<p>UHT=Unreal Header Tool</p>
 <p>UHT 配合实现了反射机制。</p>
 <h3 id="第9章-重要合行系统简介"><a href="#第9章-重要合行系统简介" class="headerlink" title="第9章 重要合行系统简介"></a>第9章 重要合行系统简介</h3><h4 id="9-1-内存分配"><a href="#9-1-内存分配" class="headerlink" title="9.1 内存分配"></a>9.1 内存分配</h4><h5 id="9-1-1-Windows操作系统下的内存分配方案"><a href="#9-1-1-Windows操作系统下的内存分配方案" class="headerlink" title="9.1.1 Windows操作系统下的内存分配方案"></a>9.1.1 Windows操作系统下的内存分配方案</h5><p>主要通过</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FMalloc* <span class="title">FWindowsPlatformMemory::BaseAllocator</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">#<span class="meta">#<span class="keyword">if</span> ENABLE_WIN_ALLOC_TRACKING</span></span></span><br><span class="line"><span class="function">#<span class="meta">#<span class="keyword">if</span> FORCE_ANSI_ALLOCATOR</span></span></span><br><span class="line"><span class="function">#<span class="meta">#<span class="keyword">elif</span> WITH_EDITORONLY_DATA </span></span></span><br></pre></td></tr></table></figure>
-
 <p>一共提供了Mallo（ANSI）、Intel TBB，以及Binned内存分配器。</p>
 <h4 id="9-2-引擎初始化过程"><a href="#9-2-引擎初始化过程" class="headerlink" title="9.2 引擎初始化过程"></a>9.2 引擎初始化过程</h4><p>初始化过程一共两个</p>
-<p>PreInit&#x2F;Init</p>
+<p>PreInit/Init</p>
 <p>PreInit支持输出参数，CmdLine。</p>
 <p>设置好工作目录，游戏目录。</p>
 <p>初始化随机种子。</p>
@@ -361,7 +353,6 @@
 <p>虚幻引擎，有一个EngineTick()。在主循环中最好不要调用繁重的任务，否则将会把游戏卡住。</p>
 <h4 id="9-3-并行与并发"><a href="#9-3-并行与并发" class="headerlink" title="9.3 并行与并发"></a>9.3 并行与并发</h4><p>测试代码一般文件名称为<code>模块名Test.cpp</code>。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">DEFINE_LOG_CATEGORY_STATIC</span>(TestLog,Log,All);</span><br><span class="line"><span class="built_in">IMPLEMENT_SIMPLE_AUTOMATION_TEST</span>(FMultiThreadTest,<span class="string">&quot;MyTest.PublicTest</span></span><br><span class="line"><span class="string">  .MultiThreadIest&quot;</span>, EAutomationTestFlags::EditorContext |</span><br><span class="line">  EAutomationTestFlags::EngineFilter)</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">FMultiThreadTest::RunTest</span><span class="params">(<span class="type">const</span> FString&amp; Parameters)</span></span></span><br></pre></td></tr></table></figure>
-
 <p>通过UE4菜单栏。</p>
 <p>Windows -&gt; General -&gt; Developer Tools -&gt; Session Frontend</p>
 <p>打开“会话窗口”。</p>
@@ -389,7 +380,6 @@
 <h4 id="13-2-前端：蓝图存储与编辑"><a href="#13-2-前端：蓝图存储与编辑" class="headerlink" title="13.2 前端：蓝图存储与编辑"></a>13.2 前端：蓝图存储与编辑</h4><p>蓝图包含三个部分：蓝图编辑系统、蓝图本身、蓝图编译后的字节码。字节码不包含节点信息。</p>
 <p><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/5.0/zh-CN/blueprints-visual-scripting-in-unreal-engine/">蓝图官方文档</a></p>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UEdGraph</span><br><span class="line"> Schema</span><br><span class="line"> Nodes</span><br><span class="line"> SubGraphes</span><br></pre></td></tr></table></figure>
-
 <h5 id="13-2-1-Schema"><a href="#13-2-1-Schema" class="headerlink" title="13.2.1 Schema"></a>13.2.1 Schema</h5><h2 id="注册虚幻引擎阅读权限"><a href="#注册虚幻引擎阅读权限" class="headerlink" title="注册虚幻引擎阅读权限"></a>注册虚幻引擎阅读权限</h2><p>可以登录到UE官网，开通github中，开源的UE源码阅读权限。</p>
 <h2 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h2><h3 id="UnrealBuildTool-error-Unable-to-merge-actions-producing"><a href="#UnrealBuildTool-error-Unable-to-merge-actions-producing" class="headerlink" title="UnrealBuildTool : error : Unable to merge actions producing"></a>UnrealBuildTool : error : Unable to merge actions producing</h3><p>其实就是在工程目录下，存在一批相同的文件。编译的时候，UnrealBuildTool计算merge的时候发现了问题。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>

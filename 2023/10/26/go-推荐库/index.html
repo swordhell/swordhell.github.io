@@ -228,12 +228,10 @@
       
         <p>记录一些比较好的库，到时候可以方便使用。</p>
 <span id="more"></span>
-
 <h2 id="管理后台"><a href="#管理后台" class="headerlink" title="管理后台"></a>管理后台</h2><p><a target="_blank" rel="noopener" href="https://github.com/flipped-aurora/gin-vue-admin">go-vue-admin</a></p>
 <h2 id="awesome-go"><a href="#awesome-go" class="headerlink" title="awesome-go"></a>awesome-go</h2><p><a target="_blank" rel="noopener" href="https://github.com/avelino/awesome-go">awesome-go</a></p>
 <h2 id="go-trending"><a href="#go-trending" class="headerlink" title="go-trending"></a>go-trending</h2><p><a target="_blank" rel="noopener" href="https://github.com/trending?l=go">go-trending</a><br>你可以使用以下Go语言函数来生成包含8个字符的随机密码，确保每个字符类型（小写字母、大写字母、数字和特殊字符）至少出现一次：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;crypto/rand&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generatePassword</span><span class="params">()</span></span> (<span class="type">string</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	lowercase := <span class="string">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span></span><br><span class="line">	uppercase := <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span></span><br><span class="line">	digits := <span class="string">&quot;0123456789&quot;</span></span><br><span class="line">	specialChars := <span class="string">&quot;!@#$%^&amp;*()&quot;</span></span><br><span class="line">	allChars := lowercase + uppercase + digits + specialChars</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Ensure at least one character from each category is included</span></span><br><span class="line">	password := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">8</span>)</span><br><span class="line">	categories := []<span class="type">string</span>&#123;lowercase, uppercase, digits, specialChars&#125;</span><br><span class="line">	<span class="keyword">for</span> i, category := <span class="keyword">range</span> categories &#123;</span><br><span class="line">		char, err := getRandomChar(category)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, err</span><br><span class="line">		&#125;</span><br><span class="line">		password[i] = char</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Fill the remaining positions with random characters from all categories</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">4</span>; i &lt; <span class="number">8</span>; i++ &#123;</span><br><span class="line">		char, err := getRandomChar(allChars)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, err</span><br><span class="line">		&#125;</span><br><span class="line">		password[i] = char</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Shuffle the password to prevent predictable placement</span></span><br><span class="line">	shuffledPassword, err := shuffle(password)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="type">string</span>(shuffledPassword), <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getRandomChar</span><span class="params">(s <span class="type">string</span>)</span></span> (<span class="type">byte</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	b := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">1</span>)</span><br><span class="line">	_, err := rand.Read(b)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	index := <span class="type">int</span>(b[<span class="number">0</span>]) % <span class="built_in">len</span>(s)</span><br><span class="line">	<span class="keyword">return</span> s[index], <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">shuffle</span><span class="params">(b []<span class="type">byte</span>)</span></span> ([]<span class="type">byte</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	shuffled := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="built_in">len</span>(b))</span><br><span class="line">	perm, err := rand.Perm(<span class="built_in">len</span>(b))</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i, v := <span class="keyword">range</span> perm &#123;</span><br><span class="line">		shuffled[v] = b[i]</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> shuffled, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	password, err := generatePassword()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Error generating password:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">&quot;Generated Password:&quot;</span>, password)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这个程序分几个步骤：</p>
 <ol>
 <li>从每个字符类别（小写、大写、数字、特殊字符）中随机选择一个字符。</li>
@@ -244,70 +242,62 @@
 <p>运行此程序将生成一个包含至少每种类型字符的8位密码。</p>
 <p>sh: 1: vite: not found<br>这个错误表明在执行 Vite 命令时，系统找不到 vite 可执行文件。以下是可能的原因和解决方案：</p>
 <p>原因分析</p>
-<pre><code>1.	未安装 Vite：
-•	你可能没有安装 Vite 或者安装失败。
-2.	全局路径问题：
-•	Vite 未安装为全局模块，或者环境变量未正确配置。
-3.	运行环境问题：
-•	你可能是在非项目目录下运行了 vite 命令。
-</code></pre>
-<p>解决方案</p>
+<pre><code>1.    未安装 Vite：
+•    你可能没有安装 Vite 或者安装失败。
+2.    全局路径问题：
+•    Vite 未安装为全局模块，或者环境变量未正确配置。
+3.    运行环境问题：
+•    你可能是在非项目目录下运行了 vite 命令。
+</code></pre><p>解决方案</p>
 <ol>
 <li>确保 Vite 已正确安装</li>
 </ol>
 <p>Vite 可以作为全局依赖或项目本地依赖安装。首先，尝试以下命令：</p>
-<pre><code>•	全局安装 Vite：
-</code></pre>
-<p>npm install -g vite</p>
-<pre><code>•	或者在项目中安装：
-</code></pre>
-<p>npm install vite –save-dev</p>
-<ol start="2">
+<pre><code>•    全局安装 Vite：
+</code></pre><p>npm install -g vite</p>
+<pre><code>•    或者在项目中安装：
+</code></pre><p>npm install vite —save-dev</p>
+<ol>
 <li>检查 node_modules 中的 Vite</li>
 </ol>
 <p>如果安装为本地依赖，运行以下命令来确保 vite 安装在 node_modules 中：</p>
-<p>ls node_modules&#x2F;.bin&#x2F;vite</p>
+<p>ls node_modules/.bin/vite</p>
 <p>如果存在，则用 npx 命令执行：</p>
 <p>npx vite</p>
-<ol start="3">
+<ol>
 <li>检查全局路径</li>
 </ol>
 <p>如果你安装了全局 Vite (-g 选项)，但仍然出现错误，可能是 npm 的全局路径未加入环境变量。</p>
 <p>运行以下命令检查全局路径：</p>
-<p>npm list -g –depth&#x3D;0</p>
+<p>npm list -g —depth=0</p>
 <p>确保 Vite 在全局模块中。如果存在但无法找到，手动添加路径到环境变量：</p>
-<pre><code>•	查看全局路径：
-</code></pre>
-<p>npm config get prefix</p>
-<p>通常是 &#x2F;usr&#x2F;local 或类似路径。</p>
-<pre><code>•	将全局路径添加到 PATH 环境变量中：
-</code></pre>
-<p>export PATH&#x3D;$PATH:$(npm config get prefix)&#x2F;bin</p>
-<p>将此行添加到 ~&#x2F;.bashrc 或 ~&#x2F;.zshrc，以便永久生效。</p>
-<ol start="4">
+<pre><code>•    查看全局路径：
+</code></pre><p>npm config get prefix</p>
+<p>通常是 /usr/local 或类似路径。</p>
+<pre><code>•    将全局路径添加到 PATH 环境变量中：
+</code></pre><p>export PATH=$PATH:$(npm config get prefix)/bin</p>
+<p>将此行添加到 ~/.bashrc 或 ~/.zshrc，以便永久生效。</p>
+<ol>
 <li>运行环境问题</li>
 </ol>
 <p>确保你在项目目录中运行 vite 命令。如果是启动开发服务器，应该进入包含 package.json 的目录，再运行以下命令：</p>
 <p>npm run dev</p>
-<ol start="5">
+<ol>
 <li>重装 Node.js 和 Vite</li>
 </ol>
 <p>如果问题依然存在，可能需要重新安装 Node.js 和 Vite：</p>
-<pre><code>1.	删除旧的 Node.js 和全局模块。
-2.	安装 Node.js 最新版本。
-3.	按需重新安装 Vite。
-</code></pre>
-<p>验证安装是否成功</p>
+<pre><code>1.    删除旧的 Node.js 和全局模块。
+2.    安装 Node.js 最新版本。
+3.    按需重新安装 Vite。
+</code></pre><p>验证安装是否成功</p>
 <p>安装完成后，运行以下命令检查：</p>
-<p>vite –version</p>
+<p>vite —version</p>
 <p>如果显示版本号，说明安装成功。</p>
 <p>额外建议</p>
-<pre><code>•	如果你使用的是 Yarn 或 PNPM，可以尝试对应的命令安装 Vite：
-</code></pre>
-<p>yarn add vite –dev<br>pnpm add vite –save-dev</p>
-<pre><code>•	如果是一个特定项目问题，检查 package.json 的 scripts 配置是否正确。
-</code></pre>
-<p>gin-admin-vue</p>
+<pre><code>•    如果你使用的是 Yarn 或 PNPM，可以尝试对应的命令安装 Vite：
+</code></pre><p>yarn add vite —dev<br>pnpm add vite —save-dev</p>
+<pre><code>•    如果是一个特定项目问题，检查 package.json 的 scripts 配置是否正确。
+</code></pre><p>gin-admin-vue</p>
 <p>默认密码 123456</p>
 <p>默认端口： 前端 8080 后端 8888</p>
 <p>要快速检查你的 Golang 项目中 go.mod 文件所依赖的库是否存在已知的安全风险，可以使用以下几种方法：</p>
@@ -317,12 +307,12 @@
 <p>GoSec 是一个静态分析工具，可以帮助你扫描 Go 代码中的安全漏洞。</p>
 <p>安装 GoSec</p>
 <p>你可以通过以下命令安装 GoSec：</p>
-<p>go install github.com&#x2F;securego&#x2F;gosec&#x2F;v2&#x2F;cmd&#x2F;gosec@latest</p>
+<p>go install github.com/securego/gosec/v2/cmd/gosec@latest</p>
 <p>使用 GoSec 扫描项目</p>
 <p>然后，使用 gosec 对你的 Go 项目进行扫描：</p>
-<p>gosec .&#x2F;…</p>
+<p>gosec ./…</p>
 <p>GoSec 会扫描项目中的所有 .go 文件，并报告可能的安全问题。它并不直接针对 go.mod 文件，但可以帮助你发现代码中可能的安全漏洞。</p>
-<ol start="2">
+<ol>
 <li>使用 Snyk 扫描 Go 依赖库</li>
 </ol>
 <p>Snyk 是一个流行的安全工具，提供了对 go.mod 中的所有依赖包进行漏洞扫描的功能。</p>
@@ -331,36 +321,39 @@
 <p>npm install -g snyk</p>
 <p>扫描项目中的依赖</p>
 <p>然后，使用以下命令扫描 go.mod 中的依赖：</p>
-<p>snyk test –all-projects</p>
+<p>snyk test —all-projects</p>
 <p>Snyk 会检查项目的依赖库（包括 go.mod 和 go.sum 文件）是否有已知的漏洞，并显示安全报告。</p>
 <p>注册并连接你的项目</p>
 <p>你还可以通过 Snyk 的官方网站注册账户并连接你的 GitHub、GitLab 等代码仓库，定期扫描并监控项目的安全性。</p>
-<ol start="3">
+<ol>
 <li>使用 Dependabot 或 GitHub Security Alerts</li>
 </ol>
 <p>如果你的项目托管在 GitHub 上，你可以启用 GitHub 提供的安全功能（如 Dependabot 或 Security Alerts）来自动检测依赖项中的漏洞。</p>
-<p>启用 Dependabot<br>	1.	在你的 GitHub 项目中，点击 “Settings”。<br>	2.	在 “Security &amp; analysis” 部分，启用 “Dependabot alerts” 和 “Dependabot security updates”。<br>	3.	Dependabot 会自动扫描你项目的 go.mod 文件，并在发现依赖项存在已知漏洞时，自动创建一个拉取请求来更新依赖库。</p>
-<p>使用 GitHub Security Alerts</p>
+<p>启用 Dependabot</p>
+<pre><code>1.    在你的 GitHub 项目中，点击 “Settings”。
+2.    在 “Security &amp; analysis” 部分，启用 “Dependabot alerts” 和 “Dependabot security updates”。
+3.    Dependabot 会自动扫描你项目的 go.mod 文件，并在发现依赖项存在已知漏洞时，自动创建一个拉取请求来更新依赖库。
+</code></pre><p>使用 GitHub Security Alerts</p>
 <p>如果启用了 GitHub 的安全功能，它会在发现项目中使用的库存在安全漏洞时，直接给出警告通知，并提供修复建议。</p>
-<ol start="4">
+<ol>
 <li>使用 Go Modules Vulnerability Database</li>
 </ol>
 <p>Go 官方提供了一个名为 Go Modules Vulnerability Database 的数据库，你可以使用它来查找 Go 模块中已知的漏洞。</p>
 <p>手动查询</p>
 <p>你可以访问 Go 官方的漏洞数据库网站来查看某个库是否有已知的漏洞：</p>
 <p>Go Vulnerability Database</p>
-<ol start="5">
+<ol>
 <li>使用 govulncheck</li>
 </ol>
 <p>govulncheck 是 Go 官方提供的工具，可以扫描 Go 代码中的漏洞。</p>
 <p>安装 govulncheck</p>
 <p>使用以下命令安装 govulncheck：</p>
-<p>go install golang.org&#x2F;x&#x2F;vuln&#x2F;cmd&#x2F;govulncheck@latest</p>
+<p>go install golang.org/x/vuln/cmd/govulncheck@latest</p>
 <p>扫描 Go 项目</p>
 <p>然后，在项目根目录下运行以下命令：</p>
-<p>govulncheck .&#x2F;…</p>
+<p>govulncheck ./…</p>
 <p>该工具会扫描 Go 代码并报告与已知漏洞相关的任何依赖库。</p>
-<p>总结<br>	•	GoSec 和 govulncheck 适合检查代码中的安全漏洞。<br>	•	Snyk 是一个跨语言的工具，能够检测 go.mod 依赖中的安全问题。<br>	•	如果你的代码托管在 GitHub 上，可以利用 Dependabot 和 GitHub Security Alerts 来自动扫描和更新存在漏洞的依赖。</p>
+<p>总结<br>    •    GoSec 和 govulncheck 适合检查代码中的安全漏洞。<br>    •    Snyk 是一个跨语言的工具，能够检测 go.mod 依赖中的安全问题。<br>    •    如果你的代码托管在 GitHub 上，可以利用 Dependabot 和 GitHub Security Alerts 来自动扫描和更新存在漏洞的依赖。</p>
 <p>结合这些工具，你可以快速检测和修复 go.mod 文件中的潜在安全风险，确保依赖项的安全性。</p>
 <p>是的，Go 语言有多个 lint 插件可以用来检查代码质量、风格以及潜在的错误。最常用的工具是 golint 和 staticcheck，它们都可以帮助你发现代码中的常见问题。</p>
 <ol>
@@ -368,37 +361,40 @@
 </ol>
 <p>golint 是一个非常基础的 Go 代码检查工具，主要关注代码风格。它会检查诸如注释风格、变量命名、函数命名等问题。golint 并不会像 staticcheck 那样检查更复杂的潜在错误，但它能帮助你写出符合 Go 编码规范的代码。</p>
 <p>安装 golint</p>
-<p>go install golang.org&#x2F;x&#x2F;lint&#x2F;golint@latest</p>
+<p>go install golang.org/x/lint/golint@latest</p>
 <p>使用 golint 检查代码</p>
 <p>在你的 Go 项目中，你可以通过命令行使用 golint 来检查某个文件或目录：</p>
-<p>golint .&#x2F;…</p>
+<p>golint ./…</p>
 <p>这会检查当前目录及其子目录中的所有 Go 文件，并输出建议。</p>
-<ol start="2">
+<ol>
 <li>staticcheck</li>
 </ol>
 <p>staticcheck 是一个功能更强大的工具，不仅会检查代码风格问题，还会检查潜在的逻辑错误、性能问题、冗余代码等。它比 golint 更全面，更适合用于大型项目。</p>
 <p>安装 staticcheck</p>
-<p>go install honnef.co&#x2F;go&#x2F;tools&#x2F;cmd&#x2F;staticcheck@latest</p>
+<p>go install honnef.co/go/tools/cmd/staticcheck@latest</p>
 <p>使用 staticcheck 检查代码</p>
 <p>同样，你可以通过命令行在 Go 项目中使用 staticcheck：</p>
-<p>staticcheck .&#x2F;…</p>
-<ol start="3">
+<p>staticcheck ./…</p>
+<ol>
 <li>VS Code 插件（如果你使用 VS Code）</li>
 </ol>
 <p>如果你使用 VS Code 编辑器，有很多插件可以集成 Go lint 工具，提升开发体验。</p>
-<p>Go 扩展插件<br>	•	安装 Go 插件：首先，在 VS Code 中安装 Go 插件。这个插件会自动集成 golint、staticcheck 和其他 Go 工具。<br>	•	配置 Go 插件：在安装完 Go 插件后，你可以通过设置来启用或禁用 golint、staticcheck 等工具的集成，通常 VS Code 会自动检测并提示你安装需要的工具。</p>
-<p>配置 VS Code 使用 Lint 工具<br>	1.	打开 VS Code 的设置（Ctrl + ,）。<br>	2.	搜索 Go Lint，然后根据需要启用或禁用相应的 lint 工具。<br>	3.	在 .vscode&#x2F;settings.json 中，你可以手动配置 lint 工具的路径：</p>
-<p>{<br>  “go.lintTool”: “golint”, &#x2F;&#x2F; 或 “staticcheck”<br>  “go.lintOnSave”: “file”,<br>  “go.lintFlags”: []<br>}</p>
-<ol start="4">
+<p>Go 扩展插件<br>    •    安装 Go 插件：首先，在 VS Code 中安装 Go 插件。这个插件会自动集成 golint、staticcheck 和其他 Go 工具。<br>    •    配置 Go 插件：在安装完 Go 插件后，你可以通过设置来启用或禁用 golint、staticcheck 等工具的集成，通常 VS Code 会自动检测并提示你安装需要的工具。</p>
+<p>配置 VS Code 使用 Lint 工具</p>
+<pre><code>1.    打开 VS Code 的设置（Ctrl + ,）。
+2.    搜索 Go Lint，然后根据需要启用或禁用相应的 lint 工具。
+3.    在 .vscode/settings.json 中，你可以手动配置 lint 工具的路径：
+</code></pre><p>{<br>  “go.lintTool”: “golint”, // 或 “staticcheck”<br>  “go.lintOnSave”: “file”,<br>  “go.lintFlags”: []<br>}</p>
+<ol>
 <li>其他 Lint 工具</li>
 </ol>
-<p>除了 golint 和 staticcheck，你还可以使用一些其他 Go 的 lint 工具：<br>	•	golangci-lint: 它是一个非常流行的 Go lint 集成工具，支持多种 lint 引擎（包括 golint、staticcheck 等）。它是一个多功能的 linter，可以通过配置文件控制启用哪些检查。</p>
+<p>除了 golint 和 staticcheck，你还可以使用一些其他 Go 的 lint 工具：<br>    •    golangci-lint: 它是一个非常流行的 Go lint 集成工具，支持多种 lint 引擎（包括 golint、staticcheck 等）。它是一个多功能的 linter，可以通过配置文件控制启用哪些检查。</p>
 <p>安装 golangci-lint</p>
-<p>go install github.com&#x2F;golangci&#x2F;golangci-lint&#x2F;cmd&#x2F;golangci-lint@latest</p>
+<p>go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest</p>
 <p>使用 golangci-lint</p>
 <p>golangci-lint run</p>
 <p>你也可以创建一个配置文件 .golangci.yml 来定制化 lint 行为。</p>
-<p>总结<br>	•	golint 适合用于基础的代码风格检查。<br>	•	staticcheck 更适合查找潜在的错误和优化建议。<br>	•	golangci-lint 可以集成多个 lint 工具，提供更全面的检查。</p>
+<p>总结<br>    •    golint 适合用于基础的代码风格检查。<br>    •    staticcheck 更适合查找潜在的错误和优化建议。<br>    •    golangci-lint 可以集成多个 lint 工具，提供更全面的检查。</p>
 <p>这些工具都可以提高代码质量，减少潜在的错误，建议你在项目中使用它们进行自动化代码检查。</p>
 
     </div>
