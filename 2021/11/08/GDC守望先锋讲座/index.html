@@ -228,6 +228,7 @@
       
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>聊到ECS方式的游戏设计，就想到了Timothy Ford在GDC 2017提到的。在参考里面我也贴了b站大佬翻译的视频，和 GDC Vault里面的英文原视频；以及云风的blog里面的分析，大概描述了他的理解。需要理解可能需要看几遍，毕竟别人开发这块东西都花了很多的时间。</p>
 <span id="more"></span>
+
 <h3 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h3><blockquote>
 <p>Components没有functions<br>Systems没有状态<br>将共享的代码放入Utils<br>将复杂的副作用队列放入组件中进行延时处理，特指单例<br>Systems之间不允许调用；</p>
 </blockquote>
@@ -241,7 +242,7 @@
 <h3 id="提问阶段"><a href="#提问阶段" class="headerlink" title="提问阶段"></a>提问阶段</h3><p>有人问他是否考虑使用double buffer的方案，Timothy并不反对这个方案，他觉得蛮好的，只是没有集成。</p>
 <p>1:01:07 讨论了数字的精度问题，他们应该是精确到了1米*1024。问了物理引擎相关的东西。基于相同输入，所以应该能获取相同的输出。他们将浮点数离散化到毫米精度的时候，还是会有些担心里面会出一些什么问题。其实处理的情况可以接受，可以去看一下Phil Orwig的讲座。其实浮点型的数字计算，的确和IEEE标准有关。</p>
 <p>里面也使用了动态的navmesh，他们是通过固定帧来保证动态的的阻挡的一致性。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1p4411k7N8">Timothy Ford演讲-翻译版</a><br>[2] <a target="_blank" rel="noopener" href="https://www.gdcvault.com/play/1024001/-Overwatch-Gameplay-Architecture-and">GDC-Vault-Raw</a><br>[3] <a target="_blank" rel="noopener" href="https://blog.codingnow.com/2017/06/overwatch_ecs.html">云风的分析文档</a><br>[4] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1VE411b7tV?from=search&amp;seid=11170686620338450335&amp;spm_id_from=333.337.0.0">Networking Scripted Weapons and Abilities in Overwatch</a><br>[5] <a target="_blank" rel="noopener" href="https://github.com/id-Software/Quake-III-Arena">Quake-III-Arena</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1p4411k7N8">Timothy Ford演讲-翻译版</a><br>[2] <a target="_blank" rel="noopener" href="https://www.gdcvault.com/play/1024001/-Overwatch-Gameplay-Architecture-and">GDC-Vault-Raw</a><br>[3] <a target="_blank" rel="noopener" href="https://blog.codingnow.com/2017/06/overwatch_ecs.html">云风的分析文档</a><br>[4] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1VE411b7tV?from=search&seid=11170686620338450335&spm_id_from=333.337.0.0">Networking Scripted Weapons and Abilities in Overwatch</a><br>[5] <a target="_blank" rel="noopener" href="https://github.com/id-Software/Quake-III-Arena">Quake-III-Arena</a></p>
 
     </div>
 
@@ -408,7 +409,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="//cdn.jsdelivr.net/gh/stevenjoezhang/busuanzi@2.3/busuanzi.pure.mini.js"></script>
     <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
       <span class="post-meta-item-icon">
         <i class="fa fa-user"></i>

@@ -231,10 +231,12 @@
 <p>右值引用<br>转移语义<br>完美转发<br>更加高效容器</p>
 </blockquote>
 <span id="more"></span>
+
 <h3 id="右值引用"><a href="#右值引用" class="headerlink" title="右值引用"></a>右值引用</h3><h4 id="右值引用优化性能，避免深拷贝"><a href="#右值引用优化性能，避免深拷贝" class="headerlink" title="右值引用优化性能，避免深拷贝"></a>右值引用优化性能，避免深拷贝</h4><p>有时候会有类分配了大量堆内存，而且我们需要继续用下去，为了避免在拷贝这个对象时重新分配，可以使用右值引用。重载掉两个函数：右值构造函数、右值赋值操作函数。</p>
 <p>在使用这个特性的时候，将会配合使用转移语义，将一个左值转换成右值，用于交接使用权。</p>
 <p>移动语意</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>; <span class="comment">// 左值</span></span><br><span class="line"><span class="type">int</span> &amp;b = a; <span class="comment">// 左值引用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 移动语意: 转换左值为右值引用</span></span><br><span class="line"><span class="type">int</span> &amp;&amp;c = std::<span class="built_in">move</span>(a); </span><br></pre></td></tr></table></figure>
+
 <p>完美转发</p>
 <blockquote>
 <p>只有在需要的时候，才调用复制构造函数<br>左值被转发为左值，右值被转发为右值</p>
@@ -245,8 +247,8 @@
 </blockquote>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/language/reference">cppreference-引用</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=IOkgBrXCtfo&amp;ab_channel=BoQian">C++ 11: Rvalue Reference — Move Semantics</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=0xcCNnWEMgs&amp;ab_channel=BoQian">C++ 11: Rvalue Reference - Perfect Fowarding</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=IOkgBrXCtfo&ab_channel=BoQian">C++ 11: Rvalue Reference – Move Semantics</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=0xcCNnWEMgs&ab_channel=BoQian">C++ 11: Rvalue Reference - Perfect Fowarding</a></li>
 </ul>
 
     </div>
@@ -414,7 +416,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="//cdn.jsdelivr.net/gh/stevenjoezhang/busuanzi@2.3/busuanzi.pure.mini.js"></script>
     <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
       <span class="post-meta-item-icon">
         <i class="fa fa-user"></i>

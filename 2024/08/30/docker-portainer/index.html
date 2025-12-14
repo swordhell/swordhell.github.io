@@ -228,22 +228,32 @@
 <p><img src="/2024/08/30/docker-portainer/init.jpg" alt="init"></p>
 <p><img src="/2024/08/30/docker-portainer/admin-ui.jpg" alt="admin-ui"></p>
 <span id="more"></span>
+
+
 <h3 id="1-安装-Docker"><a href="#1-安装-Docker" class="headerlink" title="1. 安装 Docker"></a>1. 安装 Docker</h3><p>首先，你需要确保 Ubuntu 上已经安装了 Docker。如果你还没有安装 Docker，可以按照以下步骤进行安装：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg \</span><br><span class="line">    lsb-release</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加 Docker 的官方 GPG 密钥</span></span><br><span class="line">sudo <span class="built_in">mkdir</span> -p /etc/apt/keyrings</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置稳定版本的 Docker 仓库</span></span><br><span class="line"><span class="built_in">echo</span> \</span><br><span class="line">  <span class="string">&quot;deb [arch=<span class="subst">$(dpkg --print-architecture)</span> signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \</span></span><br><span class="line"><span class="string">  <span class="subst">$(lsb_release -cs)</span> stable&quot;</span> | sudo <span class="built_in">tee</span> /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br></pre></td></tr></table></figure>
+
 <h3 id="2-运行-Docker-并确保它已启动"><a href="#2-运行-Docker-并确保它已启动" class="headerlink" title="2. 运行 Docker 并确保它已启动"></a>2. 运行 Docker 并确保它已启动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
 <h3 id="3-安装-Portainer"><a href="#3-安装-Portainer" class="headerlink" title="3. 安装 Portainer"></a>3. 安装 Portainer</h3><p>Portainer 可以通过 Docker 容器运行。执行以下命令来下载并运行 Portainer 容器：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker volume create portainer_data</span><br><span class="line"></span><br><span class="line">docker run -d -p 8000:8000 -p 9443:9443 --name=portainer --restart=always \</span><br><span class="line">    -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">    -v portainer_data:/data \</span><br><span class="line">    portainer/portainer-ce:latest</span><br></pre></td></tr></table></figure>
+
 <h3 id="4-访问-Portainer"><a href="#4-访问-Portainer" class="headerlink" title="4. 访问 Portainer"></a>4. 访问 Portainer</h3><p>安装完成后，你可以通过浏览器访问 Portainer 的 Web 界面。默认情况下，Portainer 的 HTTPS 端口是 <code>9443</code>，所以你可以通过以下 URL 访问它：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://&lt;your_server_ip&gt;:9443</span><br></pre></td></tr></table></figure>
+
 <p>在首次访问时，Portainer 会要求你设置一个管理员账户，然后你可以开始管理 Docker 容器了。</p>
 <h3 id="5-（可选）启用-HTTP-访问"><a href="#5-（可选）启用-HTTP-访问" class="headerlink" title="5. （可选）启用 HTTP 访问"></a>5. （可选）启用 HTTP 访问</h3><p>如果你希望通过 HTTP 而不是 HTTPS 访问 Portainer，可以将 <code>9443</code> 改为 <code>9000</code>，并在命令中添加以下部分：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-p 9000:9000</span><br></pre></td></tr></table></figure>
+
 <p>例如：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8200:8000 -p 9200:9000 --name=portainer --restart=always \</span><br><span class="line">    -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">    -v portainer_data:/data \</span><br><span class="line">    portainer/portainer-ce:latest</span><br></pre></td></tr></table></figure>
+
 <p>然后，你可以通过以下 URL 访问：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://&lt;your_server_ip&gt;:9000</span><br></pre></td></tr></table></figure>
+
 <h3 id="6-更新-Portainer"><a href="#6-更新-Portainer" class="headerlink" title="6. 更新 Portainer"></a>6. 更新 Portainer</h3><p>如果你想更新 Portainer，只需要停止并移除当前容器，然后拉取最新的镜像并重新运行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker stop portainer</span><br><span class="line">docker <span class="built_in">rm</span> portainer</span><br><span class="line">docker pull portainer/portainer-ce:latest</span><br><span class="line">docker run -d -p 8000:8000 -p 9443:9443 --name=portainer --restart=always \</span><br><span class="line">    -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">    -v portainer_data:/data \</span><br><span class="line">    portainer/portainer-ce:latest</span><br></pre></td></tr></table></figure>
+
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过上述步骤，你可以轻松地在 Ubuntu 上安装并运行 Portainer，管理 Docker 容器和资源。Portainer 提供了一个简单的 Web 界面，使得管理 Docker 变得更加直观和高效。</p>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://docs.portainer.io/start/install/server/docker/linux">https://docs.portainer.io/start/install/server/docker/linux</a></li>
@@ -414,7 +424,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="//cdn.jsdelivr.net/gh/stevenjoezhang/busuanzi@2.3/busuanzi.pure.mini.js"></script>
     <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
       <span class="post-meta-item-icon">
         <i class="fa fa-user"></i>

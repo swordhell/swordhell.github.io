@@ -231,54 +231,51 @@
 <p>向etcd 注册 该服务（其实就是 存一个值）然后向etcd 发送心跳，当etcd 没有检测到心跳就会 把这个键值对 删了(这整个动作是etcd里的租约模式)，网关那边 就只需要 watch 这个 key ，就能够知道 所有服务的所有动态了</p>
 <p>etcd现在用于制作服务发现是比较常见的。用一篇文章记录一下如何安装、配置、使用。以及介绍一些etcd的工作原理，术语。</p>
 <span id="more"></span>
-<h2 id="etcd术语"><a href="#etcd术语" class="headerlink" title="etcd术语"></a>etcd术语</h2><div class="table-container">
-<table>
+
+<h2 id="etcd术语"><a href="#etcd术语" class="headerlink" title="etcd术语"></a>etcd术语</h2><table>
 <thead>
 <tr>
-<th style="text-align:left">术语</th>
-<th style="text-align:left">说明</th>
+<th align="left">术语</th>
+<th align="left">说明</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">Term</td>
-<td style="text-align:left">选举任期，每次选举之后递增</td>
+<tbody><tr>
+<td align="left">Term</td>
+<td align="left">选举任期，每次选举之后递增</td>
 </tr>
 <tr>
-<td style="text-align:left">Vote</td>
-<td style="text-align:left">选举时一张投票</td>
+<td align="left">Vote</td>
+<td align="left">选举时一张投票</td>
 </tr>
 <tr>
-<td style="text-align:left">Entry</td>
-<td style="text-align:left">Raft算法的日志的一个条目</td>
+<td align="left">Entry</td>
+<td align="left">Raft算法的日志的一个条目</td>
 </tr>
 <tr>
-<td style="text-align:left">Candidate</td>
-<td style="text-align:left">候选人，参与竞选的节点</td>
+<td align="left">Candidate</td>
+<td align="left">候选人，参与竞选的节点</td>
 </tr>
 <tr>
-<td style="text-align:left">Leader</td>
-<td style="text-align:left">领导，负责主动处理写入请求的节点</td>
+<td align="left">Leader</td>
+<td align="left">领导，负责主动处理写入请求的节点</td>
 </tr>
 <tr>
-<td style="text-align:left">Follower</td>
-<td style="text-align:left">跟随着，不负责主动写入，仅仅从Leader同步数据</td>
+<td align="left">Follower</td>
+<td align="left">跟随着，不负责主动写入，仅仅从Leader同步数据</td>
 </tr>
 <tr>
-<td style="text-align:left">Commit</td>
-<td style="text-align:left">提交，序列化数据写入到日志中</td>
+<td align="left">Commit</td>
+<td align="left">提交，序列化数据写入到日志中</td>
 </tr>
 <tr>
-<td style="text-align:left">Propose</td>
-<td style="text-align:left">提议，请求大部分节点同意数据写入</td>
+<td align="left">Propose</td>
+<td align="left">提议，请求大部分节点同意数据写入</td>
 </tr>
 <tr>
-<td style="text-align:left">Consensus</td>
-<td style="text-align:left">一致性</td>
+<td align="left">Consensus</td>
+<td align="left">一致性</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>因为etcd是go语言编写的，安装只需要下载对应的二进制文件，并放到合适的路径就行。</p>
 <p>解压后是一些文档和两个二进制文件etcd和etcdctl。etcd是server端，etcdctl是客户端。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/etcd-io/etcd.git">github地址</a></p>
@@ -286,13 +283,17 @@
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><code>etcd</code>的配置文件时使用的<code>yaml</code>文件格式。</p>
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1dfccde328c4">单机启动</a></p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">&#x27;single-etcd&#x27;</span></span><br><span class="line"><span class="attr">listen-peer-urls:</span> <span class="string">http://0.0.0.0:2381</span> <span class="comment"># 用于指定etcd和客户端的连接端口</span></span><br><span class="line"><span class="attr">listen-client-urls:</span> <span class="string">http://0.0.0.0:2382</span> <span class="comment"># 用于指定etcd服务器之间通讯的端口</span></span><br><span class="line"><span class="attr">auto-compaction-retention:</span> <span class="string">&#x27;2&#x27;</span> <span class="comment"># 防止跑得太久了之后无法出现碎片太多的问题</span></span><br></pre></td></tr></table></figure>
+
 <p>启动命令行：</p>
 <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./etcd --config-file etcd-single.yml</span><br><span class="line"><span class="comment">@REM 设置连接地址直接查看当前的etcd的情况</span></span><br><span class="line">etcdctl --endpoints=<span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">2381</span> endpoint status</span><br><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">2381</span>, <span class="number">8</span>e9e05c52164694d, <span class="number">3</span>.<span class="number">5</span>.<span class="number">0</span>, <span class="number">25</span> kB, true, false, <span class="number">2</span>, <span class="number">4</span>, <span class="number">4</span>,</span><br></pre></td></tr></table></figure>
+
 <p>我们可以通过使用指令来查询里面的信息。</p>
 <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\abel&gt; etcdctl --endpoints=<span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">2381</span> put /test/key &quot;test kubernetes&quot;</span><br><span class="line">OK</span><br><span class="line">PS C:\Users\abel&gt; etcdctl --endpoints=<span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">2381</span> get /test/key</span><br><span class="line">/test/key</span><br><span class="line">test kubernetes</span><br></pre></td></tr></table></figure>
-<p>/all/server</p>
+
+<p>&#x2F;all&#x2F;server</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/51wansheng/p/10234036.html">集群启动</a></p>
 <h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">服务发现：服务器将会往etcd中的key里面写入自己的服务器连接信息，并且将</span><br><span class="line">        写入的时候，使用租赁的方式，意味着如果租赁结束了，这个数据将会</span><br><span class="line">        被删除掉。客户端将会在启动的时候获取一次etcd里面信息，并且使用</span><br><span class="line">        watch操作，监听这个etcd中的key里面的信息的变换。当某个服务器</span><br><span class="line">        挂掉了，或者开始工作了，就能读取到数据。</span><br><span class="line"></span><br><span class="line">数据共享：类似于redis的用法，直接将数据写入到黑板上，连接上的服务器可以</span><br><span class="line">        在里面查询到存储从信息。</span><br></pre></td></tr></table></figure>
+
 <h2 id="raft算法"><a href="#raft算法" class="headerlink" title="raft算法"></a>raft算法</h2><p>一致性算法是在复制状态机的背景中被提出来的。指的是在一组服务器中产生同样状态的副本，因此即使一些机器发生故障之后仍然能正常工作。复制状态机被用于解决分布式系统中的容错处理。zookeeper 中就使用了复制状态机。在这之前还有一种叫做<code>Paxos</code>算法。复制状态机是通过复制日志来实现的。每一台服务器保存着一份日志，日志中包含一系列的命令，状态机会按顺序执行这些命令。因为每一台计算机的状态机都是确定的，所以每个状态机的状态都是相同的，执行的命令是相同的，最后的执行结果也就是一样的了。如何保证复制日志的一致就是一致性算法的工作内容。</p>
 <p>一致性算法共性：</p>
 <blockquote>
@@ -308,10 +309,11 @@
 <li>将启动语句增加auto-compaction-retention参数。</li>
 </ol>
 <p><code>nohup etcd --auto-compaction-retention=1 --config-file etcd1.yml &gt;&gt; /root/lib/etcd-v3.5.0-linux-amd64/etcd1.log &amp;</code></p>
-<ol>
+<ol start="2">
 <li>重新启动etcd之后，使用命令将etcd空间清理掉</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用API3</span></span><br><span class="line"><span class="built_in">export</span> ETCDCTL_API=3</span><br><span class="line"><span class="comment"># 查看告警信息，告警信息一般 memberID:8630161756594109333 alarm:NOSPACE</span></span><br><span class="line">etcdctl --endpoints=http://0.0.0.0:2382 alarm list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前版本</span></span><br><span class="line">rev=$(etcdctl --endpoints=http://0.0.0.0:2382 endpoint status --write-out=<span class="string">&quot;json&quot;</span> | egrep -o <span class="string">&#x27;&quot;revision&quot;:[0-9]*&#x27;</span> | egrep -o <span class="string">&#x27;[0-9].*&#x27;</span>)</span><br><span class="line"><span class="comment"># 压缩掉所有旧版本</span></span><br><span class="line">etcdctl --endpoints=http://0.0.0.0:2382 compact <span class="variable">$rev</span></span><br><span class="line"><span class="comment"># 整理多余的空间</span></span><br><span class="line">etcdctl --endpoints=http://0.0.0.0:2382 defrag</span><br><span class="line"><span class="comment"># 取消告警信息</span></span><br><span class="line">etcdctl --endpoints=http://0.0.0.0:2382 alarm disarm</span><br><span class="line"></span><br><span class="line">➜  etcd-v3.5.0-linux-amd64 etcdctl --endpoints=http://0.0.0.0:2382 endpoint status</span><br><span class="line">http://0.0.0.0:2382, 7d5020cb43815ca4, 3.5.0, 488 MB, <span class="literal">false</span>, <span class="literal">false</span>, 9, 23114017, 23114017, </span><br><span class="line">➜  etcd-v3.5.0-linux-amd64 etcdctl --endpoints=http://0.0.0.0:2381 endpoint status</span><br><span class="line">http://0.0.0.0:2381, b49ab97cd90e450b, 3.5.0, 704 MB, <span class="literal">true</span>, <span class="literal">false</span>, 9, 23116118, 23116118, </span><br><span class="line">➜  etcd-v3.5.0-linux-amd64 etcdctl --endpoints=http://0.0.0.0:2379 endpoint status</span><br><span class="line">http://0.0.0.0:2379, 3d9c87710817443b, 3.5.0, 2.1 GB, <span class="literal">false</span>, <span class="literal">false</span>, 9, 23116138, 23116138,</span><br><span class="line">空间还是占了2.1GB</span><br></pre></td></tr></table></figure>
+
 <h2 id="尝试使用etcd制作服务发现"><a href="#尝试使用etcd制作服务发现" class="headerlink" title="尝试使用etcd制作服务发现"></a>尝试使用etcd制作服务发现</h2><p><a href="github.com/swordhell/etcdutil">源码下载地址</a><br><a target="_blank" rel="noopener" href="https://github.com/swordhell/learn_go">测试代码地址</a></p>
 <blockquote>
 <p>服务器启动的时候开启一个租赁obj<br>将服务器的信息捆绑租赁写入到etcd<br>客户端watch服务器写入的数据key，当服务器关闭或者更新数据的时候将会有通知。</p>
@@ -319,23 +321,32 @@
 <p>在 macOS 上安装 <code>etcd</code>，可以通过 Homebrew 这个包管理工具来安装。以下是详细步骤：</p>
 <h3 id="1-安装-Homebrew"><a href="#1-安装-Homebrew" class="headerlink" title="1. 安装 Homebrew"></a>1. 安装 Homebrew</h3><p>如果你还没有安装 Homebrew，可以先按照以下步骤进行安装：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="2-更新-Homebrew"><a href="#2-更新-Homebrew" class="headerlink" title="2. 更新 Homebrew"></a>2. 更新 Homebrew</h3><p>安装好 Homebrew 后，更新 Homebrew 以确保包列表是最新的：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew update</span><br></pre></td></tr></table></figure>
+
 <h3 id="3-安装-etcd"><a href="#3-安装-etcd" class="headerlink" title="3. 安装 etcd"></a>3. 安装 etcd</h3><p>使用 Homebrew 安装 <code>etcd</code>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install etcd</span><br></pre></td></tr></table></figure>
+
 <h3 id="4-验证安装"><a href="#4-验证安装" class="headerlink" title="4. 验证安装"></a>4. 验证安装</h3><p>安装完成后，你可以通过以下命令来验证 <code>etcd</code> 是否安装成功：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etcd --version</span><br></pre></td></tr></table></figure>
+
 <p>这将显示 <code>etcd</code> 的版本信息，确认安装是否成功。</p>
 <h3 id="5-启动-etcd"><a href="#5-启动-etcd" class="headerlink" title="5. 启动 etcd"></a>5. 启动 etcd</h3><p>可以使用命令行启动 <code>etcd</code>，默认会在本地启动一个单节点的 etcd 服务：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etcd</span><br></pre></td></tr></table></figure>
+
 <p>如果你想让 <code>etcd</code> 在后台运行，可以使用：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etcd &amp;&gt;/dev/null &amp;</span><br></pre></td></tr></table></figure>
+
 <h3 id="6-验证-etcd-运行状态"><a href="#6-验证-etcd-运行状态" class="headerlink" title="6. 验证 etcd 运行状态"></a>6. 验证 etcd 运行状态</h3><p>你可以使用 <code>etcdctl</code> 命令行工具来验证 <code>etcd</code> 是否正常运行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etcdctl --endpoints=localhost:2379 endpoint health</span><br></pre></td></tr></table></figure>
+
 <p>如果 <code>etcd</code> 运行正常，输出会类似于：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost:2379 is healthy: successfully committed proposal: took = x.xxxms</span><br></pre></td></tr></table></figure>
+
 <h3 id="7-停止-etcd"><a href="#7-停止-etcd" class="headerlink" title="7. 停止 etcd"></a>7. 停止 etcd</h3><p>如果你想停止 <code>etcd</code>，可以使用 <code>kill</code> 命令杀死 <code>etcd</code> 进程：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep etcd</span><br><span class="line"><span class="built_in">kill</span> &lt;process_id&gt;</span><br></pre></td></tr></table></figure>
+
 <p>将 <code>&lt;process_id&gt;</code> 替换为 <code>etcd</code> 进程的 ID。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>使用 Homebrew 轻松安装 <code>etcd</code>。</li>
@@ -345,35 +356,49 @@
 <h3 id="方法-1：通过二进制文件安装-etcd"><a href="#方法-1：通过二进制文件安装-etcd" class="headerlink" title="方法 1：通过二进制文件安装 etcd"></a>方法 1：通过二进制文件安装 <code>etcd</code></h3><p>这是官方推荐的安装方式。</p>
 <h4 id="1-下载最新的-etcd-发行版"><a href="#1-下载最新的-etcd-发行版" class="headerlink" title="1. 下载最新的 etcd 发行版"></a>1. 下载最新的 <code>etcd</code> 发行版</h4><p>首先，你需要从 <code>etcd</code> 的 GitHub releases 页面下载最新的 <code>etcd</code> 二进制文件。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 前往 /tmp 目录下载文件</span></span><br><span class="line"><span class="built_in">cd</span> /tmp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载最新的 etcd 版本（这里以 v3.5.9 为例）</span></span><br><span class="line">curl -L https://github.com/etcd-io/etcd/releases/download/v3.5.9/etcd-v3.5.9-linux-amd64.tar.gz -o etcd-v3.5.9-linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+
 <h4 id="2-解压并安装-etcd"><a href="#2-解压并安装-etcd" class="headerlink" title="2. 解压并安装 etcd"></a>2. 解压并安装 <code>etcd</code></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 解压文件</span></span><br><span class="line">tar xzvf etcd-v3.5.9-linux-amd64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移动 etcd 和 etcdctl 到 /usr/local/bin 目录下</span></span><br><span class="line">sudo <span class="built_in">mv</span> etcd-v3.5.9-linux-amd64/etcd /usr/local/bin/</span><br><span class="line">sudo <span class="built_in">mv</span> etcd-v3.5.9-linux-amd64/etcdctl /usr/local/bin/</span><br></pre></td></tr></table></figure>
+
 <h4 id="3-验证-etcd-是否安装成功"><a href="#3-验证-etcd-是否安装成功" class="headerlink" title="3. 验证 etcd 是否安装成功"></a>3. 验证 <code>etcd</code> 是否安装成功</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">etcd --version</span><br><span class="line">etcdctl --version</span><br></pre></td></tr></table></figure>
+
 <p>你应该会看到 <code>etcd</code> 和 <code>etcdctl</code> 的版本信息，表示安装成功。</p>
 <h4 id="4-启动-etcd"><a href="#4-启动-etcd" class="headerlink" title="4. 启动 etcd"></a>4. 启动 <code>etcd</code></h4><p>可以直接在终端启动 <code>etcd</code>，例如单节点模式：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">etcd --name my-etcd-1 \</span><br><span class="line">  --data-dir /var/lib/etcd \</span><br><span class="line">  --listen-client-urls http://localhost:2379 \</span><br><span class="line">  --advertise-client-urls http://localhost:2379</span><br></pre></td></tr></table></figure>
+
 <p>如果需要后台运行，可以使用 <code>screen</code> 或 <code>nohup</code> 命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">nohup</span> etcd --name my-etcd-1 \</span><br><span class="line">  --data-dir /var/lib/etcd \</span><br><span class="line">  --listen-client-urls http://localhost:2379 \</span><br><span class="line">  --advertise-client-urls http://localhost:2379 &gt; /var/log/etcd.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
 <h4 id="5-验证-etcd-运行状态"><a href="#5-验证-etcd-运行状态" class="headerlink" title="5. 验证 etcd 运行状态"></a>5. 验证 <code>etcd</code> 运行状态</h4><p>使用 <code>etcdctl</code> 验证 <code>etcd</code> 是否运行正常：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etcdctl --endpoints=http://localhost:2379 member list</span><br></pre></td></tr></table></figure>
+
 <p>你应该会看到集群成员信息，表示 <code>etcd</code> 正常运行。</p>
 <h3 id="方法-2：通过-APT-包管理器安装-etcd"><a href="#方法-2：通过-APT-包管理器安装-etcd" class="headerlink" title="方法 2：通过 APT 包管理器安装 etcd"></a>方法 2：通过 APT 包管理器安装 <code>etcd</code></h3><p>虽然官方没有提供 <code>etcd</code> 的 APT 软件包，但有一些非官方软件源提供 <code>etcd</code> 的安装包。你可以尝试从这些源安装，不过版本可能不会是最新的。</p>
 <h4 id="1-添加软件源"><a href="#1-添加软件源" class="headerlink" title="1. 添加软件源"></a>1. 添加软件源</h4><p>你可以尝试直接从 Ubuntu 的默认仓库或其他第三方软件源安装 <code>etcd</code>。</p>
 <p>首先，确保你的系统软件源是最新的：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
 <h4 id="2-安装-etcd"><a href="#2-安装-etcd" class="headerlink" title="2. 安装 etcd"></a>2. 安装 <code>etcd</code></h4><p>在 Ubuntu 20.04 或以上版本，你可以直接使用 APT 安装 <code>etcd</code>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install etcd-server</span><br></pre></td></tr></table></figure>
+
 <h4 id="3-启动-etcd"><a href="#3-启动-etcd" class="headerlink" title="3. 启动 etcd"></a>3. 启动 <code>etcd</code></h4><p>安装完成后，你可以使用以下命令启动 <code>etcd</code>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start etcd</span><br></pre></td></tr></table></figure>
+
 <p>并设置开机自启动：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">enable</span> etcd</span><br></pre></td></tr></table></figure>
+
 <h4 id="4-检查服务状态"><a href="#4-检查服务状态" class="headerlink" title="4. 检查服务状态"></a>4. 检查服务状态</h4><p>你可以使用 <code>systemctl</code> 命令查看 <code>etcd</code> 的运行状态：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status etcd</span><br></pre></td></tr></table></figure>
+
 <h4 id="5-配置-etcd"><a href="#5-配置-etcd" class="headerlink" title="5. 配置 etcd"></a>5. 配置 <code>etcd</code></h4><p>默认情况下，<code>etcd</code> 的配置文件位于 <code>/etc/default/etcd</code>，你可以根据需求修改该文件。</p>
 <p>例如，你可以设置 <code>listen-client-urls</code> 和 <code>advertise-client-urls</code>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ETCD_LISTEN_CLIENT_URLS=<span class="string">&quot;http://localhost:2379&quot;</span></span><br><span class="line">ETCD_ADVERTISE_CLIENT_URLS=<span class="string">&quot;http://localhost:2379&quot;</span></span><br></pre></td></tr></table></figure>
+
 <p>修改完成后，重新启动 <code>etcd</code>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart etcd</span><br></pre></td></tr></table></figure>
+
 <h4 id="6-使用-etcdctl-验证"><a href="#6-使用-etcdctl-验证" class="headerlink" title="6. 使用 etcdctl 验证"></a>6. 使用 <code>etcdctl</code> 验证</h4><p>同样可以使用 <code>etcdctl</code> 验证 <code>etcd</code> 是否正常运行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etcdctl --endpoints=http://localhost:2379 member list</span><br></pre></td></tr></table></figure>
+
 <h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><ol>
 <li><strong>通过二进制文件安装</strong>：这是官方推荐的方法，保证了使用最新版本的 <code>etcd</code>。</li>
 <li><strong>通过 APT 安装</strong>：虽然更方便，但软件源中的 <code>etcd</code> 版本可能较旧，适合不追求最新功能的场景。</li>
@@ -557,7 +582,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="//cdn.jsdelivr.net/gh/stevenjoezhang/busuanzi@2.3/busuanzi.pure.mini.js"></script>
     <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
       <span class="post-meta-item-icon">
         <i class="fa fa-user"></i>

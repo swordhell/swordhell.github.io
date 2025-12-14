@@ -230,15 +230,18 @@
 <p>阅读gnet相关知识。</p>
 </blockquote>
 <span id="more"></span>
+
 <p><code>gnet</code>不直接使用<code>go net</code>里面的原有实现，而是直接去通过底层调用<code>epoll</code>和<code>kqueue</code>函数（这样简直就是将go当成c语言来写，直接调用系统级的函数。在Windows下没有将<code>iocp</code>实现）。底层也是在模仿<code>netty</code>、<code>libvu</code>提供了事件驱动逻辑。</p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><code>go get -u github.com/panjf2000/gnet</code></p>
 <h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>这里重点看一下常用的linux环境下的network的实现。</p>
 <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><p><code>server_unix</code></p>
 <p>数据结构</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> server <span class="keyword">struct</span> &#123;</span><br><span class="line">  ln           *listener          <span class="comment">// the listener for accepting new connections</span></span><br><span class="line">  lb           loadBalancer       <span class="comment">// event-loops for handling events</span></span><br><span class="line">  wg           sync.WaitGroup     <span class="comment">// event-loop close WaitGroup</span></span><br><span class="line">  opts         *Options           <span class="comment">// options with server</span></span><br><span class="line">  once         sync.Once          <span class="comment">// make sure only signalShutdown once</span></span><br><span class="line">  cond         *sync.Cond         <span class="comment">// shutdown signaler</span></span><br><span class="line">  codec        ICodec             <span class="comment">// codec for TCP stream</span></span><br><span class="line">  mainLoop     *eventloop         <span class="comment">// main event-loop for accepting connections</span></span><br><span class="line">  inShutdown   <span class="type">int32</span>              <span class="comment">// whether the server is in shutdown</span></span><br><span class="line">  tickerCtx    context.Context    <span class="comment">// context for ticker</span></span><br><span class="line">  cancelTicker context.CancelFunc <span class="comment">// function to stop the ticker</span></span><br><span class="line">  eventHandler EventHandler       <span class="comment">// user eventHandler</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>组织了服务器的基本元素。<code>listener</code>监听对象；<code>EventHandler</code>消息dispatch的；编码器；退出相关的组件；接受socket的事件处理；退出的逻辑。</p>
 <h4 id="acceptor"><a href="#acceptor" class="headerlink" title="acceptor"></a>acceptor</h4><p><code>listener_unix.go</code></p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> listener <span class="keyword">struct</span> &#123;</span><br><span class="line">  once           sync.Once</span><br><span class="line">  fd             <span class="type">int</span></span><br><span class="line">  lnaddr         net.Addr</span><br><span class="line">  addr, network  <span class="type">string</span></span><br><span class="line">  sockopts       []socket.Option</span><br><span class="line">  pollAttachment *netpoll.PollAttachment <span class="comment">// listener attachment for poller</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>类似于之前写c++的时的写法，将accept的socket挂载到epoll里面，等着有事件通知的时候，回调loopAccept函数。</p>
 <h4 id="reactor"><a href="#reactor" class="headerlink" title="reactor"></a>reactor</h4><p><code>reactor_default_linux.go</code></p>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
@@ -411,7 +414,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="//cdn.jsdelivr.net/gh/stevenjoezhang/busuanzi@2.3/busuanzi.pure.mini.js"></script>
     <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
       <span class="post-meta-item-icon">
         <i class="fa fa-user"></i>
