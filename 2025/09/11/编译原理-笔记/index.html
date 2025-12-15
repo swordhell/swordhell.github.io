@@ -28,7 +28,7 @@
 <meta property="og:description" content="概述  阅读一下龙书🐲。能增加计算机基础知识。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-12-10T00:32:13.347Z">
+<meta property="article:modified_time" content="2025-12-15T00:32:39.525Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="Compute">
 <meta name="twitter:card" content="summary">
@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-12-10 08:32:13" itemprop="dateModified" datetime="2025-12-10T08:32:13+08:00">2025-12-10</time>
+                <time title="修改时间：2025-12-15 08:32:39" itemprop="dateModified" datetime="2025-12-15T08:32:39+08:00">2025-12-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -242,84 +242,104 @@
 <li>简单论述论述研究编译器时用到的重要程序设计语言概念。</li>
 </ul>
 <h2 id="语言处理器"><a href="#语言处理器" class="headerlink" title="语言处理器"></a>语言处理器</h2><p>编译器就是阅读某种语言（在阅读过程中能检查语法是否正确），并且翻译成等价的目标语言的程序。</p>
-<pre class="mermaid">flowchart LR
-    A["源代码"] --- B[编译器] --- C["目标程序"]</pre>
-<p><strong>Figure 1-1 编译器</strong></p>
+<pre class="mermaid">---
+title: Figure 1-1 编译器
+---
+flowchart TB
+    A>"源代码"] --- B[编译器] --- C>"目标程序"]</pre>
+
 <p>目标程序就是机器语言程序，用户就可以直接调用。</p>
-<pre class="mermaid">flowchart LR
-    A["输入"] --- B[目标程序] --- C["输出"]</pre>
-<p><strong>Figure 1-2 编译器</strong></p>
-<pre class="mermaid">stateDiagram-v2
- Idle --> Running : 用户点击开始按钮 
- Running --> Paused : 收到暂停指令
- Paused --> Running : 继续执行
- Running --> Finished : 任务完成</pre>
-<p><strong>Figure 1-2 状态机</strong><br><em>解释器</em>（interpreter）也是语言处理器。不会翻译生成目标程序。解释器直接用用户提供的输入执行源代码中的指定的操作</p>
-<pre class="mermaid">flowchart LR
-	A[源代码]
-	B[输入]
+<pre class="mermaid">---
+title: Figure 1-2 运行目标程序
+---
+flowchart LR
+    A>"输入"] --- B[目标程序] --- C>"输出"]</pre>
+
+<p><em>解释器</em>（interpreter）也是语言处理器。不会翻译生成目标程序。解释器直接用用户提供的输入执行源代码中的指定的操作。</p>
+<pre class="mermaid">---
+title: Figure 1-3 一个解释器
+---
+flowchart LR
+	A>源代码]
+	B>输入]
 	C[解释器]
-	D[输出]
-	A --> C
-	B --> C
+	D>输出]
+	
+	%% 连接关系
+	A & B --> C
 	C --> D</pre>
-<p><strong>Figure 1-3 一个解释器</strong></p>
-<pre class="mermaid">graph TD
-    A[expr] --> B1[expr1]
-    A --> B2(➕)
-    A --> B3[term]
-    A --> B4["{print(➕)}"]
-	B1 --> C1[expr2]</pre>
-<p><strong>Figure 2-14 把9-5+2翻译成95-2+的语义动作</strong></p>
+
 <ul>
 <li>在将用户输入加工成输出处理过程，编译器产生的目标程序比解释器快很多。</li>
 <li>解释器的错误诊断效果要比编译器更好。（解释器是逐行执行源代码）</li>
 </ul>
-<p>java程序是结合了编译、解释两个过程。</p>
-<pre class="mermaid">flowchart LR
+<h2 id="java程序是结合了编译、解释两个过程。翻译成字节码（bytecode），java的即时（just-in-time）编译器也能将其翻译成机器语言。通过网络传递到目标机器通过虚拟机或者直接在机器上运行。-title-Figure-1-4-一个混合编译器"><a href="#java程序是结合了编译、解释两个过程。翻译成字节码（bytecode），java的即时（just-in-time）编译器也能将其翻译成机器语言。通过网络传递到目标机器通过虚拟机或者直接在机器上运行。-title-Figure-1-4-一个混合编译器" class="headerlink" title="java程序是结合了编译、解释两个过程。翻译成字节码（bytecode），java的即时（just in time）编译器也能将其翻译成机器语言。通过网络传递到目标机器通过虚拟机或者直接在机器上运行。---title: Figure 1-4 一个混合编译器"></a>java程序是结合了编译、解释两个过程。翻译成字节码（bytecode），java的即时（just in time）编译器也能将其翻译成机器语言。通过网络传递到目标机器通过虚拟机或者直接在机器上运行。<br><pre class="mermaid">---<br>title: Figure 1-4 一个混合编译器</pre></h2><p>flowchart TB</p>
+<pre><code>%% ---------- 上半部分：纵向 TB ----------
+subgraph PART1[翻译阶段]
+    direction TB
+    A&gt;源代码]
+    B[翻译器]
+    C[中间程序]
+    A --&gt; B --&gt; C
+end
 
-    %% ---------- 上半部分：纵向 TB ----------
-    subgraph PART1[翻译阶段]
-        direction TB
-        A[源代码]
-        B[翻译器]
-        C[中间程序]
-        A --> B --> C
-    end
+%% ---------- 下半部分：横向 LR ----------
+subgraph PART2[执行阶段]
+    direction LR
+    D[输入]
+    E[虚拟机]
+    F[输出]
+    D --&gt; E --&gt; F
+end
 
-    %% ---------- 下半部分：横向 LR ----------
-    subgraph PART2[执行阶段]
-        direction LR
-        D[输入]
-        E[虚拟机]
-        F[输出]
-        D --> E --> F
-    end
-
-    %% ---------- 上下连接 ----------
-    C --> E</pre>
-<p><strong>Figure 1-4 一个混合编译器</strong></p>
-<pre class="mermaid">flowchart TB
+%% ---------- 上下连接 ----------
+C --&gt; E&lt;/pre&gt;
+</code></pre>
+<p><strong>图1-5解释：</strong><br>将多个源代码文件聚合一块需要通过<code>预编译器</code>处理，并且将宏，模板展开成最终源代码。</p>
+<p><code>编译器</code>加工源代码产生有利于调试输出、调试的<code>汇编代码</code>。</p>
+<p><code>汇编器</code>（assembler）加工汇编代码将其变成可重定向机器代码。</p>
+<p>大型程序都是会将不同模块编译成不同的部分来编译。最终生成dll,so和可执行程序。在启动程序里面将会指定自己代码依赖哪些库文件。链接器（linker）解决外部内存地址问题。加载器（loader）把所有的可执行目标文件发到内存中执行。</p>
+<pre class="mermaid">---
+title: Figure 1-5 一个语言处理系统
+---
+flowchart TB
 	linkStyle default corners 90
 	
-    A[源代码<br>Source Code]
+    A>源代码]
+    B[预处理器]
+    C[编译器]
+    D[汇编器]
+    E[链接器/加载器]
+    F>库文件<br>重定向对象文件]
+    G>目标机器代码]
 
-    B[词法分析<br>Lexical Analysis]
+    A --> B --经过预处理的程序--> C
+    C --目标汇编语言--> D --可重定向机器代码--> E --> G
+    F --> E</pre>
 
-    C[语法分析<br>Syntax Analysis]
-
-    D[语义分析<br>Semantic Analysis]
-
-    E[中间代码生成<br>Intermediate Code]
-
-    F[优化<br>Optimization]
-
-    G[目标代码生成<br>Target Code Generation]
-
-    H[可执行程序<br>Executable Program]
-
-    A --> B --> C --> D --> E --> F --> G --> H</pre>
-<p><strong>Figure 1-4 一个语言处理系统</strong></p>
+<h3 id="编译器和解释器之间的区别是什么？"><a href="#编译器和解释器之间的区别是什么？" class="headerlink" title="编译器和解释器之间的区别是什么？"></a>编译器和解释器之间的区别是什么？</h3><p><strong>编译器</strong>是将你写的高级语言代码（如 C/C++/Java/Go）<strong>一次性</strong>全部翻译成计算机可以直接运行的机器码（可执行文件）的程序。</p>
+<p><strong>核心区别：</strong></p>
+<ul>
+<li><p><strong>编译器 (Compiler)：</strong> 像一个<strong>翻译官</strong>，先把整本书（整个程序）翻译完，然后机器才能开始阅读（运行）。它在<strong>运行前</strong>工作。</p>
+</li>
+<li><p><strong>解释器 (Interpreter)：</strong> 像一个<strong>同声传译</strong>，机器每读一句，它就翻译一句，翻译完一句就执行一句。它在<strong>运行时</strong>工作。</p>
+</li>
+</ul>
+<p><strong>记住这两点：</strong></p>
+<ol>
+<li><strong>编译器：</strong> 一次性，运行前，速度快。</li>
+<li><strong>解释器：</strong> 逐行翻译，运行时，方便调试。</li>
+</ol>
+<h3 id="编译器相对于解释器的优点是什么？解释器相对于编译器的优点是什么？"><a href="#编译器相对于解释器的优点是什么？解释器相对于编译器的优点是什么？" class="headerlink" title="编译器相对于解释器的优点是什么？解释器相对于编译器的优点是什么？"></a>编译器相对于解释器的优点是什么？解释器相对于编译器的优点是什么？</h3><h2 id="🚀-编译器的优势（运行前）"><a href="#🚀-编译器的优势（运行前）" class="headerlink" title="🚀 编译器的优势（运行前）"></a>🚀 编译器的优势（运行前）</h2><ul>
+<li><strong>运行快：</strong> 一次性翻译，执行速度飞快。</li>
+<li><strong>优化好：</strong> 有时间慢慢优化代码，性能高。</li>
+<li><strong>部署方便：</strong> 编译后生成独立的文件，不需要依赖其他工具就能运行。</li>
+</ul>
+<h2 id="🐢-解释器的优势（运行时）"><a href="#🐢-解释器的优势（运行时）" class="headerlink" title="🐢 解释器的优势（运行时）"></a>🐢 解释器的优势（运行时）</h2><ul>
+<li><strong>调试快：</strong> 发现错误立马停止，容易找到问题在哪。</li>
+<li><strong>跨平台：</strong> 只要有解释器，代码就能在任何系统上跑。</li>
+<li><strong>开发灵活：</strong> 不需要漫长等待编译，改了就能马上运行。</li>
+</ul>
 <h1 id="第二章-一个简单的语法制导翻译器"><a href="#第二章-一个简单的语法制导翻译器" class="headerlink" title="第二章 一个简单的语法制导翻译器"></a>第二章 一个简单的语法制导翻译器</h1><h2 id="2-1-引言"><a href="#2-1-引言" class="headerlink" title="2.1 引言"></a>2.1 引言</h2><p>一个语言的<code>语法（syntax）</code>描述了该语言的程序都正确形式；而该语言的<code>语义（seantics）</code>则定了程序的含义，即每个程序在运行时做什么事情。将会在 <code>2.2 语法定义</code> 给出广泛使用的表示方法来描述<code>语法（synta）</code>，这个方法就是<code>上下文无关文法</code>或者<code>BNF（Backus-Naur范式）</code>。用现有的语义表示方法来描述一个语言的语义的难度大于描述语言的语法的难度。</p>
 <blockquote>
 <p>💡人去描述语义非常困难，而且用BNF去描述也是非常困难。所以这里提出了新的工具来描述。</p>
@@ -341,7 +361,14 @@
     C -->|定义/查询符号| D
     E -->|读取符号信息| D</pre>
 
-<h2 id="2-2-语法定义"><a href="#2-2-语法定义" class="headerlink" title="2.2 语法定义"></a>2.2 语法定义</h2>
+<h2 id="2-2-语法定义"><a href="#2-2-语法定义" class="headerlink" title="2.2 语法定义"></a>2.2 语法定义</h2><pre class="mermaid">graph TD
+    A[expr] --> B1[expr1]
+    A --> B2(➕)
+    A --> B3[term]
+    A --> B4["{print(➕)}"]
+	B1 --> C1[expr2]</pre>
+<p><strong>Figure 2-14 把9-5+2翻译成95-2+的语义动作</strong></p>
+
     </div>
 
     
@@ -425,7 +452,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%BC%95%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">第一章 引论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">语言处理器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">第二章 一个简单的语法制导翻译器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%BC%95%E8%A8%80"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%AF%AD%E6%B3%95%E5%AE%9A%E4%B9%89"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 语法定义</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%BC%95%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">第一章 引论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">语言处理器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java%E7%A8%8B%E5%BA%8F%E6%98%AF%E7%BB%93%E5%90%88%E4%BA%86%E7%BC%96%E8%AF%91%E3%80%81%E8%A7%A3%E9%87%8A%E4%B8%A4%E4%B8%AA%E8%BF%87%E7%A8%8B%E3%80%82%E7%BF%BB%E8%AF%91%E6%88%90%E5%AD%97%E8%8A%82%E7%A0%81%EF%BC%88bytecode%EF%BC%89%EF%BC%8Cjava%E7%9A%84%E5%8D%B3%E6%97%B6%EF%BC%88just-in-time%EF%BC%89%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%9F%E8%83%BD%E5%B0%86%E5%85%B6%E7%BF%BB%E8%AF%91%E6%88%90%E6%9C%BA%E5%99%A8%E8%AF%AD%E8%A8%80%E3%80%82%E9%80%9A%E8%BF%87%E7%BD%91%E7%BB%9C%E4%BC%A0%E9%80%92%E5%88%B0%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E9%80%9A%E8%BF%87%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%88%96%E8%80%85%E7%9B%B4%E6%8E%A5%E5%9C%A8%E6%9C%BA%E5%99%A8%E4%B8%8A%E8%BF%90%E8%A1%8C%E3%80%82-title-Figure-1-4-%E4%B8%80%E4%B8%AA%E6%B7%B7%E5%90%88%E7%BC%96%E8%AF%91%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">java程序是结合了编译、解释两个过程。翻译成字节码（bytecode），java的即时（just in time）编译器也能将其翻译成机器语言。通过网络传递到目标机器通过虚拟机或者直接在机器上运行。---title: Figure 1-4 一个混合编译器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8C%E8%A7%A3%E9%87%8A%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.2.1.</span> <span class="nav-text">编译器和解释器之间的区别是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E7%9B%B8%E5%AF%B9%E4%BA%8E%E8%A7%A3%E9%87%8A%E5%99%A8%E7%9A%84%E4%BC%98%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E8%A7%A3%E9%87%8A%E5%99%A8%E7%9B%B8%E5%AF%B9%E4%BA%8E%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BC%98%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.2.2.</span> <span class="nav-text">编译器相对于解释器的优点是什么？解释器相对于编译器的优点是什么？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%9A%80-%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF%EF%BC%88%E8%BF%90%E8%A1%8C%E5%89%8D%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">🚀 编译器的优势（运行前）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%90%A2-%E8%A7%A3%E9%87%8A%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF%EF%BC%88%E8%BF%90%E8%A1%8C%E6%97%B6%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">🐢 解释器的优势（运行时）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">第二章 一个简单的语法制导翻译器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%BC%95%E8%A8%80"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%AF%AD%E6%B3%95%E5%AE%9A%E4%B9%89"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 语法定义</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
