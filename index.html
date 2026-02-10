@@ -156,6 +156,147 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/" class="post-title-link" itemprop="url">调查服务器CPU过高</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-02-04 00:00:00 / 修改时间：08:57:37" itemprop="dateCreated datePublished" datetime="2026-02-04T00:00:00+08:00">2026-02-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">服务器</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>**CPU“偶尔飙高”**这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。</p>
+<p>你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。</p>
+<p>⸻</p>
+<p>一、先搞清楚：CPU 是“谁”在高？</p>
+<p>1️⃣ 实时看（马上用）</p>
+<p>top</p>
+<p>重点看这几列：<br>	•	%CPU：谁在吃<br>	•	us &#x2F; sy &#x2F; wa<br>	•	us 高：用户态程序（你的服务、Java、Go、Node）<br>	•	sy 高：内核 &#x2F; 系统调用<br>	•	wa 高：I&#x2F;O 卡住（磁盘 &#x2F; 网络）</p>
+<p>👉 如果你看到的是 Java 300% &#x2F; postgres 200%，事情就简单多了。</p>
+<p>更推荐：</p>
+<p>htop</p>
+<p>（可视化 + 能看到线程）</p>
+<p>⸻</p>
+<p>二、问题在于：你不在的时候它才高</p>
+<p>所以我们要 “持续采样 + 留证据”</p>
+<p>⸻</p>
+<p>三、必装工具（root 权限必备）</p>
+<p>apt install -y sysstat dstat htop</p>
+<h1 id="或"><a href="#或" class="headerlink" title="或"></a>或</h1><p>yum install -y sysstat dstat</p>
+<p>⸻</p>
+<p>四、持续监控 CPU（核心）</p>
+<p>1️⃣ 开启 sysstat（非常重要）</p>
+<p>systemctl enable sysstat<br>systemctl start sysstat</p>
+<p>它会每 10 分钟自动采样一次，数据保存在：</p>
+<p>&#x2F;var&#x2F;log&#x2F;sysstat&#x2F;</p>
+<p>⸻</p>
+<p>2️⃣ 事后回看 CPU 历史（关键）</p>
+<p>看某一天 CPU 是否异常：</p>
+<p>sar -u -f &#x2F;var&#x2F;log&#x2F;sysstat&#x2F;sa05</p>
+<p>重点关注：<br>	•	%usr<br>	•	%sys<br>	•	%iowait<br>	•	%idle</p>
+<p>如果 %idle 掉到 0，那就是满负载了。</p>
+<p>⸻</p>
+<p>五、定位到“哪个进程”</p>
+<p>1️⃣ 看历史中哪个进程吃 CPU（神器）</p>
+<p>sar -q -f &#x2F;var&#x2F;log&#x2F;sysstat&#x2F;sa05</p>
+<p>2️⃣ 按进程统计（更狠）</p>
+<p>pidstat -u 1</p>
+<p>持续输出：<br>	•	哪个 PID<br>	•	每秒吃多少 CPU</p>
+<p>如果你怀疑是 Java &#x2F; PostgreSQL：</p>
+<p>pidstat -u -p $(pgrep java) 1<br>pidstat -u -p $(pgrep postgres) 1</p>
+<p>⸻</p>
+<p>六、CPU 高的时候自动抓现场（推荐你一定要做）</p>
+<p>方案：超过 80% 自动记录 top</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">&#x27;EOF&#x27;</span> &gt; /root/cpu_watch.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">  CPU=$(top -bn1 | awk <span class="string">&#x27;/Cpu/ &#123;print 100 - $8&#125;&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> (( $(echo &quot;<span class="variable">$CPU</span> &gt; <span class="number">80</span>&quot; | bc -l) )); <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;==== <span class="subst">$(date)</span> CPU=<span class="variable">$CPU</span> ====&quot;</span> &gt;&gt; /var/log/cpu_spike.log</span><br><span class="line">    top -b -n 1 &gt;&gt; /var/log/cpu_spike.log</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">sleep</span> 10</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x /root/cpu_watch.sh</span><br><span class="line"><span class="built_in">nohup</span> /root/cpu_watch.sh &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>📌 你之后只需要看：</p>
+<p><code>less /var/log/cpu_spike.log</code></p>
+<p>就能知道：</p>
+<p>是哪一个进程、哪个线程，把 CPU 干爆了</p>
+<p>⸻</p>
+<p>七、如果是 Java &#x2F; Go &#x2F; PostgreSQL（你很可能会遇到）</p>
+<p>🔥 Java<br>	•	top 里看到 Java 高<br>	•	用：</p>
+<p>top -H -p <pid></pid></p>
+<p>找线程 → 再用 jstack</p>
+<p>⸻</p>
+<p>🔥 PostgreSQL（你最近就老在搞这个 😄）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pid, query, state</span><br><span class="line"><span class="keyword">FROM</span> pg_stat_activity</span><br><span class="line"><span class="keyword">WHERE</span> state <span class="operator">!=</span> <span class="string">&#x27;idle&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>配合系统：</p>
+<p><code>pidstat -u -p $(pgrep postgres) 1</code></p>
+<p>⸻</p>
+<p>🔥 Go 程序<br>	•	大概率是：<br>	•	死循环<br>	•	goroutine 泄露<br>	•	GC 抖动<br>	•	可以临时加：</p>
+<p><code>curl http://localhost:6060/debug/pprof/profile?seconds=30 &gt; cpu.pprof</code></p>
+<p>⸻</p>
+<p>八、我给你一个最省事组合</p>
+<p>如果你只想 今天就落地：</p>
+<p>✅ sysstat<br>✅ pidstat<br>✅ 自动 cpu_watch.sh</p>
+<p>这三样，99% 的 CPU 问题都能破案</p>
+<p>⸻</p>
+<p>九、下一步我可以直接帮你“对症下药”</p>
+<p>你可以直接告诉我其中一个👇<br>	•	CPU 高的时候 top 里看到的进程名<br>	•	是 Java &#x2F; PostgreSQL &#x2F; Go &#x2F; Node<br>	•	是 us 高 &#x2F; sy 高 &#x2F; wa 高</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -700,7 +841,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-01-08 07:13:13" itemprop="dateModified" datetime="2026-01-08T07:13:13+08:00">2026-01-08</time>
+                <time title="修改时间：2026-02-10 15:31:54" itemprop="dateModified" datetime="2026-02-10T15:31:54+08:00">2026-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -919,89 +1060,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/04/24/gogs-gitea/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/04/24/gogs-gitea/" class="post-title-link" itemprop="url">gogs-gitea</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-04-24 00:00:00 / 修改时间：09:05:35" itemprop="dateCreated datePublished" datetime="2025-04-24T00:00:00+08:00">2025-04-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/3-%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">3-其他</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/3-%E5%85%B6%E4%BB%96/%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Gogs 和 Gitea 都是用 Go 语言开发的轻量级 Git 代码托管平台，界面风格类似 GitHub，可以自部署，适用于小型团队或个人使用。它们的历史也有一定渊源：Gitea 是从 Gogs 分叉而来的，原因是社区对 Gogs 的开发停滞不前感到担忧，所以创建了 Gitea 来提供更加活跃的社区支持和开发。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/04/24/gogs-gitea/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1069,19 +1131,19 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">150</span>
+          <span class="site-state-item-count">151</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

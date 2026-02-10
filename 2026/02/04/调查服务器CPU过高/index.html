@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="**CPU“偶尔飙高”**这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。 你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。 ⸻ 一、先搞清楚：CPU 是“谁”在高？ 1️⃣ 实时看（马上用） top 重点看这几列：	•	%CPU：谁在吃	•	us &#x2F; sy &#x2F; wa	•	us 高：用户态程序（你的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="调查服务器CPU过高">
+<meta property="og:url" content="https://swordhell.github.io/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="**CPU“偶尔飙高”**这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。 你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。 ⸻ 一、先搞清楚：CPU 是“谁”在高？ 1️⃣ 实时看（马上用） top 重点看这几列：	•	%CPU：谁在吃	•	us &#x2F; sy &#x2F; wa	•	us 高：用户态程序（你的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-02-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-04T00:57:37.748Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="服务器">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>调查服务器CPU过高 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          调查服务器CPU过高
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-02-04 00:00:00 / 修改时间：08:57:37" itemprop="dateCreated datePublished" datetime="2026-02-04T00:00:00+08:00">2026-02-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">服务器</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>**CPU“偶尔飙高”**这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。</p>
+<p>你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。</p>
+<p>⸻</p>
+<p>一、先搞清楚：CPU 是“谁”在高？</p>
+<p>1️⃣ 实时看（马上用）</p>
+<p>top</p>
+<p>重点看这几列：<br>	•	%CPU：谁在吃<br>	•	us &#x2F; sy &#x2F; wa<br>	•	us 高：用户态程序（你的服务、Java、Go、Node）<br>	•	sy 高：内核 &#x2F; 系统调用<br>	•	wa 高：I&#x2F;O 卡住（磁盘 &#x2F; 网络）</p>
+<p>👉 如果你看到的是 Java 300% &#x2F; postgres 200%，事情就简单多了。</p>
+<p>更推荐：</p>
+<p>htop</p>
+<p>（可视化 + 能看到线程）</p>
+<p>⸻</p>
+<p>二、问题在于：你不在的时候它才高</p>
+<p>所以我们要 “持续采样 + 留证据”</p>
+<p>⸻</p>
+<p>三、必装工具（root 权限必备）</p>
+<p>apt install -y sysstat dstat htop</p>
+<h1 id="或"><a href="#或" class="headerlink" title="或"></a>或</h1><p>yum install -y sysstat dstat</p>
+<p>⸻</p>
+<p>四、持续监控 CPU（核心）</p>
+<p>1️⃣ 开启 sysstat（非常重要）</p>
+<p>systemctl enable sysstat<br>systemctl start sysstat</p>
+<p>它会每 10 分钟自动采样一次，数据保存在：</p>
+<p>&#x2F;var&#x2F;log&#x2F;sysstat&#x2F;</p>
+<p>⸻</p>
+<p>2️⃣ 事后回看 CPU 历史（关键）</p>
+<p>看某一天 CPU 是否异常：</p>
+<p>sar -u -f &#x2F;var&#x2F;log&#x2F;sysstat&#x2F;sa05</p>
+<p>重点关注：<br>	•	%usr<br>	•	%sys<br>	•	%iowait<br>	•	%idle</p>
+<p>如果 %idle 掉到 0，那就是满负载了。</p>
+<p>⸻</p>
+<p>五、定位到“哪个进程”</p>
+<p>1️⃣ 看历史中哪个进程吃 CPU（神器）</p>
+<p>sar -q -f &#x2F;var&#x2F;log&#x2F;sysstat&#x2F;sa05</p>
+<p>2️⃣ 按进程统计（更狠）</p>
+<p>pidstat -u 1</p>
+<p>持续输出：<br>	•	哪个 PID<br>	•	每秒吃多少 CPU</p>
+<p>如果你怀疑是 Java &#x2F; PostgreSQL：</p>
+<p>pidstat -u -p $(pgrep java) 1<br>pidstat -u -p $(pgrep postgres) 1</p>
+<p>⸻</p>
+<p>六、CPU 高的时候自动抓现场（推荐你一定要做）</p>
+<p>方案：超过 80% 自动记录 top</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">&#x27;EOF&#x27;</span> &gt; /root/cpu_watch.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">  CPU=$(top -bn1 | awk <span class="string">&#x27;/Cpu/ &#123;print 100 - $8&#125;&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> (( $(echo &quot;<span class="variable">$CPU</span> &gt; <span class="number">80</span>&quot; | bc -l) )); <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;==== <span class="subst">$(date)</span> CPU=<span class="variable">$CPU</span> ====&quot;</span> &gt;&gt; /var/log/cpu_spike.log</span><br><span class="line">    top -b -n 1 &gt;&gt; /var/log/cpu_spike.log</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">sleep</span> 10</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x /root/cpu_watch.sh</span><br><span class="line"><span class="built_in">nohup</span> /root/cpu_watch.sh &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>📌 你之后只需要看：</p>
+<p><code>less /var/log/cpu_spike.log</code></p>
+<p>就能知道：</p>
+<p>是哪一个进程、哪个线程，把 CPU 干爆了</p>
+<p>⸻</p>
+<p>七、如果是 Java &#x2F; Go &#x2F; PostgreSQL（你很可能会遇到）</p>
+<p>🔥 Java<br>	•	top 里看到 Java 高<br>	•	用：</p>
+<p>top -H -p <pid></pid></p>
+<p>找线程 → 再用 jstack</p>
+<p>⸻</p>
+<p>🔥 PostgreSQL（你最近就老在搞这个 😄）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pid, query, state</span><br><span class="line"><span class="keyword">FROM</span> pg_stat_activity</span><br><span class="line"><span class="keyword">WHERE</span> state <span class="operator">!=</span> <span class="string">&#x27;idle&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>配合系统：</p>
+<p><code>pidstat -u -p $(pgrep postgres) 1</code></p>
+<p>⸻</p>
+<p>🔥 Go 程序<br>	•	大概率是：<br>	•	死循环<br>	•	goroutine 泄露<br>	•	GC 抖动<br>	•	可以临时加：</p>
+<p><code>curl http://localhost:6060/debug/pprof/profile?seconds=30 &gt; cpu.pprof</code></p>
+<p>⸻</p>
+<p>八、我给你一个最省事组合</p>
+<p>如果你只想 今天就落地：</p>
+<p>✅ sysstat<br>✅ pidstat<br>✅ 自动 cpu_watch.sh</p>
+<p>这三样，99% 的 CPU 问题都能破案</p>
+<p>⸻</p>
+<p>九、下一步我可以直接帮你“对症下药”</p>
+<p>你可以直接告诉我其中一个👇<br>	•	CPU 高的时候 top 里看到的进程名<br>	•	是 Java &#x2F; PostgreSQL &#x2F; Go &#x2F; Node<br>	•	是 us 高 &#x2F; sy 高 &#x2F; wa 高</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag"># 服务器</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/" rel="prev" title="open-code学习">
+      <i class="fa fa-chevron-left"></i> open-code学习
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%96"><span class="nav-number">1.</span> <span class="nav-text">或</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="//cdn.jsdelivr.net/gh/stevenjoezhang/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'b48cea3ecfce5087254f85156a3adad8',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
