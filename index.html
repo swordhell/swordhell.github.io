@@ -156,6 +156,120 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/08/06/go-1.18-20-features/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/08/06/go-1.18-20-features/" class="post-title-link" itemprop="url">go-1.18-20-features</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-08-06 00:00:00 / 修改时间：10:06:29" itemprop="dateCreated datePublished" datetime="2026-08-06T00:00:00+08:00">2026-08-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Go 1.18 至 Go 1.20 是 Go 语言发展史上极具里程碑意义的三个版本：</p>
+<ul>
+<li><strong>Go 1.18</strong>：重构了编程模型，正式引入<strong>泛型（Generics）</strong>、<strong>原生模糊测试（Fuzzing）</strong>和<strong>多模块工作区（Workspace）</strong>。</li>
+<li><strong>Go 1.19</strong>：聚焦于运行时与并发优化，重写了内存模型，引入<strong>软内存限制（<code>GOMEMLIMIT</code>）</strong>和<strong>类型化原子操作（<code>sync/atomic</code>）</strong>。</li>
+<li><strong>Go 1.20</strong>：进一步完善泛型生态与性能，带来 <strong>PGO（配置文件引导优化）</strong>、原生多错误合并（<code>errors.Join</code>）、带取消原因的 Context 以及安全的 Slice 转 Array 等功能。</li>
+</ul>
+<p>本文站在后端工程实践（微服务、中间件、基础设施与区块链节点）的角度，梳理这三个版本的核心特性、设计背景、工程应用场景以及切忌滥用的坑点，帮助大家安全高效地完成升级与代码重构。</p>
+<hr>
+<h3 id="版本核心变化一览"><a href="#版本核心变化一览" class="headerlink" title="版本核心变化一览"></a>版本核心变化一览</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">版本</th>
+<th style="text-align:left">核心特性 / 改进</th>
+<th style="text-align:left">工程价值与适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Go 1.18</strong></td>
+<td style="text-align:left">泛型 (Generics)、Workspace 工作区、Fuzzing 模糊测试、<code>any</code> 别名</td>
+<td style="text-align:left">通用数据结构与工具库复用、Monorepo/多模块本地联合调试、高危解析逻辑鲁棒性测试</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Go 1.19</strong></td>
+<td style="text-align:left">软内存限制 (<code>GOMEMLIMIT</code>)、类型化 atomic (<code>Int64</code>等)、Doc 注释 Markdown 化</td>
+<td style="text-align:left">防止 K8s 容器 OOMKilled、无锁无指针风险的高并发计数器与 Metrics 统计</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Go 1.20</strong></td>
+<td style="text-align:left">PGO 编译优化、<code>errors.Join</code>、<code>context.WithCancelCause</code>、Slice 转 Array、<code>unsafe</code> 新 API</td>
+<td style="text-align:left">线上编译免费换性能提升、批量 Goroutine 错误收集、微服务级联取消源头追溯、高效协议解析</td>
+</tr>
+</tbody>
+</table>
+</div>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/08/06/go-1.18-20-features/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/07/27/%E6%9C%9F%E8%B4%A7%20-%20DEX%20%E6%B0%B8%E7%BB%AD%E5%90%88%E7%BA%A6%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1112,94 +1226,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/09/11/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/11/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">编译原理-笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-09-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-09-11T00:00:00+08:00">2025-09-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-12-18 08:32:51" itemprop="dateModified" datetime="2025-12-18T08:32:51+08:00">2025-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">编译原理</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>概述</p>
-</blockquote>
-<p>阅读一下龙书🐲。能增加计算机基础知识。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/09/11/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1271,7 +1297,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">154</span>
+          <span class="site-state-item-count">155</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
