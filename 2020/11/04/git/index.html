@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://swordhell.github.io/2020/11/04/git/git-vscode-setting-rebase-whensync.png">
 <meta property="og:image" content="https://swordhell.github.io/2020/11/04/git/git-vscode-setting-auto-stash.png">
 <meta property="article:published_time" content="2020-11-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-10T01:46:55.480Z">
+<meta property="article:modified_time" content="2026-09-02T02:48:10.790Z">
 <meta property="article:author" content="Abel Sean">
 <meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
@@ -196,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-06-10 09:46:55" itemprop="dateModified" datetime="2026-06-10T09:46:55+08:00">2026-06-10</time>
+                <time title="修改时间：2026-09-02 10:48:10" itemprop="dateModified" datetime="2026-09-02T10:48:10+08:00">2026-09-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -775,6 +775,175 @@ location / &#123;
 <p>git config –global –get pull.rebase<br>git config –global –get pull.ff</p>
 <p>git config –global pull.rebase false<br>git config –global –unset pull.ff</p>
 <p>如果有输出，也删除：<br>git config –local –unset pull.rebase<br>git config –local –unset pull.ff</p>
+<p>可以，建议记录成一篇**“Git 浅克隆与远程分支”**的小知识，重点把 –depth&#x3D;1、远程分支、fetch、switch 之间的关系讲清楚。</p>
+<p>Git 浅克隆（–depth&#x3D;1）与远程分支</p>
+<ol>
+<li>git clone –depth&#x3D;1 是什么？</li>
+</ol>
+<p>正常克隆：</p>
+<p>git clone <a target="_blank" rel="noopener" href="https://example.com/project.git">https://example.com/project.git</a></p>
+<p>Git 会获取仓库的完整历史。</p>
+<p>而：</p>
+<p>git clone –depth&#x3D;1 <a target="_blank" rel="noopener" href="https://example.com/project.git">https://example.com/project.git</a></p>
+<p>表示进行一次浅克隆（Shallow Clone）。</p>
+<p>它的主要目的：</p>
+<p>只获取最近的提交历史，减少下载数据量，加快克隆速度。</p>
+<p>例如一个仓库有：</p>
+<p>A → B → C → D → E → F → G</p>
+<p>完整 clone：</p>
+<p>A → B → C → D → E → F → G</p>
+<p>–depth&#x3D;1：</p>
+<pre><code>              G
+              ↑
+        只获取最近一层
+</code></pre>
+<p>所以特别适合：</p>
+<ul>
+<li>CI&#x2F;CD</li>
+<li>部署服务器</li>
+<li>只需要最新代码</li>
+<li>大型 Git 仓库</li>
+<li>不需要查看历史提交的场景</li>
+</ul>
+<p>⸻</p>
+<ol start="2">
+<li>一个容易误解的地方</li>
+</ol>
+<p>很多人第一次使用 –depth&#x3D;1 会认为：</p>
+<p>–depth&#x3D;1 是不是把仓库变成只有一个分支？</p>
+<p>不是。</p>
+<p>它实际上主要限制的是：</p>
+<p>提交历史的深度。</p>
+<p>但是，git clone 默认还会以仓库的默认分支作为初始工作分支。</p>
+<p>例如远程仓库：</p>
+<p>master<br>develop<br>feature-a<br>feature-b</p>
+<p>执行：</p>
+<p>git clone –depth&#x3D;1 <a target="_blank" rel="noopener" href="https://example.com/project.git">https://example.com/project.git</a></p>
+<p>进入仓库后可能看到：</p>
+<p>git branch</p>
+<ul>
+<li>master</li>
+</ul>
+<p>再执行：</p>
+<p>git branch -a</p>
+<p>可能只有：</p>
+<ul>
+<li>master<br>remotes&#x2F;origin&#x2F;HEAD -&gt; origin&#x2F;master<br>remotes&#x2F;origin&#x2F;master</li>
+</ul>
+<p>这并不代表服务器上没有其他分支。</p>
+<p>⸻</p>
+<ol start="3">
+<li>如何确认远程到底有哪些分支？</li>
+</ol>
+<p>最直接：</p>
+<p>git ls-remote –heads origin</p>
+<p>例如：</p>
+<p>abc123 refs&#x2F;heads&#x2F;master<br>def456 refs&#x2F;heads&#x2F;develop<br>789abc refs&#x2F;heads&#x2F;feature-a</p>
+<p>说明远程服务器实际上有：</p>
+<p>master<br>develop<br>feature-a</p>
+<p>这个命令非常值得记住：</p>
+<p>git ls-remote –heads origin</p>
+<p>它可以直接查询远程仓库的分支。</p>
+<p>⸻</p>
+<ol start="4">
+<li>如何把指定远程分支拉到本地？</li>
+</ol>
+<p>假设服务器存在：</p>
+<p>develop</p>
+<p>但是本地：</p>
+<p>git branch -a</p>
+<p>没有看到：</p>
+<p>origin&#x2F;develop</p>
+<p>可以执行：</p>
+<p>git fetch origin develop</p>
+<p>然后：</p>
+<p>git branch -a</p>
+<p>就可能看到：</p>
+<ul>
+<li>master<br>remotes&#x2F;origin&#x2F;HEAD -&gt; origin&#x2F;master<br>remotes&#x2F;origin&#x2F;master<br>remotes&#x2F;origin&#x2F;develop</li>
+</ul>
+<p>⸻</p>
+<ol start="5">
+<li>如何切换到这个分支？</li>
+</ol>
+<p>第一次使用远程分支，可以创建一个本地分支，并建立跟踪关系：</p>
+<p>git switch -c develop –track origin&#x2F;develop</p>
+<p>或者：</p>
+<p>git checkout -b develop origin&#x2F;develop</p>
+<p>之后：</p>
+<p>git branch</p>
+<p>看到：</p>
+<p>  master</p>
+<ul>
+<li>develop</li>
+</ul>
+<p>就已经切换成功。</p>
+<p>⸻</p>
+<ol start="6">
+<li>更简单的方法：clone 时直接指定分支</li>
+</ol>
+<p>如果一开始就知道自己只需要某个分支：</p>
+<p>git clone -b develop –depth&#x3D;1 <a target="_blank" rel="noopener" href="https://example.com/project.git">https://example.com/project.git</a></p>
+<p>这表示：</p>
+<p>克隆 develop 分支，并且只获取最近的提交历史。</p>
+<p>如果只需要这个分支，还可以：</p>
+<p>git clone <br>  -b develop <br>  –single-branch <br>  –depth&#x3D;1 <br>  <a target="_blank" rel="noopener" href="https://example.com/project.git">https://example.com/project.git</a></p>
+<p>这种方式非常适合部署、测试环境。</p>
+<p>⸻</p>
+<ol start="7">
+<li>如果已经进行了 –depth&#x3D;1</li>
+</ol>
+<p>不需要重新 clone。</p>
+<p>例如：</p>
+<p>git clone –depth&#x3D;1 <a target="_blank" rel="noopener" href="https://example.com/project.git">https://example.com/project.git</a><br>cd project</p>
+<p>后来发现还需要：</p>
+<p>develop</p>
+<p>可以：</p>
+<p>git fetch origin develop<br>git switch -c develop –track origin&#x2F;develop</p>
+<p>如果还需要完整 Git 历史：</p>
+<p>git fetch –unshallow</p>
+<p>–unshallow 的作用就是：</p>
+<p>把浅克隆逐渐变成完整历史。</p>
+<p>⸻</p>
+<ol start="8">
+<li>几个命令要分清楚</li>
+</ol>
+<p>这是这个知识点最重要的部分。</p>
+<p>命令	作用<br>git clone	第一次把远程仓库下载到本地<br>git clone –depth&#x3D;1	浅克隆，只获取很浅的历史<br>git branch	查看本地分支<br>git branch -a	查看本地 + 已获取的远程分支<br>git fetch	从远程获取更新，但不自动切换分支<br>git switch	切换分支<br>git checkout	老版本常用的切换&#x2F;创建分支命令<br>git ls-remote –heads origin	直接查看服务器上的远程分支<br>git fetch –unshallow	将浅克隆补全成完整历史</p>
+<p>⸻</p>
+<ol start="9">
+<li>一个实用的排查思路</li>
+</ol>
+<p>以后遇到：</p>
+<p>git checkout xxx</p>
+<p>提示：</p>
+<p>pathspec ‘xxx’ did not match any file(s) known to git</p>
+<p>不要马上认为分支不存在。</p>
+<p>按照这个顺序检查：</p>
+<p>第一步：看本地和已经获取的远程分支</p>
+<p>git branch -a</p>
+<p>第二步：直接问远程服务器有没有这个分支</p>
+<p>git ls-remote –heads origin</p>
+<p>第三步：如果远程存在，获取它</p>
+<p>git fetch origin xxx</p>
+<p>第四步：创建本地跟踪分支</p>
+<p>git switch -c xxx –track origin&#x2F;xxx</p>
+<p>⸻</p>
+<ol start="10">
+<li>最后记住这张图</li>
+</ol>
+<p>远程 Git 仓库<br>│<br>├── master<br>├── develop<br>├── feature-a<br>└── feature-b<br>        │<br>        │ git clone –depth&#x3D;1<br>        ↓<br>本地仓库<br>│<br>└── master<br>      │<br>      │ git fetch origin develop<br>      ↓<br>本地知道 origin&#x2F;develop<br>      │<br>      │ git switch -c develop –track origin&#x2F;develop<br>      ↓<br>本地 develop</p>
+<p>一句话记忆</p>
+<p>–depth&#x3D;1 解决的是“历史有多深”，不是“仓库有没有其他分支”。</p>
+<p>而：</p>
+<p>git fetch</p>
+<p>解决的是：</p>
+<p>“把远程的东西拿到本地”。</p>
+<p>最后：</p>
+<p>git switch</p>
+<p>解决的是：</p>
+<p>“我要在哪个分支上工作”。</p>
+<p>这三个概念分开理解，Git 的分支问题就会清晰很多。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://www.runoob.com/git/git-tutorial.html">Git菜鸟教程</a></li>
 <li>[2] <a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/896043488029600">廖雪峰-Git教程</a></li>
@@ -883,7 +1052,7 @@ location / &#123;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">155</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
