@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概述在日常学习、技术调研与素材整理中，我们经常需要在浏览器（如 Microsoft Edge &#x2F; Chrome）中播放媒体（如 B 站视频、技术公开课、网络播客），并希望将其内录为高品质音频文件（MP3 &#x2F; WAV &#x2F; WebM）。 然而在实际操作中，常规录制方式往往面临诸多痛点：  外放麦克风录制：会混入机械键盘声、环境底噪以及房间混响，音质损失严重； 系统全局混音录制：容易将微信、钉钉通知、邮">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨平台浏览器纯净音频内录指南">
+<meta property="og:url" content="https://swordhell.github.io/2026/10/20/cross_platform_edge_audio_recording_guide/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="概述在日常学习、技术调研与素材整理中，我们经常需要在浏览器（如 Microsoft Edge &#x2F; Chrome）中播放媒体（如 B 站视频、技术公开课、网络播客），并希望将其内录为高品质音频文件（MP3 &#x2F; WAV &#x2F; WebM）。 然而在实际操作中，常规录制方式往往面临诸多痛点：  外放麦克风录制：会混入机械键盘声、环境底噪以及房间混响，音质损失严重； 系统全局混音录制：容易将微信、钉钉通知、邮">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-10-20T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-20T04:09:03.542Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="浏览器">
+<meta property="article:tag" content="音频">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2026/10/20/cross_platform_edge_audio_recording_guide/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>跨平台浏览器纯净音频内录指南 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/10/20/cross_platform_edge_audio_recording_guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          跨平台浏览器纯净音频内录指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-10-20 00:00:00 / 修改时间：00:09:03" itemprop="dateCreated datePublished" datetime="2026-10-20T00:00:00-04:00">2026-10-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>在日常学习、技术调研与素材整理中，我们经常需要在浏览器（如 Microsoft Edge / Chrome）中播放媒体（如 B 站视频、技术公开课、网络播客），并希望将其内录为高品质音频文件（MP3 / WAV / WebM）。</p>
+<p>然而在实际操作中，常规录制方式往往面临诸多痛点：</p>
+<ol>
+<li><strong>外放麦克风录制</strong>：会混入机械键盘声、环境底噪以及房间混响，音质损失严重；</li>
+<li><strong>系统全局混音录制</strong>：容易将微信、钉钉通知、邮件提醒或系统弹窗提示音一并录入；</li>
+<li><strong>平台底层差异</strong>：Windows 原生支持 WASAPI 声卡回环（Loopback），而 macOS 出于隐私安全限制，对应用内录有严格权限管控，导致跨平台方案难以统一。</li>
+</ol>
+<p>针对上述问题，本文梳理一套<strong>全平台通用的纯净内录方案</strong>：借助 Edge/Chromium 原生提供的 <code>chrome.tabCapture</code> API 编写轻量扩展，直接在浏览器数字音频合成层截取目标标签页的数据流。实现<strong>免驱动、跨平台（Mac/Windows 完全统一）、零杂音干扰</strong>的高品质内录体验。</p>
+<span id="more"></span>
+<hr>
+<h1 id="方案选型与技术对比"><a href="#方案选型与技术对比" class="headerlink" title="方案选型与技术对比"></a>方案选型与技术对比</h1><p>实现系统或应用音频内录，业内通常有三种常见技术路径：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">方案维度</th>
+<th style="text-align:left">浏览器扩展（Tab Capture）</th>
+<th style="text-align:left">系统级声卡回环（Loopback）</th>
+<th style="text-align:left">虚拟声卡路由（如 BlackHole）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>跨平台一致性</strong></td>
+<td style="text-align:left"><strong>完全一致</strong>（基于 Chromium 内核）</td>
+<td style="text-align:left">仅限 Windows（WASAPI）</td>
+<td style="text-align:left">仅限 macOS（需额外内核驱动）</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>杂音隔绝程度</strong></td>
+<td style="text-align:left"><strong>极高</strong>（仅截取目标标签页流，免疫系统杂音）</td>
+<td style="text-align:left"><strong>中</strong>（会录入系统提示音与其它软件声音）</td>
+<td style="text-align:left"><strong>中</strong>（需配置多输出设备，易受干扰）</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>安装与配置门槛</strong></td>
+<td style="text-align:left"><strong>零安装配置</strong>（浏览器开启开发者模式直接加载）</td>
+<td style="text-align:left">依赖本地 Python 或专用音频宿主软件</td>
+<td style="text-align:left">需安装虚拟声卡并在音频 MIDI 中路由</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>权限与安全要求</strong></td>
+<td style="text-align:left">仅浏览器内置标签页权限</td>
+<td style="text-align:left">普通系统权限</td>
+<td style="text-align:left">macOS 麦克风/屏幕录制系统权限</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>选型结论</strong>：<br>Microsoft Edge 在 Windows 和 macOS 上均基于 Chromium 架构。利用 <code>chrome.tabCapture</code> API 截取单一标签页音频流，不仅能彻底隔绝系统通知音，而且一套代码完全通用，是个人轻量内录与跨平台环境下的最优解。</p>
+<hr>
+<h1 id="核心工程实现"><a href="#核心工程实现" class="headerlink" title="核心工程实现"></a>核心工程实现</h1><p>该工程只需 3 个文本文件，无需 Node.js 打包或 Webpack/Vite 编译，直接原生运行。</p>
+<h2 id="1-目录结构"><a href="#1-目录结构" class="headerlink" title="1. 目录结构"></a>1. 目录结构</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">edge-audio-recorder/</span><br><span class="line">├── manifest.json       # 扩展清单配置 (Manifest V3)</span><br><span class="line">├── popup.html          # 弹出层控制面板</span><br><span class="line">└── popup.js            # 音频流截取、穿透监听与下载逻辑</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="2-核心代码清单"><a href="#2-核心代码清单" class="headerlink" title="2. 核心代码清单"></a>2. 核心代码清单</h2><h3 id="1-manifest-json"><a href="#1-manifest-json" class="headerlink" title="(1) manifest.json"></a>(1) <code>manifest.json</code></h3><p>定义扩展的基础元数据与运行所需权限，主要包括 <code>tabCapture</code>（标签页捕获）与 <code>downloads</code>（文件下载）。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;manifest_version&quot;</span><span class="punctuation">:</span> <span class="number">3</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Edge 纯净标签页录音器&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;跨平台无杂音捕获当前标签页音频并导出&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;permissions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;tabCapture&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;downloads&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;activeTab&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default_popup&quot;</span><span class="punctuation">:</span> <span class="string">&quot;popup.html&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;default_title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;点击录音&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-popup-html"><a href="#2-popup-html" class="headerlink" title="(2) popup.html"></a>(2) <code>popup.html</code></h3><p>简洁清晰的弹出交互面板，提供状态提示与录制开关控制。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">    <span class="selector-tag">body</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">width</span>: <span class="number">220px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-family</span>: -apple-system, BlinkMacSystemFont, <span class="string">&quot;Segoe UI&quot;</span>, Roboto, sans-serif;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>: <span class="number">12px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">text-align</span>: center;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background-color</span>: <span class="number">#fafafa</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-tag">h4</span> &#123; <span class="attribute">margin</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">10px</span> <span class="number">0</span>; <span class="attribute">color</span>: <span class="number">#222</span>; <span class="attribute">font-size</span>: <span class="number">15px</span>; &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-tag">button</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>: <span class="number">8px</span> <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">margin-top</span>: <span class="number">6px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-size</span>: <span class="number">13px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-weight</span>: <span class="number">500</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">cursor</span>: pointer;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border</span>: none;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-radius</span>: <span class="number">4px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">transition</span>: opacity <span class="number">0.2s</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-tag">button</span><span class="selector-pseudo">:disabled</span> &#123; <span class="attribute">opacity</span>: <span class="number">0.5</span>; <span class="attribute">cursor</span>: not-allowed; &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-id">#startBtn</span> &#123; <span class="attribute">background-color</span>: <span class="number">#0078d4</span>; <span class="attribute">color</span>: <span class="number">#fff</span>; &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-id">#stopBtn</span> &#123; <span class="attribute">background-color</span>: <span class="number">#d83b01</span>; <span class="attribute">color</span>: <span class="number">#fff</span>; &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-id">#status</span> &#123; <span class="attribute">font-size</span>: <span class="number">12px</span>; <span class="attribute">color</span>: <span class="number">#666</span>; <span class="attribute">margin-top</span>: <span class="number">10px</span>; <span class="attribute">min-height</span>: <span class="number">16px</span>; &#125;</span></span><br><span class="line"><span class="language-css">  </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h4</span>&gt;</span>音频内录助手<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;startBtn&quot;</span>&gt;</span>开始录音<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;stopBtn&quot;</span> <span class="attr">disabled</span>&gt;</span>停止并下载<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;status&quot;</span>&gt;</span>就绪<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;popup.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-popup-js"><a href="#3-popup-js" class="headerlink" title="(3) popup.js"></a>(3) <code>popup.js</code></h3><p>核心逻辑实现，包含音频流截取、穿透路由（解决静音问题）、数据分片缓冲与本地保存。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> mediaRecorder = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">let</span> recordedChunks = [];</span><br><span class="line"><span class="keyword">let</span> audioContext = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> startBtn = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;startBtn&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> stopBtn = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;stopBtn&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> statusDiv = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;status&#x27;</span>);</span><br><span class="line"></span><br><span class="line">startBtn.<span class="property">onclick</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 1. 截取当前激活标签页的音频流</span></span><br><span class="line">  chrome.<span class="property">tabCapture</span>.<span class="title function_">capture</span>(&#123; <span class="attr">audio</span>: <span class="literal">true</span>, <span class="attr">video</span>: <span class="literal">false</span> &#125;, <span class="function">(<span class="params">stream</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!stream) &#123;</span><br><span class="line">      statusDiv.<span class="property">innerText</span> = <span class="string">&quot;捕获失败，请刷新目标页面重试&quot;</span>;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 音频穿透监听（解决 tabCapture 默认使当前标签页静音的问题）</span></span><br><span class="line">    audioContext = <span class="keyword">new</span> <span class="title class_">AudioContext</span>();</span><br><span class="line">    <span class="keyword">const</span> source = audioContext.<span class="title function_">createMediaStreamSource</span>(stream);</span><br><span class="line">    source.<span class="title function_">connect</span>(audioContext.<span class="property">destination</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 启动 MediaRecorder 编码流</span></span><br><span class="line">    recordedChunks = [];</span><br><span class="line">    mediaRecorder = <span class="keyword">new</span> <span class="title class_">MediaRecorder</span>(stream, &#123; <span class="attr">mimeType</span>: <span class="string">&#x27;audio/webm&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line">    mediaRecorder.<span class="property">ondataavailable</span> = <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (event.<span class="property">data</span>.<span class="property">size</span> &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        recordedChunks.<span class="title function_">push</span>(event.<span class="property">data</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    mediaRecorder.<span class="property">onstop</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 组装 Blob 并触发浏览器下载</span></span><br><span class="line">      <span class="keyword">const</span> blob = <span class="keyword">new</span> <span class="title class_">Blob</span>(recordedChunks, &#123; <span class="attr">type</span>: <span class="string">&#x27;audio/webm&#x27;</span> &#125;);</span><br><span class="line">      <span class="keyword">const</span> url = <span class="variable constant_">URL</span>.<span class="title function_">createObjectURL</span>(blob);</span><br><span class="line">      <span class="keyword">const</span> timestamp = <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toISOString</span>().<span class="title function_">replace</span>(<span class="regexp">/[:.]/g</span>, <span class="string">&#x27;-&#x27;</span>);</span><br><span class="line">      </span><br><span class="line">      chrome.<span class="property">downloads</span>.<span class="title function_">download</span>(&#123;</span><br><span class="line">        <span class="attr">url</span>: url,</span><br><span class="line">        <span class="attr">filename</span>: <span class="string">`audio_record_<span class="subst">$&#123;timestamp&#125;</span>.webm`</span></span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 释放流与上下文资源</span></span><br><span class="line">      stream.<span class="title function_">getTracks</span>().<span class="title function_">forEach</span>(<span class="function"><span class="params">track</span> =&gt;</span> track.<span class="title function_">stop</span>());</span><br><span class="line">      <span class="keyword">if</span> (audioContext) &#123;</span><br><span class="line">        audioContext.<span class="title function_">close</span>();</span><br><span class="line">      &#125;</span><br><span class="line">      statusDiv.<span class="property">innerText</span> = <span class="string">&quot;已导出录音文件&quot;</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    mediaRecorder.<span class="title function_">start</span>();</span><br><span class="line">    startBtn.<span class="property">disabled</span> = <span class="literal">true</span>;</span><br><span class="line">    stopBtn.<span class="property">disabled</span> = <span class="literal">false</span>;</span><br><span class="line">    statusDiv.<span class="property">innerText</span> = <span class="string">&quot;🔴 正在录制当前标签页...&quot;</span>;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">stopBtn.<span class="property">onclick</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (mediaRecorder &amp;&amp; mediaRecorder.<span class="property">state</span> !== <span class="string">&#x27;inactive&#x27;</span>) &#123;</span><br><span class="line">    mediaRecorder.<span class="title function_">stop</span>();</span><br><span class="line">    startBtn.<span class="property">disabled</span> = <span class="literal">false</span>;</span><br><span class="line">    stopBtn.<span class="property">disabled</span> = <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="3-核心机制剖析"><a href="#3-核心机制剖析" class="headerlink" title="3. 核心机制剖析"></a>3. 核心机制剖析</h2><ol>
+<li><strong>防静音穿透路由（AudioContext Destination）</strong>：<br>Chromium 的 <code>tabCapture</code> 默认会将目标页面的音频输出直接导向流，导致扬声器/耳机瞬间失去声音。通过建立一个 <code>AudioContext</code>，将流源连接至 <code>destination</code>，即可在录制的同时保证耳机正常监听。</li>
+<li><strong>零拷贝高效录制</strong>：<br><code>MediaRecorder</code> 接收的原生流由浏览器底层的硬件解码与音频合成器直接供给，CPU 占用率极低。</li>
+<li><strong>生命周期管理</strong>：<br>录音完成后显式调用 <code>stream.getTracks().forEach(t =&gt; t.stop())</code> 与 <code>audioContext.close()</code>，避免内存泄漏与后台无意义占用。</li>
+</ol>
+<hr>
+<h1 id="部署与使用流程"><a href="#部署与使用流程" class="headerlink" title="部署与使用流程"></a>部署与使用流程</h1><p>在 macOS 与 Windows 上，安装与使用步骤完全相同：</p>
+<ol>
+<li><strong>准备源码目录</strong>：<br>在本地新建名为 <code>edge-audio-recorder</code> 的文件夹，将上述 <code>manifest.json</code>、<code>popup.html</code> 和 <code>popup.js</code> 保存至该目录下。</li>
+<li><strong>打开扩展管理页</strong>：<br>在 Edge 地址栏中输入 <code>edge://extensions/</code> 并回车（Chrome 则输入 <code>chrome://extensions/</code>）。</li>
+<li><strong>开启开发人员模式</strong>：<br>在扩展页面左侧边栏（或顶部），开启「<strong>开发人员模式</strong>」开关。</li>
+<li><strong>加载已解压的扩展</strong>：<br>点击「<strong>加载解压缩的扩展</strong>」按钮，在文件选择对话框中选中刚才创建的 <code>edge-audio-recorder</code> 目录。</li>
+<li><strong>固定扩展图标</strong>：<br>点击浏览器地址栏右侧的拼图图标（扩展管理器），将该录音插件固定在工具栏，以便快捷点击。</li>
+<li><strong>实测录音</strong>：<ul>
+<li>打开需要内录的网页（如 B 站歌曲、播客）；</li>
+<li>点击工具栏插件图标，点击「<strong>开始录音</strong>」；</li>
+<li>播放完毕后，点击「<strong>停止并下载</strong>」，纯净的 <code>.webm</code> 音频文件将自动保存至本地下载目录。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>提示（Popup 窗口焦点特性）</strong>：<br>浏览器扩展的 Popup 弹窗属于临时浮窗，若在录制过程中点击网页其他区域，浮窗会失焦关闭，从而中断录音。<br><strong>解决技巧</strong>：在工具栏右键点击该插件图标，选择「<strong>审查弹出内容</strong>」（Inspect Popup），通过弹出的 DevTools 即可钉住 Popup 窗口，在录音期间可随意浏览和切换其他页面。</p>
+</blockquote>
+<hr>
+<h1 id="音频转码与自动化批处理"><a href="#音频转码与自动化批处理" class="headerlink" title="音频转码与自动化批处理"></a>音频转码与自动化批处理</h1><p>Chromium 内置的 <code>MediaRecorder</code> 默认输出采用高压缩比且高保真的 WebM（Opus 音频编码）格式。如果设备或播放器需要标准的 <code>.mp3</code> 格式，可通过以下方式快速处理：</p>
+<h2 id="1-FFmpeg-单文件快速转码"><a href="#1-FFmpeg-单文件快速转码" class="headerlink" title="1. FFmpeg 单文件快速转码"></a>1. FFmpeg 单文件快速转码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i audio_record.webm -vn -c:a libmp3lame -b:a 320k output.mp3</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>-vn</code>：过滤掉可能残留的视频流；</li>
+<li><code>-c:a libmp3lame</code>：使用高质量 MP3 编码器；</li>
+<li><code>-b:a 320k</code>：指定 320kbps 极高比特率，保障音质无损。</li>
+</ul>
+<h2 id="2-跨平台一键批量转换脚本"><a href="#2-跨平台一键批量转换脚本" class="headerlink" title="2. 跨平台一键批量转换脚本"></a>2. 跨平台一键批量转换脚本</h2><p>将下载目录中的所有 <code>.webm</code> 文件一键转换为 <code>.mp3</code>：</p>
+<ul>
+<li><p><strong>macOS / Linux 终端</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> *.webm; <span class="keyword">do</span></span><br><span class="line">  ffmpeg -i <span class="string">&quot;<span class="variable">$f</span>&quot;</span> -vn -c:a libmp3lame -b:a 320k <span class="string">&quot;<span class="variable">$&#123;f%.webm&#125;</span>.mp3&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Windows PowerShell</strong>：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Get-ChildItem</span> *.webm | <span class="built_in">ForEach-Object</span> &#123;</span><br><span class="line">  ffmpeg <span class="literal">-i</span> <span class="variable">$_</span>.FullName <span class="literal">-vn</span> <span class="literal">-c</span>:a libmp3lame <span class="literal">-b</span>:a <span class="number">320</span>k <span class="string">&quot;<span class="variable">$</span>(<span class="variable">$_</span>.BaseName).mp3&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3-纯前端集成方案（免转码工具）"><a href="#3-纯前端集成方案（免转码工具）" class="headerlink" title="3. 纯前端集成方案（免转码工具）"></a>3. 纯前端集成方案（免转码工具）</h2><p>如果希望插件在点击“停止”后直接下载 MP3，可在工程中引入前端编码库（如 <code>lamejs</code>），在 <code>mediaRecorder.onstop</code> 中通过 Web Worker 将 PCM 数据直接编码为 MP3 Blob，实现完全免除本地转码工具的纯净闭环。</p>
+<hr>
+<h1 id="系统原生内录方案参考"><a href="#系统原生内录方案参考" class="headerlink" title="系统原生内录方案参考"></a>系统原生内录方案参考</h1><p>若需要在没有界面的服务器、后台自动化脚本或爬虫中内录音频，可参考各操作系统的原生方案：</p>
+<h2 id="1-Windows-原生方案（WASAPI-Loopback）"><a href="#1-Windows-原生方案（WASAPI-Loopback）" class="headerlink" title="1. Windows 原生方案（WASAPI Loopback）"></a>1. Windows 原生方案（WASAPI Loopback）</h2><ul>
+<li><strong>原理</strong>：基于 Windows Vista 引入的 Core Audio APIs，直接监听扬声器终端的回环流。</li>
+<li><strong>实现工具</strong>：Python 中推荐使用 <code>pyaudiowpatch</code> 或 <code>soundcard</code> 库，枚举声卡设备并捕获 <code>loopback=True</code> 的输入流。</li>
+<li><strong>注意事项</strong>：录音期间需打开系统“免打扰模式”，避免微信或系统弹窗提示音混入。</li>
+</ul>
+<h2 id="2-macOS-原生方案"><a href="#2-macOS-原生方案" class="headerlink" title="2. macOS 原生方案"></a>2. macOS 原生方案</h2><ul>
+<li><strong>现代方案（macOS 13+ ScreenCaptureKit）</strong>：<br>Apple 官方推出的现代屏幕与音频捕获框架，支持按应用进程 Bundle ID（如 Edge 的 <code>com.microsoft.edgemac</code>）精确截取指定进程音频，原生免疫系统其他声音。</li>
+<li><strong>传统驱动方案（BlackHole）</strong>：<br>安装开源虚拟音频驱动 BlackHole，在系统「音频 MIDI 设置」中配置“多输出设备”，一条路由至耳机监听，另一条路由至 BlackHole，再通过 Python <code>sounddevice</code> 读取虚拟设备音频。</li>
+</ul>
+<hr>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">场景需求</th>
+<th style="text-align:left">推荐方案</th>
+<th style="text-align:left">核心优势</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>日常网页音频内录、无杂音、跨平台通吃</strong></td>
+<td style="text-align:left"><strong>Edge/Chrome 扩展（Tab Capture）</strong></td>
+<td style="text-align:left">零驱动安装、免系统级权限、一份代码跨平台运行</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>后台自动化脚本 / 静默采集 (Windows)</strong></td>
+<td style="text-align:left"><strong>WASAPI Loopback (Python)</strong></td>
+<td style="text-align:left">依托 Windows 原生 API，无须人工交互</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>后台自动化脚本 / 进程级隔离 (macOS)</strong></td>
+<td style="text-align:left"><strong>ScreenCaptureKit (Swift / Objective-C)</strong></td>
+<td style="text-align:left">现代官方接口，单进程音频过滤精确稳定</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li>[1] Chrome Extensions API: <a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/extensions/reference/api/tabCapture">chrome.tabCapture Documentation</a></li>
+<li>[2] MDN Web Docs: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStream_Recording_API">MediaStream Recording API</a></li>
+<li>[3] FFmpeg Documentation: <a target="_blank" rel="noopener" href="https://ffmpeg.org/ffmpeg.html#Audio-Options">Audio Options &amp; Encoding</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"># 工具</a>
+              <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag"># 浏览器</a>
+              <a href="/tags/%E9%9F%B3%E9%A2%91/" rel="tag"># 音频</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/08/20/go-1.27-features/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E9%80%89%E5%9E%8B%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%AF%B9%E6%AF%94"><span class="nav-number">2.</span> <span class="nav-text">方案选型与技术对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%A5%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">核心工程实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">1. 目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%95"><span class="nav-number">3.2.</span> <span class="nav-text">2. 核心代码清单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-manifest-json"><span class="nav-number">3.2.1.</span> <span class="nav-text">(1) manifest.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-popup-html"><span class="nav-number">3.2.2.</span> <span class="nav-text">(2) popup.html</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-popup-js"><span class="nav-number">3.2.3.</span> <span class="nav-text">(3) popup.js</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E5%89%96%E6%9E%90"><span class="nav-number">3.3.</span> <span class="nav-text">3. 核心机制剖析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">部署与使用流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9F%B3%E9%A2%91%E8%BD%AC%E7%A0%81%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%B9%E5%A4%84%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">音频转码与自动化批处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-FFmpeg-%E5%8D%95%E6%96%87%E4%BB%B6%E5%BF%AB%E9%80%9F%E8%BD%AC%E7%A0%81"><span class="nav-number">5.1.</span> <span class="nav-text">1. FFmpeg 单文件快速转码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E4%B8%80%E9%94%AE%E6%89%B9%E9%87%8F%E8%BD%AC%E6%8D%A2%E8%84%9A%E6%9C%AC"><span class="nav-number">5.2.</span> <span class="nav-text">2. 跨平台一键批量转换脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%BA%AF%E5%89%8D%E7%AB%AF%E9%9B%86%E6%88%90%E6%96%B9%E6%A1%88%EF%BC%88%E5%85%8D%E8%BD%AC%E7%A0%81%E5%B7%A5%E5%85%B7%EF%BC%89"><span class="nav-number">5.3.</span> <span class="nav-text">3. 纯前端集成方案（免转码工具）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%94%9F%E5%86%85%E5%BD%95%E6%96%B9%E6%A1%88%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">系统原生内录方案参考</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Windows-%E5%8E%9F%E7%94%9F%E6%96%B9%E6%A1%88%EF%BC%88WASAPI-Loopback%EF%BC%89"><span class="nav-number">6.1.</span> <span class="nav-text">1. Windows 原生方案（WASAPI Loopback）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-macOS-%E5%8E%9F%E7%94%9F%E6%96%B9%E6%A1%88"><span class="nav-number">6.2.</span> <span class="nav-text">2. macOS 原生方案</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">8.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="//cdn.jsdelivr.net/gh/stevenjoezhang/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : '8d78fc1d5a742a8a67f5e3b79cd1ae21',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概述最近项目里面的按照时区来计算的时候存在少计算了8小时的问题； timestamptz 是 PostgreSQL 中的一种时间&#x2F;日期类型，完整名称是 timestamp with time zone。它和普通的 timestamp（即 timestamp without time zone）有一些区别： timestamptz 带时区的时间戳（推荐）PostgreSQL 内部会存储为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gorm与postgreSQL里面time">
+<meta property="og:url" content="https://swordhell.github.io/2025/10/21/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="概述最近项目里面的按照时区来计算的时候存在少计算了8小时的问题； timestamptz 是 PostgreSQL 中的一种时间&#x2F;日期类型，完整名称是 timestamp with time zone。它和普通的 timestamp（即 timestamp without time zone）有一些区别： timestamptz 带时区的时间戳（推荐）PostgreSQL 内部会存储为">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-18T14:12:52.670Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="Compute">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2025/10/21/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>gorm与postgreSQL里面time | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/10/21/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          gorm与postgreSQL里面time
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-10-21 12:00:00" itemprop="dateCreated datePublished" datetime="2025-10-21T12:00:00-04:00">2025-10-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-11-18 09:12:52" itemprop="dateModified" datetime="2025-11-18T09:12:52-05:00">2025-11-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>最近项目里面的按照时区来计算的时候存在少计算了8小时的问题；</p>
+<p>timestamptz 是 PostgreSQL 中的一种时间&#x2F;日期类型，完整名称是 timestamp with time zone。它和普通的 timestamp（即 timestamp without time zone）有一些区别：</p>
+<p>timestamptz 带时区的时间戳（推荐）PostgreSQL 内部会存储为 UTC 时间；查询时会根据你的 会话时区（TimeZone 配置） 自动转换显示；</p>
+<p>timestamp：不带时区；只存储一个绝对时间，不做时区转换；</p>
+<span id="more"></span>
+
+<p>#原因分析<br>1.	PostgreSQL 内部存储 UTC</p>
+<p> • timestamptz 实际存储的是 UTC 时间</p>
+<p> • 比如你在东八区插入 ‘2025-10-21 00:00:00’，数据库会存储为 ‘2025-10-20 16:00:00+00’</p>
+<ol start="2">
+<li>   GORM &#x2F; Go 的 time.Time 默认</li>
+</ol>
+<p>• Go 的 time.Time 有 Location 信息</p>
+<p>• 如果直接用 time.Date(2025,10,21,0,0,0,0,time.UTC)，查出来会跟本地时区偏 8 小时</p>
+<p>• 如果数据库&#x2F;Go 会话时区不一致，会导致查询 WHERE submit_time &gt;&#x3D; ‘今天 0 点’ 时，结果偏移</p>
+<h2 id="解决方案-a"><a href="#解决方案-a" class="headerlink" title="解决方案 a"></a>解决方案 a</h2><p>方法 A：在 Go 中使用本地时区创建时间</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">loc, _ := time.LoadLocation(<span class="string">&quot;Asia/Shanghai&quot;</span>) <span class="comment">// 东八区</span></span><br><span class="line">today := time.Now().In(loc)</span><br><span class="line">startOfDay := time.Date(today.Year(), today.Month(), today.Day(), <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, loc)</span><br><span class="line"></span><br><span class="line"><span class="comment">// GORM 查询</span></span><br><span class="line"><span class="keyword">var</span> rows []CrossChainTx</span><br><span class="line">db.Where(<span class="string">&quot;submit_time &gt;= ?&quot;</span>, startOfDay).Find(&amp;rows)</span><br></pre></td></tr></table></figure>
+
+<p>封装起来的写法：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// GetCSTDayRange 返回指定日期（向前推 i 天）的东八区 0 点到24点时间段</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetCSTDayRange</span><span class="params">(daysAgo <span class="type">int</span>)</span></span> (start, end time.Time) &#123;</span><br><span class="line">	<span class="comment">// 加载东八区时区</span></span><br><span class="line">	loc, err := time.LoadLocation(<span class="string">&quot;Asia/Shanghai&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="comment">// 加载失败回退到 UTC</span></span><br><span class="line">		loc = time.FixedZone(<span class="string">&quot;CST&quot;</span>, <span class="number">8</span>*<span class="number">3600</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 当前时间 - i 天</span></span><br><span class="line">	now := time.Now().In(loc).AddDate(<span class="number">0</span>, <span class="number">0</span>, -daysAgo)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 当天东八区 0 点</span></span><br><span class="line">	start = time.Date(now.Year(), now.Month(), now.Day(), <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, loc)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 当天结束时间</span></span><br><span class="line">	end = start.Add(<span class="number">24</span> * time.Hour)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// GetCSTTodayRange 返回今天东八区 0 点到24点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetCSTTodayRange</span><span class="params">()</span></span> (start, end time.Time) &#123;</span><br><span class="line">	<span class="keyword">return</span> GetCSTDayRange(<span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解决方案-b"><a href="#解决方案-b" class="headerlink" title="解决方案 b"></a>解决方案 b</h2><p>在 SQL 里使用 PostgreSQL 函数处理</p>
+<pre><code>•	PostgreSQL 可以在查询里直接按东八区截断日期：
+</code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> cross_chain_tx</span><br><span class="line"><span class="keyword">WHERE</span> submit_time <span class="operator">&gt;=</span> date_trunc(<span class="string">&#x27;day&#x27;</span>, now() <span class="keyword">AT</span> <span class="type">TIME</span> ZONE <span class="string">&#x27;Asia/Shanghai&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<pre><code>•	date_trunc(&#39;day&#39;, ...) 截断到当地 0 点
+•	AT TIME ZONE &#39;Asia/Shanghai&#39; 保证是东八区
+</code></pre>
+<p>在 GORM 中：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">db.Raw(<span class="string">`</span></span><br><span class="line"><span class="string">    SELECT *</span></span><br><span class="line"><span class="string">    FROM cross_chain_tx</span></span><br><span class="line"><span class="string">    WHERE submit_time &gt;= date_trunc(&#x27;day&#x27;, now() AT TIME ZONE &#x27;Asia/Shanghai&#x27;)</span></span><br><span class="line"><span class="string">`</span>).Scan(&amp;rows)</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法-C：统一使用-UTC-处理"><a href="#方法-C：统一使用-UTC-处理" class="headerlink" title="方法 C：统一使用 UTC 处理"></a>方法 C：统一使用 UTC 处理</h2><pre><code>•	服务器和数据库都统一用 UTC
+•	在 Go 中处理时间显示时，再转换到东八区
+•	优点：逻辑简单，跨时区可靠
+</code></pre>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">utcNow := time.Now().UTC()</span><br><span class="line">startOfDayUTC := time.Date(utcNow.Year(), utcNow.Month(), utcNow.Day(), <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, time.UTC)</span><br><span class="line">db.Where(<span class="string">&quot;submit_time &gt;= ?&quot;</span>, startOfDayUTC).Find(&amp;rows)</span><br></pre></td></tr></table></figure>
+
+<pre><code>•	但是显示给用户时，需要 .In(loc) 转成东八区
+</code></pre>
+<blockquote>
+<p>实务推荐：如果只是国内服务，使用 方法 A（Go 本地时区） 最方便。<br>如果有多时区用户，统一用 UTC + 显示转换更安全。</p>
+</blockquote>
+<h1 id="附带"><a href="#附带" class="headerlink" title="附带"></a>附带</h1><h2 id="c-版本"><a href="#c-版本" class="headerlink" title="c++ 版本"></a>c++ 版本</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> tz = std::chrono::<span class="built_in">locate_zone</span>(<span class="string">&quot;Asia/Shanghai&quot;</span>);</span><br><span class="line"><span class="keyword">auto</span> now = std::chrono::<span class="built_in">zoned_time</span>(tz, std::chrono::system_clock::<span class="built_in">now</span>());</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取东八区（CST）当天 0 点的 UTC 时间点</span></span><br><span class="line"><span class="function">std::<span class="type">time_t</span> <span class="title">getTodayStartCST</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> std::chrono;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前 UTC 时间</span></span><br><span class="line">    system_clock::time_point now = system_clock::<span class="built_in">now</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 转为 time_t</span></span><br><span class="line">    std::<span class="type">time_t</span> t_now = system_clock::<span class="built_in">to_time_t</span>(now);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 转为 struct tm （UTC）</span></span><br><span class="line">    std::tm utc_tm = *std::<span class="built_in">gmtime</span>(&amp;t_now);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算今天 UTC 0 点时间戳</span></span><br><span class="line">    utc_tm.tm_hour = <span class="number">0</span>;</span><br><span class="line">    utc_tm.tm_min = <span class="number">0</span>;</span><br><span class="line">    utc_tm.tm_sec = <span class="number">0</span>;</span><br><span class="line">    std::<span class="type">time_t</span> utc_midnight = <span class="built_in">timegm</span>(&amp;utc_tm);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 东八区 0 点比 UTC 早 8 小时，因此减 8 小时得到 UTC 表示的东八区 0 点</span></span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> CST_OFFSET = <span class="number">8</span> * <span class="number">3600</span>;</span><br><span class="line">    std::<span class="type">time_t</span> cst_midnight = utc_midnight - CST_OFFSET;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> cst_midnight;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::<span class="type">time_t</span> start_cst = <span class="built_in">getTodayStartCST</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 打印东八区当天 0 点（本地时间）</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;CST 0点 (UTC时间): &quot;</span> &lt;&lt; std::<span class="built_in">asctime</span>(std::<span class="built_in">gmtime</span>(&amp;start_cst));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果你想以东八区形式显示</span></span><br><span class="line">    std::<span class="type">time_t</span> display = start_cst + <span class="number">8</span> * <span class="number">3600</span>;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;CST 0点 (北京时间): &quot;</span> &lt;&lt; std::<span class="built_in">asctime</span>(std::<span class="built_in">gmtime</span>(&amp;display));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="c-语言版本"><a href="#c-语言版本" class="headerlink" title="c 语言版本"></a>c 语言版本</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取东八区当天 0 点的 UTC 时间戳</span></span><br><span class="line"><span class="type">time_t</span> <span class="title function_">get_today_start_cst</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">time_t</span> now;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">tm</span> *<span class="title">utc_tm</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">tm</span> <span class="title">tm_copy</span>;</span></span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> CST_OFFSET = <span class="number">8</span> * <span class="number">3600</span>; <span class="comment">// 东八区偏移（秒）</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前时间（UTC）</span></span><br><span class="line">    time(&amp;now);</span><br><span class="line">    utc_tm = gmtime(&amp;now); <span class="comment">// 转为UTC时间结构</span></span><br><span class="line">    tm_copy = *utc_tm;     <span class="comment">// 拷贝一份，因为 mktime/localtime 可能修改原结构</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将时分秒清零（UTC的当天 0 点）</span></span><br><span class="line">    tm_copy.tm_hour = <span class="number">0</span>;</span><br><span class="line">    tm_copy.tm_min = <span class="number">0</span>;</span><br><span class="line">    tm_copy.tm_sec = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// UTC 0点时间戳</span></span><br><span class="line">    <span class="type">time_t</span> utc_midnight = timegm(&amp;tm_copy);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 东八区 0 点比 UTC 提前 8 小时 → UTC时间要 -8h</span></span><br><span class="line">    <span class="type">time_t</span> cst_midnight = utc_midnight - CST_OFFSET;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> cst_midnight;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">time_t</span> start_cst = get_today_start_cst();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;CST 当天 0 点 (UTC时间): %s&quot;</span>, asctime(gmtime(&amp;start_cst)));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 转成北京时间打印</span></span><br><span class="line">    <span class="type">time_t</span> beijing_time = start_cst + <span class="number">8</span> * <span class="number">3600</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;CST 当天 0 点 (北京时间): %s&quot;</span>, asctime(gmtime(&amp;beijing_time)));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="rust-版本"><a href="#rust-版本" class="headerlink" title="rust 版本"></a>rust 版本</h2><p>Cargo.toml</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="attr">chrono</span> = <span class="string">&quot;0.4&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> chrono::&#123;Local, TimeZone, Timelike, Datelike, FixedOffset, Duration&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 获取东八区当天 0 点和 24 点（CST: Asia/Shanghai）</span></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">get_today_cst_range</span>() <span class="punctuation">-&gt;</span> (chrono::DateTime&lt;FixedOffset&gt;, chrono::DateTime&lt;FixedOffset&gt;) &#123;</span><br><span class="line">    <span class="comment">// 定义东八区偏移</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">cst</span> = FixedOffset::<span class="title function_ invoke__">east_opt</span>(<span class="number">8</span> * <span class="number">3600</span>).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取当前时间并转换为东八区</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">now_cst</span> = Local::<span class="title function_ invoke__">now</span>().<span class="title function_ invoke__">with_timezone</span>(&amp;cst);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取当天 0 点</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">start_of_day</span> = cst</span><br><span class="line">        .<span class="title function_ invoke__">with_ymd_and_hms</span>(now_cst.<span class="title function_ invoke__">year</span>(), now_cst.<span class="title function_ invoke__">month</span>(), now_cst.<span class="title function_ invoke__">day</span>(), <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">        .<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取当天 24 点</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">end_of_day</span> = start_of_day + Duration::<span class="title function_ invoke__">hours</span>(<span class="number">24</span>);</span><br><span class="line"></span><br><span class="line">    (start_of_day, end_of_day)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> (start, end) = <span class="title function_ invoke__">get_today_cst_range</span>();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;🕛 东八区当天 0 点: &#123;&#125;&quot;</span>, start);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;🕕 东八区当天 24 点: &#123;&#125;&quot;</span>, end);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一定要转换成 UTC() 就是对的了。</span></span><br><span class="line">		<span class="keyword">if</span> latestRow, err := <span class="title function_ invoke__">getLatestRow</span>(); err == nil &#123;</span><br><span class="line">			</span><br><span class="line">			t := latestRow.UpdatedAt.<span class="title function_ invoke__">UTC</span>()</span><br><span class="line">			db = db.<span class="title function_ invoke__">Where</span>(<span class="string">&quot;updated_at &gt;= ? AND updated_at &lt; ?&quot;</span>, t, t.<span class="title function_ invoke__">Add</span>(time.Second))</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Compute/" rel="tag"># Compute</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/09/28/tmux%E7%94%A8%E6%B3%95/" rel="prev" title="tmux用法">
+      <i class="fa fa-chevron-left"></i> tmux用法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/10/28/2025-10-29-go-json-custom-field/" rel="next" title="go-json-custom-field">
+      go-json-custom-field <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-a"><span class="nav-number">1.1.</span> <span class="nav-text">解决方案 a</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-b"><span class="nav-number">1.2.</span> <span class="nav-text">解决方案 b</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95-C%EF%BC%9A%E7%BB%9F%E4%B8%80%E4%BD%BF%E7%94%A8-UTC-%E5%A4%84%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">方法 C：统一使用 UTC 处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%84%E5%B8%A6"><span class="nav-number">2.</span> <span class="nav-text">附带</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E7%89%88%E6%9C%AC"><span class="nav-number">2.1.</span> <span class="nav-text">c++ 版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E8%AF%AD%E8%A8%80%E7%89%88%E6%9C%AC"><span class="nav-number">2.2.</span> <span class="nav-text">c 语言版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rust-%E7%89%88%E6%9C%AC"><span class="nav-number">2.3.</span> <span class="nav-text">rust 版本</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="//cdn.jsdelivr.net/gh/stevenjoezhang/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : 'd7aa0204b5c36c7d68f4e63476c9c436',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

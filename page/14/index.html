@@ -156,7 +156,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/12/24/go-cgo%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/12/28/3d%E6%95%B0%E5%AD%A6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -170,7 +170,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/24/go-cgo%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">go-cgo的使用</a>
+            <a href="/2020/12/28/3d%E6%95%B0%E5%AD%A6/" class="post-title-link" itemprop="url">3d数学</a>
         </h2>
 
         <div class="post-meta">
@@ -180,14 +180,99 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-24 00:00:00" itemprop="dateCreated datePublished" datetime="2020-12-24T00:00:00+08:00">2020-12-24</time>
+              <time title="创建时间：2020-12-28 11:00:00" itemprop="dateCreated datePublished" datetime="2020-12-28T11:00:00-05:00">2020-12-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+                <time title="修改时间：2024-05-07 19:39:16" itemprop="dateModified" datetime="2024-05-07T19:39:16-04:00">2024-05-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">数学</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在游戏开发中，需要使用到向量，三角函数之类的知识。先学会里面的概念，后续应用才会容易制作。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/28/3d%E6%95%B0%E5%AD%A6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/12/23/go-cgo%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/23/go-cgo%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">go-cgo的使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-23 11:00:00" itemprop="dateCreated datePublished" datetime="2020-12-23T11:00:00-05:00">2020-12-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-06 21:46:42" itemprop="dateModified" datetime="2023-06-06T21:46:42-04:00">2023-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -217,7 +302,7 @@
           <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>golang可以通过cgo直接来调用c&#x2F;c++的函数代码。这里是参考《Go语言高级编程》书，做一些笔记。结构按照书的章节来。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/24/go-cgo%E4%BD%BF%E7%94%A8/#more" rel="contents">
+              <a class="btn" href="/2020/12/23/go-cgo%E4%BD%BF%E7%94%A8/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -241,7 +326,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/12/15/BehaviorTree/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/12/14/BehaviorTree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -255,7 +340,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/15/BehaviorTree/" class="post-title-link" itemprop="url">BehaviorTree</a>
+            <a href="/2020/12/14/BehaviorTree/" class="post-title-link" itemprop="url">BehaviorTree</a>
         </h2>
 
         <div class="post-meta">
@@ -265,14 +350,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-15 00:00:00" itemprop="dateCreated datePublished" datetime="2020-12-15T00:00:00+08:00">2020-12-15</time>
+              <time title="创建时间：2020-12-14 11:00:00" itemprop="dateCreated datePublished" datetime="2020-12-14T11:00:00-05:00">2020-12-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+                <time title="修改时间：2023-06-06 21:46:42" itemprop="dateModified" datetime="2023-06-06T21:46:42-04:00">2023-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -302,7 +387,7 @@
           <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>在制作游戏里面，除了使用FSM，还有一种实现模式：行为树。编写本文用于梳理行为树中的概念，知识点。里面使用到了三方库来编辑行为树(behavior3.com)。行为树主要用于做系统控制的，能通过简单的节点组合，编辑出复杂的逻辑。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/15/BehaviorTree/#more" rel="contents">
+              <a class="btn" href="/2020/12/14/BehaviorTree/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -326,7 +411,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/12/15/go-%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B9%8B%E9%81%93%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/12/14/go-%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B9%8B%E9%81%93%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -340,7 +425,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/15/go-%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B9%8B%E9%81%93%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">go-语言并发之道笔记</a>
+            <a href="/2020/12/14/go-%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B9%8B%E9%81%93%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">go-语言并发之道笔记</a>
         </h2>
 
         <div class="post-meta">
@@ -350,14 +435,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-15 00:00:00" itemprop="dateCreated datePublished" datetime="2020-12-15T00:00:00+08:00">2020-12-15</time>
+              <time title="创建时间：2020-12-14 11:00:00" itemprop="dateCreated datePublished" datetime="2020-12-14T11:00:00-05:00">2020-12-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-08-25 08:08:27" itemprop="dateModified" datetime="2025-08-25T08:08:27+08:00">2025-08-25</time>
+                <time title="修改时间：2025-08-24 20:08:27" itemprop="dateModified" datetime="2025-08-24T20:08:27-04:00">2025-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -388,7 +473,7 @@
 <p>O’Reily 奥莱利 出版社，原书名：《Concurrency in Go》，IBSN 978-7-5198-2494-5. 图书馆编码 TP312</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/15/go-%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B9%8B%E9%81%93%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/14/go-%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B9%8B%E9%81%93%E7%AC%94%E8%AE%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -412,7 +497,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/25/go-debug/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/24/go-debug/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -426,7 +511,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/25/go-debug/" class="post-title-link" itemprop="url">go-debug</a>
+            <a href="/2020/11/24/go-debug/" class="post-title-link" itemprop="url">go-debug</a>
         </h2>
 
         <div class="post-meta">
@@ -436,14 +521,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-25 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-25T00:00:00+08:00">2020-11-25</time>
+              <time title="创建时间：2020-11-24 11:00:00" itemprop="dateCreated datePublished" datetime="2020-11-24T11:00:00-05:00">2020-11-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-08-08 13:38:58" itemprop="dateModified" datetime="2025-08-08T13:38:58+08:00">2025-08-08</time>
+                <time title="修改时间：2025-08-08 01:38:58" itemprop="dateModified" datetime="2025-08-08T01:38:58-04:00">2025-08-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -473,7 +558,7 @@
           <p>在Linux里面使用gdb&#x2F;delve工具来调试程序。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/25/go-debug/#more" rel="contents">
+              <a class="btn" href="/2020/11/24/go-debug/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -497,7 +582,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/22/Recast-GetStart/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/21/Recast-GetStart/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -511,7 +596,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/22/Recast-GetStart/" class="post-title-link" itemprop="url">Recast-GetStart</a>
+            <a href="/2020/11/21/Recast-GetStart/" class="post-title-link" itemprop="url">Recast-GetStart</a>
         </h2>
 
         <div class="post-meta">
@@ -521,14 +606,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-22 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-22T00:00:00+08:00">2020-11-22</time>
+              <time title="创建时间：2020-11-21 11:00:00" itemprop="dateCreated datePublished" datetime="2020-11-21T11:00:00-05:00">2020-11-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+                <time title="修改时间：2023-06-06 21:46:42" itemprop="dateModified" datetime="2023-06-06T21:46:42-04:00">2023-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -558,7 +643,7 @@
           <h2 id="Recast-入门"><a href="#Recast-入门" class="headerlink" title="Recast-入门"></a>Recast-入门</h2><p>Recast-Navigation 在做3d游戏的时候，用于做导航的在Unity3D、Unreal Engine都可以使用。当前使用 unreal 4.25</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/22/Recast-GetStart/#more" rel="contents">
+              <a class="btn" href="/2020/11/21/Recast-GetStart/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -582,7 +667,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/21/cannon-guitarsheet/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/20/cannon-guitarsheet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -596,7 +681,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/21/cannon-guitarsheet/" class="post-title-link" itemprop="url">卡农吉他谱</a>
+            <a href="/2020/11/20/cannon-guitarsheet/" class="post-title-link" itemprop="url">卡农吉他谱</a>
         </h2>
 
         <div class="post-meta">
@@ -606,14 +691,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-21 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-21T00:00:00+08:00">2020-11-21</time>
+              <time title="创建时间：2020-11-20 11:00:00" itemprop="dateCreated datePublished" datetime="2020-11-20T11:00:00-05:00">2020-11-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-26 07:45:58" itemprop="dateModified" datetime="2024-07-26T07:45:58+08:00">2024-07-26</time>
+                <time title="修改时间：2024-07-25 19:45:58" itemprop="dateModified" datetime="2024-07-25T19:45:58-04:00">2024-07-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -643,7 +728,7 @@
           <p>卡农吉他谱：</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/21/cannon-guitarsheet/#more" rel="contents">
+              <a class="btn" href="/2020/11/20/cannon-guitarsheet/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -667,7 +752,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/21/docker-custom-devenv/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/20/docker-custom-devenv/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -681,7 +766,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/21/docker-custom-devenv/" class="post-title-link" itemprop="url">docker自定义环境</a>
+            <a href="/2020/11/20/docker-custom-devenv/" class="post-title-link" itemprop="url">docker自定义环境</a>
         </h2>
 
         <div class="post-meta">
@@ -691,14 +776,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-21 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-21T00:00:00+08:00">2020-11-21</time>
+              <time title="创建时间：2020-11-20 11:00:00" itemprop="dateCreated datePublished" datetime="2020-11-20T11:00:00-05:00">2020-11-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+                <time title="修改时间：2023-06-06 21:46:42" itemprop="dateModified" datetime="2023-06-06T21:46:42-04:00">2023-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -728,7 +813,7 @@
           <p>学习docker，自定义运行环境；收集一些信息来做参考；慢慢收集信息。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/21/docker-custom-devenv/#more" rel="contents">
+              <a class="btn" href="/2020/11/20/docker-custom-devenv/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -752,7 +837,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/18/go-FSM/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/17/go-FSM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -766,7 +851,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/18/go-FSM/" class="post-title-link" itemprop="url">go-FSM</a>
+            <a href="/2020/11/17/go-FSM/" class="post-title-link" itemprop="url">go-FSM</a>
         </h2>
 
         <div class="post-meta">
@@ -776,14 +861,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-18 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-18T00:00:00+08:00">2020-11-18</time>
+              <time title="创建时间：2020-11-17 11:00:00" itemprop="dateCreated datePublished" datetime="2020-11-17T11:00:00-05:00">2020-11-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+                <time title="修改时间：2023-06-06 21:46:42" itemprop="dateModified" datetime="2023-06-06T21:46:42-04:00">2023-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -813,7 +898,7 @@
           <p>使用FSM（Finite State Machine）来制作怪物的AI，比较轻量级；</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/18/go-FSM/#more" rel="contents">
+              <a class="btn" href="/2020/11/17/go-FSM/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -837,7 +922,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/18/go[3]-%E6%8E%A5%E5%8F%A3/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/17/go[3]-%E6%8E%A5%E5%8F%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -851,7 +936,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/18/go%5B3%5D-%E6%8E%A5%E5%8F%A3/" class="post-title-link" itemprop="url">go[3]-接口</a>
+            <a href="/2020/11/17/go%5B3%5D-%E6%8E%A5%E5%8F%A3/" class="post-title-link" itemprop="url">go[3]-接口</a>
         </h2>
 
         <div class="post-meta">
@@ -861,14 +946,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-18 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-18T00:00:00+08:00">2020-11-18</time>
+              <time title="创建时间：2020-11-17 11:00:00" itemprop="dateCreated datePublished" datetime="2020-11-17T11:00:00-05:00">2020-11-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-07 09:46:42" itemprop="dateModified" datetime="2023-06-07T09:46:42+08:00">2023-06-07</time>
+                <time title="修改时间：2023-06-06 21:46:42" itemprop="dateModified" datetime="2023-06-06T21:46:42-04:00">2023-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -898,94 +983,7 @@
           <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>接口是对类型行为的抽象和概括。接口抽象的方法可以让我们函数更加灵活和适应性。中间只定义了函数类型。接口就是约定。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/18/go%5B3%5D-%E6%8E%A5%E5%8F%A3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/18/go[4]-gogrutines/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/18/go%5B4%5D-gogrutines/" class="post-title-link" itemprop="url">go[4]-goroutine</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-18 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-18T00:00:00+08:00">2020-11-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-21 15:49:02" itemprop="dateModified" datetime="2023-08-21T15:49:02+08:00">2023-08-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>go语言中的并发程序通过两种手段来实现。goroutine和channel。顺序通讯进程（communicating sequential processes）简称CSP.</p>
-<p>并发（concurrency）：逻辑上具备同时处理多个任务的能力。</p>
-<p>并行（parallelism）：物理上再统一时刻执行多个并发任务。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/18/go%5B4%5D-gogrutines/#more" rel="contents">
+              <a class="btn" href="/2020/11/17/go%5B3%5D-%E6%8E%A5%E5%8F%A3/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1076,7 +1074,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">156</span>
+          <span class="site-state-item-count">157</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1088,7 +1086,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1217,12 +1215,65 @@ if (document.querySelectorAll('pre.mermaid').length) {
     });
   }, window.mermaid);
 }
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
 </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-
-  
-
-  
+    
 
   
 

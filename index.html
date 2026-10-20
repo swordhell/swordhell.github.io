@@ -156,7 +156,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/08/21/go-1.27-features/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/10/20/cross_platform_edge_audio_recording_guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -170,7 +170,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/08/21/go-1.27-features/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2026/10/20/cross_platform_edge_audio_recording_guide/" class="post-title-link" itemprop="url">跨平台浏览器纯净音频内录指南</a>
         </h2>
 
         <div class="post-meta">
@@ -181,7 +181,93 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2026-08-21 10:25:15 / 修改时间：10:44:50" itemprop="dateCreated datePublished" datetime="2026-08-21T10:25:15+08:00">2026-08-21</time>
+              <time title="创建时间：2026-10-20 00:00:00 / 修改时间：00:09:03" itemprop="dateCreated datePublished" datetime="2026-10-20T00:00:00-04:00">2026-10-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>在日常学习、技术调研与素材整理中，我们经常需要在浏览器（如 Microsoft Edge / Chrome）中播放媒体（如 B 站视频、技术公开课、网络播客），并希望将其内录为高品质音频文件（MP3 / WAV / WebM）。</p>
+<p>然而在实际操作中，常规录制方式往往面临诸多痛点：</p>
+<ol>
+<li><strong>外放麦克风录制</strong>：会混入机械键盘声、环境底噪以及房间混响，音质损失严重；</li>
+<li><strong>系统全局混音录制</strong>：容易将微信、钉钉通知、邮件提醒或系统弹窗提示音一并录入；</li>
+<li><strong>平台底层差异</strong>：Windows 原生支持 WASAPI 声卡回环（Loopback），而 macOS 出于隐私安全限制，对应用内录有严格权限管控，导致跨平台方案难以统一。</li>
+</ol>
+<p>针对上述问题，本文梳理一套<strong>全平台通用的纯净内录方案</strong>：借助 Edge/Chromium 原生提供的 <code>chrome.tabCapture</code> API 编写轻量扩展，直接在浏览器数字音频合成层截取目标标签页的数据流。实现<strong>免驱动、跨平台（Mac/Windows 完全统一）、零杂音干扰</strong>的高品质内录体验。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/10/20/cross_platform_edge_audio_recording_guide/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/08/20/go-1.27-features/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/08/20/go-1.27-features/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-08-20 22:25:15 / 修改时间：22:44:50" itemprop="dateCreated datePublished" datetime="2026-08-20T22:25:15-04:00">2026-08-20</time>
             </span>
 
           
@@ -992,7 +1078,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/08/06/go-1.18-20-features/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/08/05/go-1.18-20-features/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1006,7 +1092,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/08/06/go-1.18-20-features/" class="post-title-link" itemprop="url">go-1.18-20-features</a>
+            <a href="/2026/08/05/go-1.18-20-features/" class="post-title-link" itemprop="url">go-1.18-20-features</a>
         </h2>
 
         <div class="post-meta">
@@ -1017,7 +1103,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2026-08-06 00:00:00 / 修改时间：10:06:29" itemprop="dateCreated datePublished" datetime="2026-08-06T00:00:00+08:00">2026-08-06</time>
+              <time title="创建时间：2026-08-05 12:00:00 / 修改时间：22:06:29" itemprop="dateCreated datePublished" datetime="2026-08-05T12:00:00-04:00">2026-08-05</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1082,7 +1168,7 @@
 </div>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2026/08/06/go-1.18-20-features/#more" rel="contents">
+              <a class="btn" href="/2026/08/05/go-1.18-20-features/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1106,7 +1192,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/07/27/%E6%9C%9F%E8%B4%A7%20-%20DEX%20%E6%B0%B8%E7%BB%AD%E5%90%88%E7%BA%A6%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/07/26/%E6%9C%9F%E8%B4%A7%20-%20DEX%20%E6%B0%B8%E7%BB%AD%E5%90%88%E7%BA%A6%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1120,7 +1206,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/07/27/%E6%9C%9F%E8%B4%A7%20-%20DEX%20%E6%B0%B8%E7%BB%AD%E5%90%88%E7%BA%A6%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">期货 - DEX 永续合约核心概念</a>
+            <a href="/2026/07/26/%E6%9C%9F%E8%B4%A7%20-%20DEX%20%E6%B0%B8%E7%BB%AD%E5%90%88%E7%BA%A6%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">期货 - DEX 永续合约核心概念</a>
         </h2>
 
         <div class="post-meta">
@@ -1129,10 +1215,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2026-07-27 00:00:00 / 修改时间：14:39:54" itemprop="dateCreated datePublished" datetime="2026-07-27T00:00:00+08:00">2026-07-27</time>
+              <time title="创建时间：2026-07-26 12:00:00" itemprop="dateCreated datePublished" datetime="2026-07-26T12:00:00-04:00">2026-07-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-07-27 02:39:54" itemprop="dateModified" datetime="2026-07-27T02:39:54-04:00">2026-07-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1333,7 +1425,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/06/12/jq%20%E5%AE%8C%E5%85%A8%E6%95%99%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/06/11/jq%20%E5%AE%8C%E5%85%A8%E6%95%99%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1347,7 +1439,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/06/12/jq%20%E5%AE%8C%E5%85%A8%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">jq 完全教程</a>
+            <a href="/2026/06/11/jq%20%E5%AE%8C%E5%85%A8%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">jq 完全教程</a>
         </h2>
 
         <div class="post-meta">
@@ -1356,10 +1448,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2026-06-12 00:00:00 / 修改时间：14:15:18" itemprop="dateCreated datePublished" datetime="2026-06-12T00:00:00+08:00">2026-06-12</time>
+              <time title="创建时间：2026-06-11 12:00:00" itemprop="dateCreated datePublished" datetime="2026-06-11T12:00:00-04:00">2026-06-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-06-12 02:15:18" itemprop="dateModified" datetime="2026-06-12T02:15:18-04:00">2026-06-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1391,7 +1489,7 @@
 <p>jq 是 Linux&#x2F;macOS 下最强大的 JSON 命令行处理工具。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2026/06/12/jq%20%E5%AE%8C%E5%85%A8%E6%95%99%E7%A8%8B/#more" rel="contents">
+              <a class="btn" href="/2026/06/11/jq%20%E5%AE%8C%E5%85%A8%E6%95%99%E7%A8%8B/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1415,7 +1513,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/04/15/%E9%83%A8%E7%BD%B2harbor/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/04/14/%E9%83%A8%E7%BD%B2harbor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1429,7 +1527,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/04/15/%E9%83%A8%E7%BD%B2harbor/" class="post-title-link" itemprop="url">部署harbor</a>
+            <a href="/2026/04/14/%E9%83%A8%E7%BD%B2harbor/" class="post-title-link" itemprop="url">部署harbor</a>
         </h2>
 
         <div class="post-meta">
@@ -1440,7 +1538,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2026-04-15 00:00:00 / 修改时间：06:58:57" itemprop="dateCreated datePublished" datetime="2026-04-15T00:00:00+08:00">2026-04-15</time>
+              <time title="创建时间：2026-04-14 12:00:00 / 修改时间：18:58:57" itemprop="dateCreated datePublished" datetime="2026-04-14T12:00:00-04:00">2026-04-14</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1470,7 +1568,7 @@
           <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>部署harbor；</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2026/04/15/%E9%83%A8%E7%BD%B2harbor/#more" rel="contents">
+              <a class="btn" href="/2026/04/14/%E9%83%A8%E7%BD%B2harbor/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1494,7 +1592,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/02/03/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1508,7 +1606,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/" class="post-title-link" itemprop="url">调查服务器CPU过高</a>
+            <a href="/2026/02/03/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/" class="post-title-link" itemprop="url">调查服务器CPU过高</a>
         </h2>
 
         <div class="post-meta">
@@ -1519,7 +1617,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2026-02-04 00:00:00 / 修改时间：08:57:37" itemprop="dateCreated datePublished" datetime="2026-02-04T00:00:00+08:00">2026-02-04</time>
+              <time title="创建时间：2026-02-03 11:00:00 / 修改时间：19:57:37" itemprop="dateCreated datePublished" datetime="2026-02-03T11:00:00-05:00">2026-02-03</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1635,7 +1733,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/01/16/open-code%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1649,7 +1747,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">open-code学习</a>
+            <a href="/2026/01/16/open-code%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">open-code学习</a>
         </h2>
 
         <div class="post-meta">
@@ -1659,14 +1757,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2026-01-17 00:00:00" itemprop="dateCreated datePublished" datetime="2026-01-17T00:00:00+08:00">2026-01-17</time>
+              <time title="创建时间：2026-01-16 11:00:00" itemprop="dateCreated datePublished" datetime="2026-01-16T11:00:00-05:00">2026-01-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-04-27 20:37:55" itemprop="dateModified" datetime="2026-04-27T20:37:55+08:00">2026-04-27</time>
+                <time title="修改时间：2026-04-27 08:37:55" itemprop="dateModified" datetime="2026-04-27T08:37:55-04:00">2026-04-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1703,7 +1801,7 @@
 <p>OpenCode 最大的吸引力在于它的开放性和多场景支持，不仅支持完全本地化的模型部署，还支持 75+ 种 LLM 提供商，如 Anthropic、Github Copilot、OpenAI、Google、智谱 AI 等。使用起来更加灵活。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/#more" rel="contents">
+              <a class="btn" href="/2026/01/16/open-code%E5%AD%A6%E4%B9%A0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1727,7 +1825,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/12/14/mermaid/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/12/13/mermaid/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1741,7 +1839,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/12/14/mermaid/" class="post-title-link" itemprop="url">mermaid</a>
+            <a href="/2025/12/13/mermaid/" class="post-title-link" itemprop="url">mermaid</a>
         </h2>
 
         <div class="post-meta">
@@ -1751,14 +1849,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-12-14 00:00:00" itemprop="dateCreated datePublished" datetime="2025-12-14T00:00:00+08:00">2025-12-14</time>
+              <time title="创建时间：2025-12-13 11:00:00" itemprop="dateCreated datePublished" datetime="2025-12-13T11:00:00-05:00">2025-12-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-12-15 08:03:17" itemprop="dateModified" datetime="2025-12-15T08:03:17+08:00">2025-12-15</time>
+                <time title="修改时间：2025-12-14 19:03:17" itemprop="dateModified" datetime="2025-12-14T19:03:17-05:00">2025-12-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1788,7 +1886,7 @@
           <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Mermaid 是一个基于 JavaScript 的图表绘制工具。它的核心理念是：<strong>用简单的文本和 Markdown 类似的语法，就能快速生成各种专业图表</strong>。 无论您是写技术文档、项目报告，还是仅仅想在 GitHub Readme 中展示流程，Mermaid 都是一个极佳的选择，因为它能直接集成到 Markdown 文件中。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2025/12/14/mermaid/#more" rel="contents">
+              <a class="btn" href="/2025/12/13/mermaid/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1812,7 +1910,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/10/29/2025-10-29-go-json-custom-field/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/10/28/2025-10-29-go-json-custom-field/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1826,7 +1924,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/10/29/2025-10-29-go-json-custom-field/" class="post-title-link" itemprop="url">go-json-custom-field</a>
+            <a href="/2025/10/28/2025-10-29-go-json-custom-field/" class="post-title-link" itemprop="url">go-json-custom-field</a>
         </h2>
 
         <div class="post-meta">
@@ -1837,7 +1935,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-10-29 00:00:00 / 修改时间：11:36:36" itemprop="dateCreated datePublished" datetime="2025-10-29T00:00:00+08:00">2025-10-29</time>
+              <time title="创建时间：2025-10-28 12:00:00 / 修改时间：23:36:36" itemprop="dateCreated datePublished" datetime="2025-10-28T12:00:00-04:00">2025-10-28</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1867,95 +1965,7 @@
           <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2025/10/29/2025-10-29-go-json-custom-field/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/10/22/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/22/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/" class="post-title-link" itemprop="url">gorm与postgreSQL里面time</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-10-22 00:00:00" itemprop="dateCreated datePublished" datetime="2025-10-22T00:00:00+08:00">2025-10-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-11-18 22:12:52" itemprop="dateModified" datetime="2025-11-18T22:12:52+08:00">2025-11-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>最近项目里面的按照时区来计算的时候存在少计算了8小时的问题；</p>
-<p>timestamptz 是 PostgreSQL 中的一种时间&#x2F;日期类型，完整名称是 timestamp with time zone。它和普通的 timestamp（即 timestamp without time zone）有一些区别：</p>
-<p>timestamptz 带时区的时间戳（推荐）PostgreSQL 内部会存储为 UTC 时间；查询时会根据你的 会话时区（TimeZone 配置） 自动转换显示；</p>
-<p>timestamp：不带时区；只存储一个绝对时间，不做时区转换；</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/10/22/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/#more" rel="contents">
+              <a class="btn" href="/2025/10/28/2025-10-29-go-json-custom-field/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -2046,7 +2056,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">156</span>
+          <span class="site-state-item-count">157</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2058,7 +2068,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
