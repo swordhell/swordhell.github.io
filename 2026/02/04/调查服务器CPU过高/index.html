@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="CPU“偶尔飙高”这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。 你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。 ⸻ 一、先搞清楚：CPU 是“谁”在高？ 1️⃣ 实时看（马上用） top 重点看这几列：    •    %CPU：谁在吃    •    us &#x2F; sy &#x2F; wa    •    us 高：用户态程">
+  <meta name="description" content="**CPU“偶尔飙高”**这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。 你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。 ⸻ 一、先搞清楚：CPU 是“谁”在高？ 1️⃣ 实时看（马上用） top 重点看这几列：	•	%CPU：谁在吃	•	us &#x2F; sy &#x2F; wa	•	us 高：用户态程序（你的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调查服务器CPU过高">
 <meta property="og:url" content="https://swordhell.github.io/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/index.html">
 <meta property="og:site_name" content="Abel&#39;Blog">
-<meta property="og:description" content="CPU“偶尔飙高”这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。 你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。 ⸻ 一、先搞清楚：CPU 是“谁”在高？ 1️⃣ 实时看（马上用） top 重点看这几列：    •    %CPU：谁在吃    •    us &#x2F; sy &#x2F; wa    •    us 高：用户态程">
+<meta property="og:description" content="**CPU“偶尔飙高”**这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。 你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。 ⸻ 一、先搞清楚：CPU 是“谁”在高？ 1️⃣ 实时看（马上用） top 重点看这几列：	•	%CPU：谁在吃	•	us &#x2F; sy &#x2F; wa	•	us 高：用户态程序（你的">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-02-04T05:00:00.000Z">
 <meta property="article:modified_time" content="2026-02-04T00:57:37.748Z">
@@ -226,14 +226,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>CPU“偶尔飙高”</strong>这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。</p>
+        <p>**CPU“偶尔飙高”**这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。</p>
 <p>你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。</p>
 <p>⸻</p>
 <p>一、先搞清楚：CPU 是“谁”在高？</p>
 <p>1️⃣ 实时看（马上用）</p>
 <p>top</p>
-<p>重点看这几列：<br>    •    %CPU：谁在吃<br>    •    us / sy / wa<br>    •    us 高：用户态程序（你的服务、Java、Go、Node）<br>    •    sy 高：内核 / 系统调用<br>    •    wa 高：I/O 卡住（磁盘 / 网络）</p>
-<p>👉 如果你看到的是 Java 300% / postgres 200%，事情就简单多了。</p>
+<p>重点看这几列：<br>	•	%CPU：谁在吃<br>	•	us &#x2F; sy &#x2F; wa<br>	•	us 高：用户态程序（你的服务、Java、Go、Node）<br>	•	sy 高：内核 &#x2F; 系统调用<br>	•	wa 高：I&#x2F;O 卡住（磁盘 &#x2F; 网络）</p>
+<p>👉 如果你看到的是 Java 300% &#x2F; postgres 200%，事情就简单多了。</p>
 <p>更推荐：</p>
 <p>htop</p>
 <p>（可视化 + 能看到线程）</p>
@@ -249,42 +249,44 @@
 <p>1️⃣ 开启 sysstat（非常重要）</p>
 <p>systemctl enable sysstat<br>systemctl start sysstat</p>
 <p>它会每 10 分钟自动采样一次，数据保存在：</p>
-<p>/var/log/sysstat/</p>
+<p>&#x2F;var&#x2F;log&#x2F;sysstat&#x2F;</p>
 <p>⸻</p>
 <p>2️⃣ 事后回看 CPU 历史（关键）</p>
 <p>看某一天 CPU 是否异常：</p>
-<p>sar -u -f /var/log/sysstat/sa05</p>
-<p>重点关注：<br>    •    %usr<br>    •    %sys<br>    •    %iowait<br>    •    %idle</p>
+<p>sar -u -f &#x2F;var&#x2F;log&#x2F;sysstat&#x2F;sa05</p>
+<p>重点关注：<br>	•	%usr<br>	•	%sys<br>	•	%iowait<br>	•	%idle</p>
 <p>如果 %idle 掉到 0，那就是满负载了。</p>
 <p>⸻</p>
 <p>五、定位到“哪个进程”</p>
 <p>1️⃣ 看历史中哪个进程吃 CPU（神器）</p>
-<p>sar -q -f /var/log/sysstat/sa05</p>
+<p>sar -q -f &#x2F;var&#x2F;log&#x2F;sysstat&#x2F;sa05</p>
 <p>2️⃣ 按进程统计（更狠）</p>
 <p>pidstat -u 1</p>
-<p>持续输出：<br>    •    哪个 PID<br>    •    每秒吃多少 CPU</p>
-<p>如果你怀疑是 Java / PostgreSQL：</p>
+<p>持续输出：<br>	•	哪个 PID<br>	•	每秒吃多少 CPU</p>
+<p>如果你怀疑是 Java &#x2F; PostgreSQL：</p>
 <p>pidstat -u -p $(pgrep java) 1<br>pidstat -u -p $(pgrep postgres) 1</p>
 <p>⸻</p>
 <p>六、CPU 高的时候自动抓现场（推荐你一定要做）</p>
 <p>方案：超过 80% 自动记录 top</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">&#x27;EOF&#x27;</span> &gt; /root/cpu_watch.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">  CPU=$(top -bn1 | awk <span class="string">&#x27;/Cpu/ &#123;print 100 - $8&#125;&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> (( $(echo &quot;<span class="variable">$CPU</span> &gt; <span class="number">80</span>&quot; | bc -l) )); <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;==== <span class="subst">$(date)</span> CPU=<span class="variable">$CPU</span> ====&quot;</span> &gt;&gt; /var/log/cpu_spike.log</span><br><span class="line">    top -b -n 1 &gt;&gt; /var/log/cpu_spike.log</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">sleep</span> 10</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x /root/cpu_watch.sh</span><br><span class="line"><span class="built_in">nohup</span> /root/cpu_watch.sh &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>📌 你之后只需要看：</p>
 <p><code>less /var/log/cpu_spike.log</code></p>
 <p>就能知道：</p>
 <p>是哪一个进程、哪个线程，把 CPU 干爆了</p>
 <p>⸻</p>
-<p>七、如果是 Java / Go / PostgreSQL（你很可能会遇到）</p>
-<p>🔥 Java<br>    •    top 里看到 Java 高<br>    •    用：</p>
+<p>七、如果是 Java &#x2F; Go &#x2F; PostgreSQL（你很可能会遇到）</p>
+<p>🔥 Java<br>	•	top 里看到 Java 高<br>	•	用：</p>
 <p>top -H -p <pid></pid></p>
 <p>找线程 → 再用 jstack</p>
 <p>⸻</p>
 <p>🔥 PostgreSQL（你最近就老在搞这个 😄）</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pid, query, state</span><br><span class="line"><span class="keyword">FROM</span> pg_stat_activity</span><br><span class="line"><span class="keyword">WHERE</span> state <span class="operator">!=</span> <span class="string">&#x27;idle&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
 <p>配合系统：</p>
 <p><code>pidstat -u -p $(pgrep postgres) 1</code></p>
 <p>⸻</p>
-<p>🔥 Go 程序<br>    •    大概率是：<br>    •    死循环<br>    •    goroutine 泄露<br>    •    GC 抖动<br>    •    可以临时加：</p>
+<p>🔥 Go 程序<br>	•	大概率是：<br>	•	死循环<br>	•	goroutine 泄露<br>	•	GC 抖动<br>	•	可以临时加：</p>
 <p><code>curl http://localhost:6060/debug/pprof/profile?seconds=30 &gt; cpu.pprof</code></p>
 <p>⸻</p>
 <p>八、我给你一个最省事组合</p>
@@ -293,7 +295,7 @@
 <p>这三样，99% 的 CPU 问题都能破案</p>
 <p>⸻</p>
 <p>九、下一步我可以直接帮你“对症下药”</p>
-<p>你可以直接告诉我其中一个👇<br>    •    CPU 高的时候 top 里看到的进程名<br>    •    是 Java / PostgreSQL / Go / Node<br>    •    是 us 高 / sy 高 / wa 高</p>
+<p>你可以直接告诉我其中一个👇<br>	•	CPU 高的时候 top 里看到的进程名<br>	•	是 Java &#x2F; PostgreSQL &#x2F; Go &#x2F; Node<br>	•	是 us 高 &#x2F; sy 高 &#x2F; wa 高</p>
 
     </div>
 
@@ -394,7 +396,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">161</span>
+          <span class="site-state-item-count">158</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

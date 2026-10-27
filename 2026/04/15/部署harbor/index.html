@@ -228,14 +228,15 @@
       
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>部署harbor；</p>
 <span id="more"></span>
+
 <p>Harbor 私有镜像仓库部署指南（含常用资源整理）</p>
 <p>一、Harbor 简介</p>
-<p>Harbor 是一个开源的企业级 Docker Registry，提供：<br>    •    镜像仓库存储与管理<br>    •    权限控制（RBAC）<br>    •    镜像扫描（漏洞检测）<br>    •    Helm Chart 管理<br>    •    多实例复制（跨机房同步）</p>
+<p>Harbor 是一个开源的企业级 Docker Registry，提供：<br>	•	镜像仓库存储与管理<br>	•	权限控制（RBAC）<br>	•	镜像扫描（漏洞检测）<br>	•	Helm Chart 管理<br>	•	多实例复制（跨机房同步）</p>
 <p>官方项目地址：<br>👉 <a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor">https://github.com/goharbor/harbor</a></p>
 <p>⸻</p>
 <p>二、部署方式选择</p>
 <p>Harbor 提供两种安装方式：</p>
-<p>方式    特点<br>在线安装（Online Installer）    需要联网下载镜像<br>离线安装（Offline Installer）    适合生产环境（推荐）</p>
+<p>方式	特点<br>在线安装（Online Installer）	需要联网下载镜像<br>离线安装（Offline Installer）	适合生产环境（推荐）</p>
 <p>👉 建议：生产环境直接用离线版</p>
 <p>⸻</p>
 <p>三、常用资源（建议收藏）</p>
@@ -243,31 +244,31 @@
 <li>Harbor 官方<br> •    官网：<a target="_blank" rel="noopener" href="https://goharbor.io/">https://goharbor.io/</a><br> •    GitHub：<a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor">https://github.com/goharbor/harbor</a><br> •    Releases：<a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor/releases">https://github.com/goharbor/harbor/releases</a></li>
 </ol>
 <p>⸻</p>
-<ol>
+<ol start="2">
 <li>Docker 相关<br> •    Docker 官网<br><a target="_blank" rel="noopener" href="https://www.docker.com/">https://www.docker.com/</a><br> •    Docker Hub（镜像仓库）<br><a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com/</a></li>
 </ol>
 <p>⸻</p>
-<ol>
-<li>TLS / 证书<br> •    Let’s Encrypt<br><a target="_blank" rel="noopener" href="https://letsencrypt.org/">https://letsencrypt.org/</a><br> •    Certbot（自动申请证书）<br><a target="_blank" rel="noopener" href="https://certbot.eff.org/">https://certbot.eff.org/</a></li>
+<ol start="3">
+<li>TLS &#x2F; 证书<br> •    Let’s Encrypt<br><a target="_blank" rel="noopener" href="https://letsencrypt.org/">https://letsencrypt.org/</a><br> •    Certbot（自动申请证书）<br><a target="_blank" rel="noopener" href="https://certbot.eff.org/">https://certbot.eff.org/</a></li>
 </ol>
 <p>⸻</p>
-<ol>
+<ol start="4">
 <li>镜像加速（国内环境可用）<br> •    阿里云镜像：<a target="_blank" rel="noopener" href="https://cr.console.aliyun.com/">https://cr.console.aliyun.com/</a><br> •    腾讯云镜像：<a target="_blank" rel="noopener" href="https://mirror.ccs.tencentyun.com/">https://mirror.ccs.tencentyun.com/</a></li>
 </ol>
 <p>⸻</p>
 <p>四、环境准备</p>
 <ol>
-<li>系统要求<br> •    Linux（推荐 Ubuntu / CentOS）<br> •    Docker ≥ 20.x<br> •    Docker Compose ≥ 2.x</li>
+<li>系统要求<br> •    Linux（推荐 Ubuntu &#x2F; CentOS）<br> •    Docker ≥ 20.x<br> •    Docker Compose ≥ 2.x</li>
 </ol>
 <p>⸻</p>
-<ol>
+<ol start="2">
 <li>安装 Docker</li>
 </ol>
-<p>curl -fsSL <a target="_blank" rel="noopener" href="https://get.docker.com">https://get.docker.com</a> | bash</p>
+<p>curl -fsSL <a target="_blank" rel="noopener" href="https://get.docker.com/">https://get.docker.com</a> | bash</p>
 <p>验证：</p>
 <p>docker version</p>
 <p>⸻</p>
-<ol>
+<ol start="3">
 <li>安装 Docker Compose</li>
 </ol>
 <p>docker compose version</p>
@@ -289,36 +290,36 @@
 <p>核心配置项</p>
 <p>hostname: harbor.yourdomain.com</p>
 <p>http:<br>  port: 80</p>
-<h1 id="推荐开启-HTTPS"><a href="#推荐开启-HTTPS" class="headerlink" title="推荐开启 HTTPS"></a>推荐开启 HTTPS</h1><p>https:<br>  port: 443<br>  certificate: /data/cert/server.crt<br>  private_key: /data/cert/server.key</p>
+<h1 id="推荐开启-HTTPS"><a href="#推荐开启-HTTPS" class="headerlink" title="推荐开启 HTTPS"></a>推荐开启 HTTPS</h1><p>https:<br>  port: 443<br>  certificate: &#x2F;data&#x2F;cert&#x2F;server.crt<br>  private_key: &#x2F;data&#x2F;cert&#x2F;server.key</p>
 <p>harbor_admin_password: Harbor12345</p>
-<p>data_volume: /data</p>
+<p>data_volume: &#x2F;data</p>
 <p>⸻</p>
 <p>七、配置 HTTPS（推荐）</p>
 <p>使用 Let’s Encrypt</p>
-<p>certbot certonly —standalone -d harbor.yourdomain.com</p>
+<p>certbot certonly –standalone -d harbor.yourdomain.com</p>
 <p>证书路径：</p>
-<p>/etc/letsencrypt/live/xxx/fullchain.pem<br>/etc/letsencrypt/live/xxx/privkey.pem</p>
+<p>&#x2F;etc&#x2F;letsencrypt&#x2F;live&#x2F;xxx&#x2F;fullchain.pem<br>&#x2F;etc&#x2F;letsencrypt&#x2F;live&#x2F;xxx&#x2F;privkey.pem</p>
 <p>复制到 Harbor：</p>
-<p>mkdir -p /data/cert</p>
-<p>cp fullchain.pem /data/cert/server.crt<br>cp privkey.pem /data/cert/server.key</p>
+<p>mkdir -p &#x2F;data&#x2F;cert</p>
+<p>cp fullchain.pem &#x2F;data&#x2F;cert&#x2F;server.crt<br>cp privkey.pem &#x2F;data&#x2F;cert&#x2F;server.key</p>
 <p>⸻</p>
 <p>八、安装 Harbor</p>
 <p>执行安装脚本：</p>
-<p>./install.sh</p>
+<p>.&#x2F;install.sh</p>
 <p>如果需要 ChartMuseum：</p>
-<p>./install.sh —with-chartmuseum</p>
+<p>.&#x2F;install.sh –with-chartmuseum</p>
 <p>⸻</p>
 <p>九、启动与验证</p>
 <ol>
 <li>查看容器</li>
 </ol>
 <p>docker ps</p>
-<ol>
+<ol start="2">
 <li>访问 Web</li>
 </ol>
-<p><a target="_blank" rel="noopener" href="https://harbor.yourdomain.com">https://harbor.yourdomain.com</a></p>
+<p><a target="_blank" rel="noopener" href="https://harbor.yourdomain.com/">https://harbor.yourdomain.com</a></p>
 <p>默认账号：</p>
-<p>admin / Harbor12345</p>
+<p>admin &#x2F; Harbor12345</p>
 <p>⸻</p>
 <p>十、Docker 登录 Harbor</p>
 <ol>
@@ -326,33 +327,33 @@
 </ol>
 <p>docker login harbor.yourdomain.com</p>
 <p>⸻</p>
-<ol>
+<ol start="2">
 <li>打 tag</li>
 </ol>
-<p>docker tag nginx harbor.yourdomain.com/library/nginx:latest</p>
+<p>docker tag nginx harbor.yourdomain.com&#x2F;library&#x2F;nginx:latest</p>
 <p>⸻</p>
-<ol>
+<ol start="3">
 <li>推送</li>
 </ol>
-<p>docker push harbor.yourdomain.com/library/nginx:latest</p>
+<p>docker push harbor.yourdomain.com&#x2F;library&#x2F;nginx:latest</p>
 <p>⸻</p>
 <p>十一、常见问题（踩坑总结）</p>
 <p>❌ 1. 403 Forbidden（你刚遇到的）</p>
-<p>常见原因：<br>    •    用户权限不足<br>    •    project 不存在<br>    •    登录用户不一致（root vs 普通用户）</p>
+<p>常见原因：<br>	•	用户权限不足<br>	•	project 不存在<br>	•	登录用户不一致（root vs 普通用户）</p>
 <p>👉 重点检查：</p>
-<p>cat ~/.docker/config.json</p>
+<p>cat ~&#x2F;.docker&#x2F;config.json</p>
 <p>不同用户的登录信息是隔离的！</p>
 <p>⸻</p>
 <p>❌ 2. 登录失败（HTTPS 问题）</p>
 <p>如果是自签证书：</p>
-<p>vim /etc/docker/daemon.json</p>
+<p>vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</p>
 <p>{<br>  “insecure-registries”: [“harbor.yourdomain.com”]<br>}</p>
 <p>然后：</p>
 <p>systemctl restart docker</p>
 <p>⸻</p>
 <p>❌ 3. Harbor 升级问题</p>
-<p>你刚遇到的点很典型：<br>    •    Web UI 用户异常<br>    •    数据不一致</p>
-<p>👉 建议：<br>    •    同版本升级（不要跨大版本）<br>    •    或直接重装（简单粗暴更稳）</p>
+<p>你刚遇到的点很典型：<br>	•	Web UI 用户异常<br>	•	数据不一致</p>
+<p>👉 建议：<br>	•	同版本升级（不要跨大版本）<br>	•	或直接重装（简单粗暴更稳）</p>
 <p>⸻</p>
 <p>十二、Harbor 常用运维命令</p>
 <p>停止 Harbor</p>
@@ -366,25 +367,25 @@
 <ol>
 <li>数据目录</li>
 </ol>
-<p>/data</p>
+<p>&#x2F;data</p>
 <p>👉 一定要挂载磁盘（避免丢数据）</p>
 <p>⸻</p>
-<ol>
+<ol start="2">
 <li>备份</li>
 </ol>
-<p>/data/database<br>/data/registry</p>
+<p>&#x2F;data&#x2F;database<br>&#x2F;data&#x2F;registry</p>
 <p>⸻</p>
-<ol>
+<ol start="3">
 <li>权限管理<br> •    不要直接用 admin<br> •    创建项目级用户</li>
 </ol>
 <p>⸻</p>
 <p>十四、总结</p>
-<p>Harbor 的核心价值：<br>    •    私有仓库（安全）<br>    •    权限控制（企业级）<br>    •    可扩展（复制 / 扫描）</p>
+<p>Harbor 的核心价值：<br>	•	私有仓库（安全）<br>	•	权限控制（企业级）<br>	•	可扩展（复制 &#x2F; 扫描）</p>
 <p>👉 实际经验一句话总结：</p>
 <p>Harbor 本身不难，难的是 证书 + 权限 + 版本升级</p>
 <p>⸻</p>
 <p>如果你要进阶（我可以帮你继续写）</p>
-<p>可以继续补：<br>    •    Harbor + Nginx 反向代理<br>    •    Harbor 高可用（HA）<br>    •    Harbor + Kubernetes（Helm）<br>    •    Harbor 自动清理策略<br>    •    Harbor 多节点复制（跨机房）</p>
+<p>可以继续补：<br>	•	Harbor + Nginx 反向代理<br>	•	Harbor 高可用（HA）<br>	•	Harbor + Kubernetes（Helm）<br>	•	Harbor 自动清理策略<br>	•	Harbor 多节点复制（跨机房）</p>
 
     </div>
 
@@ -485,7 +486,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">161</span>
+          <span class="site-state-item-count">158</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

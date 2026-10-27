@@ -223,8 +223,9 @@
         <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>下面这份文档适合作为技术博客文章，覆盖了 jq 从入门到实战的大部分常用场景，并且尽量结合 DevOps、区块链节点运维、日志分析等实际工作场景。</p>
 <p>jq 完全教程：JSON 处理神器从入门到实战</p>
 <p>什么是 jq</p>
-<p>jq 是 Linux/macOS 下最强大的 JSON 命令行处理工具。</p>
+<p>jq 是 Linux&#x2F;macOS 下最强大的 JSON 命令行处理工具。</p>
 <span id="more"></span>
+
 <p>如果说：</p>
 <ul>
 <li>grep 处理文本</li>
@@ -234,7 +235,7 @@
 <p>那么：</p>
 <p>jq 就是专门处理 JSON 的神器。</p>
 <p>官方网站：</p>
-<p><a target="_blank" rel="noopener" href="https://jqlang.org">https://jqlang.org</a></p>
+<p><a target="_blank" rel="noopener" href="https://jqlang.org/">https://jqlang.org</a></p>
 <p>安装：</p>
 <p>macOS</p>
 <p>brew install jq</p>
@@ -243,7 +244,7 @@
 <p>CentOS</p>
 <p>yum install jq</p>
 <p>验证：</p>
-<p>jq —version</p>
+<p>jq –version</p>
 <p>输出：</p>
 <p>jq-1.7</p>
 <p>⸻</p>
@@ -381,7 +382,7 @@
 <p>原始：</p>
 <p>{<br>  “name”:”Tom”,<br>  “age”:18<br>}</p>
 <p>修改：</p>
-<p>jq ‘.age=20’</p>
+<p>jq ‘.age&#x3D;20’</p>
 <p>输出：</p>
 <p>{<br>  “name”:”Tom”,<br>  “age”:20<br>}</p>
 <p>⸻</p>
@@ -404,7 +405,7 @@
 <p>输出：</p>
 <p>73</p>
 <p>平均值：</p>
-<p>jq ‘[.[].age] | add / length’</p>
+<p>jq ‘[.[].age] | add &#x2F; length’</p>
 <p>输出：</p>
 <p>24.333333333333332</p>
 <p>⸻</p>
@@ -416,7 +417,7 @@
 <p>⸻</p>
 <p>实战：调用 RPC</p>
 <p>获取区块高度：</p>
-<p>curl -s \<br>-H “Content-Type: application/json” \<br>-d ‘{“jsonrpc”:”2.0”,”id”:1,”method”:”eth_blockNumber”,”params”:[]}’ \<br><a target="_blank" rel="noopener" href="https://rpc.consciousnesschain.com">https://rpc.consciousnesschain.com</a> \<br>| jq -r ‘.result’</p>
+<p>curl -s <br>-H “Content-Type: application&#x2F;json” <br>-d ‘{“jsonrpc”:”2.0”,”id”:1,”method”:”eth_blockNumber”,”params”:[]}’ <br><a target="_blank" rel="noopener" href="https://rpc.consciousnesschain.com/">https://rpc.consciousnesschain.com</a> <br>| jq -r ‘.result’</p>
 <p>输出：</p>
 <p>0x1d4c</p>
 <p>转换十进制：</p>
@@ -430,9 +431,9 @@
 <p>⸻</p>
 <p>实战：Kubernetes</p>
 <p>获取 Pod 名称：</p>
-<p>kubectl get pods -o json \<br>| jq -r ‘.items[].metadata.name’</p>
+<p>kubectl get pods -o json <br>| jq -r ‘.items[].metadata.name’</p>
 <p>获取所有镜像：</p>
-<p>kubectl get pods -o json \<br>| jq -r ‘.items[].spec.containers[].image’</p>
+<p>kubectl get pods -o json <br>| jq -r ‘.items[].spec.containers[].image’</p>
 <p>⸻</p>
 <p>实战：Prometheus</p>
 <p>查询结果：</p>
@@ -447,7 +448,7 @@
 <p>日志：</p>
 <p>{“level”:”info”}<br>{“level”:”error”}<br>{“level”:”warn”}<br>{“level”:”error”}</p>
 <p>统计：</p>
-<p>jq -r ‘.level’ log.json \<br>| sort \<br>| uniq -c</p>
+<p>jq -r ‘.level’ log.json <br>| sort <br>| uniq -c</p>
 <p>输出：</p>
 <p>2 error<br>1 info<br>1 warn</p>
 <p>⸻</p>
@@ -457,33 +458,33 @@
 <p>输出：</p>
 <p>{<br>  “login”: “torvalds”,<br>  “id”: 1024025,<br>  …<br>}</p>
 <p>获取用户名：</p>
-<p>curl -s <a target="_blank" rel="noopener" href="https://api.github.com/users/torvalds">https://api.github.com/users/torvalds</a> \<br>| jq -r ‘.login’</p>
+<p>curl -s <a target="_blank" rel="noopener" href="https://api.github.com/users/torvalds">https://api.github.com/users/torvalds</a> <br>| jq -r ‘.login’</p>
 <p>输出：</p>
 <p>torvalds</p>
 <p>获取仓库数量：</p>
-<p>curl -s <a target="_blank" rel="noopener" href="https://api.github.com/users/torvalds">https://api.github.com/users/torvalds</a> \<br>| jq ‘.public_repos’</p>
+<p>curl -s <a target="_blank" rel="noopener" href="https://api.github.com/users/torvalds">https://api.github.com/users/torvalds</a> <br>| jq ‘.public_repos’</p>
 <p>⸻</p>
 <p>实战：Docker</p>
 <p>查看容器名称：</p>
-<p>docker inspect nginx \<br>| jq -r ‘.[0].Name’</p>
+<p>docker inspect nginx <br>| jq -r ‘.[0].Name’</p>
 <p>查看 IP：</p>
-<p>docker inspect nginx \<br>| jq -r ‘.[0].NetworkSettings.IPAddress’</p>
+<p>docker inspect nginx <br>| jq -r ‘.[0].NetworkSettings.IPAddress’</p>
 <p>查看挂载目录：</p>
-<p>docker inspect nginx \<br>| jq ‘.[0].Mounts’</p>
+<p>docker inspect nginx <br>| jq ‘.[0].Mounts’</p>
 <p>⸻</p>
 <p>实战：Kubernetes</p>
 <p>查看所有 Pod：</p>
-<p>kubectl get pods -o json \<br>| jq -r ‘.items[].metadata.name’</p>
+<p>kubectl get pods -o json <br>| jq -r ‘.items[].metadata.name’</p>
 <p>查看所有镜像：</p>
-<p>kubectl get pods -o json \<br>| jq -r ‘.items[].spec.containers[].image’</p>
+<p>kubectl get pods -o json <br>| jq -r ‘.items[].spec.containers[].image’</p>
 <p>查看 Pod 状态：</p>
-<p>kubectl get pods -o json \<br>| jq -r ‘.items[] | [.metadata.name,.status.phase] | @tsv’</p>
+<p>kubectl get pods -o json <br>| jq -r ‘.items[] | [.metadata.name,.status.phase] | @tsv’</p>
 <p>输出：</p>
 <p>api-server      Running<br>mysql           Running<br>redis           Pending</p>
 <p>⸻</p>
 <p>实战：Prometheus</p>
 <p>查询指标：</p>
-<p>curl -s <a target="_blank" rel="noopener" href="http://localhost:9090/api/v1/query">http://localhost:9090/api/v1/query</a> \<br>—data-urlencode ‘query=up’ \<br>| jq</p>
+<p>curl -s <a target="_blank" rel="noopener" href="http://localhost:9090/api/v1/query">http://localhost:9090/api/v1/query</a> <br>–data-urlencode ‘query&#x3D;up’ <br>| jq</p>
 <p>获取指标值：</p>
 <p>jq -r ‘.data.result[].value[1]’</p>
 <p>⸻</p>
@@ -493,13 +494,13 @@
 <p>筛选慢请求：</p>
 <p>jq ‘select(.request_time &gt; 1)’</p>
 <p>筛选错误请求：</p>
-<p>jq ‘select(.status &gt;= 500)’</p>
+<p>jq ‘select(.status &gt;&#x3D; 500)’</p>
 <p>⸻</p>
 <p>实战：统计日志等级</p>
 <p>日志：</p>
 <p>{“level”:”info”}<br>{“level”:”error”}<br>{“level”:”warn”}<br>{“level”:”error”}</p>
 <p>统计：</p>
-<p>jq -r ‘.level’ app.log \<br>| sort \<br>| uniq -c</p>
+<p>jq -r ‘.level’ app.log <br>| sort <br>| uniq -c</p>
 <p>输出：</p>
 <p>2 error<br>1 info<br>1 warn</p>
 <p>⸻</p>
@@ -650,7 +651,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">161</span>
+          <span class="site-state-item-count">158</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.2">
@@ -70,12 +70,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -243,420 +243,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/10/20/cross_platform_edge_audio_recording_guide/edge-audio-recorder/manifest/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/10/20/cross_platform_edge_audio_recording_guide/edge-audio-recorder/manifest/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2026-10-20 01:47:38" itemprop="dateCreated datePublished" datetime="2026-10-20T01:47:38-04:00">2026-10-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          {"manifest_version":3,"name":"Edge 纯净标签页录音器","version":"1.0","description":"跨平台无杂音捕获当前标签页音频并导出","permissions":["tabCapture","downloads","activeTab"],"action":{"default_popup":"popup.html","default_title":"点击录音"}}
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/10/20/cross_platform_edge_audio_recording_guide/edge-audio-recorder/popup/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/10/20/cross_platform_edge_audio_recording_guide/edge-audio-recorder/popup/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2026-10-20 01:47:38" itemprop="dateCreated datePublished" datetime="2026-10-20T01:47:38-04:00">2026-10-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <title>Edge 纯净标签页录音器</title>
-  <style>
-    body {
-      width: 240px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-      padding: 14px;
-      text-align: center;
-      margin: 0;
-      background: #fbfbfd;
-      color: #1d1d1f;
-      user-select: none;
-      box-sizing: border-box;
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-    .header h4 {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 600;
-      color: #1f2328;
-    }
-    .timer {
-      font-size: 26px;
-      font-family: "SF Pro Display", -apple-system, monospace;
-      font-weight: 600;
-      color: #333;
-      margin: 8px 0;
-      letter-spacing: 1px;
-    }
-    .timer.active {
-      color: #d83b01;
-    }
-    .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    button {
-      width: 100%;
-      padding: 9px 0;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
-      border-radius: 6px;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    button:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      box-shadow: none !important;
-    }
-    #startBtn {
-      background-color: #0078d4;
-      color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0, 120, 212, 0.25);
-    }
-    #startBtn:not(:disabled):hover {
-      background-color: #006abc;
-    }
-    #stopBtn {
-      background-color: #d83b01;
-      color: #ffffff;
-      box-shadow: 0 2px 4px rgba(216, 59, 1, 0.25);
-    }
-    #stopBtn:not(:disabled):hover {
-      background-color: #c43400;
-    }
-    #status {
-      font-size: 12px;
-      color: #656d76;
-      margin-top: 10px;
-      min-height: 18px;
-      line-height: 18px;
-    }
-    .tip-box {
-      margin-top: 12px;
-      padding: 8px;
-      background: #f0f2f5;
-      border-radius: 6px;
-      font-size: 11px;
-      color: #57606a;
-      line-height: 1.4;
-      text-align: left;
-    }
-    .tip-box code {
-      background: rgba(0,0,0,0.06);
-      padding: 1px 4px;
-      border-radius: 3px;
-    }
-    .pulse {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #d83b01;
-      margin-right: 4px;
-      animation: pulse-dot 1.2s infinite ease-in-out;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 0.3; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.2); }
-    }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <span>🎙️</span>
-    <h4>纯净内录助手</h4>
-  </div>
-
-  <div id="timer" class="timer">00:00</div>
-
-  <div class="btn-group">
-    <button id="startBtn">▶ 开始录音</button>
-    <button id="stopBtn" disabled>⏹ 停止并下载</button>
-  </div>
-
-  <div id="status">就绪 (点击开始截取当前标签页)</div>
-
-  <div class="tip-box">
-    💡 <strong>防失焦技巧</strong>：录制长音频时，建议在插件图标上<strong>右键</strong>点击并选择<code>审查弹出内容</code>（Inspect Popup），钉住窗口即可随意切换标签页。
-  </div>
-
-  <script src="popup.js"></script>
-</body>
-</html>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/10/20/cross_platform_edge_audio_recording_guide/edge-audio-recorder/popup/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/10/20/cross_platform_edge_audio_recording_guide/edge-audio-recorder/popup/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2026-10-20 01:47:38" itemprop="dateCreated datePublished" datetime="2026-10-20T01:47:38-04:00">2026-10-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          let mediaRecorder = null;
-let recordedChunks = [];
-let audioContext = null;
-let timerInterval = null;
-let secondsElapsed = 0;
-
-const startBtn = document.getElementById('startBtn');
-const stopBtn = document.getElementById('stopBtn');
-const statusDiv = document.getElementById('status');
-const timerDiv = document.getElementById('timer');
-
-function formatTime(totalSeconds) {
-  const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-  const secs = (totalSeconds % 60).toString().padStart(2, '0');
-  return `${mins}:${secs}`;
-}
-
-startBtn.onclick = () => {
-  // 1. 截取当前激活标签页的音频流
-  chrome.tabCapture.capture({ audio: true, video: false }, (stream) => {
-    if (!stream) {
-      statusDiv.innerText = "❌ 捕获失败，请刷新目标页面重试";
-      return;
-    }
-
-    // 2. 音频穿透监听（解决 tabCapture 默认使当前标签页静音的问题）
-    audioContext = new AudioContext();
-    const source = audioContext.createMediaStreamSource(stream);
-    source.connect(audioContext.destination);
-
-    // 3. 启动 MediaRecorder 编码流
-    recordedChunks = [];
-    
-    // 优先使用 audio/webm;codecs=opus
-    let mimeType = 'audio/webm;codecs=opus';
-    if (!MediaRecorder.isTypeSupported(mimeType)) {
-      mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '';
-    }
-
-    const options = mimeType ? { mimeType } : {};
-    mediaRecorder = new MediaRecorder(stream, options);
-
-    mediaRecorder.ondataavailable = (event) => {
-      if (event.data && event.data.size > 0) {
-        recordedChunks.push(event.data);
-      }
-    };
-
-    mediaRecorder.onstop = () => {
-      // 停止计时器
-      clearInterval(timerInterval);
-      timerDiv.classList.remove('active');
-
-      // 组装 Blob 并触发浏览器下载
-      const blob = new Blob(recordedChunks, { type: 'audio/webm' });
-      const url = URL.createObjectURL(blob);
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-      const filename = `audio_record_${timestamp}.webm`;
-
-      chrome.downloads.download({
-        url: url,
-        filename: filename
-      }, (downloadId) => {
-        if (chrome.runtime.lastError) {
-          statusDiv.innerText = "⚠️ 下载提示: " + chrome.runtime.lastError.message;
-        } else {
-          statusDiv.innerHTML = `✅ 已导出: <code>$&#123;filename&#125;</code>`;
-        }
-      });
-
-      // 释放流与上下文资源
-      stream.getTracks().forEach(track => track.stop());
-      if (audioContext && audioContext.state !== 'closed') {
-        audioContext.close();
-      }
-    };
-
-    // 启动录制并每秒切片一次
-    mediaRecorder.start(1000);
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
-
-    // 启动计时器
-    secondsElapsed = 0;
-    timerDiv.innerText = "00:00";
-    timerDiv.classList.add('active');
-    timerInterval = setInterval(() => {
-      secondsElapsed++;
-      timerDiv.innerText = formatTime(secondsElapsed);
-    }, 1000);
-
-    statusDiv.innerHTML = '<span class="pulse"></span> 正在录制当前标签页...';
-  });
-};
-
-stopBtn.onclick = () => {
-  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-    mediaRecorder.stop();
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
-    statusDiv.innerText = "💾 正在打包并保存录音文件...";
-  }
-};
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/10/20/cross_platform_edge_audio_recording_guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -715,14 +301,14 @@ stopBtn.onclick = () => {
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在日常学习、技术调研与素材整理中，我们经常需要在浏览器（如 Microsoft Edge / Chrome）中播放媒体（如 B 站视频、技术公开课、网络播客），并希望将其内录为高品质音频文件（MP3 / WAV / WebM）。</p>
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在日常学习、技术调研与素材整理中，我们经常需要在浏览器（如 Microsoft Edge &#x2F; Chrome）中播放媒体（如 B 站视频、技术公开课、网络播客），并希望将其内录为高品质音频文件（MP3 &#x2F; WAV &#x2F; WebM）。</p>
 <p>然而在实际操作中，常规录制方式往往面临诸多痛点：</p>
 <ol>
 <li><strong>外放麦克风录制</strong>：会混入机械键盘声、环境底噪以及房间混响，音质损失严重；</li>
 <li><strong>系统全局混音录制</strong>：容易将微信、钉钉通知、邮件提醒或系统弹窗提示音一并录入；</li>
 <li><strong>平台底层差异</strong>：Windows 原生支持 WASAPI 声卡回环（Loopback），而 macOS 出于隐私安全限制，对应用内录有严格权限管控，导致跨平台方案难以统一。</li>
 </ol>
-<p>针对上述问题，本文梳理一套<strong>全平台通用的纯净内录方案</strong>：借助 Edge/Chromium 原生提供的 <code>chrome.tabCapture</code> API 编写轻量扩展，直接在浏览器数字音频合成层截取目标标签页的数据流。实现<strong>免驱动、跨平台（Mac/Windows 完全统一）、零杂音干扰</strong>的高品质内录体验。</p>
+<p>针对上述问题，本文梳理一套<strong>全平台通用的纯净内录方案</strong>：借助 Edge&#x2F;Chromium 原生提供的 <code>chrome.tabCapture</code> API 编写轻量扩展，直接在浏览器数字音频合成层截取目标标签页的数据流。实现<strong>免驱动、跨平台（Mac&#x2F;Windows 完全统一）、零杂音干扰</strong>的高品质内录体验。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2026/10/20/cross_platform_edge_audio_recording_guide/#more" rel="contents">
@@ -808,9 +394,9 @@ stopBtn.onclick = () => {
 
       
           <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Go 1.27 不是一次单纯的“性能大升级”，而是一次非常显著的“语言能力 + Runtime 诊断能力 + 标准库现代化 + 工程工具链”的综合升级。</p>
-<p>本文按照<strong>“公司技术分析会 / 企业技术升级评估”</strong>的视角来梳理，不做简单的版本 Changelog 罗列，而是深入回答：<strong>Go 1.27 到底改变了什么？哪些特性值得实际投入业务使用？哪些仅需前瞻关注？升级是否有潜在风险与兼容性破坏？</strong></p>
+<p>本文按照**“公司技术分析会 &#x2F; 企业技术升级评估”**的视角来梳理，不做简单的版本 Changelog 罗列，而是深入回答：<strong>Go 1.27 到底改变了什么？哪些特性值得实际投入业务使用？哪些仅需前瞻关注？升级是否有潜在风险与兼容性破坏？</strong></p>
 <ul>
-<li><strong>定位</strong>：公司内部技术分析会 / Go 技术升级评估</li>
+<li><strong>定位</strong>：公司内部技术分析会 &#x2F; Go 技术升级评估</li>
 <li><strong>核心关键词</strong>：Generic Methods、JSON v2、Goroutine Leak、Runtime、Post-Quantum Crypto、SIMD、工程工具</li>
 </ul>
           <!--noindex-->
@@ -899,40 +485,36 @@ stopBtn.onclick = () => {
       
           <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Go 1.18 至 Go 1.20 是 Go 语言发展史上极具里程碑意义的三个版本：</p>
 <ul>
-<li><strong>Go 1.18</strong>：重构了编程模型，正式引入<strong>泛型（Generics）</strong>、<strong>原生模糊测试（Fuzzing）</strong>和<strong>多模块工作区（Workspace）</strong>。</li>
-<li><strong>Go 1.19</strong>：聚焦于运行时与并发优化，重写了内存模型，引入<strong>软内存限制（<code>GOMEMLIMIT</code>）</strong>和<strong>类型化原子操作（<code>sync/atomic</code>）</strong>。</li>
+<li><strong>Go 1.18</strong>：重构了编程模型，正式引入<strong>泛型（Generics）</strong>、<strong>原生模糊测试（Fuzzing）<strong>和</strong>多模块工作区（Workspace）</strong>。</li>
+<li><strong>Go 1.19</strong>：聚焦于运行时与并发优化，重写了内存模型，引入<strong>软内存限制（<code>GOMEMLIMIT</code>）<strong>和</strong>类型化原子操作（<code>sync/atomic</code>）</strong>。</li>
 <li><strong>Go 1.20</strong>：进一步完善泛型生态与性能，带来 <strong>PGO（配置文件引导优化）</strong>、原生多错误合并（<code>errors.Join</code>）、带取消原因的 Context 以及安全的 Slice 转 Array 等功能。</li>
 </ul>
 <p>本文站在后端工程实践（微服务、中间件、基础设施与区块链节点）的角度，梳理这三个版本的核心特性、设计背景、工程应用场景以及切忌滥用的坑点，帮助大家安全高效地完成升级与代码重构。</p>
 <hr>
-<h3 id="版本核心变化一览"><a href="#版本核心变化一览" class="headerlink" title="版本核心变化一览"></a>版本核心变化一览</h3><div class="table-container">
-<table>
+<h3 id="版本核心变化一览"><a href="#版本核心变化一览" class="headerlink" title="版本核心变化一览"></a>版本核心变化一览</h3><table>
 <thead>
 <tr>
-<th style="text-align:left">版本</th>
-<th style="text-align:left">核心特性 / 改进</th>
-<th style="text-align:left">工程价值与适用场景</th>
+<th align="left">版本</th>
+<th align="left">核心特性 &#x2F; 改进</th>
+<th align="left">工程价值与适用场景</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left"><strong>Go 1.18</strong></td>
-<td style="text-align:left">泛型 (Generics)、Workspace 工作区、Fuzzing 模糊测试、<code>any</code> 别名</td>
-<td style="text-align:left">通用数据结构与工具库复用、Monorepo/多模块本地联合调试、高危解析逻辑鲁棒性测试</td>
+<tbody><tr>
+<td align="left"><strong>Go 1.18</strong></td>
+<td align="left">泛型 (Generics)、Workspace 工作区、Fuzzing 模糊测试、<code>any</code> 别名</td>
+<td align="left">通用数据结构与工具库复用、Monorepo&#x2F;多模块本地联合调试、高危解析逻辑鲁棒性测试</td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>Go 1.19</strong></td>
-<td style="text-align:left">软内存限制 (<code>GOMEMLIMIT</code>)、类型化 atomic (<code>Int64</code>等)、Doc 注释 Markdown 化</td>
-<td style="text-align:left">防止 K8s 容器 OOMKilled、无锁无指针风险的高并发计数器与 Metrics 统计</td>
+<td align="left"><strong>Go 1.19</strong></td>
+<td align="left">软内存限制 (<code>GOMEMLIMIT</code>)、类型化 atomic (<code>Int64</code>等)、Doc 注释 Markdown 化</td>
+<td align="left">防止 K8s 容器 OOMKilled、无锁无指针风险的高并发计数器与 Metrics 统计</td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>Go 1.20</strong></td>
-<td style="text-align:left">PGO 编译优化、<code>errors.Join</code>、<code>context.WithCancelCause</code>、Slice 转 Array、<code>unsafe</code> 新 API</td>
-<td style="text-align:left">线上编译免费换性能提升、批量 Goroutine 错误收集、微服务级联取消源头追溯、高效协议解析</td>
+<td align="left"><strong>Go 1.20</strong></td>
+<td align="left">PGO 编译优化、<code>errors.Join</code>、<code>context.WithCancelCause</code>、Slice 转 Array、<code>unsafe</code> 新 API</td>
+<td align="left">线上编译免费换性能提升、批量 Goroutine 错误收集、微服务级联取消源头追溯、高效协议解析</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2026/08/06/go-1.18-20-features/#more" rel="contents">
@@ -1011,28 +593,28 @@ stopBtn.onclick = () => {
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>期货 / DEX 永续合约核心概念：sell_open、buy_open、sell_close、buy_close</p>
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>期货 &#x2F; DEX 永续合约核心概念：sell_open、buy_open、sell_close、buy_close</p>
 <ol>
 <li>先记住一句话</li>
 </ol>
 <p>交易里面有两个维度：</p>
-<p>方向：<br>Buy  = 买<br>Sell = 卖<br>动作：<br>Open  = 开仓<br>Close = 平仓</p>
+<p>方向：<br>Buy  &#x3D; 买<br>Sell &#x3D; 卖<br>动作：<br>Open  &#x3D; 开仓<br>Close &#x3D; 平仓</p>
 <p>组合起来：</p>
-<p>操作    含义    建立仓位<br>buy_open    买入开仓    建立多头(Long)<br>sell_open    卖出开仓    建立空头(Short)<br>sell_close    卖出平仓    关闭多头<br>buy_close    买入平仓    关闭空头</p>
+<p>操作	含义	建立仓位<br>buy_open	买入开仓	建立多头(Long)<br>sell_open	卖出开仓	建立空头(Short)<br>sell_close	卖出平仓	关闭多头<br>buy_close	买入平仓	关闭空头</p>
 <p>⸻</p>
-<ol>
+<ol start="2">
 <li>用石油理解做空</li>
 </ol>
 <p>假设：</p>
 <p>现在石油价格：</p>
-<p>1桶石油 = 120美元</p>
+<p>1桶石油 &#x3D; 120美元</p>
 <p>你认为：</p>
 <p>未来石油价格会下跌</p>
 <p>你的想法：</p>
 <p>现在卖掉，未来低价买回来。</p>
 <p>⸻</p>
-<ol>
-<li>sell_open = 开空</li>
+<ol start="3">
+<li>sell_open &#x3D; 开空</li>
 </ol>
 <p>你执行：</p>
 <p>sell_open 1桶石油</p>
@@ -1048,7 +630,7 @@ stopBtn.onclick = () => {
 <p>价格变化：</p>
 <p>时间1：<br>石油价格<br>120美元<br>你：<br>sell_open<br>建立空仓</p>
 <p>⸻</p>
-<ol>
+<ol start="4">
 <li>石油价格真的下跌</li>
 </ol>
 <p>后来：</p>
@@ -1056,8 +638,8 @@ stopBtn.onclick = () => {
 <p>你的判断正确。</p>
 <p>现在你需要退出仓位。</p>
 <p>⸻</p>
-<ol>
-<li>buy_close = 平空</li>
+<ol start="5">
+<li>buy_close &#x3D; 平空</li>
 </ol>
 <p>你执行：</p>
 <p>buy_close 1桶石油</p>
@@ -1067,11 +649,11 @@ stopBtn.onclick = () => {
 <p>开空：<br>-1<br>平空：<br>+1<br>最终：<br>0</p>
 <p>⸻</p>
 <p>利润：</p>
-<p>卖出价格 - 买入价格<br>120 - 60<br>= 60美元</p>
+<p>卖出价格 - 买入价格<br>120 - 60<br>&#x3D; 60美元</p>
 <p>所以：</p>
 <p>sell_open<br>    ↓<br>价格下跌<br>    ↓<br>buy_close<br>赚钱</p>
 <p>⸻</p>
-<ol>
+<ol start="6">
 <li>为什么不是 sell_close？</li>
 </ol>
 <p>很多人第一次会疑惑：</p>
@@ -1085,7 +667,7 @@ stopBtn.onclick = () => {
 <p>所以：</p>
 <p>buy_close</p>
 <p>⸻</p>
-<ol>
+<ol start="7">
 <li>做多反过来</li>
 </ol>
 <p>假设：</p>
@@ -1103,15 +685,15 @@ stopBtn.onclick = () => {
 <p>退出：</p>
 <p>sell_close</p>
 <p>利润：</p>
-<p>120 - 60<br>= 60美元</p>
+<p>120 - 60<br>&#x3D; 60美元</p>
 <p>⸻</p>
-<ol>
+<ol start="8">
 <li>四个操作完整记忆表</li>
 </ol>
 <p>以石油为例：</p>
-<p>你的判断    操作    仓位    未来动作<br>看涨石油    buy_open    多仓    涨了卖掉<br>看跌石油    sell_open    空仓    跌了买回来<br>多仓赚钱退出    sell_close    关闭多仓    卖出<br>空仓赚钱退出    buy_close    关闭空仓    买回</p>
+<p>你的判断	操作	仓位	未来动作<br>看涨石油	buy_open	多仓	涨了卖掉<br>看跌石油	sell_open	空仓	跌了买回来<br>多仓赚钱退出	sell_close	关闭多仓	卖出<br>空仓赚钱退出	buy_close	关闭空仓	买回</p>
 <p>⸻</p>
-<ol>
+<ol start="9">
 <li>用仓位变化理解（最重要）</li>
 </ol>
 <p>开多</p>
@@ -1124,7 +706,7 @@ stopBtn.onclick = () => {
 <p>关闭：</p>
 <p>-1<br>↓<br>buy_close<br>↓<br>0</p>
 <p>⸻</p>
-<ol>
+<ol start="10">
 <li>DEX 永续合约里面也是一样</li>
 </ol>
 <p>例如：</p>
@@ -1139,7 +721,7 @@ stopBtn.onclick = () => {
 <p>系统：</p>
 <p>Position:<br>size:<br>0<br>仓位删除</p>
 <p>⸻</p>
-<ol>
+<ol start="11">
 <li>对开发交易系统最重要的理解</li>
 </ol>
 <p>订单(Order)：</p>
@@ -1157,12 +739,12 @@ stopBtn.onclick = () => {
 <p>多单：</p>
 <p>当前价格 - 开仓价格</p>
 <p>⸻</p>
-<ol>
+<ol start="12">
 <li>最终记忆口诀</li>
 </ol>
-<p>开仓：<br>buy_open  = 买入开多<br>sell_open = 卖出开空<br>平仓：<br>sell_close = 卖出平多<br>buy_close  = 买入平空</p>
+<p>开仓：<br>buy_open  &#x3D; 买入开多<br>sell_open &#x3D; 卖出开空<br>平仓：<br>sell_close &#x3D; 卖出平多<br>buy_close  &#x3D; 买入平空</p>
 <p>石油例子：</p>
-<p>120美元<br>看跌：<br>sell_open<br>卖出建立空仓<br>60美元<br>buy_close<br>买回来关闭空仓<br>赚：<br>120 - 60 = 60美元</p>
+<p>120美元<br>看跌：<br>sell_open<br>卖出建立空仓<br>60美元<br>buy_close<br>买回来关闭空仓<br>赚：<br>120 - 60 &#x3D; 60美元</p>
 <p>⸻</p>
 <p>以后做 DEX 永续合约，核心就是：</p>
 <p>订单<br> ↓<br>仓位<br> ↓<br>价格变化<br> ↓<br>PnL计算<br> ↓<br>结算</p>
@@ -1241,7 +823,7 @@ stopBtn.onclick = () => {
           <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>下面这份文档适合作为技术博客文章，覆盖了 jq 从入门到实战的大部分常用场景，并且尽量结合 DevOps、区块链节点运维、日志分析等实际工作场景。</p>
 <p>jq 完全教程：JSON 处理神器从入门到实战</p>
 <p>什么是 jq</p>
-<p>jq 是 Linux/macOS 下最强大的 JSON 命令行处理工具。</p>
+<p>jq 是 Linux&#x2F;macOS 下最强大的 JSON 命令行处理工具。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2026/06/12/jq%20%E5%AE%8C%E5%85%A8%E6%95%99%E7%A8%8B/#more" rel="contents">
@@ -1349,10 +931,328 @@ stopBtn.onclick = () => {
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/" class="post-title-link" itemprop="url">调查服务器CPU过高</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-02-04 00:00:00" itemprop="dateCreated datePublished" datetime="2026-02-04T00:00:00-05:00">2026-02-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-02-03 19:57:37" itemprop="dateModified" datetime="2026-02-03T19:57:37-05:00">2026-02-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">服务器</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>**CPU“偶尔飙高”**这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。</p>
+<p>你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。</p>
+<p>⸻</p>
+<p>一、先搞清楚：CPU 是“谁”在高？</p>
+<p>1️⃣ 实时看（马上用）</p>
+<p>top</p>
+<p>重点看这几列：<br>	•	%CPU：谁在吃<br>	•	us &#x2F; sy &#x2F; wa<br>	•	us 高：用户态程序（你的服务、Java、Go、Node）<br>	•	sy 高：内核 &#x2F; 系统调用<br>	•	wa 高：I&#x2F;O 卡住（磁盘 &#x2F; 网络）</p>
+<p>👉 如果你看到的是 Java 300% &#x2F; postgres 200%，事情就简单多了。</p>
+<p>更推荐：</p>
+<p>htop</p>
+<p>（可视化 + 能看到线程）</p>
+<p>⸻</p>
+<p>二、问题在于：你不在的时候它才高</p>
+<p>所以我们要 “持续采样 + 留证据”</p>
+<p>⸻</p>
+<p>三、必装工具（root 权限必备）</p>
+<p>apt install -y sysstat dstat htop</p>
+<h1 id="或"><a href="#或" class="headerlink" title="或"></a>或</h1><p>yum install -y sysstat dstat</p>
+<p>⸻</p>
+<p>四、持续监控 CPU（核心）</p>
+<p>1️⃣ 开启 sysstat（非常重要）</p>
+<p>systemctl enable sysstat<br>systemctl start sysstat</p>
+<p>它会每 10 分钟自动采样一次，数据保存在：</p>
+<p>&#x2F;var&#x2F;log&#x2F;sysstat&#x2F;</p>
+<p>⸻</p>
+<p>2️⃣ 事后回看 CPU 历史（关键）</p>
+<p>看某一天 CPU 是否异常：</p>
+<p>sar -u -f &#x2F;var&#x2F;log&#x2F;sysstat&#x2F;sa05</p>
+<p>重点关注：<br>	•	%usr<br>	•	%sys<br>	•	%iowait<br>	•	%idle</p>
+<p>如果 %idle 掉到 0，那就是满负载了。</p>
+<p>⸻</p>
+<p>五、定位到“哪个进程”</p>
+<p>1️⃣ 看历史中哪个进程吃 CPU（神器）</p>
+<p>sar -q -f &#x2F;var&#x2F;log&#x2F;sysstat&#x2F;sa05</p>
+<p>2️⃣ 按进程统计（更狠）</p>
+<p>pidstat -u 1</p>
+<p>持续输出：<br>	•	哪个 PID<br>	•	每秒吃多少 CPU</p>
+<p>如果你怀疑是 Java &#x2F; PostgreSQL：</p>
+<p>pidstat -u -p $(pgrep java) 1<br>pidstat -u -p $(pgrep postgres) 1</p>
+<p>⸻</p>
+<p>六、CPU 高的时候自动抓现场（推荐你一定要做）</p>
+<p>方案：超过 80% 自动记录 top</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">&#x27;EOF&#x27;</span> &gt; /root/cpu_watch.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">  CPU=$(top -bn1 | awk <span class="string">&#x27;/Cpu/ &#123;print 100 - $8&#125;&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> (( $(echo &quot;<span class="variable">$CPU</span> &gt; <span class="number">80</span>&quot; | bc -l) )); <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;==== <span class="subst">$(date)</span> CPU=<span class="variable">$CPU</span> ====&quot;</span> &gt;&gt; /var/log/cpu_spike.log</span><br><span class="line">    top -b -n 1 &gt;&gt; /var/log/cpu_spike.log</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">sleep</span> 10</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x /root/cpu_watch.sh</span><br><span class="line"><span class="built_in">nohup</span> /root/cpu_watch.sh &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>📌 你之后只需要看：</p>
+<p><code>less /var/log/cpu_spike.log</code></p>
+<p>就能知道：</p>
+<p>是哪一个进程、哪个线程，把 CPU 干爆了</p>
+<p>⸻</p>
+<p>七、如果是 Java &#x2F; Go &#x2F; PostgreSQL（你很可能会遇到）</p>
+<p>🔥 Java<br>	•	top 里看到 Java 高<br>	•	用：</p>
+<p>top -H -p <pid></pid></p>
+<p>找线程 → 再用 jstack</p>
+<p>⸻</p>
+<p>🔥 PostgreSQL（你最近就老在搞这个 😄）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pid, query, state</span><br><span class="line"><span class="keyword">FROM</span> pg_stat_activity</span><br><span class="line"><span class="keyword">WHERE</span> state <span class="operator">!=</span> <span class="string">&#x27;idle&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>配合系统：</p>
+<p><code>pidstat -u -p $(pgrep postgres) 1</code></p>
+<p>⸻</p>
+<p>🔥 Go 程序<br>	•	大概率是：<br>	•	死循环<br>	•	goroutine 泄露<br>	•	GC 抖动<br>	•	可以临时加：</p>
+<p><code>curl http://localhost:6060/debug/pprof/profile?seconds=30 &gt; cpu.pprof</code></p>
+<p>⸻</p>
+<p>八、我给你一个最省事组合</p>
+<p>如果你只想 今天就落地：</p>
+<p>✅ sysstat<br>✅ pidstat<br>✅ 自动 cpu_watch.sh</p>
+<p>这三样，99% 的 CPU 问题都能破案</p>
+<p>⸻</p>
+<p>九、下一步我可以直接帮你“对症下药”</p>
+<p>你可以直接告诉我其中一个👇<br>	•	CPU 高的时候 top 里看到的进程名<br>	•	是 Java &#x2F; PostgreSQL &#x2F; Go &#x2F; Node<br>	•	是 us 高 &#x2F; sy 高 &#x2F; wa 高</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">open-code学习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-01-17 00:00:00" itemprop="dateCreated datePublished" datetime="2026-01-17T00:00:00-05:00">2026-01-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-04-27 08:37:55" itemprop="dateModified" datetime="2026-04-27T08:37:55-04:00">2026-04-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>现在是ai时代。需要掌握一些ai工具否则会落后。</p>
+<p>OpenCode 是一个开源的 AI Agent 编码工具。它可以通过终端界面、桌面应用程序或 IDE 扩展来使用。</p>
+<ul>
+<li>核心定位：它是一个开源、隐私优先且高度可定制的 AI 编码代理。</li>
+<li>支持多种使用场景：不仅支持 TUI（终端图形界面）模式，也支持通过 CLI、桌面应用和 VS Code 扩展插件运行。</li>
+<li>生态数据：目前 GitHub 上已有 50k+ Star，拥有 650k+ 月活开发者。</li>
+</ul>
+<p>OpenCode 最大的吸引力在于它的开放性和多场景支持，不仅支持完全本地化的模型部署，还支持 75+ 种 LLM 提供商，如 Anthropic、Github Copilot、OpenAI、Google、智谱 AI 等。使用起来更加灵活。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/12/14/mermaid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/14/mermaid/" class="post-title-link" itemprop="url">mermaid</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-12-14 00:00:00 / 修改时间：19:03:17" itemprop="dateCreated datePublished" datetime="2025-12-14T00:00:00-05:00">2025-12-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">3-其他</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-%E5%85%B6%E4%BB%96/%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">设计</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Mermaid 是一个基于 JavaScript 的图表绘制工具。它的核心理念是：<strong>用简单的文本和 Markdown 类似的语法，就能快速生成各种专业图表</strong>。 无论您是写技术文档、项目报告，还是仅仅想在 GitHub Readme 中展示流程，Mermaid 都是一个极佳的选择，因为它能直接集成到 Markdown 文件中。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/12/14/mermaid/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1420,7 +1320,7 @@ stopBtn.onclick = () => {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">161</span>
+          <span class="site-state-item-count">158</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1617,7 +1517,7 @@ if (document.querySelectorAll('pre.mermaid').length) {
     MathJax.texReset();
     MathJax.typeset();
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
     
 
