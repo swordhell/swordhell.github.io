@@ -156,7 +156,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/10/21/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -170,7 +170,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/10/21/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/" class="post-title-link" itemprop="url">gorm与postgreSQL里面time</a>
+            <a href="/2026/02/04/%E8%B0%83%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%BF%87%E9%AB%98/" class="post-title-link" itemprop="url">调查服务器CPU过高</a>
         </h2>
 
         <div class="post-meta">
@@ -180,7 +180,408 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-10-21 12:00:00" itemprop="dateCreated datePublished" datetime="2025-10-21T12:00:00-04:00">2025-10-21</time>
+              <time title="创建时间：2026-02-04 00:00:00" itemprop="dateCreated datePublished" datetime="2026-02-04T00:00:00-05:00">2026-02-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-02-03 19:57:37" itemprop="dateModified" datetime="2026-02-03T19:57:37-05:00">2026-02-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">服务器</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>CPU“偶尔飙高”</strong>这种，最怕的就是：你不在现场，它已经恢复了，然后啥线索都没留下。</p>
+<p>你有 root 权限，这就很爽了，能把事情一次性“抓现行”。我按 从快到准 给你一套实战路线，你可以直接照着来。</p>
+<p>⸻</p>
+<p>一、先搞清楚：CPU 是“谁”在高？</p>
+<p>1️⃣ 实时看（马上用）</p>
+<p>top</p>
+<p>重点看这几列：<br>    •    %CPU：谁在吃<br>    •    us / sy / wa<br>    •    us 高：用户态程序（你的服务、Java、Go、Node）<br>    •    sy 高：内核 / 系统调用<br>    •    wa 高：I/O 卡住（磁盘 / 网络）</p>
+<p>👉 如果你看到的是 Java 300% / postgres 200%，事情就简单多了。</p>
+<p>更推荐：</p>
+<p>htop</p>
+<p>（可视化 + 能看到线程）</p>
+<p>⸻</p>
+<p>二、问题在于：你不在的时候它才高</p>
+<p>所以我们要 “持续采样 + 留证据”</p>
+<p>⸻</p>
+<p>三、必装工具（root 权限必备）</p>
+<p>apt install -y sysstat dstat htop</p>
+<h1 id="或"><a href="#或" class="headerlink" title="或"></a>或</h1><p>yum install -y sysstat dstat</p>
+<p>⸻</p>
+<p>四、持续监控 CPU（核心）</p>
+<p>1️⃣ 开启 sysstat（非常重要）</p>
+<p>systemctl enable sysstat<br>systemctl start sysstat</p>
+<p>它会每 10 分钟自动采样一次，数据保存在：</p>
+<p>/var/log/sysstat/</p>
+<p>⸻</p>
+<p>2️⃣ 事后回看 CPU 历史（关键）</p>
+<p>看某一天 CPU 是否异常：</p>
+<p>sar -u -f /var/log/sysstat/sa05</p>
+<p>重点关注：<br>    •    %usr<br>    •    %sys<br>    •    %iowait<br>    •    %idle</p>
+<p>如果 %idle 掉到 0，那就是满负载了。</p>
+<p>⸻</p>
+<p>五、定位到“哪个进程”</p>
+<p>1️⃣ 看历史中哪个进程吃 CPU（神器）</p>
+<p>sar -q -f /var/log/sysstat/sa05</p>
+<p>2️⃣ 按进程统计（更狠）</p>
+<p>pidstat -u 1</p>
+<p>持续输出：<br>    •    哪个 PID<br>    •    每秒吃多少 CPU</p>
+<p>如果你怀疑是 Java / PostgreSQL：</p>
+<p>pidstat -u -p $(pgrep java) 1<br>pidstat -u -p $(pgrep postgres) 1</p>
+<p>⸻</p>
+<p>六、CPU 高的时候自动抓现场（推荐你一定要做）</p>
+<p>方案：超过 80% 自动记录 top</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">&#x27;EOF&#x27;</span> &gt; /root/cpu_watch.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">  CPU=$(top -bn1 | awk <span class="string">&#x27;/Cpu/ &#123;print 100 - $8&#125;&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> (( $(echo &quot;<span class="variable">$CPU</span> &gt; <span class="number">80</span>&quot; | bc -l) )); <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;==== <span class="subst">$(date)</span> CPU=<span class="variable">$CPU</span> ====&quot;</span> &gt;&gt; /var/log/cpu_spike.log</span><br><span class="line">    top -b -n 1 &gt;&gt; /var/log/cpu_spike.log</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">sleep</span> 10</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x /root/cpu_watch.sh</span><br><span class="line"><span class="built_in">nohup</span> /root/cpu_watch.sh &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>📌 你之后只需要看：</p>
+<p><code>less /var/log/cpu_spike.log</code></p>
+<p>就能知道：</p>
+<p>是哪一个进程、哪个线程，把 CPU 干爆了</p>
+<p>⸻</p>
+<p>七、如果是 Java / Go / PostgreSQL（你很可能会遇到）</p>
+<p>🔥 Java<br>    •    top 里看到 Java 高<br>    •    用：</p>
+<p>top -H -p <pid></pid></p>
+<p>找线程 → 再用 jstack</p>
+<p>⸻</p>
+<p>🔥 PostgreSQL（你最近就老在搞这个 😄）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pid, query, state</span><br><span class="line"><span class="keyword">FROM</span> pg_stat_activity</span><br><span class="line"><span class="keyword">WHERE</span> state <span class="operator">!=</span> <span class="string">&#x27;idle&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>配合系统：</p>
+<p><code>pidstat -u -p $(pgrep postgres) 1</code></p>
+<p>⸻</p>
+<p>🔥 Go 程序<br>    •    大概率是：<br>    •    死循环<br>    •    goroutine 泄露<br>    •    GC 抖动<br>    •    可以临时加：</p>
+<p><code>curl http://localhost:6060/debug/pprof/profile?seconds=30 &gt; cpu.pprof</code></p>
+<p>⸻</p>
+<p>八、我给你一个最省事组合</p>
+<p>如果你只想 今天就落地：</p>
+<p>✅ sysstat<br>✅ pidstat<br>✅ 自动 cpu_watch.sh</p>
+<p>这三样，99% 的 CPU 问题都能破案</p>
+<p>⸻</p>
+<p>九、下一步我可以直接帮你“对症下药”</p>
+<p>你可以直接告诉我其中一个👇<br>    •    CPU 高的时候 top 里看到的进程名<br>    •    是 Java / PostgreSQL / Go / Node<br>    •    是 us 高 / sy 高 / wa 高</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">open-code学习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-01-17 00:00:00" itemprop="dateCreated datePublished" datetime="2026-01-17T00:00:00-05:00">2026-01-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-04-27 08:37:55" itemprop="dateModified" datetime="2026-04-27T08:37:55-04:00">2026-04-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>现在是ai时代。需要掌握一些ai工具否则会落后。</p>
+<p>OpenCode 是一个开源的 AI Agent 编码工具。它可以通过终端界面、桌面应用程序或 IDE 扩展来使用。</p>
+<ul>
+<li>核心定位：它是一个开源、隐私优先且高度可定制的 AI 编码代理。</li>
+<li>支持多种使用场景：不仅支持 TUI（终端图形界面）模式，也支持通过 CLI、桌面应用和 VS Code 扩展插件运行。</li>
+<li>生态数据：目前 GitHub 上已有 50k+ Star，拥有 650k+ 月活开发者。</li>
+</ul>
+<p>OpenCode 最大的吸引力在于它的开放性和多场景支持，不仅支持完全本地化的模型部署，还支持 75+ 种 LLM 提供商，如 Anthropic、Github Copilot、OpenAI、Google、智谱 AI 等。使用起来更加灵活。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/01/17/open-code%E5%AD%A6%E4%B9%A0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/12/14/mermaid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/14/mermaid/" class="post-title-link" itemprop="url">mermaid</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-12-14 00:00:00 / 修改时间：19:03:17" itemprop="dateCreated datePublished" datetime="2025-12-14T00:00:00-05:00">2025-12-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">3-其他</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-%E5%85%B6%E4%BB%96/%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">设计</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Mermaid 是一个基于 JavaScript 的图表绘制工具。它的核心理念是：<strong>用简单的文本和 Markdown 类似的语法，就能快速生成各种专业图表</strong>。 无论您是写技术文档、项目报告，还是仅仅想在 GitHub Readme 中展示流程，Mermaid 都是一个极佳的选择，因为它能直接集成到 Markdown 文件中。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/12/14/mermaid/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/10/29/2025-10-29-go-json-custom-field/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/29/2025-10-29-go-json-custom-field/" class="post-title-link" itemprop="url">go-json-custom-field</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-10-29 00:00:00" itemprop="dateCreated datePublished" datetime="2025-10-29T00:00:00-04:00">2025-10-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-10-28 23:36:36" itemprop="dateModified" datetime="2025-10-28T23:36:36-04:00">2025-10-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/10/29/2025-10-29-go-json-custom-field/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/10/22/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/22/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/" class="post-title-link" itemprop="url">gorm与postgreSQL里面time</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-10-22 00:00:00" itemprop="dateCreated datePublished" datetime="2025-10-22T00:00:00-04:00">2025-10-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -215,12 +616,12 @@
 
       
           <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>最近项目里面的按照时区来计算的时候存在少计算了8小时的问题；</p>
-<p>timestamptz 是 PostgreSQL 中的一种时间&#x2F;日期类型，完整名称是 timestamp with time zone。它和普通的 timestamp（即 timestamp without time zone）有一些区别：</p>
+<p>timestamptz 是 PostgreSQL 中的一种时间/日期类型，完整名称是 timestamp with time zone。它和普通的 timestamp（即 timestamp without time zone）有一些区别：</p>
 <p>timestamptz 带时区的时间戳（推荐）PostgreSQL 内部会存储为 UTC 时间；查询时会根据你的 会话时区（TimeZone 配置） 自动转换显示；</p>
 <p>timestamp：不带时区；只存储一个绝对时间，不做时区转换；</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2025/10/21/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/#more" rel="contents">
+              <a class="btn" href="/2025/10/22/gorm%E4%B8%8EpostgreSQL%E9%87%8C%E9%9D%A2time/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -244,7 +645,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/09/28/tmux%E7%94%A8%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/09/29/tmux%E7%94%A8%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -258,7 +659,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/09/28/tmux%E7%94%A8%E6%B3%95/" class="post-title-link" itemprop="url">tmux用法</a>
+            <a href="/2025/09/29/tmux%E7%94%A8%E6%B3%95/" class="post-title-link" itemprop="url">tmux用法</a>
         </h2>
 
         <div class="post-meta">
@@ -268,14 +669,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-09-28 12:00:00" itemprop="dateCreated datePublished" datetime="2025-09-28T12:00:00-04:00">2025-09-28</time>
+              <time title="创建时间：2025-09-29 00:00:00" itemprop="dateCreated datePublished" datetime="2025-09-29T00:00:00-04:00">2025-09-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-12-02 23:39:22" itemprop="dateModified" datetime="2025-12-02T23:39:22-05:00">2025-12-02</time>
+                <time title="修改时间：2026-07-29 05:03:58" itemprop="dateModified" datetime="2026-07-29T05:03:58-04:00">2026-07-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -307,7 +708,7 @@
 <p>这份文档将教会你如何开始使用 Tmux，以及掌握一些最核心的概念和命令。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2025/09/28/tmux%E7%94%A8%E6%B3%95/#more" rel="contents">
+              <a class="btn" href="/2025/09/29/tmux%E7%94%A8%E6%B3%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -331,7 +732,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/09/10/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/09/11/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -345,7 +746,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/09/10/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">编译原理-笔记</a>
+            <a href="/2025/09/11/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">编译原理-笔记</a>
         </h2>
 
         <div class="post-meta">
@@ -355,7 +756,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-09-10 12:00:00" itemprop="dateCreated datePublished" datetime="2025-09-10T12:00:00-04:00">2025-09-10</time>
+              <time title="创建时间：2025-09-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-09-11T00:00:00-04:00">2025-09-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -395,7 +796,7 @@
 <p>阅读一下龙书🐲。能增加计算机基础知识。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2025/09/10/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2025/09/11/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -419,7 +820,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/08/28/vim/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/08/29/vim/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -433,7 +834,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/08/28/vim/" class="post-title-link" itemprop="url">vim</a>
+            <a href="/2025/08/29/vim/" class="post-title-link" itemprop="url">vim</a>
         </h2>
 
         <div class="post-meta">
@@ -443,14 +844,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-08-28 12:00:00" itemprop="dateCreated datePublished" datetime="2025-08-28T12:00:00-04:00">2025-08-28</time>
+              <time title="创建时间：2025-08-29 00:00:00" itemprop="dateCreated datePublished" datetime="2025-08-29T00:00:00-04:00">2025-08-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-02-10 02:31:54" itemprop="dateModified" datetime="2026-02-10T02:31:54-05:00">2026-02-10</time>
+                <time title="修改时间：2026-05-25 23:27:23" itemprop="dateModified" datetime="2026-05-25T23:27:23-04:00">2026-05-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -477,15 +878,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>记录vim编辑器。<br>现代 Vim + coc.nvim + fzf + treesitter 真的已经可以做到接近 IDE 的体验了，尤其是多语言（Go&#x2F;C++&#x2F;Rust&#x2F;TS&#x2F;JS）开发的时候：</p>
-<pre><code>•	自动补全、跳转、重构一应俱全
-•	文件搜索/历史/Buffer 搜索比 cscope 强多了
-•	自动格式化和 LSP 实时提示让开发更流畅
-•	加上你熟悉的快捷键，几乎不用切出 Vim
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>记录vim编辑器。<br>现代 Vim + coc.nvim + fzf + treesitter 真的已经可以做到接近 IDE 的体验了，尤其是多语言（Go/C++/Rust/TS/JS）开发的时候：</p>
+<pre><code>•    自动补全、跳转、重构一应俱全
+•    文件搜索/历史/Buffer 搜索比 cscope 强多了
+•    自动格式化和 LSP 实时提示让开发更流畅
+•    加上你熟悉的快捷键，几乎不用切出 Vim
 </code></pre>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2025/08/28/vim/#more" rel="contents">
+              <a class="btn" href="/2025/08/29/vim/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -509,7 +910,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/08/11/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-geth/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/08/12/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-geth/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -523,7 +924,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/08/11/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-geth/" class="post-title-link" itemprop="url">源码阅读-geth</a>
+            <a href="/2025/08/12/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-geth/" class="post-title-link" itemprop="url">源码阅读-geth</a>
         </h2>
 
         <div class="post-meta">
@@ -533,7 +934,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-08-11 12:00:00" itemprop="dateCreated datePublished" datetime="2025-08-11T12:00:00-04:00">2025-08-11</time>
+              <time title="创建时间：2025-08-12 00:00:00" itemprop="dateCreated datePublished" datetime="2025-08-12T00:00:00-04:00">2025-08-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -570,7 +971,7 @@
           <p>阅读源代码，学习go语言如何写大框架。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2025/08/11/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-geth/#more" rel="contents">
+              <a class="btn" href="/2025/08/12/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-geth/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -594,7 +995,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/05/07/goi18n/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/05/08/goi18n/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -608,7 +1009,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/05/07/goi18n/" class="post-title-link" itemprop="url">go-i18n</a>
+            <a href="/2025/05/08/goi18n/" class="post-title-link" itemprop="url">go-i18n</a>
         </h2>
 
         <div class="post-meta">
@@ -617,10 +1018,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-05-07 12:00:00 / 修改时间：21:14:13" itemprop="dateCreated datePublished" datetime="2025-05-07T12:00:00-04:00">2025-05-07</time>
+              <time title="创建时间：2025-05-08 00:00:00" itemprop="dateCreated datePublished" datetime="2025-05-08T00:00:00-04:00">2025-05-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-05-07 21:14:13" itemprop="dateModified" datetime="2025-05-07T21:14:13-04:00">2025-05-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -649,324 +1056,7 @@
           <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>✅ 推荐库：go-i18n</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2025/05/07/goi18n/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/04/23/gogs-gitea/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/04/23/gogs-gitea/" class="post-title-link" itemprop="url">gogs-gitea</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-04-23 12:00:00 / 修改时间：21:05:35" itemprop="dateCreated datePublished" datetime="2025-04-23T12:00:00-04:00">2025-04-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/3-%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">3-其他</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/3-%E5%85%B6%E4%BB%96/%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Gogs 和 Gitea 都是用 Go 语言开发的轻量级 Git 代码托管平台，界面风格类似 GitHub，可以自部署，适用于小型团队或个人使用。它们的历史也有一定渊源：Gitea 是从 Gogs 分叉而来的，原因是社区对 Gogs 的开发停滞不前感到担忧，所以创建了 Gitea 来提供更加活跃的社区支持和开发。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/04/23/gogs-gitea/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/04/01/docker-%E9%BB%98%E8%AE%A4%E7%A1%AC%E7%9B%98%E8%AE%BE%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/04/01/docker-%E9%BB%98%E8%AE%A4%E7%A1%AC%E7%9B%98%E8%AE%BE%E7%BD%AE/" class="post-title-link" itemprop="url">docker-默认硬盘设置</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-04-01 12:00:00 / 修改时间：23:43:13" itemprop="dateCreated datePublished" datetime="2025-04-01T12:00:00-04:00">2025-04-01</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/3-%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">3-其他</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/3-%E5%85%B6%E4%BB%96/%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>如果你的 Docker 已经运行了一段时间，并且存储在 &#x2F;var&#x2F;lib&#x2F;docker 目录下的镜像、容器、网络、builder 等数据需要完整迁移到 &#x2F;data&#x2F;docker，你可以按照以下步骤安全地完成迁移，而不会丢失任何数据。</p>
-<p>如果全新部署一套服务器的时候，我们要如何来处理这样的情况。<br>我们一般都会购买一个可扩展的硬盘，挂载到&#x2F;data&#x2F;上。<br>是不是安装完docker就去设置这个选项。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/04/01/docker-%E9%BB%98%E8%AE%A4%E7%A1%AC%E7%9B%98%E8%AE%BE%E7%BD%AE/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/03/15/MySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E8%AF%8A%E6%96%AD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/03/15/MySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E8%AF%8A%E6%96%AD/" class="post-title-link" itemprop="url">MySQL-慢查询诊断</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-03-15 12:00:00 / 修改时间：21:37:09" itemprop="dateCreated datePublished" datetime="2025-03-15T12:00:00-04:00">2025-03-15</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/DB/" itemprop="url" rel="index"><span itemprop="name">DB</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在 MySQL 中，你可以使用以下方法来诊断某个慢 SQL 的执行速度以及它命中的索引。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/03/15/MySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E8%AF%8A%E6%96%AD/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/02/07/%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/02/07/%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93/" class="post-title-link" itemprop="url">量化交易</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-02-07 11:00:00 / 修改时间：20:55:15" itemprop="dateCreated datePublished" datetime="2025-02-07T11:00:00-05:00">2025-02-07</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>量化交易是以数学模型和计算机算法为核心工具，综合运用数学、统计学、计算机科学以及金融学知识的一种投资方法。它旨在利用海量的历史数据和实时市场信息，通过编程构建交易策略，自动执行交易决策，以实现降低人为情绪干扰、提升交易效率，并获取更高投资收益的目标。量化交易广泛应用于股票、期货、外汇等各类金融市场，从简单的统计套利策略到复杂的机器学习算法模型，其策略类型丰富多样，已成为现代金融投资领域不可或缺的一部分。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/02/07/%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93/#more" rel="contents">
+              <a class="btn" href="/2025/05/08/goi18n/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -989,7 +1079,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1057,7 +1147,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-count">161</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1069,7 +1159,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

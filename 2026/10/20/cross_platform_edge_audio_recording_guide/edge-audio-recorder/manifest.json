@@ -1,0 +1,1 @@
+{"manifest_version":3,"name":"Edge 纯净标签页录音器","version":"1.0","description":"跨平台无杂音捕获当前标签页音频并导出","permissions":["tabCapture","downloads","activeTab"],"action":{"default_popup":"popup.html","default_title":"点击录音"}}

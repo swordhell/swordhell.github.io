@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Edge 纯净标签页录音器</title>
+  <style>
+    body {
+      width: 240px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      padding: 14px;
+      text-align: center;
+      margin: 0;
+      background: #fbfbfd;
+      color: #1d1d1f;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .header h4 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1f2328;
+    }
+    .timer {
+      font-size: 26px;
+      font-family: "SF Pro Display", -apple-system, monospace;
+      font-weight: 600;
+      color: #333;
+      margin: 8px 0;
+      letter-spacing: 1px;
+    }
+    .timer.active {
+      color: #d83b01;
+    }
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 9px 0;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none !important;
+    }
+    #startBtn {
+      background-color: #0078d4;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 120, 212, 0.25);
+    }
+    #startBtn:not(:disabled):hover {
+      background-color: #006abc;
+    }
+    #stopBtn {
+      background-color: #d83b01;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(216, 59, 1, 0.25);
+    }
+    #stopBtn:not(:disabled):hover {
+      background-color: #c43400;
+    }
+    #status {
+      font-size: 12px;
+      color: #656d76;
+      margin-top: 10px;
+      min-height: 18px;
+      line-height: 18px;
+    }
+    .tip-box {
+      margin-top: 12px;
+      padding: 8px;
+      background: #f0f2f5;
+      border-radius: 6px;
+      font-size: 11px;
+      color: #57606a;
+      line-height: 1.4;
+      text-align: left;
+    }
+    .tip-box code {
+      background: rgba(0,0,0,0.06);
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d83b01;
+      margin-right: 4px;
+      animation: pulse-dot 1.2s infinite ease-in-out;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span>🎙️</span>
+    <h4>纯净内录助手</h4>
+  </div>
+
+  <div id="timer" class="timer">00:00</div>
+
+  <div class="btn-group">
+    <button id="startBtn">▶ 开始录音</button>
+    <button id="stopBtn" disabled>⏹ 停止并下载</button>
+  </div>
+
+  <div id="status">就绪 (点击开始截取当前标签页)</div>
+
+  <div class="tip-box">
+    💡 <strong>防失焦技巧</strong>：录制长音频时，建议在插件图标上<strong>右键</strong>点击并选择<code>审查弹出内容</code>（Inspect Popup），钉住窗口即可随意切换标签页。
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

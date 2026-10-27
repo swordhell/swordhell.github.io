@@ -156,7 +156,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/02/go[1]-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/04/Redis-%E4%B9%90%E8%A7%82%E9%94%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -170,7 +170,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/02/go%5B1%5D-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">go[1]-程序结构</a>
+            <a href="/2020/11/04/Redis-%E4%B9%90%E8%A7%82%E9%94%81/" class="post-title-link" itemprop="url">Redis-乐观锁</a>
         </h2>
 
         <div class="post-meta">
@@ -180,7 +180,348 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-02 11:00:00" itemprop="dateCreated datePublished" datetime="2020-11-02T11:00:00-05:00">2020-11-02</time>
+              <time title="创建时间：2020-11-04 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-04T00:00:00-05:00">2020-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-06 21:46:42" itemprop="dateModified" datetime="2023-06-06T21:46:42-04:00">2023-06-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/DB/" itemprop="url" rel="index"><span itemprop="name">DB</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在使用多服务器操作redis的时候，需要考虑到数据同步的问题；本文来记录一下redis里面事务的用法。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/04/Redis-%E4%B9%90%E8%A7%82%E9%94%81/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/04/git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/04/git/" class="post-title-link" itemprop="url">git</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-04 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-04T00:00:00-05:00">2020-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-09-01 22:48:10" itemprop="dateModified" datetime="2026-09-01T22:48:10-04:00">2026-09-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E6%BA%90%E7%A0%81%E5%B7%A5%E5%85%B7%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">源码工具管理</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>学习git的笔记，将记录一下git如何使用。之前常用svn，现在转过来的时候，有些东西需要熟悉。将会持续更新此文档。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/04/git/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/03/docker[0]-nginx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/03/docker%5B0%5D-nginx/" class="post-title-link" itemprop="url">docker运行nginx</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-03T00:00:00-05:00">2020-11-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-07-29 22:53:38" itemprop="dateModified" datetime="2026-07-29T22:53:38-04:00">2026-07-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">3-其他</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3-%E5%85%B6%E4%BB%96/%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>学习docker</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>docker是为了简化外网服务器软件环境部署的工作。现在初浅的理解是，可以在linux机器上通过docker单独安装mysql,nginx,应用程序的也可以跑在一个docker之上。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/03/docker%5B0%5D-nginx/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/03/go[0]-getstart/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/03/go%5B0%5D-getstart/" class="post-title-link" itemprop="url">go[0]-入门</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-03T00:00:00-05:00">2020-11-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-05-25 04:47:36" itemprop="dateModified" datetime="2026-05-25T04:47:36-04:00">2026-05-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>学习golang的入门的信息；本章只记录一下golang语言的历史，go语言环境搭建，如何编译go语言程序。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/03/go%5B0%5D-getstart/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/03/go[1]-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/03/go%5B1%5D-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">go[1]-程序结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-03T00:00:00-05:00">2020-11-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -217,7 +558,7 @@
           <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>记录golang的程序结构相关知识。包括函数、包管理、基本的流程控制（for,defer,panic recover等等）。go语言中也存在函数参数的值传递，引用传递。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/02/go%5B1%5D-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/#more" rel="contents">
+              <a class="btn" href="/2020/11/03/go%5B1%5D-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -241,7 +582,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/02/go[2]-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2020/11/03/go[2]-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -255,7 +596,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/02/go%5B2%5D-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="post-title-link" itemprop="url">go[2]-数据结构</a>
+            <a href="/2020/11/03/go%5B2%5D-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="post-title-link" itemprop="url">go[2]-数据结构</a>
         </h2>
 
         <div class="post-meta">
@@ -265,7 +606,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-02 11:00:00" itemprop="dateCreated datePublished" datetime="2020-11-02T11:00:00-05:00">2020-11-02</time>
+              <time title="创建时间：2020-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-03T00:00:00-05:00">2020-11-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -302,7 +643,7 @@
           <p>参考golang手册，记录数据类型相关资料；方便日后来回顾基础知识。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/02/go%5B2%5D-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/#more" rel="contents">
+              <a class="btn" href="/2020/11/03/go%5B2%5D-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -326,7 +667,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2019/03/03/lua-protobuf/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2019/03/04/lua-protobuf/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -340,7 +681,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/03/lua-protobuf/" class="post-title-link" itemprop="url">lua-protobuf</a>
+            <a href="/2019/03/04/lua-protobuf/" class="post-title-link" itemprop="url">lua-protobuf</a>
         </h2>
 
         <div class="post-meta">
@@ -350,7 +691,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-03-03 11:00:00" itemprop="dateCreated datePublished" datetime="2019-03-03T11:00:00-05:00">2019-03-03</time>
+              <time title="创建时间：2019-03-04 00:00:00" itemprop="dateCreated datePublished" datetime="2019-03-04T00:00:00-05:00">2019-03-04</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -387,7 +728,7 @@
           <p>protobuf是比较好的一种序列化的工具，这里使用lua来试用一下protobuf。文章内容是通过网络收集的知识</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/03/03/lua-protobuf/#more" rel="contents">
+              <a class="btn" href="/2019/03/04/lua-protobuf/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -411,7 +752,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2018/11/29/go-protobuf/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2018/11/30/go-protobuf/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -425,7 +766,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/11/29/go-protobuf/" class="post-title-link" itemprop="url">go-protobuf</a>
+            <a href="/2018/11/30/go-protobuf/" class="post-title-link" itemprop="url">go-protobuf</a>
         </h2>
 
         <div class="post-meta">
@@ -435,7 +776,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-11-29 11:00:00" itemprop="dateCreated datePublished" datetime="2018-11-29T11:00:00-05:00">2018-11-29</time>
+              <time title="创建时间：2018-11-30 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-30T00:00:00-05:00">2018-11-30</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -474,7 +815,7 @@
 <p><a target="_blank" rel="noopener" href="https://developers.google.com/protocol-buffers/docs/gotutorial">参考文档</a> </p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/29/go-protobuf/#more" rel="contents">
+              <a class="btn" href="/2018/11/30/go-protobuf/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -498,7 +839,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2018/11/20/go-socket/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2018/11/21/go-socket/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -512,7 +853,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/11/20/go-socket/" class="post-title-link" itemprop="url">go-socket</a>
+            <a href="/2018/11/21/go-socket/" class="post-title-link" itemprop="url">go-socket</a>
         </h2>
 
         <div class="post-meta">
@@ -522,7 +863,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-11-20 11:00:00" itemprop="dateCreated datePublished" datetime="2018-11-20T11:00:00-05:00">2018-11-20</time>
+              <time title="创建时间：2018-11-21 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-21T00:00:00-05:00">2018-11-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -548,7 +889,7 @@
 <p><a target="_blank" rel="noopener" href="https://github.com/name5566/leaf">参考【leaf】</a> 初步学着编写一个tcp服务器，一个连接他的client。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/20/go-socket/#more" rel="contents">
+              <a class="btn" href="/2018/11/21/go-socket/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -572,7 +913,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2018/11/19/nodejs-web/">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2018/11/20/nodejs-web/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -586,7 +927,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/11/19/nodejs-web/" class="post-title-link" itemprop="url">node.js-web</a>
+            <a href="/2018/11/20/nodejs-web/" class="post-title-link" itemprop="url">node.js-web</a>
         </h2>
 
         <div class="post-meta">
@@ -596,7 +937,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-11-19 11:00:00" itemprop="dateCreated datePublished" datetime="2018-11-19T11:00:00-05:00">2018-11-19</time>
+              <time title="创建时间：2018-11-20 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-20T00:00:00-05:00">2018-11-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -633,93 +974,7 @@
           <p>收集一些node.js常用的一些技术。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/19/nodejs-web/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2018/11/12/cmake-usage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Abel Sean">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Abel'Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/11/12/cmake-usage/" class="post-title-link" itemprop="url">cmake入门</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-11-12 11:00:00" itemprop="dateCreated datePublished" datetime="2018-11-12T11:00:00-05:00">2018-11-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-02 03:41:17" itemprop="dateModified" datetime="2023-08-02T03:41:17-04:00">2023-08-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>记录cmake常用方法</p>
-<p>CMake是为了解决美国国家医学图书馆出资的Visible Human Project专案下的Insight Segmentation and Registration Toolkit （ITK） 软件的跨平台建构的需求而创造出来的，其设计受到了Ken Martin开发的pcmaker所影响。pcmaker当初则是为了支援Visualization Toolkit这个开放源代码的三维图形和视觉系统才出现的，今日VTK也采用了CMake。在设计CMake之时，Kitware公司的Bill Hoffman采用了pcmaker的一些重要想法，加上更多他自己的点子，想把GNU建构系统的一些功能整合进来。CMake最初的实作是在2000年中作的，在2001年初有了急速的进展，许多改良是来自其他把CMake整合到自己的系统中的开发者，比方说，采用CMake作为建构环境的VXL社群就贡献了很多重要的功能，Brad King为了支援CABLE和GCC-XML这套自动包装工具也加了几项功能，奇异公司的研发部门则用在内部的测试系统DART，还有一些功能是为了让VTK可以过渡到CMake和支援（“美国Los Alamos国家实验室”&amp;“洛斯阿拉莫斯国家实验室”）的Advanced Computing Lab的平行视觉系统ParaView而加的。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/11/12/cmake-usage/#more" rel="contents">
+              <a class="btn" href="/2018/11/20/nodejs-web/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -742,7 +997,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -810,7 +1065,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-count">161</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -822,7 +1077,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

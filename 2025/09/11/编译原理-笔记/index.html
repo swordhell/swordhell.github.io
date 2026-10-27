@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概述  阅读一下龙书🐲。能增加计算机基础知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译原理-笔记">
+<meta property="og:url" content="https://swordhell.github.io/2025/09/11/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Abel&#39;Blog">
+<meta property="og:description" content="概述  阅读一下龙书🐲。能增加计算机基础知识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-11T04:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-18T00:32:51.561Z">
+<meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="Compute">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://swordhell.github.io/2025/09/11/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>编译原理-笔记 | Abel'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Abel'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我干了什么?究竟拿了时间换了什么?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://swordhell.github.io/2025/09/11/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Abel Sean">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Abel'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编译原理-笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-09-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-09-11T00:00:00-04:00">2025-09-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-12-17 19:32:51" itemprop="dateModified" datetime="2025-12-17T19:32:51-05:00">2025-12-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">1-基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/1-%E5%9F%BA%E7%A1%80/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">编译原理</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>概述</p>
+</blockquote>
+<p>阅读一下龙书🐲。能增加计算机基础知识。</p>
+<span id="more"></span>
+<h1 id="第一章-引论"><a href="#第一章-引论" class="headerlink" title="第一章 引论"></a>第一章 引论</h1><p>定义一门语言的规则，按照规则编写代码，将代码翻译成机器能运行的程序叫做编译器（compiler）。研究编译器的编写将涉及到<code>程序设计语言</code>、<code>计算机体系结构</code>、<code>形式语言理论</code>、<code>算法</code>和<code>软件工程</code>。</p>
+<p>介绍内容：</p>
+<ul>
+<li>语言翻译器的不同形式；</li>
+<li>在高层次上论述一个典型编译器的结构；</li>
+<li>程序设计语言和硬件体系结构的发展趋势；这些趋势将影响编译器的形式。</li>
+<li>介绍关于编译器设计和计算机科学理论的关系的一些事实，并给出编译技术在编译领域之外的应用。</li>
+<li>简单论述论述研究编译器时用到的重要程序设计语言概念。</li>
+</ul>
+<h2 id="语言处理器"><a href="#语言处理器" class="headerlink" title="语言处理器"></a>语言处理器</h2><p>编译器就是阅读某种语言（在阅读过程中能检查语法是否正确），并且翻译成等价的目标语言的程序。</p>
+<pre class="mermaid">---
+title: Figure 1-1 编译器
+---
+flowchart TB
+    A>"源代码"] --- B[编译器] --- C>"目标程序"]</pre>
+
+<p>目标程序就是机器语言程序，用户就可以直接调用。</p>
+<pre class="mermaid">---
+title: Figure 1-2 运行目标程序
+---
+flowchart LR
+    A>"输入"] --- B[目标程序] --- C>"输出"]</pre>
+
+<p><em>解释器</em>（interpreter）也是语言处理器。不会翻译生成目标程序。解释器直接用用户提供的输入执行源代码中的指定的操作。</p>
+<pre class="mermaid">---
+title: Figure 1-3 一个解释器
+---
+flowchart LR
+    A>源代码]
+    B>输入]
+    C[解释器]
+    D>输出]
+
+    %% 连接关系
+    A & B --> C
+    C --> D</pre>
+
+<ul>
+<li>在将用户输入加工成输出处理过程，编译器产生的目标程序比解释器快很多。</li>
+<li>解释器的错误诊断效果要比编译器更好。（解释器是逐行执行源代码）</li>
+</ul>
+<p>java程序是结合了编译、解释两个过程。翻译成字节码（bytecode），java的即时（just in time）编译器也能将其翻译成机器语言。通过网络传递到目标机器通过虚拟机或者直接在机器上运行。</p>
+<pre class="mermaid">---
+title: Figure 1-4 一个混合编译器
+---
+flowchart TB
+
+    %% ---------- 上半部分：纵向 TB ----------
+    subgraph PART1[翻译阶段]
+        direction TB
+        A>源代码]
+        B[翻译器]
+        C[中间程序]
+        A --> B --> C
+    end
+
+    %% ---------- 下半部分：横向 LR ----------
+    subgraph PART2[执行阶段]
+        direction LR
+        D[输入]
+        E[虚拟机]
+        F[输出]
+        D --> E --> F
+    end
+
+    %% ---------- 上下连接 ----------
+    C --> E</pre>
+**图1-5解释：**
+将多个源代码文件聚合一块需要通过`预编译器`处理，并且将宏，模板展开成最终源代码。
+
+`编译器`加工源代码产生有利于调试输出、调试的`汇编代码`。
+
+`汇编器`（assembler）加工汇编代码将其变成可重定向机器代码。
+
+大型程序都是会将不同模块编译成不同的部分来编译。最终生成dll,so和可执行程序。在启动程序里面将会指定自己代码依赖哪些库文件。链接器（linker）解决外部内存地址问题。加载器（loader）把所有的可执行目标文件发到内存中执行。
+
+<pre class="mermaid">---
+title: Figure 1-5 一个语言处理系统
+---
+flowchart TB
+    linkStyle default corners 90
+
+    A>源代码]
+    B[预处理器]
+    C[编译器]
+    D[汇编器]
+    E[链接器/加载器]
+    F>库文件<br>重定向对象文件]
+    G>目标机器代码]
+
+    A --> B --经过预处理的程序--> C
+    C --目标汇编语言--> D --可重定向机器代码--> E --> G
+    F --> E</pre>
+
+<h3 id="编译器和解释器之间的区别是什么？"><a href="#编译器和解释器之间的区别是什么？" class="headerlink" title="编译器和解释器之间的区别是什么？"></a>编译器和解释器之间的区别是什么？</h3><p><strong>编译器</strong>是将你写的高级语言代码（如 C/C++/Java/Go）<strong>一次性</strong>全部翻译成计算机可以直接运行的机器码（可执行文件）的程序。</p>
+<p><strong>核心区别：</strong></p>
+<ul>
+<li><p><strong>编译器 (Compiler)：</strong> 像一个<strong>翻译官</strong>，先把整本书（整个程序）翻译完，然后机器才能开始阅读（运行）。它在<strong>运行前</strong>工作。</p>
+</li>
+<li><p><strong>解释器 (Interpreter)：</strong> 像一个<strong>同声传译</strong>，机器每读一句，它就翻译一句，翻译完一句就执行一句。它在<strong>运行时</strong>工作。</p>
+</li>
+</ul>
+<p><strong>记住这两点：</strong></p>
+<ol>
+<li><strong>编译器：</strong> 一次性，运行前，速度快。</li>
+<li><strong>解释器：</strong> 逐行翻译，运行时，方便调试。</li>
+</ol>
+<h3 id="编译器相对于解释器的优点是什么？解释器相对于编译器的优点是什么？"><a href="#编译器相对于解释器的优点是什么？解释器相对于编译器的优点是什么？" class="headerlink" title="编译器相对于解释器的优点是什么？解释器相对于编译器的优点是什么？"></a>编译器相对于解释器的优点是什么？解释器相对于编译器的优点是什么？</h3><h4 id="🚀-编译器的优势（运行前）"><a href="#🚀-编译器的优势（运行前）" class="headerlink" title="🚀 编译器的优势（运行前）"></a>🚀 编译器的优势（运行前）</h4><ul>
+<li><strong>运行快：</strong> 一次性翻译，执行速度飞快。</li>
+<li><strong>优化好：</strong> 有时间慢慢优化代码，性能高。</li>
+<li><strong>部署方便：</strong> 编译后生成独立的文件，不需要依赖其他工具就能运行。</li>
+</ul>
+<h4 id="🐢-解释器的优势（运行时）"><a href="#🐢-解释器的优势（运行时）" class="headerlink" title="🐢 解释器的优势（运行时）"></a>🐢 解释器的优势（运行时）</h4><ul>
+<li><strong>调试快：</strong> 发现错误立马停止，容易找到问题在哪。</li>
+<li><strong>跨平台：</strong> 只要有解释器，代码就能在任何系统上跑。</li>
+<li><strong>开发灵活：</strong> 不需要漫长等待编译，改了就能马上运行。</li>
+</ul>
+<h3 id="在一个语言处理系统中，编译器产生汇编语言而不是机器语言的好处是什么？"><a href="#在一个语言处理系统中，编译器产生汇编语言而不是机器语言的好处是什么？" class="headerlink" title="在一个语言处理系统中，编译器产生汇编语言而不是机器语言的好处是什么？"></a>在一个语言处理系统中，编译器产生汇编语言而不是机器语言的好处是什么？</h3><hr>
+<p>编译器产生汇编语言（而不是机器语言）的好处</p>
+<p>将汇编语言作为中间输出，主要有以下四个方面的好处：</p>
+<h4 id="1-可读性与可调试性-Readability-amp-Debuggability"><a href="#1-可读性与可调试性-Readability-amp-Debuggability" class="headerlink" title="1. 可读性与可调试性 (Readability &amp; Debuggability)"></a>1. 可读性与可调试性 (Readability &amp; Debuggability)</h4><ul>
+<li><p><strong>答案要点</strong>：汇编语言是人类可读的助记符，而机器语言是二进制数值。</p>
+</li>
+<li><p><strong>解释</strong>：编译器开发者可以直接阅读生成的汇编代码，检查逻辑是否正确，极大地降低了编译器本身的开发和调试难度。</p>
+</li>
+</ul>
+<h4 id="2-简化编译器的设计-Simplifies-Compiler-Design"><a href="#2-简化编译器的设计-Simplifies-Compiler-Design" class="headerlink" title="2. 简化编译器的设计 (Simplifies Compiler Design)"></a>2. 简化编译器的设计 (Simplifies Compiler Design)</h4><ul>
+<li><p><strong>答案要点</strong>：通过输出汇编，编译器可以将复杂的底层任务“外包”给汇编器。</p>
+</li>
+<li><p><strong>解释</strong>：生成机器码需要处理复杂的二进制指令格式（如操作码填充、位偏移等），而生成汇编只需输出文本。这样编译器可以专注于高级逻辑（如优化和寄存器分配）。</p>
+</li>
+</ul>
+<h4 id="3-符号化处理与地址延迟绑定-Symbolic-Labels"><a href="#3-符号化处理与地址延迟绑定-Symbolic-Labels" class="headerlink" title="3. 符号化处理与地址延迟绑定 (Symbolic Labels)"></a>3. 符号化处理与地址延迟绑定 (Symbolic Labels)</h4><ul>
+<li><p><strong>答案要点</strong>：汇编语言允许使用<strong>符号标签</strong>（Labels）代替具体的内存地址。</p>
+</li>
+<li><p><strong>解释</strong>：在汇编阶段，编译器不需要计算跳转指令的具体偏移量或变量的物理地址。这些繁琐的地址计算和重定位工作交由<strong>汇编器（Assembler）</strong>和<strong>链接器（Linker）</strong>自动完成。</p>
+</li>
+</ul>
+<h4 id="4-利用现有工具链的优化-Leveraging-Toolchains"><a href="#4-利用现有工具链的优化-Leveraging-Toolchains" class="headerlink" title="4. 利用现有工具链的优化 (Leveraging Toolchains)"></a>4. 利用现有工具链的优化 (Leveraging Toolchains)</h4><ul>
+<li><p><strong>答案要点</strong>：汇编器通常自带针对特定硬件的微调和指令优化。</p>
+</li>
+<li><p><strong>解释</strong>：不同的操作系统对目标文件（如 ELF, PE 格式）有不同的封装要求。输出汇编语言使得编译器能够利用系统自带的专业工具链，确生成的目标程序符合该系统的标准。</p>
+</li>
+</ul>
+<hr>
+<h4 id="💡-背诵口诀（高分必备关键词）："><a href="#💡-背诵口诀（高分必备关键词）：" class="headerlink" title="💡 背诵口诀（高分必备关键词）："></a>💡 背诵口诀（高分必备关键词）：</h4><p><strong>“易读、易调、不计地址、交给后道。”</strong></p>
+<ul>
+<li><p><strong>易读/易调</strong>：方便人看，方便找错。</p>
+</li>
+<li><p><strong>不计地址</strong>：不用自己算二进制跳转偏移，用标签（Labels）就行。</p>
+</li>
+<li><p><strong>交给后道</strong>：把生成的重任交给专业的汇编器和链接器。</p>
+</li>
+</ul>
+<hr>
+<h3 id="把一种高级语言翻译成另一种高级语言的编译器成为源到源（source-to-source）的翻译器。编译器使用c语言作为目标语言有什么好处？"><a href="#把一种高级语言翻译成另一种高级语言的编译器成为源到源（source-to-source）的翻译器。编译器使用c语言作为目标语言有什么好处？" class="headerlink" title="把一种高级语言翻译成另一种高级语言的编译器成为源到源（source-to-source）的翻译器。编译器使用c语言作为目标语言有什么好处？"></a>把一种高级语言翻译成另一种高级语言的编译器成为源到源（source-to-source）的翻译器。编译器使用c语言作为目标语言有什么好处？</h3><p>将 C 语言作为中间或目标语言（通常称为 <strong>C 这种“高级汇编”</strong>）有以下核心优势：</p>
+<ol>
+<li><p>极佳的可移植性 (Portability)：</p>
+<p> C 语言的编译器（如 GCC, Clang）几乎存在于所有硬件平台和操作系统上。通过输出 C 代码，源语言可以立即运行在任何支持 C 的设备上，无需为每个架构重写后端。</p>
+</li>
+<li><p>借用成熟的优化器 (Leveraging Optimizers)：</p>
+<p> 现代 C 编译器（如 GCC/LLVM）拥有数十年的优化积累。源到源翻译器只需生成逻辑正确的 C 代码，就可以利用这些工具进行复杂的指令调度、循环优化和寄存器分配。</p>
+</li>
+<li><p>开发效率高：</p>
+<p> 相比于直接生成二进制机器码或汇编，生成 C 代码难度更低，调试也更容易。开发者可以像阅读源码一样阅读编译器生成的中间 C 代码。</p>
+</li>
+<li><p>生态系统集成：</p>
+<p> C 语言可以轻松调用现有的 C 库和系统 API，这使得源语言在处理底层系统调用时更加方便。</p>
+</li>
+</ol>
+<h3 id="描述一下编译器所要完成的一些任务。"><a href="#描述一下编译器所要完成的一些任务。" class="headerlink" title="描述一下编译器所要完成的一些任务。"></a>描述一下编译器所要完成的一些任务。</h3><p>你好！很高兴能为你的编译原理作业提供支持。为了帮你拿到高分，我将针对这两个问题给出专业、简洁且符合学术规范的答案。</p>
+<p>编译器的核心任务是将源代码转换为目标代码，这个过程通常分为 <strong>分析 (Analysis)</strong> 和 <strong>综合 (Synthesis)</strong> 两个部分，具体包含以下任务：</p>
+<h4 id="1-词法分析-Lexical-Analysis-Scanning"><a href="#1-词法分析-Lexical-Analysis-Scanning" class="headerlink" title="1. 词法分析 (Lexical Analysis / Scanning)"></a>1. 词法分析 (Lexical Analysis / Scanning)</h4><ul>
+<li><strong>任务</strong>：读入源程序字符流，根据构词规则将其分割成一系列有意义的单元——<strong>记号 (Tokens)</strong>（如关键字、标识符、运算符）。</li>
+</ul>
+<h4 id="2-语法分析-Syntax-Analysis-Parsing"><a href="#2-语法分析-Syntax-Analysis-Parsing" class="headerlink" title="2. 语法分析 (Syntax Analysis / Parsing)"></a>2. 语法分析 (Syntax Analysis / Parsing)</h4><ul>
+<li><strong>任务</strong>：将 Tokens 组织成层次化的结构——<strong>语法树 (Syntax Tree)</strong>，用于检查代码是否符合程序设计语言的语法规则。</li>
+</ul>
+<h4 id="3-语义分析-Semantic-Analysis"><a href="#3-语义分析-Semantic-Analysis" class="headerlink" title="3. 语义分析 (Semantic Analysis)"></a>3. 语义分析 (Semantic Analysis)</h4><ul>
+<li><strong>任务</strong>：检查源程序是否符合语义逻辑（例如：变量是否先声明后使用、函数参数个数是否匹配、<strong>类型检查</strong>等）。</li>
+</ul>
+<h4 id="4-中间代码生成-Intermediate-Code-Generation"><a href="#4-中间代码生成-Intermediate-Code-Generation" class="headerlink" title="4. 中间代码生成 (Intermediate Code Generation)"></a>4. 中间代码生成 (Intermediate Code Generation)</h4><ul>
+<li><strong>任务</strong>：将语法树转换为一种逻辑简单、与具体机器无关的表达形式（如三地址码或 P-code），便于后续优化。</li>
+</ul>
+<h4 id="5-代码优化-Code-Optimization"><a href="#5-代码优化-Code-Optimization" class="headerlink" title="5. 代码优化 (Code Optimization)"></a>5. 代码优化 (Code Optimization)</h4><ul>
+<li><strong>任务</strong>：对中间代码进行等价变换，使最终生成的程序更<strong>快</strong>（减少执行时间）或更<strong>小</strong>（减少空间占用）。</li>
+</ul>
+<h4 id="6-目标代码生成-Code-Generation"><a href="#6-目标代码生成-Code-Generation" class="headerlink" title="6. 目标代码生成 (Code Generation)"></a>6. 目标代码生成 (Code Generation)</h4><ul>
+<li><strong>任务</strong>：将优化后的中间代码翻译成特定机器的<strong>汇编语言</strong>或<strong>机器指令</strong>，并分配寄存器和内存。</li>
+</ul>
+<h4 id="7-符号表管理与错误处理-Symbol-Table-amp-Error-Handling"><a href="#7-符号表管理与错误处理-Symbol-Table-amp-Error-Handling" class="headerlink" title="7. 符号表管理与错误处理 (Symbol Table &amp; Error Handling)"></a>7. 符号表管理与错误处理 (Symbol Table &amp; Error Handling)</h4><ul>
+<li><strong>任务</strong>：在全过程中记录变量名及其属性，并在发现语法或语义错误时向用户报告准确的位置和原因。</li>
+</ul>
+<hr>
+<h1 id="第二章-一个简单的语法制导翻译器"><a href="#第二章-一个简单的语法制导翻译器" class="headerlink" title="第二章 一个简单的语法制导翻译器"></a>第二章 一个简单的语法制导翻译器</h1><h2 id="2-1-引言"><a href="#2-1-引言" class="headerlink" title="2.1 引言"></a>2.1 引言</h2><p>一个语言的<code>语法（syntax）</code>描述了该语言的程序都正确形式；而该语言的<code>语义（seantics）</code>则定了程序的含义，即每个程序在运行时做什么事情。将会在 <code>2.2 语法定义</code> 给出广泛使用的表示方法来描述<code>语法（synta）</code>，这个方法就是<code>上下文无关文法</code>或者<code>BNF（Backus-Naur范式）</code>。用现有的语义表示方法来描述一个语言的语义的难度大于描述语言的语法的难度。</p>
+<blockquote>
+<p>💡人去描述语义非常困难，而且用BNF去描述也是非常困难。所以这里提出了新的工具来描述。</p>
+</blockquote>
+<pre class="mermaid">flowchart TB
+
+    %% 节点
+    A[源代码<br>Source Code]
+    B[词法分析<br>Lexer]
+    C[语法分析<br>Parser / AST]
+    D[符号表<br>Symbol Table]
+    E[代码生成器<br>Code Generator]
+    F[目标代码<br>Output Code]
+
+    %% 主流程
+    A --> B --> C --> E --> F
+
+    %% 符号表的关联
+    C -->|定义/查询符号| D
+    E -->|读取符号信息| D</pre>
+
+<h2 id="2-2-语法定义"><a href="#2-2-语法定义" class="headerlink" title="2.2 语法定义"></a>2.2 语法定义</h2><p><pre class="mermaid">graph TD
+    A[expr] --> B1[expr1]
+    A --> B2(➕)
+    A --> B3[term]
+    A --> B4["{print(➕)}"]
+    B1 --> C1[expr2]</pre><br><strong>Figure 2-14 把9-5+2翻译成95-2+的语义动作</strong></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Compute/" rel="tag"># Compute</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/08/29/vim/" rel="prev" title="vim">
+      <i class="fa fa-chevron-left"></i> vim
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/09/29/tmux%E7%94%A8%E6%B3%95/" rel="next" title="tmux用法">
+      tmux用法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%BC%95%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">第一章 引论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">语言处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8C%E8%A7%A3%E9%87%8A%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.1.1.</span> <span class="nav-text">编译器和解释器之间的区别是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E7%9B%B8%E5%AF%B9%E4%BA%8E%E8%A7%A3%E9%87%8A%E5%99%A8%E7%9A%84%E4%BC%98%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E8%A7%A3%E9%87%8A%E5%99%A8%E7%9B%B8%E5%AF%B9%E4%BA%8E%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BC%98%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.1.2.</span> <span class="nav-text">编译器相对于解释器的优点是什么？解释器相对于编译器的优点是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%F0%9F%9A%80-%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF%EF%BC%88%E8%BF%90%E8%A1%8C%E5%89%8D%EF%BC%89"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">🚀 编译器的优势（运行前）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%F0%9F%90%A2-%E8%A7%A3%E9%87%8A%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF%EF%BC%88%E8%BF%90%E8%A1%8C%E6%97%B6%EF%BC%89"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">🐢 解释器的优势（运行时）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E4%B8%80%E4%B8%AA%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%AD%EF%BC%8C%E7%BC%96%E8%AF%91%E5%99%A8%E4%BA%A7%E7%94%9F%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E8%80%8C%E4%B8%8D%E6%98%AF%E6%9C%BA%E5%99%A8%E8%AF%AD%E8%A8%80%E7%9A%84%E5%A5%BD%E5%A4%84%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.1.3.</span> <span class="nav-text">在一个语言处理系统中，编译器产生汇编语言而不是机器语言的好处是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%8F%AF%E8%AF%BB%E6%80%A7%E4%B8%8E%E5%8F%AF%E8%B0%83%E8%AF%95%E6%80%A7-Readability-amp-Debuggability"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">1. 可读性与可调试性 (Readability &amp; Debuggability)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%AE%80%E5%8C%96%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1-Simplifies-Compiler-Design"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">2. 简化编译器的设计 (Simplifies Compiler Design)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%AC%A6%E5%8F%B7%E5%8C%96%E5%A4%84%E7%90%86%E4%B8%8E%E5%9C%B0%E5%9D%80%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A-Symbolic-Labels"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">3. 符号化处理与地址延迟绑定 (Symbolic Labels)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%88%A9%E7%94%A8%E7%8E%B0%E6%9C%89%E5%B7%A5%E5%85%B7%E9%93%BE%E7%9A%84%E4%BC%98%E5%8C%96-Leveraging-Toolchains"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">4. 利用现有工具链的优化 (Leveraging Toolchains)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%F0%9F%92%A1-%E8%83%8C%E8%AF%B5%E5%8F%A3%E8%AF%80%EF%BC%88%E9%AB%98%E5%88%86%E5%BF%85%E5%A4%87%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%89%EF%BC%9A"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">💡 背诵口诀（高分必备关键词）：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%8A%E4%B8%80%E7%A7%8D%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80%E7%BF%BB%E8%AF%91%E6%88%90%E5%8F%A6%E4%B8%80%E7%A7%8D%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80%E7%9A%84%E7%BC%96%E8%AF%91%E5%99%A8%E6%88%90%E4%B8%BA%E6%BA%90%E5%88%B0%E6%BA%90%EF%BC%88source-to-source%EF%BC%89%E7%9A%84%E7%BF%BB%E8%AF%91%E5%99%A8%E3%80%82%E7%BC%96%E8%AF%91%E5%99%A8%E4%BD%BF%E7%94%A8c%E8%AF%AD%E8%A8%80%E4%BD%9C%E4%B8%BA%E7%9B%AE%E6%A0%87%E8%AF%AD%E8%A8%80%E6%9C%89%E4%BB%80%E4%B9%88%E5%A5%BD%E5%A4%84%EF%BC%9F"><span class="nav-number">1.1.4.</span> <span class="nav-text">把一种高级语言翻译成另一种高级语言的编译器成为源到源（source-to-source）的翻译器。编译器使用c语言作为目标语言有什么好处？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E4%B8%80%E4%B8%8B%E7%BC%96%E8%AF%91%E5%99%A8%E6%89%80%E8%A6%81%E5%AE%8C%E6%88%90%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BB%BB%E5%8A%A1%E3%80%82"><span class="nav-number">1.1.5.</span> <span class="nav-text">描述一下编译器所要完成的一些任务。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90-Lexical-Analysis-Scanning"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">1. 词法分析 (Lexical Analysis &#x2F; Scanning)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90-Syntax-Analysis-Parsing"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">2. 语法分析 (Syntax Analysis &#x2F; Parsing)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90-Semantic-Analysis"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">3. 语义分析 (Semantic Analysis)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90-Intermediate-Code-Generation"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">4. 中间代码生成 (Intermediate Code Generation)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-Code-Optimization"><span class="nav-number">1.1.5.5.</span> <span class="nav-text">5. 代码优化 (Code Optimization)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E7%9B%AE%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90-Code-Generation"><span class="nav-number">1.1.5.6.</span> <span class="nav-text">6. 目标代码生成 (Code Generation)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%AE%A1%E7%90%86%E4%B8%8E%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86-Symbol-Table-amp-Error-Handling"><span class="nav-number">1.1.5.7.</span> <span class="nav-text">7. 符号表管理与错误处理 (Symbol Table &amp; Error Handling)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">第二章 一个简单的语法制导翻译器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%BC%95%E8%A8%80"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%AF%AD%E6%B3%95%E5%AE%9A%E4%B9%89"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 语法定义</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Abel Sean"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Abel Sean</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">161</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/erlang_hell" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;erlang_hell" rel="noopener" target="_blank">我的csdn-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dengwenyi88.github.io/" title="https:&#x2F;&#x2F;dengwenyi88.github.io&#x2F;" rel="noopener" target="_blank">dwy-blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://unity3d.io/" title="https:&#x2F;&#x2F;unity3d.io" rel="noopener" target="_blank">蔡总-blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abel Sean</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="//cdn.jsdelivr.net/gh/stevenjoezhang/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'b08c5201a4a52badc863',
+      clientSecret: 'dd2c48988eb499969198746dae8ec2c7ccbad00b',
+      repo        : 'BlogComment',
+      owner       : 'swordhell',
+      admin       : ['swordhell'],
+      id          : '533e5ae886eef105657ecb844b5ff5e6',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
