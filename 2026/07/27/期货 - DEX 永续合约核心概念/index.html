@@ -20,16 +20,17 @@
     var CONFIG = {"hostname":"swordhell.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":12,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="简介期货 &#x2F; DEX 永续合约核心概念：sell_open、buy_open、sell_close、buy_close  先记住一句话  交易里面有两个维度： 方向：Buy  &#x3D; 买Sell &#x3D; 卖动作：Open  &#x3D; 开仓Close &#x3D; 平仓 组合起来： 操作	含义	建立仓位buy_open	买入开仓	建立多头(Long)sell_open	卖出">
+  <meta name="description" content="简介在传统金融期货以及 Web3 去中心化衍生品交易所（DEX 永续合约，如 GMX、dYdX、Hyperliquid、Drift 等）的研发与交易中，最基础也最核心的概念就是订单动作与仓位流转：buy_open（买入开仓）、sell_open（卖出开仓）、sell_close（卖出平仓） 与 buy_close（买入平仓）。 交易本质上由两个独立维度交织而成：  方向（Side）：Buy（买入）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="期货 - DEX 永续合约核心概念">
 <meta property="og:url" content="https://swordhell.github.io/2026/07/27/%E6%9C%9F%E8%B4%A7%20-%20DEX%20%E6%B0%B8%E7%BB%AD%E5%90%88%E7%BA%A6%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="Abel&#39;Blog">
-<meta property="og:description" content="简介期货 &#x2F; DEX 永续合约核心概念：sell_open、buy_open、sell_close、buy_close  先记住一句话  交易里面有两个维度： 方向：Buy  &#x3D; 买Sell &#x3D; 卖动作：Open  &#x3D; 开仓Close &#x3D; 平仓 组合起来： 操作	含义	建立仓位buy_open	买入开仓	建立多头(Long)sell_open	卖出">
+<meta property="og:description" content="简介在传统金融期货以及 Web3 去中心化衍生品交易所（DEX 永续合约，如 GMX、dYdX、Hyperliquid、Drift 等）的研发与交易中，最基础也最核心的概念就是订单动作与仓位流转：buy_open（买入开仓）、sell_open（卖出开仓）、sell_close（卖出平仓） 与 buy_close（买入平仓）。 交易本质上由两个独立维度交织而成：  方向（Side）：Buy（买入）">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-27T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-27T06:39:54.637Z">
+<meta property="article:modified_time" content="2026-10-27T03:06:14.601Z">
 <meta property="article:author" content="Abel Sean">
+<meta property="article:tag" content="区块链">
 <meta property="article:tag" content="期货">
 <meta name="twitter:card" content="summary">
 
@@ -184,10 +185,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2026-07-27 00:00:00 / 修改时间：02:39:54" itemprop="dateCreated datePublished" datetime="2026-07-27T00:00:00-04:00">2026-07-27</time>
+              <time title="创建时间：2026-07-27 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-27T00:00:00-04:00">2026-07-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-10-26 23:06:14" itemprop="dateModified" datetime="2026-10-26T23:06:14-04:00">2026-10-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -220,162 +227,132 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>期货 &#x2F; DEX 永续合约核心概念：sell_open、buy_open、sell_close、buy_close</p>
-<ol>
-<li>先记住一句话</li>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在传统金融期货以及 Web3 去中心化衍生品交易所（DEX 永续合约，如 GMX、dYdX、Hyperliquid、Drift 等）的研发与交易中，最基础也最核心的概念就是订单动作与仓位流转：<strong><code>buy_open</code>（买入开仓）</strong>、<strong><code>sell_open</code>（卖出开仓）</strong>、<strong><code>sell_close</code>（卖出平仓）</strong> 与 <strong><code>buy_close</code>（买入平仓）</strong>。</p>
+<p>交易本质上由两个独立维度交织而成：</p>
+<ul>
+<li><strong>方向（Side）</strong>：<code>Buy</code>（买入）与 <code>Sell</code>（卖出）</li>
+<li><strong>动作（Action）</strong>：<code>Open</code>（开仓 &#x2F; 建立风险敞口）与 <code>Close</code>（平仓 &#x2F; 对冲消除敞口）</li>
+</ul>
+<p>理解了这四种组合及其在底层引擎中的状态转移逻辑，就真正掌握了永续合约最核心的底座。</p>
+<span id="more"></span>
+
+<hr>
+<h2 id="一、-核心操作维度矩阵"><a href="#一、-核心操作维度矩阵" class="headerlink" title="一、 核心操作维度矩阵"></a>一、 核心操作维度矩阵</h2><p>将“交易方向”与“交易动作”组合，即可得到标准交易系统的四种核心订单指令：</p>
+<table>
+<thead>
+<tr>
+<th align="left">操作指令 (Order Action)</th>
+<th align="left">交易动作</th>
+<th align="left">对应建立 &#x2F; 关闭的仓位</th>
+<th align="left">说明与操作意图</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><code>buy_open</code></strong></td>
+<td align="left">买入开仓</td>
+<td align="left"><strong>建立多头 (Long)</strong></td>
+<td align="left">看涨标的，买入资产建立正向敞口</td>
+</tr>
+<tr>
+<td align="left"><strong><code>sell_open</code></strong></td>
+<td align="left">卖出开仓</td>
+<td align="left"><strong>建立空头 (Short)</strong></td>
+<td align="left">看跌标的，借入资产卖出建立负向敞口</td>
+</tr>
+<tr>
+<td align="left"><strong><code>sell_close</code></strong></td>
+<td align="left">卖出平仓</td>
+<td align="left"><strong>关闭多头</strong></td>
+<td align="left">卖出之前买入的多单，了结利润或止损</td>
+</tr>
+<tr>
+<td align="left"><strong><code>buy_close</code></strong></td>
+<td align="left">买入平仓</td>
+<td align="left"><strong>关闭空头</strong></td>
+<td align="left">买回标的平掉之前的空单，结束空头风险</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、-经典案例推演：用“石油现货”直观理解做空"><a href="#二、-经典案例推演：用“石油现货”直观理解做空" class="headerlink" title="二、 经典案例推演：用“石油现货”直观理解做空"></a>二、 经典案例推演：用“石油现货”直观理解做空</h2><p>很多人对“做多”容易理解（低买高卖），但常常难以直观感受“做空”的物理本质。</p>
+<h3 id="2-1-案例设定"><a href="#2-1-案例设定" class="headerlink" title="2.1 案例设定"></a>2.1 案例设定</h3><ul>
+<li><strong>初始状态</strong>：当前 1 桶石油的价格为 <strong>120 美元</strong>。</li>
+<li><strong>交易员判断</strong>：全球产能过剩，未来石油价格必然下跌。</li>
+<li><strong>交易目标</strong>：<strong>“先在高位卖掉，等未来跌入低谷时再低价买回来”</strong>。</li>
+</ul>
+<h3 id="2-2-执行流程"><a href="#2-2-执行流程" class="headerlink" title="2.2 执行流程"></a>2.2 执行流程</h3><ol>
+<li><p><strong>建立空仓（<code>sell_open</code>）</strong>：</p>
+<ul>
+<li>交易员执行 <code>sell_open 1 桶石油</code>（在期货&#x2F;DEX 合约中，不需要真正搬运一桶物理石油，而是建立一个虚拟空头头寸）。</li>
+<li>此时交易员账户生成了 <strong>Short 1 桶</strong> 的仓位，锁定卖出基准价格：$120\ \text{USD}$。</li>
+</ul>
+</li>
+<li><p><strong>市场行情验证（价格下跌）</strong>：</p>
+<ul>
+<li>一段时间后，石油价格如预期暴跌至 <strong>60 美元</strong>。</li>
+<li>交易员认为目标位已达到，需要锁定战果，退出市场。</li>
+</ul>
+</li>
+<li><p><strong>结束空头头寸（<code>buy_close</code>）</strong>：</p>
+<ul>
+<li>交易员执行 <code>buy_close 1 桶石油</code>，以 $60\ \text{USD}$ 的市价买入一笔等额反向头寸，冲销原有空头。</li>
+<li><strong>最终利润计算</strong>：<br>$$\text{盈亏 (PnL)} &#x3D; \text{卖出价格} - \text{买入价格} &#x3D; 120\ \text{USD} - 60\ \text{USD} &#x3D; +60\ \text{USD}$$</li>
+</ul>
+</li>
 </ol>
-<p>交易里面有两个维度：</p>
-<p>方向：<br>Buy  &#x3D; 买<br>Sell &#x3D; 卖<br>动作：<br>Open  &#x3D; 开仓<br>Close &#x3D; 平仓</p>
-<p>组合起来：</p>
-<p>操作	含义	建立仓位<br>buy_open	买入开仓	建立多头(Long)<br>sell_open	卖出开仓	建立空头(Short)<br>sell_close	卖出平仓	关闭多头<br>buy_close	买入平仓	关闭空头</p>
-<p>⸻</p>
-<ol start="2">
-<li>用石油理解做空</li>
-</ol>
-<p>假设：</p>
-<p>现在石油价格：</p>
-<p>1桶石油 &#x3D; 120美元</p>
-<p>你认为：</p>
-<p>未来石油价格会下跌</p>
-<p>你的想法：</p>
-<p>现在卖掉，未来低价买回来。</p>
-<p>⸻</p>
-<ol start="3">
-<li>sell_open &#x3D; 开空</li>
-</ol>
-<p>你执行：</p>
-<p>sell_open 1桶石油</p>
-<p>注意：</p>
-<p>期货里面不是真的把石油交给别人。</p>
-<p>它表示：</p>
-<p>创建一个空头仓位</p>
-<p>你的仓位：</p>
-<p>Short 1桶</p>
-<p>也可以理解：</p>
-<p>你押注：<br>石油价格下跌</p>
-<p>⸻</p>
-<p>价格变化：</p>
-<p>时间1：<br>石油价格<br>120美元<br>你：<br>sell_open<br>建立空仓</p>
-<p>⸻</p>
-<ol start="4">
-<li>石油价格真的下跌</li>
-</ol>
-<p>后来：</p>
-<p>石油价格：<br>120美元<br>↓<br>60美元</p>
-<p>你的判断正确。</p>
-<p>现在你需要退出仓位。</p>
-<p>⸻</p>
-<ol start="5">
-<li>buy_close &#x3D; 平空</li>
-</ol>
-<p>你执行：</p>
-<p>buy_close 1桶石油</p>
-<p>意思：</p>
-<p>买入一个反向仓位<br>抵消之前的空头</p>
-<p>仓位变化：</p>
-<p>开空：<br>-1<br>平空：<br>+1<br>最终：<br>0</p>
-<p>⸻</p>
-<p>利润：</p>
-<p>卖出价格 - 买入价格<br>120 - 60<br>&#x3D; 60美元</p>
-<p>所以：</p>
-<p>sell_open<br>    ↓<br>价格下跌<br>    ↓<br>buy_close<br>赚钱</p>
-<p>⸻</p>
-<ol start="6">
-<li>为什么不是 sell_close？</li>
-</ol>
-<p>很多人第一次会疑惑：</p>
-<p>“我卖空，为什么最后不是卖出平仓？”</p>
-<p>原因：</p>
-<p>你的仓位是什么？</p>
-<p>开空以后：</p>
-<p>Short<br>也就是：<br>欠别人一个买入动作</p>
-<p>你需要：</p>
-<p>买回来</p>
-<p>所以：</p>
-<p>buy_close</p>
-<p>⸻</p>
-<ol start="7">
-<li>做多反过来</li>
-</ol>
-<p>假设：</p>
-<p>石油价格：</p>
-<p>60美元</p>
-<p>你认为会上涨。</p>
-<p>执行：</p>
-<p>buy_open</p>
-<p>建立：</p>
-<p>Long 1桶</p>
-<p>⸻</p>
-<p>价格上涨：</p>
-<p>60美元<br>↓<br>120美元</p>
-<p>赚钱。</p>
-<p>退出：</p>
-<p>sell_close</p>
-<p>利润：</p>
-<p>120 - 60<br>&#x3D; 60美元</p>
-<p>⸻</p>
-<ol start="8">
-<li>四个操作完整记忆表</li>
-</ol>
-<p>以石油为例：</p>
-<p>你的判断	操作	仓位	未来动作<br>看涨石油	buy_open	多仓	涨了卖掉<br>看跌石油	sell_open	空仓	跌了买回来<br>多仓赚钱退出	sell_close	关闭多仓	卖出<br>空仓赚钱退出	buy_close	关闭空仓	买回</p>
-<p>⸻</p>
-<ol start="9">
-<li>用仓位变化理解（最重要）</li>
-</ol>
-<p>开多</p>
-<p>0<br>↓<br>buy_open<br>↓<br>+1 多仓</p>
-<p>关闭：</p>
-<p>+1<br>↓<br>sell_close<br>↓<br>0</p>
-<p>⸻</p>
-<p>开空</p>
-<p>0<br>↓<br>sell_open<br>↓<br>-1 空仓</p>
-<p>关闭：</p>
-<p>-1<br>↓<br>buy_close<br>↓<br>0</p>
-<p>⸻</p>
-<ol start="10">
-<li>DEX 永续合约里面也是一样</li>
-</ol>
-<p>例如：</p>
-<p>GMX、dYdX、Hyperliquid、Drift 等。</p>
-<p>用户开 BTC 空单：</p>
-<p>sell_open BTC</p>
-<p>系统记录：</p>
-<p>Position:<br>symbol:<br>BTC<br>side:<br>SHORT<br>size:<br>1 BTC<br>entryPrice:<br>120000</p>
-<p>⸻</p>
-<p>用户平仓：</p>
-<p>buy_close BTC</p>
-<p>系统：</p>
-<p>Position:<br>size:<br>0<br>仓位删除</p>
-<p>⸻</p>
-<ol start="11">
-<li>对开发交易系统最重要的理解</li>
-</ol>
-<p>订单(Order)：</p>
-<p>表示用户想做什么。</p>
-<p>例如：</p>
-<p>sell_open BTC</p>
-<p>仓位(Position)：</p>
-<p>表示用户现在有什么。</p>
-<p>例如：</p>
-<p>SHORT BTC 1个</p>
-<p>盈亏(PnL)：</p>
-<p>根据价格变化计算：</p>
-<p>空单：</p>
-<p>开仓价格 - 当前价格</p>
-<p>多单：</p>
-<p>当前价格 - 开仓价格</p>
-<p>⸻</p>
-<ol start="12">
-<li>最终记忆口诀</li>
-</ol>
-<p>开仓：<br>buy_open  &#x3D; 买入开多<br>sell_open &#x3D; 卖出开空<br>平仓：<br>sell_close &#x3D; 卖出平多<br>buy_close  &#x3D; 买入平空</p>
-<p>石油例子：</p>
-<p>120美元<br>看跌：<br>sell_open<br>卖出建立空仓<br>60美元<br>buy_close<br>买回来关闭空仓<br>赚：<br>120 - 60 &#x3D; 60美元</p>
-<p>⸻</p>
-<p>以后做 DEX 永续合约，核心就是：</p>
-<p>订单<br> ↓<br>仓位<br> ↓<br>价格变化<br> ↓<br>PnL计算<br> ↓<br>结算</p>
-<p>理解 sell_open 和 buy_close，就理解了永续合约最基础的一半。</p>
+<hr>
+<h2 id="三、-深度思辨：为什么平空操作是-buy-close-而非-sell-close？"><a href="#三、-深度思辨：为什么平空操作是-buy-close-而非-sell-close？" class="headerlink" title="三、 深度思辨：为什么平空操作是 buy_close 而非 sell_close？"></a>三、 深度思辨：为什么平空操作是 <code>buy_close</code> 而非 <code>sell_close</code>？</h2><p>这是初学者最容易产生混淆的地方：</p>
+<blockquote>
+<p><em>“既然我当初是<strong>卖出</strong>做空的，为什么最终离场时不是‘卖出平仓’，而是‘买入平仓’？”</em></p>
+</blockquote>
+<h3 id="核心本质剖析："><a href="#核心本质剖析：" class="headerlink" title="核心本质剖析："></a>核心本质剖析：</h3><ul>
+<li><strong>开空（<code>sell_open</code>）之后，你的仓位状态是负数（Short）</strong>：<br>在会计或资产负债表上，你相当于“预支”并卖出了标的资产，你的账户<strong>欠交易系统一个买入动作</strong>。</li>
+<li><strong>对冲平仓必须遵循“反向抵消”原则</strong>：<br>要消除对系统的标的负债、将仓位归零，你必须从市场上**“买回来”**。因此，平掉空头仓位所对应的动作必然是 <strong><code>buy_close</code>（买入以平仓）</strong>。</li>
+</ul>
+<h3 id="对比做多（Long）流程："><a href="#对比做多（Long）流程：" class="headerlink" title="对比做多（Long）流程："></a>对比做多（Long）流程：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">【做多 Long】: </span><br><span class="line">  buy_open ($60买入开多)  ── 价格上涨至 $120 ──&gt;  sell_close ($120卖出平多)  =&gt;  净赚 $60</span><br><span class="line"></span><br><span class="line">【做空 Short】: </span><br><span class="line">  sell_open ($120卖出开空) ── 价格下跌至 $60 ──&gt;  buy_close ($60买入平空)   =&gt;  净赚 $60</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、-核心数学认知：带符号仓位流转模型（Signed-Position）"><a href="#四、-核心数学认知：带符号仓位流转模型（Signed-Position）" class="headerlink" title="四、 核心数学认知：带符号仓位流转模型（Signed Position）"></a>四、 核心数学认知：带符号仓位流转模型（Signed Position）</h2><p>在高性能交易撮合系统或智能合约内部，无需为“多头”和“空头”设计两套复杂账本，通常使用**带符号的数值（Signed Number）**来统一建模：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">              [ 0 (空仓状态) ]</span><br><span class="line">              ↗              ↖</span><br><span class="line">  buy_open (+1)              buy_close (+1)</span><br><span class="line">           /                    \</span><br><span class="line">[ +1 (多头 Long) ]            [ -1 (空头 Short) ]</span><br><span class="line">           \                    /</span><br><span class="line">  sell_close (-1)            sell_open (-1)</span><br><span class="line">              ↘              ↗</span><br><span class="line">              [ 0 (空仓状态) ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-多头生命周期"><a href="#1-多头生命周期" class="headerlink" title="1. 多头生命周期"></a>1. 多头生命周期</h3><p>$$\text{初始仓位: } 0 \xrightarrow{+\ 1\ (\text{buy_open})} +1 \xrightarrow{-\ 1\ (\text{sell_close})} 0$$</p>
+<h3 id="2-空头生命周期"><a href="#2-空头生命周期" class="headerlink" title="2. 空头生命周期"></a>2. 空头生命周期</h3><p>$$\text{初始仓位: } 0 \xrightarrow{-\ 1\ (\text{sell_open})} -1 \xrightarrow{+\ 1\ (\text{buy_close})} 0$$</p>
+<blockquote>
+<p><strong>关键规律</strong>：</p>
+<ul>
+<li>任何带有 <strong><code>open</code></strong> 的指令，其本质是<strong>拉大仓位绝对值</strong>（增加风险敞口）；</li>
+<li>任何带有 <strong><code>close</code></strong> 的指令，其本质是<strong>缩小仓位绝对值向 0 收敛</strong>（消除风险敞口）。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="五、-DEX-永续合约系统架构实战"><a href="#五、-DEX-永续合约系统架构实战" class="headerlink" title="五、 DEX 永续合约系统架构实战"></a>五、 DEX 永续合约系统架构实战</h2><p>在像 <strong>GMX、dYdX、Hyperliquid、Drift</strong> 等去中心化衍生品交易所中，上述概念体现在核心数据结构的设计中：</p>
+<h3 id="5-1-订单对象（Order）vs-持仓对象（Position）"><a href="#5-1-订单对象（Order）vs-持仓对象（Position）" class="headerlink" title="5.1 订单对象（Order）vs 持仓对象（Position）"></a>5.1 订单对象（Order）vs 持仓对象（Position）</h3><ul>
+<li><strong>订单（Order）</strong>：表示用户的<strong>交易意图</strong>（想做什么）。</li>
+<li><strong>持仓（Position）</strong>：表示链上或账本上当前用户的<strong>实际敞口</strong>（拥有什么）。</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 用户提交订单: sell_open 1 BTC</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;order_type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;MARKET&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sell_open&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;symbol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;BTC-USD-PERP&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">1.0</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 撮合成交后，系统更新用户的 Position 状态</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;account&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xAbCd...1234&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;symbol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;BTC-USD-PERP&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;side&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SHORT&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">1.0</span><span class="punctuation">,</span>           <span class="comment">// 仓位符号为负 (Short 1 BTC)</span></span><br><span class="line">  <span class="attr">&quot;entry_price&quot;</span><span class="punctuation">:</span> <span class="number">68000.0</span><span class="punctuation">,</span> <span class="comment">// 开仓均价</span></span><br><span class="line">  <span class="attr">&quot;leverage&quot;</span><span class="punctuation">:</span> <span class="number">10</span>          <span class="comment">// 杠杆倍数</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-浮动盈亏（Unrealized-PnL）公式"><a href="#5-2-浮动盈亏（Unrealized-PnL）公式" class="headerlink" title="5.2 浮动盈亏（Unrealized PnL）公式"></a>5.2 浮动盈亏（Unrealized PnL）公式</h3><p>衍生品引擎通过预言机（Oracle）推送的实时标记价格（Mark Price）持续计算未结盈亏：</p>
+<ul>
+<li><strong>多头头寸（Long PnL）</strong>：<br>$$\text{PnL} &#x3D; (\text{MarkPrice} - \text{EntryPrice}) \times \text{Size}$$</li>
+<li><strong>空头头寸（Short PnL）</strong>：<br>$$\text{PnL} &#x3D; (\text{EntryPrice} - \text{MarkPrice}) \times \text{Size}$$</li>
+</ul>
+<p>当用户后续发送 <code>buy_close</code> 交易时，系统结算已实现盈亏（Realized PnL），退还可用保证金并清空该标的的 Position。</p>
+<hr>
+<h2 id="六、-架构开发视角与记忆口诀"><a href="#六、-架构开发视角与记忆口诀" class="headerlink" title="六、 架构开发视角与记忆口诀"></a>六、 架构开发视角与记忆口诀</h2><p>对交易系统、对账中间件及量化交易系统研发而言，整个生命周期由五个阶段闭环驱动：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[ 用户意向订单 ] ── (Order) </span><br><span class="line">       ↓ </span><br><span class="line">[ 撮合 / 链上记账 ] ── (Trade Match &amp; Execution) </span><br><span class="line">       ↓ </span><br><span class="line">[ 状态机仓位更新 ] ── (Position State Machine: +1 / -1 / 0) </span><br><span class="line">       ↓ </span><br><span class="line">[ 实时标记价格驱动 ] ── (Oracle Price Feed) </span><br><span class="line">       ↓ </span><br><span class="line">[ 风险控制与结算退出 ] ── (Margin, PnL &amp; Settlement)</span><br></pre></td></tr></table></figure>
+
+<h3 id="🎯-终极速记口诀"><a href="#🎯-终极速记口诀" class="headerlink" title="🎯 终极速记口诀"></a>🎯 终极速记口诀</h3><ul>
+<li><strong>开仓增敞口</strong>：<ul>
+<li><code>buy_open</code> &#x3D; <strong>买入开多</strong></li>
+<li><code>sell_open</code> &#x3D; <strong>卖出开空</strong></li>
+</ul>
+</li>
+<li><strong>平仓归零位</strong>：<ul>
+<li><code>sell_close</code> &#x3D; <strong>卖出平多</strong></li>
+<li><code>buy_close</code> &#x3D; <strong>买入平空</strong></li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -385,6 +362,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="tag"># 区块链</a>
               <a href="/tags/%E6%9C%9F%E8%B4%A7/" rel="tag"># 期货</a>
           </div>
 
@@ -460,7 +438,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81-%E6%A0%B8%E5%BF%83%E6%93%8D%E4%BD%9C%E7%BB%B4%E5%BA%A6%E7%9F%A9%E9%98%B5"><span class="nav-number">2.</span> <span class="nav-text">一、 核心操作维度矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81-%E7%BB%8F%E5%85%B8%E6%A1%88%E4%BE%8B%E6%8E%A8%E6%BC%94%EF%BC%9A%E7%94%A8%E2%80%9C%E7%9F%B3%E6%B2%B9%E7%8E%B0%E8%B4%A7%E2%80%9D%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3%E5%81%9A%E7%A9%BA"><span class="nav-number">3.</span> <span class="nav-text">二、 经典案例推演：用“石油现货”直观理解做空</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%A1%88%E4%BE%8B%E8%AE%BE%E5%AE%9A"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 案例设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 执行流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81-%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%BE%A8%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B9%B3%E7%A9%BA%E6%93%8D%E4%BD%9C%E6%98%AF-buy-close-%E8%80%8C%E9%9D%9E-sell-close%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">三、 深度思辨：为什么平空操作是 buy_close 而非 sell_close？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%9C%AC%E8%B4%A8%E5%89%96%E6%9E%90%EF%BC%9A"><span class="nav-number">4.1.</span> <span class="nav-text">核心本质剖析：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94%E5%81%9A%E5%A4%9A%EF%BC%88Long%EF%BC%89%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="nav-number">4.2.</span> <span class="nav-text">对比做多（Long）流程：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81-%E6%A0%B8%E5%BF%83%E6%95%B0%E5%AD%A6%E8%AE%A4%E7%9F%A5%EF%BC%9A%E5%B8%A6%E7%AC%A6%E5%8F%B7%E4%BB%93%E4%BD%8D%E6%B5%81%E8%BD%AC%E6%A8%A1%E5%9E%8B%EF%BC%88Signed-Position%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">四、 核心数学认知：带符号仓位流转模型（Signed Position）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%A4%9A%E5%A4%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">5.1.</span> <span class="nav-text">1. 多头生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%A9%BA%E5%A4%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">5.2.</span> <span class="nav-text">2. 空头生命周期</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81-DEX-%E6%B0%B8%E7%BB%AD%E5%90%88%E7%BA%A6%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%AE%9E%E6%88%98"><span class="nav-number">6.</span> <span class="nav-text">五、 DEX 永续合约系统架构实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E8%AE%A2%E5%8D%95%E5%AF%B9%E8%B1%A1%EF%BC%88Order%EF%BC%89vs-%E6%8C%81%E4%BB%93%E5%AF%B9%E8%B1%A1%EF%BC%88Position%EF%BC%89"><span class="nav-number">6.1.</span> <span class="nav-text">5.1 订单对象（Order）vs 持仓对象（Position）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E6%B5%AE%E5%8A%A8%E7%9B%88%E4%BA%8F%EF%BC%88Unrealized-PnL%EF%BC%89%E5%85%AC%E5%BC%8F"><span class="nav-number">6.2.</span> <span class="nav-text">5.2 浮动盈亏（Unrealized PnL）公式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81-%E6%9E%B6%E6%9E%84%E5%BC%80%E5%8F%91%E8%A7%86%E8%A7%92%E4%B8%8E%E8%AE%B0%E5%BF%86%E5%8F%A3%E8%AF%80"><span class="nav-number">7.</span> <span class="nav-text">六、 架构开发视角与记忆口诀</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%8E%AF-%E7%BB%88%E6%9E%81%E9%80%9F%E8%AE%B0%E5%8F%A3%E8%AF%80"><span class="nav-number">7.1.</span> <span class="nav-text">🎯 终极速记口诀</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
